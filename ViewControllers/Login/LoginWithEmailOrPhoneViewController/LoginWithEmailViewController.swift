@@ -40,6 +40,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         textFieldEmail.text = "ahmedshakeelpk@gmail.com"
+//        textFieldEmail.text = "projectapipk@gmail.com"
         textFieldPhoneNumber.text = "+923115284424"
         viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
         viewBackGroundPhoneNumber.radius(radius: 8, color: .clrBorder, borderWidth: 1)

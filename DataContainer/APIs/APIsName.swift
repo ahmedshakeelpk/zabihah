@@ -17,10 +17,12 @@ struct APIsName {
         //MARK:- API
         case sendnotification = "api/Notification/sendnotification"
         case verifyOtp = "api/Otp/verifyOtp"
-        
+        case getblobcontainer = "api/Blob/getblobcontainer"
         
         //MARK:- V1
-        case userignup = "v1/User/userignup"
+        case usersignup = "v1/User/usersignup"
+        case getuser = "v1/User/getuser"
+        
         
         
     }

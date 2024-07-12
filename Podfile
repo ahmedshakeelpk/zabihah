@@ -16,6 +16,11 @@ pod 'GooglePlaces'
 
 pod 'FirebaseAnalytics'
 
+#Azure Blob Storage ImageUpload
+#https://learn.microsoft.com/en-us/previous-versions/azure/storage/blobs/storage-ios-how-to-use-blob-storage#cocoapod
+pod 'AZSClient'
+
+
 
 
 

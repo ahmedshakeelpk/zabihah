@@ -164,9 +164,16 @@ class OtpLoginViewController: UIViewController{
     }
     func sendnotification() {
         print()
+        var deviceType = ""
+        if isFromRegistrationViewController {
+            deviceType = isFromEmail ? "phone" : "email"
+        }
+        else {
+            deviceType = isFromEmail ? "email" : "phone"
+        }
         let parameters: Parameters = [
             "recipient": stringPhoneEmail,
-            "device": isFromRegistrationViewController ? !isFromEmail : isFromEmail ? "email" : "phone"
+            "device": deviceType
         ]
         
         APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in

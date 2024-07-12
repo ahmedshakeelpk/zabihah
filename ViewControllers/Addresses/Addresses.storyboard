@@ -339,10 +339,21 @@
                                                             <constraint firstAttribute="bottom" secondItem="907-JN-hUG" secondAttribute="bottom" id="cvx-Jv-7tI"/>
                                                         </constraints>
                                                     </stackView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9gj-b4-an8">
+                                                        <rect key="frame" x="0.0" y="0.0" width="354" height="50"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <connections>
+                                                            <action selector="buttonSearch:" destination="fg6-v4-gYF" eventType="touchUpInside" id="lLI-bY-El4"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="9gj-b4-an8" firstAttribute="leading" secondItem="e7r-rK-EKB" secondAttribute="leading" id="68K-4l-idI"/>
                                                     <constraint firstItem="FhS-26-KdG" firstAttribute="top" secondItem="e7r-rK-EKB" secondAttribute="top" constant="5" id="9xG-Ro-HgA"/>
+                                                    <constraint firstAttribute="trailing" secondItem="9gj-b4-an8" secondAttribute="trailing" id="DLr-hd-FsY"/>
+                                                    <constraint firstAttribute="bottom" secondItem="9gj-b4-an8" secondAttribute="bottom" id="GIf-1J-o7M"/>
+                                                    <constraint firstItem="9gj-b4-an8" firstAttribute="top" secondItem="e7r-rK-EKB" secondAttribute="top" id="GKM-ls-6Kp"/>
                                                     <constraint firstAttribute="bottom" secondItem="FhS-26-KdG" secondAttribute="bottom" constant="5" id="frr-ec-qd0"/>
                                                     <constraint firstItem="FhS-26-KdG" firstAttribute="leading" secondItem="e7r-rK-EKB" secondAttribute="leading" constant="5" id="t9s-Nh-R7G"/>
                                                     <constraint firstAttribute="trailing" secondItem="FhS-26-KdG" secondAttribute="trailing" constant="16" id="vAc-uX-k0F"/>
@@ -482,6 +493,7 @@
                     </view>
                     <connections>
                         <outlet property="buttonBack" destination="FE9-S1-BfI" id="8kt-15-sMT"/>
+                        <outlet property="buttonSearch" destination="9gj-b4-an8" id="47H-tx-SuK"/>
                         <outlet property="mapView" destination="Cu7-SP-SVR" id="gZS-Od-yYS"/>
                         <outlet property="stackViewSearchBackGround" destination="FhS-26-KdG" id="C7i-Mu-bmp"/>
                         <outlet property="textFieldSearch" destination="0sX-vj-cSw" id="HRw-v6-ktR"/>
@@ -492,7 +504,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OQj-b3-8V0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="678.62595419847321" y="-2.1126760563380285"/>
+            <point key="canvasLocation" x="678.26086956521749" y="-2.6785714285714284"/>
         </scene>
         <!--Add Address Fields View Controller-->
         <scene sceneID="6QM-jP-QSo">

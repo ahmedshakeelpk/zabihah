@@ -28,6 +28,13 @@ class RegisterationViewController: UIViewController {
     var isFromEmail: Bool = false
     var stringPhoneEmail = ""
 
+    var modelGetBlobContainer: ModelGetBlobContainer? {
+        didSet {
+            print(modelGetBlobContainer?.token)
+            
+        }
+    }
+    
     var modelSendnotificationResponse: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? {
         didSet {
             if modelSendnotificationResponse?.success ?? false {
@@ -39,10 +46,20 @@ class RegisterationViewController: UIViewController {
         }
     }
     
+    var modelGetUserResponseLocal: ModelGetUserResponse? {
+        didSet {
+            modelGetUserResponse = modelGetUserResponseLocal
+        }
+    }
+    
     var modelSignUpResponse: ModelSignUpResponse? {
         didSet {
-            if modelSendnotificationResponse?.success ?? false {
-                navigateToHomeViewController()
+            if modelSignUpResponse?.success ?? false {
+//                navigateToHomeViewController()
+                if let token = modelSignUpResponse?.token {
+                    kAccessToken = token
+                    self.getuser()
+                }
             }
             else {
                 showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
@@ -67,11 +84,15 @@ class RegisterationViewController: UIViewController {
             //TODO: - need to uncomment below mentioned line
 //            stackViewPhoneNumber.isHidden = true
         }
+        getblobcontainer()
     }
     @IBAction func buttonBack(_ sender: Any) {
         popViewController(animated: true)
     }
     @IBAction func buttonEdit(_ sender: Any) {
+        if let token = modelGetBlobContainer?.token {
+            uploadOnBlob(token: token)
+        }
     }
     @IBAction func buttonContinue(_ sender: Any) {
         if isOtpVerified {
@@ -110,13 +131,13 @@ class RegisterationViewController: UIViewController {
         let parameters: Parameters = [
             "firstname": textFieldFirstName.text!,
             "lastName": textFieldLastName.text!,
-            "email": isFromEmail ? "" : textFieldEmail.text!,
-            "phone": isFromEmail ? textFieldPhoneNumber.text! : "",
-            "photo": "https://i.sstatic.net/Xofvk.png",
+            "email": !isFromEmail ? "" : textFieldEmail.text!,
+            "phone": "03219525316",// isFromEmail ? textFieldPhoneNumber.text! : "",
+            "photo": "https://zabihahblob.blob.core.windows.net/profileimage/742473352.835877.jpg",
             "isNewsLetter": true
         ]
         
-        APIs.postAPI(apiName: .userignup, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .usersignup, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: ModelSignUpResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelSignUpResponse = model
         }
@@ -132,6 +153,35 @@ class RegisterationViewController: UIViewController {
             
             let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelSendnotificationResponse = model
+        }
+    }
+    
+    
+    func getuser() {
+        let parameters: Parameters = [
+            "containerName": "profileimage"
+        ]
+        APIs.postAPI(apiName: .getuser, parameters: parameters, httpMethod: .get) { responseData, success, errorMsg in
+            print(responseData ?? "")
+            print(success)
+            let model: ModelGetUserResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserResponseLocal = model
+        }
+    }
+    
+    
+    
+    func getblobcontainer() {
+        let parameters: Parameters = [
+            "containerName": "profileimage"
+        ]
+        
+        APIs.postAPI(apiName: .getblobcontainer, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            
+            print(responseData)
+            print(success)
+            let model: ModelGetBlobContainer? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBlobContainer = model
         }
     }
 }
@@ -172,4 +222,110 @@ extension RegisterationViewController: FPNTextFieldDelegate {
          // Do something...
       }
    }
+}
+
+
+///Blob Upload Storage
+extension RegisterationViewController {
+    func uploadOnBlob(token: String) {
+        let currentDate1 = Date()
+        let fileName1 = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        uploadImageToBlobStorage(token: token, image: UIImage(named: "dummyFood")!, blobName: fileName1)
+    }
+    
+    func uploadImageToBlobStorage(token: String, image: UIImage, blobName: String) {
+        
+//        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
+        
+        let tempToken = token.components(separatedBy: "?")
+        
+        let sasToken = tempToken.last ?? ""
+        let containerURL = "\(tempToken.first ?? "")"
+        print("containerURL with SAS: \(containerURL) ")
+        
+        let azureBlobStorage = AzureBlobStorage(containerURL: containerURL, sasToken: sasToken)
+        
+            azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
+                if success {
+                    print("Image uploaded successfully!")
+                    if let imageURL = self.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
+                        print("Image URL: \(imageURL)")
+                    } else {
+                        print("Failed to construct image URL")
+                    }
+                } else {
+                    print("Failed to upload image: \(error?.localizedDescription ?? "Unknown error")")
+                }
+            }
+        return()
+
+
+    }
+    
+    
+    struct AzureBlobStorage {
+        let containerURL: String
+        let sasToken: String
+
+        init(containerURL: String, sasToken: String) {
+            self.containerURL = containerURL
+            self.sasToken = sasToken
+        }
+
+        func uploadImage(image: UIImage, blobName: String, completion: @escaping (Bool, Error?) -> Void) {
+            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+                completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to data"]))
+                return
+            }
+
+            let uploadURLString = "\(containerURL)/\(blobName)?\(sasToken)"
+            guard let uploadURL = URL(string: uploadURLString) else {
+                completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+                return
+            }
+
+            var request = URLRequest(url: uploadURL)
+            request.httpMethod = "PUT"
+            request.setValue("BlockBlob", forHTTPHeaderField: "x-ms-blob-type")
+            request.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
+            request.httpBody = imageData
+
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(false, error)
+                    return
+                }
+
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response from server"]))
+                    return
+                }
+
+                if httpResponse.statusCode == 201 {
+                    completion(true, nil)
+                } else {
+                    let statusCodeError = NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to upload image, status code: \(httpResponse.statusCode)"])
+                    completion(false, statusCodeError)
+                }
+            }
+
+            task.resume()
+        }
+    }
+    
+    // Function to construct the URL of the image in Azure Blob Storage
+    func getImageURL(storageAccountName: String, containerName: String, blobName: String, sasToken: String? = nil) -> URL? {
+        // Construct the base URL
+        var urlString = "https://\(storageAccountName).blob.core.windows.net/\(containerName)/\(blobName)"
+        
+        // Append the SAS token if provided
+        if let token = sasToken {
+            if token != "" {
+                urlString += "?\(token)"
+            }
+        }
+        
+        return URL(string: urlString)
+    }
 }

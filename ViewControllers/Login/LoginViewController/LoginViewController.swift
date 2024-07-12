@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import AZSClient
+import Alamofire
+
 
 class LoginViewController: UIViewController {
 
@@ -40,9 +43,7 @@ class LoginViewController: UIViewController {
         
 
         self.view.backgroundColor = .white
-        
         setStatusBarTopColor(color: .clrWhiteStatusBar)
-
         viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
         viewBackGroundPhone.radius(radius: 8, color: .clrBorder, borderWidth: 1)
         viewBackGroundFaceBook.radius(radius: 8, color: .clrBorder, borderWidth: 1)
@@ -53,7 +54,7 @@ class LoginViewController: UIViewController {
         navigateToLoginWithEmailOrPhoneViewController(isFromEmail: true)
     }
     @IBAction func buttonPhoneLogin(_ sender: Any) {
-        navigateToHomeViewController()
+        navigateToAddAddressesViewController()
 //        navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
