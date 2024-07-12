@@ -1973,6 +1973,7 @@
                         <outlet property="buttonBack" destination="S44-ro-q03" id="DnS-4Q-zWu"/>
                         <outlet property="buttonContinue" destination="y8l-Zi-xn6" id="tLa-Ce-KPJ"/>
                         <outlet property="buttonEdit" destination="wfk-Td-Fwh" id="6lc-9E-5BO"/>
+                        <outlet property="imageViewUser" destination="94S-fF-bLY" id="a3Y-p6-WR5"/>
                         <outlet property="labelTermsAndConditions" destination="CDQ-JD-UIb" id="zFu-QW-r3L"/>
                         <outlet property="stackViewEmail" destination="YtB-Yl-Apk" id="aQU-Lx-lJc"/>
                         <outlet property="stackViewPhoneNumber" destination="Cmp-Wh-tvN" id="fFh-jC-2U8"/>

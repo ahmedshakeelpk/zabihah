@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import UIKit
 
 let GOOGLE_API_KEY = "AIzaSyBk8U2DYsEn3sWykNHXBL8A8ORjCiaLeRA"
 var kAccessToken = ""
+let IPAD = UIDevice.current.userInterfaceIdiom == .pad
 
 
 
