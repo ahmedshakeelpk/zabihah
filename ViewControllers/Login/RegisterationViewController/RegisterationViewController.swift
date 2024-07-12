@@ -10,7 +10,7 @@ import FlagPhoneNumber
 import Alamofire
 
 class RegisterationViewController: UIViewController {
-
+    
     @IBOutlet weak var buttonAgree: UIButton!
     @IBOutlet weak var labelTermsAndConditions: UILabel!
     @IBOutlet weak var textFieldFirstName: UITextField!
@@ -27,11 +27,10 @@ class RegisterationViewController: UIViewController {
     
     var isFromEmail: Bool = false
     var stringPhoneEmail = ""
-
+    
     var modelGetBlobContainer: ModelGetBlobContainer? {
         didSet {
-            print(modelGetBlobContainer?.token)
-            
+            print(modelGetBlobContainer?.token as Any)
         }
     }
     
@@ -46,20 +45,14 @@ class RegisterationViewController: UIViewController {
         }
     }
     
-    var modelGetUserResponseLocal: ModelGetUserResponse? {
-        didSet {
-            modelGetUserResponse = modelGetUserResponseLocal
-        }
-    }
-    
     var modelSignUpResponse: ModelSignUpResponse? {
         didSet {
             if modelSignUpResponse?.success ?? false {
-//                navigateToHomeViewController()
                 if let token = modelSignUpResponse?.token {
                     kAccessToken = token
-                    self.getuser()
                 }
+                navigateToHomeViewController()
+                
             }
             else {
                 showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
@@ -69,20 +62,20 @@ class RegisterationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         viewBackGroundButtonContinue.radius(radius: 8)
         labelTermsAndConditions.setTwoColorWithUnderLine(textFirst: "I agree to ", textSecond: "terms and conditions.", colorFirst: .clrDarkBlue, colorSecond: .clrApp)
         if isFromEmail {
             viewBackGroundPhoneNumber.radius(radius: 4, color: .clrBorder, borderWidth: 0.5)
             //TODO: - need to uncomment below mentioned line
-//            stackViewEmail.isHidden = true
+            //            stackViewEmail.isHidden = true
             textFieldPhoneNumber.setFlag(countryCode: .US)
             textFieldPhoneNumber.delegate = self
             textFieldPhoneNumber.displayMode = .list // .picker by default
         }
         else {
             //TODO: - need to uncomment below mentioned line
-//            stackViewPhoneNumber.isHidden = true
+            //            stackViewPhoneNumber.isHidden = true
         }
         getblobcontainer()
     }
@@ -90,13 +83,16 @@ class RegisterationViewController: UIViewController {
         popViewController(animated: true)
     }
     @IBAction func buttonEdit(_ sender: Any) {
-        if let token = modelGetBlobContainer?.token {
-            uploadOnBlob(token: token)
-        }
+        
     }
     @IBAction func buttonContinue(_ sender: Any) {
         if isOtpVerified {
-            userSignup()
+            if let token = self.modelGetBlobContainer?.token {
+                self.uploadOnBlob(token: token)
+            }
+            else {
+                getblobcontainer()
+            }
         }
         else {
             sendnotification()
@@ -108,8 +104,11 @@ class RegisterationViewController: UIViewController {
         vc.isFromRegistrationViewController = true
         vc.stringPhoneEmail = stringPhoneEmail
         vc.isOtpSuccessFullHandler = {
-            self.userSignup()
+            
             self.isOtpVerified = true
+            if let token = self.modelGetBlobContainer?.token {
+                self.uploadOnBlob(token: token)
+            }
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -118,22 +117,23 @@ class RegisterationViewController: UIViewController {
     }
     
     func navigateToHomeViewController() {
-//        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
-//        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
-//            self.sceneDelegate?.window?.rootViewController = navigationController
-//        }
+        //        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
+        //        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
+        //            self.sceneDelegate?.window?.rootViewController = navigationController
+        //        }
         
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func userSignup() {
+    func userSignup(imageUrl: String) {
         let parameters: Parameters = [
             "firstname": textFieldFirstName.text!,
             "lastName": textFieldLastName.text!,
             "email": !isFromEmail ? "" : textFieldEmail.text!,
-            "phone": "03219525316",// isFromEmail ? textFieldPhoneNumber.text! : "",
-            "photo": "https://zabihahblob.blob.core.windows.net/profileimage/742473352.835877.jpg",
+            "phone": "03219525315",// isFromEmail ? textFieldPhoneNumber.text! : "",
+            "photo": imageUrl,
+            //            "photo": "https://zabihahblob.blob.core.windows.net/profileimage/742473352.835877.jpg",
             "isNewsLetter": true
         ]
         
@@ -156,21 +156,6 @@ class RegisterationViewController: UIViewController {
         }
     }
     
-    
-    func getuser() {
-        let parameters: Parameters = [
-            "containerName": "profileimage"
-        ]
-        APIs.postAPI(apiName: .getuser, parameters: parameters, httpMethod: .get) { responseData, success, errorMsg in
-            print(responseData ?? "")
-            print(success)
-            let model: ModelGetUserResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetUserResponseLocal = model
-        }
-    }
-    
-    
-    
     func getblobcontainer() {
         let parameters: Parameters = [
             "containerName": "profileimage"
@@ -187,43 +172,42 @@ class RegisterationViewController: UIViewController {
 }
 
 extension RegisterationViewController: FPNTextFieldDelegate {
-
-   /// The place to present/push the listController if you choosen displayMode = .list
-   func fpnDisplayCountryList() {
-       let listController: FPNCountryListViewController = FPNCountryListViewController(style: .grouped)
-
-       textFieldPhoneNumber.displayMode = .list // .picker by default
-       listController.setup(repository: textFieldPhoneNumber.countryRepository)
-       listController.didSelect = { [weak self] country in
-           self?.textFieldPhoneNumber.setFlag(countryCode: country.code)
-           
-       }
-//       self.present(listController, animated: true, completion: nil)
-       let navigationViewController = UINavigationController(rootViewController: listController)
-       listController.title = "Countries"
-       self.present(navigationViewController, animated: true, completion: nil)
-   }
-
-   /// Lets you know when a country is selected
-   func fpnDidSelectCountry(name: String, dialCode: String, code: String) {
-      print(name, dialCode, code) // Output "France", "+33", "FR"
-   }
-
-   /// Lets you know when the phone number is valid or not. Once a phone number is valid, you can get it in severals formats (E164, International, National, RFC3966)
-   func fpnDidValidatePhoneNumber(textField: FPNTextField, isValid: Bool) {
-      if isValid {
-         // Do something...
-//          textFieldPhoneNumber.getFormattedPhoneNumber(format: .E164),           // Output "+33600000001"
-//          textFieldPhoneNumber.getFormattedPhoneNumber(format: .International),  // Output "+33 6 00 00 00 01"
-//          textFieldPhoneNumber.getFormattedPhoneNumber(format: .National),       // Output "06 00 00 00 01"
-//          textFieldPhoneNumber.getFormattedPhoneNumber(format: .RFC3966),        // Output "tel:+33-6-00-00-00-01"
-//          textFieldPhoneNumber.getRawPhoneNumber()                               // Output "600000001"
-      } else {
-         // Do something...
-      }
-   }
+    
+    /// The place to present/push the listController if you choosen displayMode = .list
+    func fpnDisplayCountryList() {
+        let listController: FPNCountryListViewController = FPNCountryListViewController(style: .grouped)
+        
+        textFieldPhoneNumber.displayMode = .list // .picker by default
+        listController.setup(repository: textFieldPhoneNumber.countryRepository)
+        listController.didSelect = { [weak self] country in
+            self?.textFieldPhoneNumber.setFlag(countryCode: country.code)
+            
+        }
+        //       self.present(listController, animated: true, completion: nil)
+        let navigationViewController = UINavigationController(rootViewController: listController)
+        listController.title = "Countries"
+        self.present(navigationViewController, animated: true, completion: nil)
+    }
+    
+    /// Lets you know when a country is selected
+    func fpnDidSelectCountry(name: String, dialCode: String, code: String) {
+        print(name, dialCode, code) // Output "France", "+33", "FR"
+    }
+    
+    /// Lets you know when the phone number is valid or not. Once a phone number is valid, you can get it in severals formats (E164, International, National, RFC3966)
+    func fpnDidValidatePhoneNumber(textField: FPNTextField, isValid: Bool) {
+        if isValid {
+            // Do something...
+            //          textFieldPhoneNumber.getFormattedPhoneNumber(format: .E164),           // Output "+33600000001"
+            //          textFieldPhoneNumber.getFormattedPhoneNumber(format: .International),  // Output "+33 6 00 00 00 01"
+            //          textFieldPhoneNumber.getFormattedPhoneNumber(format: .National),       // Output "06 00 00 00 01"
+            //          textFieldPhoneNumber.getFormattedPhoneNumber(format: .RFC3966),        // Output "tel:+33-6-00-00-00-01"
+            //          textFieldPhoneNumber.getRawPhoneNumber()                               // Output "600000001"
+        } else {
+            // Do something...
+        }
+    }
 }
-
 
 ///Blob Upload Storage
 extension RegisterationViewController {
@@ -235,7 +219,7 @@ extension RegisterationViewController {
     
     func uploadImageToBlobStorage(token: String, image: UIImage, blobName: String) {
         
-//        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
+        //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
         
         let tempToken = token.components(separatedBy: "?")
         
@@ -244,64 +228,64 @@ extension RegisterationViewController {
         print("containerURL with SAS: \(containerURL) ")
         
         let azureBlobStorage = AzureBlobStorage(containerURL: containerURL, sasToken: sasToken)
-        
-            azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
-                if success {
-                    print("Image uploaded successfully!")
-                    if let imageURL = self.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
-                        print("Image URL: \(imageURL)")
-                    } else {
-                        print("Failed to construct image URL")
-                    }
+        azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
+            if success {
+                print("Image uploaded successfully!")
+                if let imageURL = self.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
+                    print("Image URL: \(imageURL)")
+                    self.userSignup(imageUrl: "\(imageURL)")
                 } else {
-                    print("Failed to upload image: \(error?.localizedDescription ?? "Unknown error")")
+                    print("Failed to construct image URL")
                 }
+            } else {
+                print("Failed to upload image: \(error?.localizedDescription ?? "Unknown error")")
             }
+        }
         return()
-
-
+        
+        
     }
     
     
     struct AzureBlobStorage {
         let containerURL: String
         let sasToken: String
-
+        
         init(containerURL: String, sasToken: String) {
             self.containerURL = containerURL
             self.sasToken = sasToken
         }
-
+        
         func uploadImage(image: UIImage, blobName: String, completion: @escaping (Bool, Error?) -> Void) {
             guard let imageData = image.jpegData(compressionQuality: 0.8) else {
                 completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to data"]))
                 return
             }
-
+            
             let uploadURLString = "\(containerURL)/\(blobName)?\(sasToken)"
             guard let uploadURL = URL(string: uploadURLString) else {
                 completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
                 return
             }
-
+            
             var request = URLRequest(url: uploadURL)
             request.httpMethod = "PUT"
             request.setValue("BlockBlob", forHTTPHeaderField: "x-ms-blob-type")
             request.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
             request.httpBody = imageData
-
+            
             let session = URLSession.shared
             let task = session.dataTask(with: request) { data, response, error in
                 if let error = error {
                     completion(false, error)
                     return
                 }
-
+                
                 guard let httpResponse = response as? HTTPURLResponse else {
                     completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response from server"]))
                     return
                 }
-
+                
                 if httpResponse.statusCode == 201 {
                     completion(true, nil)
                 } else {
@@ -309,7 +293,7 @@ extension RegisterationViewController {
                     completion(false, statusCodeError)
                 }
             }
-
+            
             task.resume()
         }
     }

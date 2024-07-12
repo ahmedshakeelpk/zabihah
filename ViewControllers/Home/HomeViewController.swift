@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class HomeViewController: UIViewController {
     @IBOutlet weak var buttonSideMenu: UIButton!
@@ -20,6 +21,12 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var textFieldSearchLocation: UITextField!
     @IBOutlet weak var tableView: UITableView!
     
+    var modelGetUserResponseLocal: ModelGetUserResponse? {
+        didSet {
+            modelGetUserResponse = modelGetUserResponseLocal
+        }
+    }
+    
     private var sideMenu: SideMenu!
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
     let arrayNamesIcon = ["houseWhiteMisc", "briefcaseBlackMisc", "userBlackMisc", "addCircleBlackMisc"]
@@ -27,7 +34,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.getuser()
         // Do any additional setup after loading the view.
         sideMenuSetup()
         stackViewFilterResultBackGround.radius(radius: 8)
@@ -92,6 +99,18 @@ class HomeViewController: UIViewController {
     
     func toggleMenu() {
         sideMenu.toggleMenu()
+    }
+    
+    func getuser() {
+        let parameters: Parameters = [
+            "containerName": "profileimage"
+        ]
+        APIs.postAPI(apiName: .getuser, parameters: parameters, httpMethod: .get) { responseData, success, errorMsg in
+            print(responseData ?? "")
+            print(success)
+            let model: ModelGetUserResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserResponseLocal = model
+        }
     }
 }
 
