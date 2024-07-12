@@ -16,7 +16,7 @@ let accountNameForStorage = "zabihahblob"
 let containerName = "profileimage"
 var sasToken = ""
 
-var modelGetUserResponse: RegisterationViewController.ModelGetUserResponse? {
+var modelGetUserResponse: HomeViewController.ModelGetUserResponse? {
     didSet {
         
     }
