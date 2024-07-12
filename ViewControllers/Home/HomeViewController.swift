@@ -87,14 +87,18 @@ class HomeViewController: UIViewController {
         
         let menuConfig: MenuConfig = .init(vc: self, customView: menuView)
         sideMenu = .init(menuConfig)
+        myCustomView.viewController = self
         myCustomView.buttonBackHandler = closeMenu
+        myCustomView.closeMenuHandler = closeMenu
     }
     func openMenu() {
         sideMenu.openMenu()
     }
-    
     func closeMenu() {
         sideMenu.closeMenu()
+    }
+    func closeMenu(indexPath: IndexPath) {
+        closeMenu()
     }
     
     func toggleMenu() {
@@ -102,10 +106,9 @@ class HomeViewController: UIViewController {
     }
     
     func getuser() {
-        let parameters: Parameters = [
-            "containerName": "profileimage"
-        ]
-        APIs.postAPI(apiName: .getuser, parameters: parameters, httpMethod: .get) { responseData, success, errorMsg in
+        let parameters: Parameters = [:]
+       
+        APIs.postAPI(apiName: .getuser, parameters: parameters, methodType: .get, encoding: URLEncoding.default) { responseData, success, errorMsg in
             print(responseData ?? "")
             print(success)
             let model: ModelGetUserResponse? = APIs.decodeDataToObject(data: responseData)

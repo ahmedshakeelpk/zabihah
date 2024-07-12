@@ -82,7 +82,23 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
         vc.isFromEmail = isFromEmail
         vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.text!
+        if !(modelSendnotificationResponse?.recordNotFound ?? false) {
+            vc.isRegisterationRequest = false
+            vc.isOtpSuccessFullHandler = {
+                self.navigateToHomeViewController()
+            }
+        }
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func navigateToHomeViewController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
+        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
+            self.sceneDelegate?.window?.rootViewController = navigationController
+        }
+        
+//        let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func sendnotification() {

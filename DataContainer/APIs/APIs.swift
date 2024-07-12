@@ -262,7 +262,7 @@ print(str)
 //    }
     
     
-    static func postAPI(apiName: APIsName.name, parameters: [String: Any], headerWithToken: String? = nil, httpMethod: HTTPMethod? = .post , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    static func postAPI(apiName: APIsName.name, parameters: [String: Any], headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
 //        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
@@ -294,7 +294,7 @@ print(str)
             vc.showActivityIndicator2()
         }
         
-        AF.request(request.url!, method: httpMethod!, parameters: parameters, encoding:JSONEncoding.default, headers: request.headers)
+        AF.request(request.url!, method: methodType ?? .post, parameters: parameters, encoding:encoding ?? JSONEncoding.default, headers: request.headers)
                     .responseData { response in
 //           guard let data = response.data else { return }
 //           let json = try? JSON(data:data)
@@ -353,7 +353,7 @@ print(str)
         }
     }
     
-    static func postAPI2(apiName: APIsName.name, parameters: [String: Any], headerWithToken: String? = nil , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    static func postAPI2(apiName: APIsName.name, parameters: [String: Any], headerWithToken: String? = nil, methodType: HTTPMethod? = .post, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
 //        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
@@ -388,7 +388,7 @@ print(str)
             vc.showActivityIndicator2()
         }
         
-        AF.request(request.url!, method: .get, parameters: parameters, encoding:URLEncoding.default, headers: request.headers)
+        AF.request(request.url!, method: methodType!, parameters: parameters, encoding:URLEncoding.default, headers: request.headers)
                     .responseData { response in
 //           guard let data = response.data else { return }
 //           let json = try? JSON(data:data)

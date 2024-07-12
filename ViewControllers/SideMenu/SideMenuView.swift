@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import Foundation
 
 class SideMenuView: UIView {
     
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var tableView: TableViewContentSized!
     
+    var closeMenuHandler: ((IndexPath) -> ())!
+    var viewController = UIViewController()
+
     var arrayTitle = ["Your profile", "Your addresses","Your payment methods"]
     var arrayTitleIcon = ["userProfileSideMenu", "locationSideMenu","paymentSideMenu"]
     var arrayOther = ["Your reviews", "Your favorite places","Buy it again", "Logout"]
@@ -55,6 +59,11 @@ class SideMenuView: UIView {
         buttonBackHandler?()
     }
 
+    func navigateToProfileViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func sideMenuIntiliziation() {
         if tableView == nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -110,6 +119,9 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
+        
+        closeMenuHandler?(indexPath)
+        navigateToProfileViewController()
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

@@ -28,12 +28,20 @@ class OtpLoginViewController: UIViewController{
     var isFromEmail: Bool = false
     var isFromRegistrationViewController: Bool = false
     var stringPhoneEmail = ""
+    var isRegisterationRequest: Bool = true
     
     var isOtpSuccessFullHandler: (() -> ())!
     var modelOtpResponse: ModelOtpResponse? {
         didSet {
             if modelOtpResponse?.success ?? false {
                 if isFromRegistrationViewController {
+                    popViewController(animated: false)
+                    DispatchQueue.main.async {
+                        self.isOtpSuccessFullHandler?()
+                    }
+                }
+                else if !isRegisterationRequest {
+                    kAccessToken = modelOtpResponse?.token ?? ""
                     popViewController(animated: false)
                     DispatchQueue.main.async {
                         self.isOtpSuccessFullHandler?()

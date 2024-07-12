@@ -8,9 +8,22 @@
 import Foundation
 
 extension OtpLoginViewController {
-    // MARK: - ModelGenericResponse
+    // MARK: - ModelOtpResponse
     struct ModelOtpResponse: Codable {
-        let recordNotFound, success: Bool
-        let message, innerExceptionMessage: String?
+        let success: Bool?
+        let message: String?
+        let userResponseData: ModelOtpResponseData?
+        let recordNotFound: Bool?
+        let innerExceptionMessage, token: String?
+    }
+
+    // MARK: - ModelOtpResponseData
+    struct ModelOtpResponseData: Codable {
+        let phone: String?
+        let isNewsLetterSubcription: Bool?
+        let firstname, email: String?
+        let isUpdateSubcription: Bool?
+        let photo: String?
+        let lastName: String?
     }
 }
