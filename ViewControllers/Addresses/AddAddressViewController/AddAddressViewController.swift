@@ -66,7 +66,7 @@ class AddAddressViewController: UIViewController {
         marker.map = self.mapView
     }
     
-    func getLocationCoordinateFromPlaces(placeId: String) {
+    func getLocationCoordinateFromPlaceId(placeId: String) {
         // Define a Place ID.
 //        let placeID = placeId//"ChIJV4k8_9UodTERU5KXbkYpSYs"
 //
