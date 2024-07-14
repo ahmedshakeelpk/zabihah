@@ -8,6 +8,7 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
+import IQKeyboardManager
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -23,9 +24,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window.windowScene = windowScene
-        
-//        GMSServices.provideAPIKey(GOOGLE_API_KEY)
-//        GMSPlacesClient.provideAPIKey(GOOGLE_API_KEY)
+        IQKeyboardManager.shared().isEnabled = true
+        GMSServices.provideAPIKey(GOOGLE_API_KEY)
+        GMSPlacesClient.provideAPIKey(GOOGLE_API_KEY)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

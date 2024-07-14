@@ -262,7 +262,7 @@ print(str)
 //    }
     
     
-    static func postAPI(apiName: APIsName.name, parameters: [String: Any], headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    static func postAPI(apiName: APIsName.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
 //        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
@@ -285,7 +285,7 @@ print(str)
        
         
         print("Url: \(completeUrl)")
-        print("Parameters: \(parameters)")
+        print("Parameters: \(String(describing: parameters ?? nil))")
         print("Headers: \(kAccessToken)")
         
 //        request.httpBody = jsonData

@@ -996,7 +996,7 @@
         <!--Navigation Controller-->
         <scene sceneID="vIg-YO-0Sc">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="WVW-fg-lMH" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationLoginViewController" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="WVW-fg-lMH" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="25D-th-Odc">
                         <autoresizingMask key="autoresizingMask"/>
@@ -1973,7 +1973,6 @@
                         <outlet property="buttonBack" destination="S44-ro-q03" id="DnS-4Q-zWu"/>
                         <outlet property="buttonContinue" destination="y8l-Zi-xn6" id="tLa-Ce-KPJ"/>
                         <outlet property="buttonEdit" destination="wfk-Td-Fwh" id="6lc-9E-5BO"/>
-                        <outlet property="imageViewUser" destination="94S-fF-bLY" id="a3Y-p6-WR5"/>
                         <outlet property="labelTermsAndConditions" destination="CDQ-JD-UIb" id="zFu-QW-r3L"/>
                         <outlet property="stackViewEmail" destination="YtB-Yl-Apk" id="aQU-Lx-lJc"/>
                         <outlet property="stackViewPhoneNumber" destination="Cmp-Wh-tvN" id="fFh-jC-2U8"/>

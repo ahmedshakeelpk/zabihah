@@ -37,3 +37,4 @@ func customActivityIndicatory(_ viewContainer: UIView, startAnimate:Bool? = true
               }
          return activityIndicatorView
 }
+

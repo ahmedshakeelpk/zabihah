@@ -64,7 +64,7 @@ class OtpLoginViewController: UIViewController{
             if modelSendnotificationResponse?.success ?? false {
                 startOtpTimer()
                 DispatchQueue.main.async {
-                    self.showAlertCustomPopup(title: "Success", message: self.modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                    self.showAlertCustomPopup(title: "Success", message: self.modelSendnotificationResponse?.message ?? "", iconName: .iconSuccess)
                 }
             }
             else {
@@ -101,6 +101,9 @@ class OtpLoginViewController: UIViewController{
     @IBAction func buttonContinue(_ sender: Any) {
         if otpString != "" {
             verifyOtp()
+        }
+        else {
+            self.showToast(message: "Enter OTP!")
         }
     }
     

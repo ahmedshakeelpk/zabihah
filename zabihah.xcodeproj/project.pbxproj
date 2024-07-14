@@ -58,6 +58,7 @@
 		6A6FC4112C357D490050B6B2 /* AppColorsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6FC4102C357D490050B6B2 /* AppColorsExtension.swift */; };
 		6A9BD3C12C412A74008BBDF5 /* FingerPrintHardCodedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3C02C412A74008BBDF5 /* FingerPrintHardCodedData.swift */; };
 		6A9BD3C32C414810008BBDF5 /* HomeViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3C22C414810008BBDF5 /* HomeViewControllerModel.swift */; };
+		6A9BD3C62C4237A8008BBDF5 /* ProfileDeleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3C52C4237A8008BBDF5 /* ProfileDeleteViewController.swift */; };
 		6AD0C00D2C3BA61F0051D99A /* AddAddressFieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C00C2C3BA61F0051D99A /* AddAddressFieldsViewController.swift */; };
 		6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */; };
 		6AD0C0112C3BC55C0051D99A /* AddAddressFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */; };
@@ -141,6 +142,7 @@
 		6A6FC4102C357D490050B6B2 /* AppColorsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorsExtension.swift; sourceTree = "<group>"; };
 		6A9BD3C02C412A74008BBDF5 /* FingerPrintHardCodedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPrintHardCodedData.swift; sourceTree = "<group>"; };
 		6A9BD3C22C414810008BBDF5 /* HomeViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerModel.swift; sourceTree = "<group>"; };
+		6A9BD3C52C4237A8008BBDF5 /* ProfileDeleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDeleteViewController.swift; sourceTree = "<group>"; };
 		6AD0C00C2C3BA61F0051D99A /* AddAddressFieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressFieldsViewController.swift; sourceTree = "<group>"; };
 		6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressFieldsCell.swift; sourceTree = "<group>"; };
 		6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAddressFieldsCell.xib; sourceTree = "<group>"; };
@@ -283,10 +285,11 @@
 			isa = PBXGroup;
 			children = (
 				6A28D8502C37D30500F5A95F /* Profile.storyboard */,
+				6A28D8522C37D31E00F5A95F /* ProfileViewController */,
+				6A9BD3C42C423779008BBDF5 /* ProfileDelete */,
 				6A3AB5692C390BE00030F016 /* OtpEmailViewController */,
 				6A3AB5662C390A720030F016 /* EditEmailPhoneViewController */,
 				6A28D8552C37DEDC00F5A95F /* EditNameViewController */,
-				6A28D8522C37D31E00F5A95F /* ProfileViewController */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -505,6 +508,14 @@
 				6A9BD3C02C412A74008BBDF5 /* FingerPrintHardCodedData.swift */,
 			);
 			path = FingerPrintHardCodedData;
+			sourceTree = "<group>";
+		};
+		6A9BD3C42C423779008BBDF5 /* ProfileDelete */ = {
+			isa = PBXGroup;
+			children = (
+				6A9BD3C52C4237A8008BBDF5 /* ProfileDeleteViewController.swift */,
+			);
+			path = ProfileDelete;
 			sourceTree = "<group>";
 		};
 		6AD0C00B2C3BA6100051D99A /* AddAddressFieldsViewController */ = {
@@ -793,6 +804,7 @@
 				6A16E00D2C3687F500E1383B /* OTPTextField.swift in Sources */,
 				6A62693B2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.swift in Sources */,
 				6AD0C02B2C3BF7CF0051D99A /* RegisterationViewControllerModel.swift in Sources */,
+				6A9BD3C62C4237A8008BBDF5 /* ProfileDeleteViewController.swift in Sources */,
 				6A3AB5702C3956A40030F016 /* SideTown.swift in Sources */,
 				6AD0C0162C3BE43D0051D99A /* APIsName.swift in Sources */,
 				6AD0C0112C3BC55C0051D99A /* AddAddressFieldsCell.swift in Sources */,

@@ -54,7 +54,7 @@ class LoginViewController: UIViewController {
         navigateToLoginWithEmailOrPhoneViewController(isFromEmail: true)
     }
     @IBAction func buttonPhoneLogin(_ sender: Any) {
-        navigateToAddAddressesViewController()
+        navigateToHomeViewController()
 //        navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
@@ -91,4 +91,12 @@ class LoginViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressFieldsViewController") as! AddAddressFieldsViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    func navigateToProfileDeleteViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
+        vc.buttonDeleteHandler = {
+            print("delete button press")
+        }
+        self.present(vc, animated: true)
+    }
+   
 }

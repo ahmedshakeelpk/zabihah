@@ -87,16 +87,27 @@ class RegisterationViewController: UIViewController {
         funcMyActionSheet()
     }
     @IBAction func buttonContinue(_ sender: Any) {
-        if isOtpVerified {
-            if let token = self.modelGetBlobContainer?.token {
-                self.uploadOnBlob(token: token)
-            }
-            else {
-                getblobcontainer()
-            }
+        if textFieldFirstName.text == "" {
+            self.showToast(message: "Enter first name!")
+        }
+        else if textFieldLastName.text == "" {
+            self.showToast(message: "Enter last name!")
+        }
+        else if isFromEmail ? textFieldPhoneNumber.text == "" : textFieldEmail.text == "" {
+            self.showToast(message: "Enter \(isFromEmail ? "Phone Number" : "Email")!")
         }
         else {
-            sendnotification()
+            if isOtpVerified {
+                if let token = self.modelGetBlobContainer?.token {
+                    self.uploadOnBlob(token: token)
+                }
+                else {
+                    getblobcontainer()
+                }
+            }
+            else {
+                sendnotification()
+            }
         }
     }
     var isOtpVerified = false

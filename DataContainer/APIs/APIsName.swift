@@ -22,6 +22,8 @@ struct APIsName {
         //MARK:- V1
         case usersignup = "v1/User/usersignup"
         case getuser = "v1/User/getuser"
+        case deleteuser = "v1/User/deleteuser"
+        case editprofile = "v1/User/editprofile"
         
         
         

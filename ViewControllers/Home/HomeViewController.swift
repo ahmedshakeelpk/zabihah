@@ -108,7 +108,7 @@ class HomeViewController: UIViewController {
     func getuser() {
         let parameters: Parameters = [:]
        
-        APIs.postAPI(apiName: .getuser, parameters: parameters, methodType: .get, encoding: URLEncoding.default) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getuser, methodType: .get, encoding: URLEncoding.default) { responseData, success, errorMsg in
             print(responseData ?? "")
             print(success)
             let model: ModelGetUserResponse? = APIs.decodeDataToObject(data: responseData)

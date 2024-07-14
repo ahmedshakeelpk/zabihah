@@ -67,11 +67,13 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     @IBAction func buttonSendVerificationCode(_ sender: Any) {
         if isFromEmail {
             if textFieldEmail.text == "" {
+                self.showToast(message: "Enter Email!")
                 return()
             }
         }
         else {
             if textFieldPhoneNumber.text == "" {
+                self.showToast(message: "Enter Phone Number!")
                 return()
             }
         }

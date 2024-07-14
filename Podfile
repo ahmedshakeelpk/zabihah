@@ -9,11 +9,12 @@ target 'zabihah' do
 
 pod 'Alamofire'
 pod "FlagPhoneNumber"
+pod 'IQKeyboardManager'
+
 #https://github.com/chronotruck/FlagPhoneNumber
 
 pod 'GoogleMaps'
 pod 'GooglePlaces'
-
 pod 'FirebaseAnalytics'
 
 #Azure Blob Storage ImageUpload
