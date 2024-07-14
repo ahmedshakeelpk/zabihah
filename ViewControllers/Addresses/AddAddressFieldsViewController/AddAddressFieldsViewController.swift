@@ -1,5 +1,5 @@
 //
-//  AddAddressFieldsViewController.swift
+//  AddAddressViewController.swift
 //  zabihah
 //
 //  Created by Shakeel Ahmed on 08/07/2024.
@@ -11,7 +11,7 @@ import GooglePlaces
 import Alamofire
 
 
-class AddAddressFieldsViewController: UIViewController {
+class AddAddressViewController: UIViewController {
    
     @IBOutlet weak var switchDefaultAddress: UISwitch!{
         didSet{
@@ -122,7 +122,7 @@ class AddAddressFieldsViewController: UIViewController {
 }
 
 
-extension AddAddressFieldsViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension AddAddressViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        return CGSize(width: arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 50, height: 50)
@@ -161,14 +161,14 @@ extension AddAddressFieldsViewController: UICollectionViewDataSource, UICollecti
     }
 }
 
-extension AddAddressFieldsViewController: GMSMapViewDelegate {
+extension AddAddressViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
         let zoom = mapView.camera.zoom
         print("map zoom is ",String(zoom))
     }
 }
 
-extension AddAddressFieldsViewController: GMSAutocompleteViewControllerDelegate {
+extension AddAddressViewController: GMSAutocompleteViewControllerDelegate {
     // Handle the user's selection.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         print("Place name: \(place.name)")
@@ -207,7 +207,7 @@ extension AddAddressFieldsViewController: GMSAutocompleteViewControllerDelegate 
 }
 
 // Handle the user's selection.
-extension AddAddressFieldsViewController: GMSAutocompleteResultsViewControllerDelegate {
+extension AddAddressViewController: GMSAutocompleteResultsViewControllerDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
         //    searchController?.isActive = false

@@ -84,11 +84,11 @@ class LoginViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func navigateToAddAddressesViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func navigateToAddAddressFieldsViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressFieldsViewController") as! AddAddressFieldsViewController
+    func navigateToAddAddressViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func navigateToProfileDeleteViewController() {

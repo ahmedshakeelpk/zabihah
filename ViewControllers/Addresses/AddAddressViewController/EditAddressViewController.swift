@@ -1,5 +1,5 @@
 //
-//  AddAddressViewController.swift
+//  EditAddressViewController.swift
 //  zabihah
 //
 //  Created by Shakeel Ahmed on 07/07/2024.
@@ -10,7 +10,7 @@ import GoogleMaps
 import GooglePlaces
 import Alamofire
 
-class AddAddressViewController: UIViewController {
+class EditAddressViewController: UIViewController {
     
     @IBOutlet weak var buttonSearch: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
@@ -122,14 +122,14 @@ class AddAddressViewController: UIViewController {
     }
 }
 
-extension AddAddressViewController: GMSMapViewDelegate {
+extension EditAddressViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
         let zoom = mapView.camera.zoom
         print("map zoom is ",String(zoom))
     }
 }
 
-extension AddAddressViewController: GMSAutocompleteViewControllerDelegate {
+extension EditAddressViewController: GMSAutocompleteViewControllerDelegate {
     // Handle the user's selection.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         print("Place name: \(place.name)")
@@ -166,7 +166,7 @@ extension AddAddressViewController: GMSAutocompleteViewControllerDelegate {
 }
 
 // Handle the user's selection.
-extension AddAddressViewController: GMSAutocompleteResultsViewControllerDelegate {
+extension EditAddressViewController: GMSAutocompleteResultsViewControllerDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
         //    searchController?.isActive = false
