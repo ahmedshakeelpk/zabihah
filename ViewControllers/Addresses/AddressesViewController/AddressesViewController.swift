@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class AddressesViewController: UIViewController {
 
@@ -14,21 +15,64 @@ class AddressesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var buttonBack: UIButton!
     
+    var modelGetUserAddressResponse: ModelGetUserAddressResponse? {
+        didSet {
+            if modelGetUserAddressResponse?.status == 500 {
+                
+            }
+            else {
+                tableView.reloadData()
+            }
+        }
+    }
     
     var arrayTitle = ["Mango", "Ferrerri", "Toyota", "Honda", "Cycle", "iPhone", "Android", "Serina"]
     var arrayAddress = ["A quick brown", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog"]
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         AddressesCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
+        getUserAddress()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
         popViewController(animated: true)
     }
+    
     @IBAction func buttonAddNewAddress(_ sender: Any) {
+        navigateToAddAddressFieldsViewController()
     }
     
+    func navigateToAddAddressViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func navigateToAddAddressFieldsViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressFieldsViewController") as! AddAddressFieldsViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    
+    func getUserAddress() {
+        APIs.postAPI(apiName: .getuseraddress, methodType: .get, viewController: self) { responseData, success, errorMsg in
+            let model: ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserAddressResponse = model
+        }
+    }
+    
+    func addUserAddress() {
+        let parameters: Parameters = [
+            "id": modelGetUserAddressResponse?.id ?? ""
+        ]
+        APIs.postAPI(apiName: .deleteuseraddress, parameters: parameters, methodType: .delete, viewController: self) { responseData, success, errorMsg in
+            let model: ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserAddressResponse = model
+        }
+    }
 }
 
 extension AddressesViewController: UITableViewDelegate, UITableViewDataSource {

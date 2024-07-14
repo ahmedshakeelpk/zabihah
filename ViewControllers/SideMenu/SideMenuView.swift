@@ -59,8 +59,23 @@ class SideMenuView: UIView {
         buttonBackHandler?()
     }
 
+    func navigateToViewController(indexPath: IndexPath) {
+        
+        switch indexPath.row {
+        case 0:
+            navigateToAddressesViewController()
+        case 1:
+            navigateToAddressesViewController()
+        default:
+            print("swith default action")
+        }
+    }
     func navigateToProfileViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToAddressesViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesViewController") as! AddressesViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -121,7 +136,7 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
         NSLog ("You selected row: %@ \(indexPath)")
         
         closeMenuHandler?(indexPath)
-        navigateToProfileViewController()
+        navigateToViewController(indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

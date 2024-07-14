@@ -74,8 +74,6 @@ class EditNameViewController: UIViewController {
             self.modelEditProfileResponse = model
         }
     }
-    
-    
 }
 
 extension EditNameViewController {

@@ -24,6 +24,10 @@ struct APIsName {
         case getuser = "v1/User/getuser"
         case deleteuser = "v1/User/deleteuser"
         case editprofile = "v1/User/editprofile"
+        case getuseraddress = "v1/User/getuseraddress"
+        case adduseraddress = "v1/User/adduseraddress"
+        case edituseraddress = "v1/User/edituseraddress"
+        case deleteuseraddress = "v1/User/deleteuseraddress"
         
         
         

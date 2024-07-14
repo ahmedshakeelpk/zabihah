@@ -8,12 +8,14 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
+import Alamofire
 
 class AddAddressViewController: UIViewController {
     
     @IBOutlet weak var buttonSearch: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var buttonBack: UIButton!
+    @IBOutlet weak var buttonEditAddress: UIButton!
     @IBOutlet weak var viewAddressSubBackGround: UIView!
     @IBOutlet weak var viewAddressBackGround: UIView!
     @IBOutlet weak var stackViewSearchBackGround: UIStackView!
@@ -39,6 +41,16 @@ class AddAddressViewController: UIViewController {
     @IBAction func buttonSearch(_ sender: Any) {
         autocompleteClicked()
     }
+    @IBAction func buttonEditAddress(_ sender: Any) {
+        editUserAddress()
+    }
+    
+    // Present the Autocomplete view controller when the button is pressed.
+    @objc func autocompleteClicked() {
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
+    }
     
     func setLocation(latitude: Double? = 47.07903, longitude: Double? = -122.961283) {
         let lat = latitude!
@@ -53,13 +65,6 @@ class AddAddressViewController: UIViewController {
         marker.position = CLLocationCoordinate2DMake(lat, long)
         marker.map = self.mapView
     }
-    
-    // Present the Autocomplete view controller when the button is pressed.
-    @objc func autocompleteClicked() {
-            let autocompleteController = GMSAutocompleteViewController()
-            autocompleteController.delegate = self
-            present(autocompleteController, animated: true, completion: nil)
-        }
     
     func getLocationCoordinateFromPlaces(placeId: String) {
         // Define a Place ID.
@@ -86,6 +91,35 @@ class AddAddressViewController: UIViewController {
 //          }
 //        })
     }
+    
+    var modelEditUserAddressResponse: ModelEditUserAddressResponse? {
+        didSet {
+            if modelEditUserAddressResponse?.status == 500 {
+                
+            }
+            else {
+
+            }
+        }
+    }
+    
+    func editUserAddress() {
+        let parameters: Parameters = [
+            "id": "string",
+            "title": "string",
+            "address": "string",
+            "name": "string",
+            "latitude": 0,
+            "longitude": 0,
+            "deliveryInstructions": "string",
+            "locationInstruction": "string",
+            "isDefault": true
+        ]
+        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .delete, viewController: self) { responseData, success, errorMsg in
+            let model: ModelEditUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelEditUserAddressResponse = model
+        }
+    }
 }
 
 extension AddAddressViewController: GMSMapViewDelegate {
@@ -96,7 +130,6 @@ extension AddAddressViewController: GMSMapViewDelegate {
 }
 
 extension AddAddressViewController: GMSAutocompleteViewControllerDelegate {
-    
     // Handle the user's selection.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         print("Place name: \(place.name)")
@@ -130,7 +163,6 @@ extension AddAddressViewController: GMSAutocompleteViewControllerDelegate {
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-    
 }
 
 // Handle the user's selection.
@@ -149,6 +181,4 @@ extension AddAddressViewController: GMSAutocompleteResultsViewControllerDelegate
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
     }
-    
-    
 }

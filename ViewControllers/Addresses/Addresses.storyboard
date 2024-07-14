@@ -160,7 +160,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DRh-cW-brK">
                                 <rect key="frame" x="0.0" y="786" width="414" height="76"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrX-TV-DZZ">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrX-TV-DZZ" customClass="ViewButtonSetting" customModule="zabihah" customModuleProvider="target">
                                         <rect key="frame" x="20" y="8" width="374" height="48"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add new address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kv2-HZ-6zR">
@@ -443,12 +443,23 @@
                                                                             <constraint firstAttribute="height" constant="25" id="U3g-a4-ffa"/>
                                                                         </constraints>
                                                                     </imageView>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lch-Qz-TFg">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="43" height="75"/>
+                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                        <connections>
+                                                                            <action selector="buttonEditAddress:" destination="fg6-v4-gYF" eventType="touchUpInside" id="Ohd-Em-72p"/>
+                                                                        </connections>
+                                                                    </button>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
+                                                                    <constraint firstItem="lch-Qz-TFg" firstAttribute="leading" secondItem="s7K-us-KpL" secondAttribute="leading" id="0Dx-4C-nFM"/>
                                                                     <constraint firstItem="nwI-Eb-8eo" firstAttribute="centerY" secondItem="s7K-us-KpL" secondAttribute="centerY" id="G8T-3O-5h3"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="lch-Qz-TFg" secondAttribute="trailing" id="YO2-Me-rNb"/>
                                                                     <constraint firstItem="nwI-Eb-8eo" firstAttribute="leading" secondItem="s7K-us-KpL" secondAttribute="leading" constant="6" id="Yup-o9-GdV"/>
+                                                                    <constraint firstItem="lch-Qz-TFg" firstAttribute="top" secondItem="s7K-us-KpL" secondAttribute="top" id="bLV-fw-fmZ"/>
                                                                     <constraint firstAttribute="trailing" secondItem="nwI-Eb-8eo" secondAttribute="trailing" constant="12" id="cPc-4a-t8a"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="lch-Qz-TFg" secondAttribute="bottom" id="idL-WP-eog"/>
                                                                 </constraints>
                                                             </view>
                                                         </subviews>
@@ -493,6 +504,7 @@
                     </view>
                     <connections>
                         <outlet property="buttonBack" destination="FE9-S1-BfI" id="8kt-15-sMT"/>
+                        <outlet property="buttonEditAddress" destination="lch-Qz-TFg" id="hoe-tI-36A"/>
                         <outlet property="buttonSearch" destination="9gj-b4-an8" id="47H-tx-SuK"/>
                         <outlet property="mapView" destination="Cu7-SP-SVR" id="gZS-Od-yYS"/>
                         <outlet property="stackViewSearchBackGround" destination="FhS-26-KdG" id="C7i-Mu-bmp"/>
@@ -514,8 +526,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ie5-S5-N1n">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="711"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ie5-S5-N1n" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="292"/>
                                 <color key="backgroundColor" systemColor="systemYellowColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y2l-F6-ZQ0">
@@ -538,7 +550,7 @@
                                                                 </constraints>
                                                             </imageView>
                                                         </subviews>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="2Bf-EV-WXB"/>
                                                             <constraint firstAttribute="width" constant="40" id="77V-Q6-6dk"/>
@@ -725,14 +737,25 @@
                                                                             <constraint firstAttribute="bottom" secondItem="moU-Ja-dSZ" secondAttribute="bottom" id="C1e-kj-uxj"/>
                                                                         </constraints>
                                                                     </stackView>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YOB-3K-g2H">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="60"/>
+                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                        <connections>
+                                                                            <action selector="buttonSearchAddress:" destination="W7d-sq-ezk" eventType="touchUpInside" id="yui-qN-7x6"/>
+                                                                        </connections>
+                                                                    </button>
                                                                 </subviews>
                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="trailing" secondItem="r3O-Qy-fgD" secondAttribute="trailing" id="0Zl-AA-7UW"/>
                                                                     <constraint firstItem="r3O-Qy-fgD" firstAttribute="leading" secondItem="3hk-6j-HMU" secondAttribute="leading" id="2nl-o3-LAs"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="YOB-3K-g2H" secondAttribute="trailing" id="6fd-vC-oK0"/>
                                                                     <constraint firstAttribute="bottom" secondItem="r3O-Qy-fgD" secondAttribute="bottom" id="9If-Qj-zN9"/>
                                                                     <constraint firstItem="r3O-Qy-fgD" firstAttribute="top" secondItem="3hk-6j-HMU" secondAttribute="top" id="MJc-do-y84"/>
                                                                     <constraint firstItem="r3O-Qy-fgD" firstAttribute="centerX" secondItem="3hk-6j-HMU" secondAttribute="centerX" id="O4d-Zm-Lrs"/>
+                                                                    <constraint firstItem="YOB-3K-g2H" firstAttribute="top" secondItem="3hk-6j-HMU" secondAttribute="top" id="PWh-EN-dbK"/>
+                                                                    <constraint firstItem="YOB-3K-g2H" firstAttribute="leading" secondItem="3hk-6j-HMU" secondAttribute="leading" id="X5V-ry-wLT"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="YOB-3K-g2H" secondAttribute="bottom" id="pZM-xA-3lH"/>
                                                                 </constraints>
                                                             </view>
                                                         </subviews>
@@ -1041,7 +1064,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IZK-XO-iCN">
                                                         <rect key="frame" x="0.0" y="498" width="414" height="76"/>
                                                         <subviews>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eqi-FI-6IX">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eqi-FI-6IX" customClass="ViewButtonSetting" customModule="zabihah" customModuleProvider="target">
                                                                 <rect key="frame" x="20" y="8" width="374" height="48"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mb2-tJ-IWm">
@@ -1054,7 +1077,7 @@
                                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="48"/>
                                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                         <connections>
-                                                                            <action selector="buttonAddNewAddress:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="7fe-kP-KsQ"/>
+                                                                            <action selector="buttonSave:" destination="W7d-sq-ezk" eventType="touchUpInside" id="OlF-1s-gZ0"/>
                                                                         </connections>
                                                                     </button>
                                                                 </subviews>
@@ -1118,23 +1141,25 @@
                             <constraint firstItem="VfY-ed-Cwm" firstAttribute="trailing" secondItem="Ie5-S5-N1n" secondAttribute="trailing" id="SHc-m4-zDy"/>
                             <constraint firstItem="y2l-F6-ZQ0" firstAttribute="leading" secondItem="VfY-ed-Cwm" secondAttribute="leading" id="Umm-aU-7cq"/>
                             <constraint firstAttribute="trailing" secondItem="y2l-F6-ZQ0" secondAttribute="trailing" id="VbF-8c-cth"/>
+                            <constraint firstItem="f24-cw-h6N" firstAttribute="top" secondItem="Ie5-S5-N1n" secondAttribute="bottom" id="dKI-KA-IAT"/>
                             <constraint firstItem="Ie5-S5-N1n" firstAttribute="leading" secondItem="VfY-ed-Cwm" secondAttribute="leading" id="gGL-r1-8Uv"/>
                             <constraint firstItem="Ie5-S5-N1n" firstAttribute="top" secondItem="l35-2k-uEl" secondAttribute="top" id="jNZ-eP-eu8"/>
-                            <constraint firstItem="VfY-ed-Cwm" firstAttribute="bottom" secondItem="Ie5-S5-N1n" secondAttribute="bottom" constant="151" id="ku0-aS-OGe"/>
                             <constraint firstItem="VfY-ed-Cwm" firstAttribute="trailing" secondItem="f24-cw-h6N" secondAttribute="trailing" id="oX2-Zk-YhQ"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="buttonBack" destination="Qes-Ar-HaD" id="WuS-za-Snf"/>
+                        <outlet property="buttonSave" destination="BZz-9B-v4v" id="sP2-nZ-irC"/>
+                        <outlet property="buttonSearchAddress" destination="YOB-3K-g2H" id="zHq-FS-ekl"/>
                         <outlet property="collectionView" destination="BSb-oP-ddd" id="MFy-Fh-7tm"/>
-                        <outlet property="labelDeliveryInstructionCount" destination="Qyg-9p-GUX" id="aw3-Yi-mPC"/>
-                        <outlet property="switchDefaultAddress" destination="kC6-6b-0Gp" id="kYw-W2-9mU"/>
+                        <outlet property="labelDeliveryInstructionCount" destination="Qyg-9p-GUX" id="CHZ-K3-gqK"/>
+                        <outlet property="mapView" destination="Ie5-S5-N1n" id="8oI-eu-6FL"/>
+                        <outlet property="switchDefaultAddress" destination="kC6-6b-0Gp" id="vWT-i0-Q02"/>
                         <outlet property="textFieldAddress" destination="NWs-YL-M9g" id="dDz-Fq-jSh"/>
                         <outlet property="textFieldDeliveryInstruction" destination="xwf-5Y-b2a" id="SqY-xx-FYC"/>
                         <outlet property="textFieldLocationInstructionOptional" destination="PvJ-Es-f51" id="TdK-OT-EaA"/>
                         <outlet property="viewAddNewAddressBackGround" destination="f24-cw-h6N" id="zsc-7y-bQg"/>
                         <outlet property="viewButtonBackBackGround" destination="In3-f8-6tZ" id="QFv-Mv-pPj"/>
-                        <outlet property="viewButtonSaveBackGround" destination="eqi-FI-6IX" id="Zzm-Zl-lxC"/>
                         <outlet property="viewSwitchDefaultAddressBackGround" destination="Edf-tO-W6i" id="8rO-8w-1M9"/>
                     </connections>
                 </viewController>
