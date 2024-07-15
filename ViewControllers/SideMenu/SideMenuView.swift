@@ -60,12 +60,11 @@ class SideMenuView: UIView {
     }
 
     func navigateToViewController(indexPath: IndexPath) {
-        
         switch indexPath.row {
         case 0:
-            navigateToAddressesViewController()
+            navigateToProfileViewController()
         case 1:
-            navigateToAddressesViewController()
+            navigateToAddressesListViewController()
         default:
             print("swith default action")
         }
@@ -74,8 +73,8 @@ class SideMenuView: UIView {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
-    func navigateToAddressesViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesViewController") as! AddressesViewController
+    func navigateToAddressesListViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     

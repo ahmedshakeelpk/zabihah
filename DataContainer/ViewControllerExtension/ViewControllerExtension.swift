@@ -140,4 +140,40 @@ extension UIViewController {
             toastLabel.removeFromSuperview()
         })
     }
+//    func showToast(message: String, duration: TimeInterval = 2.0) {
+//        let toastLabel = UILabel()
+//        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+//        toastLabel.textColor = UIColor.white
+//        toastLabel.textAlignment = .center
+//        toastLabel.font = UIFont.systemFont(ofSize: 14.0)
+//        toastLabel.text = message
+//        toastLabel.numberOfLines = 0
+//        toastLabel.translatesAutoresizingMaskIntoConstraints = false
+//        toastLabel.alpha = 0.0
+//        
+//        self.view.addSubview(toastLabel)
+//        
+//        let horizontalPadding: CGFloat = 20.0
+//        let verticalPadding: CGFloat = 40.0
+//        
+//        NSLayoutConstraint.activate([
+//            toastLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: horizontalPadding),
+//            toastLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -horizontalPadding),
+//            toastLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100.0)
+//        ])
+//        
+//        
+//        // Layout toastLabel to get its height dynamically
+////        toastLabel.layoutIfNeeded()
+//        
+//        UIView.animate(withDuration: 0.5, animations: {
+//            toastLabel.alpha = 1.0
+//        }) { _ in
+//            UIView.animate(withDuration: 0.5, delay: duration, options: .curveEaseOut, animations: {
+//                toastLabel.alpha = 0.0
+//            }) { _ in
+//                toastLabel.removeFromSuperview()
+//            }
+//        }
+//    }
 }

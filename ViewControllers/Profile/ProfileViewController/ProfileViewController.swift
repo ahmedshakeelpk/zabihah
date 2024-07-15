@@ -54,12 +54,18 @@ class ProfileViewController: UIViewController {
             switchEvents.onTintColor = .clrApp
         }
     }
-
+    @IBOutlet weak var viewTextFieldNameMainBackGround: UIView!
+    @IBOutlet weak var viewTextFieldEmailMainBackGround: UIView!
+    @IBOutlet weak var viewTextFieldPhoneNumberMainBackGround: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        stackViewSocialLogin.isHidden = true
+        viewTextFieldNameMainBackGround.isHidden = true
+        viewTextFieldEmailMainBackGround.isHidden = true
+        viewTextFieldPhoneNumberMainBackGround.isHidden = true
         setData()
-        
         viewLabelNameBackGround.radius(radius: 6)
         viewTextFieldNameBackGround.radius(radius: 6)
         viewLabelEmailBackGround.radius(radius: 6)

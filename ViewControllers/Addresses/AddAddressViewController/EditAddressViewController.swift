@@ -12,15 +12,57 @@ import Alamofire
 
 class EditAddressViewController: UIViewController {
     
+    @IBOutlet weak var viewAddressMainBackGround: UIView!
+    @IBOutlet weak var viewButtonsBackGround: UIView!
+    
     @IBOutlet weak var buttonSearch: UIButton!
+    @IBOutlet weak var buttonContinue: UIButton!
+    @IBOutlet weak var buttonSaveAsNew: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var buttonEditAddress: UIButton!
     @IBOutlet weak var viewAddressSubBackGround: UIView!
-    @IBOutlet weak var viewAddressBackGround: UIView!
+    @IBOutlet weak var stackViewAddressBackGround: UIView!
+    @IBOutlet weak var viewButtonSaveAsNewBackGround: UIView!
     @IBOutlet weak var stackViewSearchBackGround: UIStackView!
     @IBOutlet weak var textFieldSearch: UITextField!
     @IBOutlet weak var viewButtonBackBackGround: UIView!
+    @IBOutlet weak var labelAddressTitle: UILabel!
+    @IBOutlet weak var labelAddress: UILabel!
+        
+    var buttonContinueHandler: ((CLLocationCoordinate2D) -> ())!
+    var location: CLLocationCoordinate2D? {
+        didSet {
+            
+        }
+    }
+    var defaultAddressIndex: Int? = 0
+    var modelGetUserAddressResponse: AddressesListViewController.ModelGetUserAddressResponse? {
+        didSet {
+            if modelGetUserAddressResponse?.userAddressesResponseData?.count ?? 0 > 0 {
+                if let defaultAddressIndex = modelGetUserAddressResponse?.userAddressesResponseData?.firstIndex(where: { model in
+                    model.isDefault ?? false
+                }) {
+                    self.defaultAddressIndex = defaultAddressIndex
+                }
+                labelAddressTitle.text = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex!].title
+                labelAddress.text = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex!].address
+            }
+            else {
+                viewAddressMainBackGround.isHidden = true
+            }
+        }
+    }
+    var modelEditUserAddressResponse: ModelEditUserAddressResponse? {
+        didSet {
+            if modelEditUserAddressResponse?.status == 500 {
+                
+            }
+            else {
+
+            }
+        }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         
@@ -31,7 +73,11 @@ class EditAddressViewController: UIViewController {
         viewButtonBackBackGround.radius(radius: 8)
         viewAddressSubBackGround.radius(radius: 8)
         stackViewSearchBackGround.radius(radius: 8)
+        stackViewAddressBackGround.radius(radius: 8)
+        viewButtonSaveAsNewBackGround.radius(color: .clrLightGray, borderWidth: 1)
+
         setLocation()
+        getUserAddress()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -41,8 +87,26 @@ class EditAddressViewController: UIViewController {
     @IBAction func buttonSearch(_ sender: Any) {
         autocompleteClicked()
     }
+ 
+    @IBAction func buttonContinue(_ sender: Any) {
+        if textFieldSearch.text == "" {
+            showToast(message: "Search address then you will be able to save it")
+            return()
+        }
+        popViewController(animated: true)
+        buttonContinueHandler?(location!)
+    }
+
+    @IBAction func buttonSaveAsNew(_ sender: Any) {
+        if textFieldSearch.text == "" {
+            showToast(message: "Search address then you will be able to save it")
+            return()
+        }
+        self.navigateToAddAddressViewController()
+    }
+
     @IBAction func buttonEditAddress(_ sender: Any) {
-        editUserAddress()
+        navigateToAddAddressViewControllerFromEditButton()
     }
     
     // Present the Autocomplete view controller when the button is pressed.
@@ -50,6 +114,26 @@ class EditAddressViewController: UIViewController {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
+    }
+    
+    func navigateToAddAddressViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
+        vc.newAddressAddedHandler = {
+            self.getUserAddress()
+        }
+        vc.location = location
+        vc.newAddress = textFieldSearch.text!
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func navigateToAddAddressViewControllerFromEditButton() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
+        vc.newAddressAddedHandler = {
+            self.getUserAddress()
+        }
+        vc.isEditAddress = true
+        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex!]
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func setLocation(latitude: Double? = 47.07903, longitude: Double? = -122.961283) {
@@ -92,32 +176,10 @@ class EditAddressViewController: UIViewController {
 //        })
     }
     
-    var modelEditUserAddressResponse: ModelEditUserAddressResponse? {
-        didSet {
-            if modelEditUserAddressResponse?.status == 500 {
-                
-            }
-            else {
-
-            }
-        }
-    }
-    
-    func editUserAddress() {
-        let parameters: Parameters = [
-            "id": "string",
-            "title": "string",
-            "address": "string",
-            "name": "string",
-            "latitude": 0,
-            "longitude": 0,
-            "deliveryInstructions": "string",
-            "locationInstruction": "string",
-            "isDefault": true
-        ]
-        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .delete, viewController: self) { responseData, success, errorMsg in
-            let model: ModelEditUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelEditUserAddressResponse = model
+    func getUserAddress() {
+        APIs.postAPI(apiName: .getuseraddress, methodType: .get, viewController: self) { responseData, success, errorMsg in
+            let model: AddressesListViewController.ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserAddressResponse = model
         }
     }
 }
@@ -140,6 +202,7 @@ extension EditAddressViewController: GMSAutocompleteViewControllerDelegate {
 
         textFieldSearch.text = place.name
         DispatchQueue.main.async {
+            self.location = place.coordinate
             self.setLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
         }
         dismiss(animated: true, completion: nil)

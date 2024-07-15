@@ -105,11 +105,22 @@
                                                                     <constraint firstAttribute="height" constant="25" id="tzk-Ly-wdc"/>
                                                                 </constraints>
                                                             </imageView>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d6v-YN-DUv">
+                                                                <rect key="frame" x="0.0" y="0.0" width="37" height="94"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <connections>
+                                                                    <action selector="buttonEdit:" destination="7ca-8f-Ove" eventType="touchUpInside" id="fP9-Dk-KjW"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstItem="BXY-0Y-iiB" firstAttribute="leading" secondItem="cJP-Nc-VjK" secondAttribute="leading" constant="6" id="4r8-7u-LUy"/>
+                                                            <constraint firstItem="d6v-YN-DUv" firstAttribute="top" secondItem="cJP-Nc-VjK" secondAttribute="top" id="FbJ-od-Ajj"/>
+                                                            <constraint firstAttribute="bottom" secondItem="d6v-YN-DUv" secondAttribute="bottom" id="HWx-fz-oQD"/>
+                                                            <constraint firstItem="d6v-YN-DUv" firstAttribute="leading" secondItem="cJP-Nc-VjK" secondAttribute="leading" id="Y8z-aO-Q1X"/>
                                                             <constraint firstAttribute="trailing" secondItem="BXY-0Y-iiB" secondAttribute="trailing" constant="6" id="Z1R-wf-VZz"/>
+                                                            <constraint firstAttribute="trailing" secondItem="d6v-YN-DUv" secondAttribute="trailing" id="b7L-jr-pdv"/>
                                                             <constraint firstItem="BXY-0Y-iiB" firstAttribute="centerY" secondItem="cJP-Nc-VjK" secondAttribute="centerY" id="gA3-Xq-qid"/>
                                                         </constraints>
                                                     </view>
@@ -123,12 +134,23 @@
                                                                     <constraint firstAttribute="height" constant="27" id="kcn-Ga-SHL"/>
                                                                 </constraints>
                                                             </imageView>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0xx-gW-4u0">
+                                                                <rect key="frame" x="0.0" y="0.0" width="45" height="94"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <connections>
+                                                                    <action selector="buttonDelete:" destination="7ca-8f-Ove" eventType="touchUpInside" id="CUc-Ka-8QN"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
+                                                            <constraint firstItem="0xx-gW-4u0" firstAttribute="leading" secondItem="gz6-jg-8Y7" secondAttribute="leading" id="7Dp-1i-786"/>
                                                             <constraint firstItem="9lY-Xx-6CU" firstAttribute="leading" secondItem="gz6-jg-8Y7" secondAttribute="leading" constant="6" id="XDa-L2-ieS"/>
+                                                            <constraint firstAttribute="bottom" secondItem="0xx-gW-4u0" secondAttribute="bottom" id="eK1-OA-4Yr"/>
                                                             <constraint firstAttribute="trailing" secondItem="9lY-Xx-6CU" secondAttribute="trailing" constant="12" id="jkS-lO-ArI"/>
+                                                            <constraint firstAttribute="trailing" secondItem="0xx-gW-4u0" secondAttribute="trailing" id="lgY-LE-BHw"/>
                                                             <constraint firstItem="9lY-Xx-6CU" firstAttribute="centerY" secondItem="gz6-jg-8Y7" secondAttribute="centerY" id="qth-bw-LJj"/>
+                                                            <constraint firstItem="0xx-gW-4u0" firstAttribute="top" secondItem="gz6-jg-8Y7" secondAttribute="top" id="ref-05-0Ty"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
@@ -166,6 +188,9 @@
             <viewLayoutGuide key="safeArea" id="dlY-ly-TjR"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="buttonDelete" destination="0xx-gW-4u0" id="NiS-iH-WVU"/>
+                <outlet property="buttonEdit" destination="d6v-YN-DUv" id="wWG-EB-Iu8"/>
+                <outlet property="imageViewCheck" destination="7aO-LI-Cll" id="tbd-T6-7ZM"/>
                 <outlet property="labelAddress" destination="Ts8-7G-6it" id="l3b-ap-w5h"/>
                 <outlet property="labelTitle" destination="mHV-Mh-QWn" id="F3k-Qa-eHx"/>
                 <outlet property="stackViewBackGround" destination="qQw-ff-nwa" id="b5s-3a-hzZ"/>

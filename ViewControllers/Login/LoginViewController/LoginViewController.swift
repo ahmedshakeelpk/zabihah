@@ -16,8 +16,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var viewBackGroundPhone: UIView!
     @IBOutlet weak var viewBackGroundFaceBook: UIView!
     @IBOutlet weak var viewBackGroundApple: UIView!
-    
-    
     @IBOutlet weak var buttonEmailLogin: UIButton!
     @IBOutlet weak var buttonPhoneLogin: UIButton!
     @IBOutlet weak var buttonAppleLogin: UIButton!
@@ -41,7 +39,6 @@ class LoginViewController: UIViewController {
         
         self.title = "zabihah"
         
-
         self.view.backgroundColor = .white
         setStatusBarTopColor(color: .clrWhiteStatusBar)
         viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
@@ -54,7 +51,7 @@ class LoginViewController: UIViewController {
         navigateToLoginWithEmailOrPhoneViewController(isFromEmail: true)
     }
     @IBAction func buttonPhoneLogin(_ sender: Any) {
-        navigateToAddAddressesViewController()
+        navigateToHomeViewController()
 //        navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
@@ -79,11 +76,11 @@ class LoginViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func navigateToAddressesViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesViewController") as! AddressesViewController
+    func navigateToAddressesListViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func navigateToAddAddressesViewController() {
+    func navigateToEditAddressesViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }

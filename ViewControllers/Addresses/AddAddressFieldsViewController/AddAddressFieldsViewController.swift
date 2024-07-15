@@ -18,6 +18,7 @@ class AddAddressViewController: UIViewController {
             switchDefaultAddress.onTintColor = .clrApp
         }
     }
+    @IBOutlet weak var labelMainTitle: UILabel!
     
     @IBOutlet weak var buttonSearchAddress: UIButton!
     @IBOutlet weak var viewAddNewAddressBackGround: UIView!
@@ -36,18 +37,67 @@ class AddAddressViewController: UIViewController {
     let arrayNames = ["Home", "Office", "Person", "Other"]
     let arrayNamesIcon = ["houseWhiteMisc", "briefcaseBlackMisc", "userBlackMisc", "addCircleBlackMisc"]
 
-    var latitude: Double!
-    var longitude: Double!
-    var locationId: String!
-    var selectedCell: Int!
-    
-    var modelGetUserAddressResponse: ModelGetUserAddressResponse? {
+    var newAddress = String()
+    var location: CLLocationCoordinate2D? {
         didSet {
-            if modelGetUserAddressResponse?.status == 500 {
-                
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.textFieldAddress.text = self.newAddress
+                self.setLocation(latitude: self.location?.latitude, longitude: self.location?.longitude)
+            }
+        }
+    }
+    
+    var modelEditUserAddressResponse: ModelEditUserAddressResponse? {
+        didSet {
+            if modelEditUserAddressResponse?.success ?? false {
+                addressEditHandler?()
+                showAlertCustomPopup(title: "Success", message: modelEditUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
+                    self.popViewController(animated: true)
+                }
             }
             else {
+                showAlertCustomPopup(title: "Error", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconError)
+            }
+        }
+    }
+    
+    var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
+        didSet {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+                self.labelMainTitle.text = "Edit Address"
+                self.newAddress = self.modelUserAddressesResponseData?.address ?? ""
+                self.location = CLLocationCoordinate2D(latitude: (modelUserAddressesResponseData?.latitude)!, longitude: (modelUserAddressesResponseData?.longitude)!)
+                self.setLocation(latitude: modelUserAddressesResponseData?.latitude, longitude: self.modelUserAddressesResponseData?.longitude)
+                self.textFieldDeliveryInstruction.text = modelUserAddressesResponseData?.deliveryInstructions
+                self.textFieldLocationInstructionOptional.text = modelUserAddressesResponseData?.locationInstruction
+                self.switchDefaultAddress.isOn = modelUserAddressesResponseData?.isDefault ?? false
+                if let indexOf = arrayNames.firstIndex(where: { name in
+                    name == modelUserAddressesResponseData?.title
+                }) {
+                    selectedCell = indexOf
+                    collectionView.reloadData()
+                }
+                self.textFieldDeliveryInstructionEditingChanged()
+            }
+        }
+    }
+    
+    var locationId: String!
+    var selectedCell: Int! = 0
+    var newAddressAddedHandler: (() -> ())!
+    var addressEditHandler: (() -> ())!
 
+
+    var modelAddUserAddressResponse: ModelAddUserAddressResponse? {
+        didSet {
+            if modelAddUserAddressResponse?.success ?? false {
+                newAddressAddedHandler?()
+                showAlertCustomPopup(title: "Success", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
+                    self.popViewController(animated: true)
+                }
+            }
+            else {
+                showAlertCustomPopup(title: "Error", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconError)
             }
         }
     }
@@ -60,6 +110,16 @@ class AddAddressViewController: UIViewController {
         viewAddNewAddressBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
         AddAddressFieldsCell.register(collectionView: collectionView)
         self.setLocation()
+        textFieldDeliveryInstruction.addTarget(self, action: #selector(textFieldDeliveryInstructionEditingChanged), for: .editingChanged)
+    }
+    @objc func textFieldDeliveryInstructionEditingChanged() {
+        if let count = textFieldDeliveryInstruction.text?.count {
+            if count > 300 {
+                textFieldDeliveryInstruction.text?.removeLast()
+                return()
+            }
+        }
+        labelDeliveryInstructionCount.text = "\(textFieldDeliveryInstruction.text?.count ?? 0)/300"
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -70,7 +130,12 @@ class AddAddressViewController: UIViewController {
             self.showToast(message: "Please enter address!")
         }
         else {
-            addUserAddress()
+            if isEditAddress {
+                self.editUserAddress()
+            }
+            else {
+                self.addUserAddress()
+            }
         }
     }
     
@@ -101,22 +166,40 @@ class AddAddressViewController: UIViewController {
         marker.position = CLLocationCoordinate2DMake(lat, long)
         marker.map = self.mapView
     }
-    
+    var isEditAddress = false
     func addUserAddress() {
         let parameters: Parameters = [
-            "id": locationId ?? "",
+//            "id": locationId ?? "",
             "title": arrayNames[selectedCell],
             "address": textFieldAddress.text!,
             "name": arrayNames[selectedCell],
-            "latitude": latitude ?? 0,
-            "longitude": longitude ?? 0,
+            "latitude": location?.latitude ?? 0,
+            "longitude": location?.longitude ?? 0,
             "deliveryInstructions": textFieldDeliveryInstruction.text!,
             "locationInstruction": textFieldLocationInstructionOptional.text!,
             "isDefault": switchDefaultAddress.isOn
         ]
         APIs.postAPI(apiName: .adduseraddress, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetUserAddressResponse = model
+            let model: ModelAddUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelAddUserAddressResponse = model
+        }
+    }
+    
+    func editUserAddress() {
+        let parameters: Parameters = [
+            "id": modelUserAddressesResponseData?.id ?? "",
+            "title": arrayNames[selectedCell],
+            "address": textFieldAddress.text!,
+            "name": arrayNames[selectedCell],
+            "latitude": location?.latitude ?? 0,
+            "longitude": location?.longitude ?? 0,
+            "deliveryInstructions": textFieldDeliveryInstruction.text!,
+            "locationInstruction": textFieldLocationInstructionOptional.text!,
+            "isDefault": true
+        ]
+        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg in
+            let model: ModelEditUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelEditUserAddressResponse = model
         }
     }
 }
@@ -176,10 +259,9 @@ extension AddAddressViewController: GMSAutocompleteViewControllerDelegate {
         print("Place attributions: \(place.attributions)")
         print("Place coordinate: \(place.coordinate)")
         print("Place attributions: \(place.attributions ?? NSAttributedString(string: ""))")
-        textFieldAddress.text = place.name
+        self.newAddress = place.name ?? ""
         locationId = place.placeID ?? ""
-        latitude = place.coordinate.latitude
-        longitude = place.coordinate.longitude
+        location = place.coordinate
         DispatchQueue.main.async {
             self.setLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
         }
@@ -221,5 +303,16 @@ extension AddAddressViewController: GMSAutocompleteResultsViewControllerDelegate
                            didFailAutocompleteWithError error: Error){
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
+    }
+}
+
+
+extension AddAddressViewController {
+    // MARK: - ModelAddUserAddressResponse
+    struct ModelAddUserAddressResponse: Codable {
+        let success: Bool
+        let message: String
+        let recordNotFound: Bool
+        let innerExceptionMessage: String
     }
 }

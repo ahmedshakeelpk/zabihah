@@ -33,7 +33,7 @@
 		6A3AB5912C39EE7F0030F016 /* SideMenuViewHeaderViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A3AB5902C39EE7F0030F016 /* SideMenuViewHeaderViewCell.xib */; };
 		6A3AB5932C3A61990030F016 /* SideMenuViewFooterViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A3AB5922C3A61990030F016 /* SideMenuViewFooterViewCell.xib */; };
 		6A3AB5952C3A61B80030F016 /* SideMenuViewFooterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3AB5942C3A61B80030F016 /* SideMenuViewFooterViewCell.swift */; };
-		6A3AB5982C3A7A2D0030F016 /* AddressesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3AB5972C3A7A2D0030F016 /* AddressesViewController.swift */; };
+		6A3AB5982C3A7A2D0030F016 /* AddressesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3AB5972C3A7A2D0030F016 /* AddressesListViewController.swift */; };
 		6A3AB59A2C3A7A370030F016 /* Addresses.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A3AB5992C3A7A370030F016 /* Addresses.storyboard */; };
 		6A3AB59D2C3A80470030F016 /* AddressesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A3AB59C2C3A80470030F016 /* AddressesCell.xib */; };
 		6A3AB59E2C3A80470030F016 /* AddressesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3AB59B2C3A80470030F016 /* AddressesCell.swift */; };
@@ -62,6 +62,7 @@
 		6A9BD3CA2C439937008BBDF5 /* UISettingDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3C92C439937008BBDF5 /* UISettingDesign.swift */; };
 		6A9BD3CC2C439AA1008BBDF5 /* AddressesViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3CB2C439AA1008BBDF5 /* AddressesViewControllerModel.swift */; };
 		6A9BD3CE2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3CD2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift */; };
+		6A9BD3DC2C453AD0008BBDF5 /* AddAddressFieldsViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3DB2C453AD0008BBDF5 /* AddAddressFieldsViewControllerModel.swift */; };
 		6AD0C00D2C3BA61F0051D99A /* AddAddressFieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C00C2C3BA61F0051D99A /* AddAddressFieldsViewController.swift */; };
 		6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */; };
 		6AD0C0112C3BC55C0051D99A /* AddAddressFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */; };
@@ -118,7 +119,7 @@
 		6A3AB5902C39EE7F0030F016 /* SideMenuViewHeaderViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideMenuViewHeaderViewCell.xib; sourceTree = "<group>"; };
 		6A3AB5922C3A61990030F016 /* SideMenuViewFooterViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SideMenuViewFooterViewCell.xib; sourceTree = "<group>"; };
 		6A3AB5942C3A61B80030F016 /* SideMenuViewFooterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewFooterViewCell.swift; sourceTree = "<group>"; };
-		6A3AB5972C3A7A2D0030F016 /* AddressesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressesViewController.swift; sourceTree = "<group>"; };
+		6A3AB5972C3A7A2D0030F016 /* AddressesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressesListViewController.swift; sourceTree = "<group>"; };
 		6A3AB5992C3A7A370030F016 /* Addresses.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Addresses.storyboard; sourceTree = "<group>"; };
 		6A3AB59B2C3A80470030F016 /* AddressesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressesCell.swift; sourceTree = "<group>"; };
 		6A3AB59C2C3A80470030F016 /* AddressesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressesCell.xib; sourceTree = "<group>"; };
@@ -149,6 +150,7 @@
 		6A9BD3C92C439937008BBDF5 /* UISettingDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingDesign.swift; sourceTree = "<group>"; };
 		6A9BD3CB2C439AA1008BBDF5 /* AddressesViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressesViewControllerModel.swift; sourceTree = "<group>"; };
 		6A9BD3CD2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAddressViewControllerModel.swift; sourceTree = "<group>"; };
+		6A9BD3DB2C453AD0008BBDF5 /* AddAddressFieldsViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressFieldsViewControllerModel.swift; sourceTree = "<group>"; };
 		6AD0C00C2C3BA61F0051D99A /* AddAddressFieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressFieldsViewController.swift; sourceTree = "<group>"; };
 		6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressFieldsCell.swift; sourceTree = "<group>"; };
 		6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAddressFieldsCell.xib; sourceTree = "<group>"; };
@@ -385,20 +387,20 @@
 				6A3AB5992C3A7A370030F016 /* Addresses.storyboard */,
 				6AD0C00B2C3BA6100051D99A /* AddAddressFieldsViewController */,
 				6A3AB5A02C3A97B20030F016 /* AddAddressViewController */,
-				6A3AB59F2C3A97A20030F016 /* AddressesViewController */,
+				6A3AB59F2C3A97A20030F016 /* AddressesListViewController */,
 			);
 			path = Addresses;
 			sourceTree = "<group>";
 		};
-		6A3AB59F2C3A97A20030F016 /* AddressesViewController */ = {
+		6A3AB59F2C3A97A20030F016 /* AddressesListViewController */ = {
 			isa = PBXGroup;
 			children = (
-				6A3AB5972C3A7A2D0030F016 /* AddressesViewController.swift */,
+				6A3AB5972C3A7A2D0030F016 /* AddressesListViewController.swift */,
 				6A9BD3CB2C439AA1008BBDF5 /* AddressesViewControllerModel.swift */,
 				6A3AB59B2C3A80470030F016 /* AddressesCell.swift */,
 				6A3AB59C2C3A80470030F016 /* AddressesCell.xib */,
 			);
-			path = AddressesViewController;
+			path = AddressesListViewController;
 			sourceTree = "<group>";
 		};
 		6A3AB5A02C3A97B20030F016 /* AddAddressViewController */ = {
@@ -539,6 +541,7 @@
 			isa = PBXGroup;
 			children = (
 				6AD0C00C2C3BA61F0051D99A /* AddAddressFieldsViewController.swift */,
+				6A9BD3DB2C453AD0008BBDF5 /* AddAddressFieldsViewControllerModel.swift */,
 				6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */,
 				6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */,
 			);
@@ -794,6 +797,7 @@
 			files = (
 				6A6269252C3D163000DA844F /* LabelExtension.swift in Sources */,
 				6AD39E592C3D7EA200BDAC05 /* HomeFoodItemCell.swift in Sources */,
+				6A9BD3DC2C453AD0008BBDF5 /* AddAddressFieldsViewControllerModel.swift in Sources */,
 				6A3AB5732C3956DB0030F016 /* HomeViewController.swift in Sources */,
 				6A6269332C3D3EDD00DA844F /* HomeFoodItemSubCell.swift in Sources */,
 				6A3AB5802C3967820030F016 /* SideMenuView.swift in Sources */,
@@ -802,7 +806,7 @@
 				6A3AB56B2C390BF30030F016 /* OtpEmailViewController.swift in Sources */,
 				6A16E0122C36B8F900E1383B /* RegisterationViewController.swift in Sources */,
 				6A3AB5872C39703B0030F016 /* SideMenuViewCell.swift in Sources */,
-				6A3AB5982C3A7A2D0030F016 /* AddressesViewController.swift in Sources */,
+				6A3AB5982C3A7A2D0030F016 /* AddressesListViewController.swift in Sources */,
 				6AD39E8B2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift in Sources */,
 				6A16E0002C36703B00E1383B /* ViewExtension.swift in Sources */,
 				6A28D8572C37DEEC00F5A95F /* EditNameViewController.swift in Sources */,

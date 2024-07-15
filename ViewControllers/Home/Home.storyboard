@@ -218,14 +218,25 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hGe-yo-bJq">
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <connections>
+                                                    <action selector="buttonSearchLocation:" destination="Rgs-nB-hx9" eventType="touchUpInside" id="xzP-TP-cVg"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="RnR-Q4-nOH" firstAttribute="leading" secondItem="GdL-ie-JK9" secondAttribute="leading" id="4nu-Hm-etE"/>
+                                            <constraint firstAttribute="trailing" secondItem="hGe-yo-bJq" secondAttribute="trailing" id="FEm-9E-hIl"/>
+                                            <constraint firstItem="hGe-yo-bJq" firstAttribute="top" secondItem="GdL-ie-JK9" secondAttribute="top" id="Jp4-Wi-aGm"/>
                                             <constraint firstAttribute="bottom" secondItem="RnR-Q4-nOH" secondAttribute="bottom" id="KbE-Cu-dAf"/>
                                             <constraint firstItem="RnR-Q4-nOH" firstAttribute="top" secondItem="GdL-ie-JK9" secondAttribute="top" id="LKe-t4-jm3"/>
+                                            <constraint firstItem="hGe-yo-bJq" firstAttribute="leading" secondItem="GdL-ie-JK9" secondAttribute="leading" id="Quz-vI-M7s"/>
                                             <constraint firstAttribute="trailing" secondItem="RnR-Q4-nOH" secondAttribute="trailing" id="f5i-Br-Jwg"/>
                                             <constraint firstAttribute="height" constant="50" id="kZv-cd-ftZ"/>
+                                            <constraint firstAttribute="bottom" secondItem="hGe-yo-bJq" secondAttribute="bottom" id="l0S-n0-vSM"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eLS-5n-sjw">
@@ -442,6 +453,7 @@
                     <connections>
                         <outlet property="buttonCart" destination="gqa-VF-Lim" id="hh6-9x-gY1"/>
                         <outlet property="buttonNotification" destination="5Gt-OH-p5s" id="4HL-hg-zh8"/>
+                        <outlet property="buttonSearchLocation" destination="hGe-yo-bJq" id="Ljf-3n-GK3"/>
                         <outlet property="buttonSideMenu" destination="Uoa-nT-98W" id="A4n-cX-bmt"/>
                         <outlet property="collectionView" destination="cOq-8U-uUT" id="ZQ1-Vv-Ibp"/>
                         <outlet property="stackViewFilterResultBackGround" destination="O0M-b4-XDd" id="rU6-30-Lya"/>

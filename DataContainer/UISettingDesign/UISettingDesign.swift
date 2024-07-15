@@ -18,6 +18,5 @@ class ViewButtonSetting: UIView {
     func buttonSetting() {
         self.radius(radius: 8)
     }
-    
 }
 

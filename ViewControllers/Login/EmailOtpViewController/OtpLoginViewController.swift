@@ -42,6 +42,7 @@ class OtpLoginViewController: UIViewController{
                 }
                 else if !isRegisterationRequest {
                     kAccessToken = modelOtpResponse?.token ?? ""
+                    kDefaults.set(kAccessToken, forKey: "kAccessToken")
                     popViewController(animated: false)
                     DispatchQueue.main.async {
                         self.isOtpSuccessFullHandler?()

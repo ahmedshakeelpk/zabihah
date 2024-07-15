@@ -20,6 +20,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var textFieldFilterResult: UITextField!
     @IBOutlet weak var textFieldSearchLocation: UITextField!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var buttonSearchLocation: UIButton!
     
     var modelGetUserResponseLocal: ModelGetUserResponse? {
         didSet {
@@ -71,6 +72,10 @@ class HomeViewController: UIViewController {
     @IBAction func buttonSideMenu(_ sender: Any) {
         openMenu()
     }
+    @IBAction func buttonSearchLocation(_ sender: Any) {
+        navigateToEditAddressesViewController()
+    }
+    
     @IBAction func buttonNotification(_ sender: Any) {
     }
     @IBAction func buttonCart(_ sender: Any) {
@@ -105,9 +110,15 @@ class HomeViewController: UIViewController {
         sideMenu.toggleMenu()
     }
     
-    func getuser() {
-        let parameters: Parameters = [:]
-       
+    func navigateToEditAddressesViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
+        vc.buttonContinueHandler = { location in
+            print("button continue pressed \(location)")
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func getuser() {       
         APIs.postAPI(apiName: .getuser, methodType: .get, encoding: URLEncoding.default) { responseData, success, errorMsg in
             print(responseData ?? "")
             print(success)

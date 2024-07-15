@@ -1491,12 +1491,15 @@
                         <outlet property="viewBackGroundNameTitle" destination="QbV-Gs-eaD" id="VGY-GM-4Gx"/>
                         <outlet property="viewFaceBookBackGround" destination="IHG-ww-glj" id="CcX-Ld-wTn"/>
                         <outlet property="viewLabelEmailBackGround" destination="mjf-gl-M1R" id="g9h-j5-395"/>
-                        <outlet property="viewLabelNameBackGround" destination="lYs-PD-HRR" id="elu-jg-Fpv"/>
+                        <outlet property="viewLabelNameBackGround" destination="bPT-Lx-Cb2" id="vyT-9h-lvm"/>
                         <outlet property="viewLabelPhoneNumberbackGround" destination="VUf-pA-lfV" id="FI7-hr-baQ"/>
                         <outlet property="viewSwitchEventsBackGround" destination="kJ6-Us-uEa" id="BK7-np-Yir"/>
                         <outlet property="viewSwitchOfferBackGround" destination="wkF-8c-acm" id="Fc0-wK-iZd"/>
                         <outlet property="viewTextFieldEmailBackGround" destination="HGd-9K-i88" id="kb1-tP-H0T"/>
+                        <outlet property="viewTextFieldEmailMainBackGround" destination="eov-Vs-6y0" id="Ywi-38-pS2"/>
                         <outlet property="viewTextFieldNameBackGround" destination="bPT-Lx-Cb2" id="w46-7i-aGF"/>
+                        <outlet property="viewTextFieldNameMainBackGround" destination="q6j-hz-Qky" id="UAX-B6-50K"/>
+                        <outlet property="viewTextFieldPhoneNumberMainBackGround" destination="yMI-cE-y7D" id="0wr-PT-Ji5"/>
                         <outlet property="viewTextFieldPhoneNumberbackGround" destination="fxZ-rO-E1Z" id="gzp-Uj-cj9"/>
                     </connections>
                 </viewController>
@@ -2725,24 +2728,24 @@
         <scene sceneID="Fuo-Zj-qsJ">
             <objects>
                 <viewController storyboardIdentifier="ProfileDeleteViewController" id="Sm8-oN-5p7" customClass="ProfileDeleteViewController" customModule="zabihah" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="iMM-oa-v0p">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="iMM-oa-v0p">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O54-e1-gFF">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O54-e1-gFF">
                                 <rect key="frame" x="0.0" y="752" width="393" height="100"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="WEg-53-PqP"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KZh-YA-sIx">
+                            <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KZh-YA-sIx">
                                 <rect key="frame" x="0.0" y="59" width="393" height="50"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mq8-Sy-GWG">
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mq8-Sy-GWG">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKz-We-lKo">
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKz-We-lKo">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h3y-13-XhP">
