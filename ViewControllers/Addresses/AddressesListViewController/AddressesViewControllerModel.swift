@@ -13,7 +13,7 @@ extension AddressesListViewController {
     struct ModelDeleteUserAddressResponse: Codable {
         let success: Bool?
         let message: String?
-        let recordNotFound: Bool?
+        let recordFound: Bool?
         let innerExceptionMessage: String?
     }
     
@@ -22,7 +22,7 @@ extension AddressesListViewController {
         let success: Bool?
         let message: String?
         let userAddressesResponseData: [ModelUserAddressesResponseData]?
-        let recordNotFound: Bool?
+        let recordFound: Bool?
         let innerExceptionMessage: String?
     }
 
@@ -31,12 +31,12 @@ extension AddressesListViewController {
         let id: String?
         let utmCoordinates: Double?
         let createdOn: String?
-        let longitude: Double?
+        var longitude: Double?
         let isDefault: Bool?
-        let latitude: Double?
-        let title, userID, address, createdBy: String?
+        var latitude: Double?
+        var title, userID, address, createdBy: String?
         let isDeleted: Bool?
-        let deliveryInstructions, name, locationInstruction: String?
+        var deliveryInstructions, name, locationInstruction: String?
 
         enum CodingKeys: String, CodingKey {
             case id, utmCoordinates, createdOn, longitude, isDefault, latitude, title

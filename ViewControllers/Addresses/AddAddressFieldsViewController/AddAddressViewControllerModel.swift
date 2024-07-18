@@ -12,7 +12,7 @@ extension AddAddressViewController {
     struct ModelEditUserAddressResponse: Codable {
         let success: Bool?
         let message: String?
-        let recordNotFound: Bool?
+        let recordFound: Bool?
         let innerExceptionMessage: String?
         let modelUserAddressResponseData: ModelUserAddressResponseData?
     }
@@ -34,5 +34,13 @@ extension AddAddressViewController {
             case userID = "userId"
             case address, createdBy, isDeleted, deliveryInstructions, name, locationInstruction
         }
+    }
+    
+    // MARK: - ModelAddUserAddressResponse
+    struct ModelAddUserAddressResponse: Codable {
+        let success: Bool?
+        let message: String?
+        let recordFound: Bool?
+        let innerExceptionMessage: String?
     }
 }

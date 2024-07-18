@@ -13,7 +13,7 @@ extension OtpLoginViewController {
         let success: Bool?
         let message: String?
         let userResponseData: ModelOtpResponseData?
-        let recordNotFound: Bool?
+        let recordFound: Bool?
         let innerExceptionMessage, token: String?
     }
 

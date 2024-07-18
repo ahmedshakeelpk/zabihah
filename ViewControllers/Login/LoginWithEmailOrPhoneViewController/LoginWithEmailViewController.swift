@@ -28,7 +28,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
 
     var modelSendnotificationResponse: ModelSendnotificationResponse? {
         didSet {
-            if modelSendnotificationResponse?.success ?? false {
+            if (modelSendnotificationResponse?.success ?? false) {
                 navigateToOtpLoginViewController()
             }
             else {
@@ -84,7 +84,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
         vc.isFromEmail = isFromEmail
         vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.text!
-        if !(modelSendnotificationResponse?.recordNotFound ?? false) {
+        if modelSendnotificationResponse?.recordFound ?? false {
             vc.isRegisterationRequest = false
             vc.isOtpSuccessFullHandler = {
                 self.navigateToHomeViewController()
@@ -105,8 +105,9 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     
     func sendnotification() {
         let parameters: Parameters = [
-            "recipient": isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.text!,
-            "device": isFromEmail ? "email" : "phone"
+            "recipient": isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
+            "device": isFromEmail ? "email" : "phone",
+            "validate": false //it will check if user exist in DB
         ]
         
         APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in

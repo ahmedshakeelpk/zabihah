@@ -49,7 +49,7 @@ class OtpLoginViewController: UIViewController{
                     }
                 }
                 else {
-                    showAlertCustomPopup(title: "Success", message: modelOtpResponse?.message ?? "", iconName: .iconSuccess) { _ in
+                    showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
                         self.navigateToRegisterationViewController()
                     }
                 }
@@ -185,7 +185,8 @@ class OtpLoginViewController: UIViewController{
         }
         let parameters: Parameters = [
             "recipient": stringPhoneEmail,
-            "device": deviceType
+            "device": deviceType,
+            "validate": false //it will check if user exist in DB
         ]
         
         APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in

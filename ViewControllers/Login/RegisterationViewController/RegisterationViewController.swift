@@ -28,7 +28,7 @@ class RegisterationViewController: UIViewController {
     
     var isFromEmail: Bool = false
     var stringPhoneEmail = ""
-    
+    var isImageUploaded = false
     var modelGetBlobContainer: ModelGetBlobContainer? {
         didSet {
             print(modelGetBlobContainer?.token as Any)
@@ -68,15 +68,13 @@ class RegisterationViewController: UIViewController {
         labelTermsAndConditions.setTwoColorWithUnderLine(textFirst: "I agree to ", textSecond: "terms and conditions.", colorFirst: .clrDarkBlue, colorSecond: .clrApp)
         if isFromEmail {
             viewBackGroundPhoneNumber.radius(radius: 4, color: .clrBorder, borderWidth: 0.5)
-            //TODO: - need to uncomment below mentioned line
-            //            stackViewEmail.isHidden = true
+            stackViewEmail.isHidden = true
             textFieldPhoneNumber.setFlag(countryCode: .US)
             textFieldPhoneNumber.delegate = self
             textFieldPhoneNumber.displayMode = .list // .picker by default
         }
         else {
-            //TODO: - need to uncomment below mentioned line
-            //            stackViewPhoneNumber.isHidden = true
+            stackViewPhoneNumber.isHidden = true
         }
         getblobcontainer()
     }
@@ -95,6 +93,9 @@ class RegisterationViewController: UIViewController {
         }
         else if isFromEmail ? textFieldPhoneNumber.text == "" : textFieldEmail.text == "" {
             self.showToast(message: "Enter \(isFromEmail ? "Phone Number" : "Email")!")
+        }
+        else if !isImageUploaded {
+            self.showToast(message: "Upload your image")
         }
         else {
             if isOtpVerified {
@@ -142,8 +143,8 @@ class RegisterationViewController: UIViewController {
         let parameters: Parameters = [
             "firstname": textFieldFirstName.text!,
             "lastName": textFieldLastName.text!,
-            "email": !isFromEmail ? "" : textFieldEmail.text!,
-            "phone": "03219525315",// isFromEmail ? textFieldPhoneNumber.text! : "",
+            "email": !isFromEmail ? stringPhoneEmail : textFieldEmail.text!,
+            "phone": isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : stringPhoneEmail,
             "photo": imageUrl,
             //            "photo": "https://zabihahblob.blob.core.windows.net/profileimage/742473352.835877.jpg",
             "isNewsLetter": true
@@ -157,8 +158,9 @@ class RegisterationViewController: UIViewController {
     
     func sendnotification() {
         let parameters: Parameters = [
-            "recipient": isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.text!,
-            "device": isFromEmail ? "email" : "phone"
+            "recipient": !isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
+            "device": isFromEmail ? "phone" : "email",
+            "validate": true //it will check if user exist in DB
         ]
         
         APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
@@ -183,24 +185,24 @@ class RegisterationViewController: UIViewController {
     }
     
     func openDocumentPicker() {
-//        let types: [String] = [
-//            kUTTypeJPEG as String,
-//            kUTTypePNG as String,
-////                        "com.microsoft.word.doc",
-//            //            "org.openxmlformats.wordprocessingml.document",
-//            //            kUTTypeRTF as String,
-////                        "com.microsoft.powerpoint.​ppt",
-//            //            "org.openxmlformats.presentationml.presentation",
-//            //            kUTTypePlainText as String,
-////                        "com.microsoft.excel.xls",
-//            //            "org.openxmlformats.spreadsheetml.sheet",
-//                        kUTTypePDF as String,
-//            //            kUTTypeMP3 as String
-//        ]
-//        let documentPicker = UIDocumentPickerViewController(documentTypes: types, in: .import)
-//        documentPicker.delegate = self
-//        documentPicker.modalPresentationStyle = .formSheet
-//        self.present(documentPicker, animated: true, completion: nil)
+        //        let types: [String] = [
+        //            kUTTypeJPEG as String,
+        //            kUTTypePNG as String,
+        ////                        "com.microsoft.word.doc",
+        //            //            "org.openxmlformats.wordprocessingml.document",
+        //            //            kUTTypeRTF as String,
+        ////                        "com.microsoft.powerpoint.​ppt",
+        //            //            "org.openxmlformats.presentationml.presentation",
+        //            //            kUTTypePlainText as String,
+        ////                        "com.microsoft.excel.xls",
+        //            //            "org.openxmlformats.spreadsheetml.sheet",
+        //                        kUTTypePDF as String,
+        //            //            kUTTypeMP3 as String
+        //        ]
+        //        let documentPicker = UIDocumentPickerViewController(documentTypes: types, in: .import)
+        //        documentPicker.delegate = self
+        //        documentPicker.modalPresentationStyle = .formSheet
+        //        self.present(documentPicker, animated: true, completion: nil)
     }
     
     func openGallary() {
@@ -229,7 +231,7 @@ class RegisterationViewController: UIViewController {
             (alert: UIAlertAction!) -> Void in
         })
         
-
+        
         if IPAD {
             //In iPad Change Rect to position Popover
             myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
@@ -305,7 +307,9 @@ extension RegisterationViewController {
                 print("Image uploaded successfully!")
                 if let imageURL = self.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
                     print("Image URL: \(imageURL)")
-                    self.userSignup(imageUrl: "\(imageURL)")
+                    DispatchQueue.main.async {
+                        self.userSignup(imageUrl: "\(imageURL)")
+                    }
                 } else {
                     print("Failed to construct image URL")
                 }
@@ -314,8 +318,6 @@ extension RegisterationViewController {
             }
         }
         return()
-        
-        
     }
     
     
@@ -402,20 +404,21 @@ extension RegisterationViewController: UIDocumentPickerDelegate, UINavigationCon
         // display picked file in a view
         controller.dismiss(animated: true, completion: nil)
     }
-
-     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         controller.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageViewUser.image = image
+            isImageUploaded = true
             if let imageData = image.jpegData(compressionQuality: 0.75) {
-//                let fileData = imageData
+                //                let fileData = imageData
             }
             
             if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-//                let fileName = imageUrl.lastPathComponent
+                //                let fileName = imageUrl.lastPathComponent
             }
         }
         self.dismiss(animated: true, completion: nil)
@@ -425,11 +428,11 @@ extension RegisterationViewController: UIDocumentPickerDelegate, UINavigationCon
         if let image = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage {
             imageViewUser.image = image
             if let imageData = image.jpegData(compressionQuality: 0.75) {
-//                let fileData = imageData
+                //                let fileData = imageData
             }
             
             if let imageUrl = info[UIImagePickerController.InfoKey.imageURL.rawValue] as? URL {
-//                let fileName = imageUrl.lastPathComponent
+                //                let fileName = imageUrl.lastPathComponent
             }
         }
         self.dismiss(animated: true, completion: nil)

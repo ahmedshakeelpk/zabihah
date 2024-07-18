@@ -165,7 +165,7 @@ extension ProfileViewController {
     struct ModelGetDeleteUserResponse: Codable {
         let success: Bool
         let message: String
-        let recordNotFound: Bool
+        let recordFound: Bool
         let innerExceptionMessage: String
     }
 }

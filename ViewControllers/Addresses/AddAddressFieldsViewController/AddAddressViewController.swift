@@ -35,7 +35,9 @@ class AddAddressViewController: UIViewController {
     @IBOutlet weak var buttonSave: UIButton!
     
     let arrayNames = ["Home", "Office", "Person", "Other"]
-    let arrayNamesIcon = ["houseWhiteMisc", "briefcaseBlackMisc", "userBlackMisc", "addCircleBlackMisc"]
+    let arrayNamesIconMehroon = ["houseMehroon", "briefcaseMehroon", "userMehroon", "addCircleMehroon"]
+    let arrayNamesIconWhite = ["houseWhite", "briefcaseWhite", "userWhite", "addCircleWhite"]
+
 
     var newAddress = String()
     var location: CLLocationCoordinate2D? {
@@ -50,9 +52,9 @@ class AddAddressViewController: UIViewController {
     var modelEditUserAddressResponse: ModelEditUserAddressResponse? {
         didSet {
             if modelEditUserAddressResponse?.success ?? false {
-                addressEditHandler?()
                 showAlertCustomPopup(title: "Success", message: modelEditUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
                     self.popViewController(animated: true)
+                    self.addressEditHandler?()
                 }
             }
             else {
@@ -209,7 +211,7 @@ extension AddAddressViewController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        return CGSize(width: arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17)]).width + 50, height: 50)
-        let width = collectionView.frame.width / 3 - 8
+//        let width = collectionView.frame.width / 3 - 8
         return CGSize(width: 60, height: 90)
     }
     
@@ -219,14 +221,15 @@ extension AddAddressViewController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddAddressFieldsCell", for: indexPath) as! AddAddressFieldsCell
-        cell.labelName.text = arrayNames[indexPath.item]
-        cell.imageViewTitle.image = UIImage(named: arrayNamesIcon[indexPath.item])
+        cell.labelName.text = arrayNames[indexPath.item]        
         if selectedCell != nil {
             if indexPath.item == selectedCell {
                 cell.viewImageViewTitleBackGround.backgroundColor = .clrApp
+                cell.imageViewTitle.image = UIImage(named: "\(arrayNamesIconWhite[indexPath.item])")
             }
             else {
                 cell.viewImageViewTitleBackGround.backgroundColor = .clrUnselected
+                cell.imageViewTitle.image = UIImage(named: "\(arrayNamesIconMehroon[indexPath.item])")
             }
         }
         return cell
@@ -303,16 +306,5 @@ extension AddAddressViewController: GMSAutocompleteResultsViewControllerDelegate
                            didFailAutocompleteWithError error: Error){
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
-    }
-}
-
-
-extension AddAddressViewController {
-    // MARK: - ModelAddUserAddressResponse
-    struct ModelAddUserAddressResponse: Codable {
-        let success: Bool
-        let message: String
-        let recordNotFound: Bool
-        let innerExceptionMessage: String
     }
 }

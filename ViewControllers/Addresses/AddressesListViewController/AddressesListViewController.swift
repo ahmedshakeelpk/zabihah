@@ -10,6 +10,7 @@ import Alamofire
 
 class AddressesListViewController: UIViewController {
 
+    @IBOutlet weak var imageViewNoAddressFound: UIImageView!
     @IBOutlet weak var buttonAddNewAddress: UIButton!
     @IBOutlet weak var viewTitle: UIView!
     @IBOutlet weak var tableView: UITableView!
@@ -31,8 +32,23 @@ class AddressesListViewController: UIViewController {
                 else {
                     print("No default address found.")
                 }
-                
                 tableView.reloadData()
+            }
+            
+            if tableView.visibleCells.count == 0 {
+                imageViewNoAddressFound.isHidden = false
+                // tableView is empty. You can set a backgroundView for it.
+                // tableView is empty. You can set a backgroundView for it.
+//                let imageView = UIImageView(image: UIImage(named: "noAddressList"))
+//                tableView.backgroundView = imageView
+//                imageView.contentMode = .scaleAspectFit
+//                imageView.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+                
+                
+            }
+            else {
+                imageViewNoAddressFound.isHidden = true
+
             }
         }
     }
@@ -42,7 +58,8 @@ class AddressesListViewController: UIViewController {
             if modelDeleteUserAddressResponse?.success ?? false {
                 getUserAddress()
                 showAlertCustomPopup(title: "Success", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    
+                    self.tableView.reloadData()
+                    self.getUserAddress()
                 }
             }
             else {
@@ -60,6 +77,7 @@ class AddressesListViewController: UIViewController {
         AddressesCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
         getUserAddress()
+        imageViewNoAddressFound.isHidden = false
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -94,15 +112,29 @@ class AddressesListViewController: UIViewController {
         let parameters: Parameters = [
             "id": modelGetUserAddressResponse?.userAddressesResponseData?[index].id ?? ""
         ]
-        APIs.postAPI(apiName: .deleteuseraddress, parameters: parameters, methodType: .delete, viewController: self) { responseData, success, errorMsg in
+        let id = modelGetUserAddressResponse?.userAddressesResponseData?[index].id ?? ""
+        
+        let url = "\(APIsName.name.deleteuseraddress.rawValue)/\(id)"
+        APIs.deleteAPI(apiName: url, parameters: nil, methodType: .delete, viewController: self) { responseData, success, errorMsg in
             let model: ModelDeleteUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelDeleteUserAddressResponse = model
         }
     }
     
     func buttonEditAddress(index: Int) {
-        navigateToAddAddressViewControllerFromEditButton(index: index)
+        navigateToEditAddressesViewController(index: index)
     }
+    func navigateToEditAddressesViewController(index: Int) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
+        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[index]
+       
+        vc.buttonContinueHandler = { location in
+            print("button continue pressed \(String(describing: location))")
+            self.getUserAddress()
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func navigateToAddAddressViewControllerFromEditButton(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         vc.addressEditHandler = {

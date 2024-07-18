@@ -261,13 +261,18 @@ print(str)
 //        }
 //    }
     
-    
+    static func queryString2(_ value: String, params: [String: Any]) -> String? {
+        var components = URLComponents(string: value)
+        components?.queryItems = params.map { element in URLQueryItem(name: element.key, value: element.value as! String) }
+
+        return components?.url?.absoluteString
+    }
     static func postAPI(apiName: APIsName.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
 //        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
 
-        let completeUrl = APIPath.baseUrl + apiName.rawValue
+        var completeUrl = APIPath.baseUrl + apiName.rawValue
         
         let url = URL(string: completeUrl)!
 
@@ -288,6 +293,99 @@ print(str)
         print("Parameters: \(String(describing: parameters ?? nil))")
         print("Headers: \(kAccessToken)")
         
+        var parameters = parameters
+
+//        request.httpBody = jsonData
+        //print("\(APIs.json(from: parameters)))")
+        if let vc = viewController {
+            vc.showActivityIndicator2()
+        }
+        
+        AF.request(request.url!, method: methodType ?? .post, parameters: parameters, encoding:encoding ?? JSONEncoding.default, headers: request.headers)
+                    .responseData { response in
+//           guard let data = response.data else { return }
+//           let json = try? JSON(data:data)
+//           if let acc = json?["Account"].string {
+//             print(acc)
+//           }
+//           if let pass = json?["Password"].string {
+//             print(pass)
+//           }
+//        }
+//
+            print("Response: \(response)")
+            if let vc = viewController {
+                vc.hideActivityIndicator2()
+            }
+   
+            var responseMessage = ""
+            if let jsonObject = dataToJsonString(data: response.data ?? Data()) {
+                print("API Response jsonObject: \(jsonObject)")
+                print("jsonResponse: \(jsonObject)")
+                responseMessage = jsonObject["message"] as? String ?? ""
+            }
+            if let jsonString = response.data?.prettyPrintedJSONString {
+                print("API Response jsonObject PrettyPrintedJSONString: \(jsonString)")
+                print("jsonResponse: \(jsonString)")
+            }
+            
+            switch response.result {
+            case .success(let json):
+                print("Request Headers: \(String(describing: request.allHTTPHeaderFields))")
+                print("Request Url: \(String(describing: request.url))")
+                print("Request Parameters: \(parameters)")
+//                print("JSON: \(serverResponse)")
+                print("JSON: \(json)")
+                switch response.response?.statusCode {
+                case 200 :
+                    completion(response.data, true, "")
+                    break
+                default :
+                    completion(response.data, false, responseMessage)
+                    break
+                }
+            case .failure( _):
+                var errorMessage = ""
+                if let error = response.error?.localizedDescription {
+                    let errorArray = error.components(separatedBy: ":")
+                    errorMessage = errorArray.count > 1 ? errorArray[1] : error
+                    completion(nil, false, errorMessage)
+                }
+                else {
+                    errorMessage = response.error.debugDescription
+                    completion(nil, false, response.error.debugDescription)
+                }
+                break
+            }
+        }
+    }
+    
+    static func deleteAPI(apiName: String, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+        
+//        let stringParamters = APIs.json(from: params)
+        //let postData = stringParamters!.data(using: .utf8)
+
+        var completeUrl = APIPath.baseUrl + apiName
+        
+        let url = URL(string: completeUrl)!
+
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+//        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("*/*", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        if kAccessToken != "" {
+            let authToken = "bearer \(kAccessToken)"
+            request.addValue(authToken, forHTTPHeaderField: "Authorization")
+        }
+       
+        
+        print("Url: \(completeUrl)")
+        print("Parameters: \(String(describing: parameters ?? nil))")
+        print("Headers: \(kAccessToken)")
+
 //        request.httpBody = jsonData
         //print("\(APIs.json(from: parameters)))")
         if let vc = viewController {

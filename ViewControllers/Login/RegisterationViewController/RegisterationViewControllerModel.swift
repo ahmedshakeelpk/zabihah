@@ -19,7 +19,7 @@ extension RegisterationViewController {
         let success: Bool?
         let message: String?
         let userResponseData: UserResponseData?
-        let recordNotFound: Bool?
+        let recordFound: Bool?
         let innerExceptionMessage, token: String?
     }
 

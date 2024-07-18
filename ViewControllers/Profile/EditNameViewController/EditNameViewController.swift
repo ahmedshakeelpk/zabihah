@@ -81,7 +81,7 @@ extension EditNameViewController {
     struct ModelEditProfileResponse: Codable {
         let success: Bool?
         let message: String?
-        let recordNotFound: Bool?
+        let recordFound: Bool?
         let innerExceptionMessage: String?
         let userResponseData: ModelEditProfileResponseData?
     }

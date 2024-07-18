@@ -10,10 +10,12 @@ import GoogleMaps
 import GooglePlaces
 import Alamofire
 
-class EditAddressViewController: UIViewController {
+class  EditAddressViewController: UIViewController {
     
+    @IBOutlet weak var labelButtonSaveAsNew: UILabel!
     @IBOutlet weak var viewAddressMainBackGround: UIView!
     @IBOutlet weak var viewButtonsBackGround: UIView!
+    @IBOutlet weak var viewButtonEditBackGround: UIView!
     
     @IBOutlet weak var buttonSearch: UIButton!
     @IBOutlet weak var buttonContinue: UIButton!
@@ -29,27 +31,39 @@ class EditAddressViewController: UIViewController {
     @IBOutlet weak var viewButtonBackBackGround: UIView!
     @IBOutlet weak var labelAddressTitle: UILabel!
     @IBOutlet weak var labelAddress: UILabel!
+    @IBOutlet weak var buttonShowSavedAddresses: UIButton!
+
+
+    var locationManager = CLLocationManager()
+    var buttonContinueHandler: ((CLLocationCoordinate2D?) -> ())!
+
+    
+    var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
+        didSet {
         
-    var buttonContinueHandler: ((CLLocationCoordinate2D) -> ())!
+        }
+    }
+    
     var location: CLLocationCoordinate2D? {
         didSet {
-            
+            if modelUserAddressesResponseData != nil {
+                modelUserAddressesResponseData?.latitude = location?.latitude
+                modelUserAddressesResponseData?.longitude = location?.longitude
+            }
         }
     }
     var defaultAddressIndex: Int? = 0
     var modelGetUserAddressResponse: AddressesListViewController.ModelGetUserAddressResponse? {
         didSet {
             if modelGetUserAddressResponse?.userAddressesResponseData?.count ?? 0 > 0 {
-                if let defaultAddressIndex = modelGetUserAddressResponse?.userAddressesResponseData?.firstIndex(where: { model in
-                    model.isDefault ?? false
-                }) {
-                    self.defaultAddressIndex = defaultAddressIndex
-                }
-                labelAddressTitle.text = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex!].title
-                labelAddress.text = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex!].address
+//                if let defaultAddressIndex = modelGetUserAddressResponse?.userAddressesResponseData?.firstIndex(where: { model in
+//                    model.isDefault ?? false
+//                }) {
+//                    self.defaultAddressIndex = defaultAddressIndex
+//                }
             }
             else {
-                viewAddressMainBackGround.isHidden = true
+                viewButtonEditBackGround.isHidden = true
             }
         }
     }
@@ -64,6 +78,7 @@ class EditAddressViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var viewButtonContinueBackGround: ViewButtonSetting!
     override func viewDidAppear(_ animated: Bool) {
         
     }
@@ -75,11 +90,33 @@ class EditAddressViewController: UIViewController {
         stackViewSearchBackGround.radius(radius: 8)
         stackViewAddressBackGround.radius(radius: 8)
         viewButtonSaveAsNewBackGround.radius(color: .clrLightGray, borderWidth: 1)
-
-        setLocation()
-        getUserAddress()
+        locationConfiguration()
+        setZoom()
+        setAddress()
+        if modelUserAddressesResponseData != nil {
+            self.setAddress(addressTitle: modelUserAddressesResponseData?.title, formattedAddress: modelUserAddressesResponseData?.address)
+            self.setZoom(latitude: modelUserAddressesResponseData?.latitude, longitude: modelUserAddressesResponseData?.longitude)
+            labelButtonSaveAsNew.textColor = .lightGray
+            buttonSaveAsNew.isUserInteractionEnabled = false
+            buttonContinue.isUserInteractionEnabled = false
+            viewButtonContinueBackGround.backgroundColor = .lightGray
+        }
+        else {
+            getUserAddress()
+        }
     }
     
+    func locationConfiguration() {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    @IBAction func buttonShowSavedAddresses(_ sender: Any) {
+        navigateToAddressesListViewController()
+    }
     @IBAction func buttonBack(_ sender: Any) {
         self.popViewController(animated: true)
         
@@ -98,11 +135,16 @@ class EditAddressViewController: UIViewController {
     }
 
     @IBAction func buttonSaveAsNew(_ sender: Any) {
-        if textFieldSearch.text == "" {
-            showToast(message: "Search address then you will be able to save it")
-            return()
+        if modelUserAddressesResponseData == nil {
+            if textFieldSearch.text == "" {
+                showToast(message: "Search address then you will be able to save it")
+                return()
+            }
+            self.navigateToAddAddressViewController()
         }
-        self.navigateToAddAddressViewController()
+        else {
+            navigateToAddAddressViewControllerFromEditButton()
+        }
     }
 
     @IBAction func buttonEditAddress(_ sender: Any) {
@@ -126,17 +168,25 @@ class EditAddressViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func navigateToAddAddressViewControllerFromEditButton() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        vc.newAddressAddedHandler = {
-            self.getUserAddress()
-        }
-        vc.isEditAddress = true
-        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex!]
+    func navigateToAddressesListViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func setLocation(latitude: Double? = 47.07903, longitude: Double? = -122.961283) {
+    func navigateToAddAddressViewControllerFromEditButton() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
+        vc.addressEditHandler = {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.popViewController(animated: false)
+                self.buttonContinueHandler(CLLocationCoordinate2D())
+            }
+        }
+        vc.isEditAddress = true
+        vc.modelUserAddressesResponseData = modelUserAddressesResponseData
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func setZoom(latitude: Double? = 47.07903, longitude: Double? = -122.961283) {
         let lat = latitude!
         let long = longitude!
         
@@ -144,10 +194,23 @@ class EditAddressViewController: UIViewController {
         mapView.camera = camera
         mapView.isMyLocationEnabled = true
         mapView.delegate = self
-        
+    }
+    
+    func setMarker(latitude: Double? = 47.07903, longitude: Double? = -122.961283) {
+        let lat = latitude!
+        let long = longitude!
+
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2DMake(lat, long)
         marker.map = self.mapView
+    }
+    
+    func setAddress(addressTitle: String? = "", formattedAddress: String? = "") {
+        labelAddressTitle.text = addressTitle
+        labelAddress.text = formattedAddress
+        
+        modelUserAddressesResponseData?.name = addressTitle
+        modelUserAddressesResponseData?.address = formattedAddress
     }
     
     func getLocationCoordinateFromPlaceId(placeId: String) {
@@ -185,25 +248,63 @@ class EditAddressViewController: UIViewController {
 }
 
 extension EditAddressViewController: GMSMapViewDelegate {
+    func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
+        if (gesture){
+            print("dragged")
+        }
+    }
+    
+    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
+        if modelUserAddressesResponseData != nil {
+            labelButtonSaveAsNew.textColor = .black
+            buttonSaveAsNew.isUserInteractionEnabled = true
+            labelButtonSaveAsNew.text = "Update"
+        }
+        
+        let latitude = mapView.camera.target.latitude
+        let longitude = mapView.camera.target.longitude
+        let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        self.location = center
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+            guard let placemark = placemarks?.first else {
+                let errorString = error?.localizedDescription ?? "Unexpected Error"
+                print("Unable to reverse geocode the given location. Error: \(errorString)")
+                return
+            }
+
+            let reversedGeoLocation = ReversedGeoLocation(with: placemark)
+            print(reversedGeoLocation.formattedAddress)
+            self.setAddress(addressTitle: "\(reversedGeoLocation.name) \(reversedGeoLocation.city)" , formattedAddress: reversedGeoLocation.formattedAddress)
+        }
+    }
+    
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
-        let zoom = mapView.camera.zoom
-        print("map zoom is ",String(zoom))
+        let latitude = mapView.camera.target.latitude
+        let longitude = mapView.camera.target.longitude
     }
 }
 
 extension EditAddressViewController: GMSAutocompleteViewControllerDelegate {
     // Handle the user's selection.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        print("Place name: \(place.name)")
-        print("Place ID: \(place.placeID)")
+        if modelUserAddressesResponseData != nil {
+            labelButtonSaveAsNew.textColor = .black
+            buttonSaveAsNew.isUserInteractionEnabled = true
+            labelButtonSaveAsNew.text = "Update"
+        }
+        print("Place name: \(place.name ?? "")")
+        print("Place ID: \(place.placeID ?? "")")
         print("Place attributions: \(place.attributions)")
         print("Place coordinate: \(place.coordinate)")
         print("Place attributions: \(place.attributions ?? NSAttributedString(string: ""))")
 
-        textFieldSearch.text = place.name
+//        textFieldSearch.text = place.name
         DispatchQueue.main.async {
             self.location = place.coordinate
-            self.setLocation(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude)
+            self.setAddress(addressTitle: "\(place.name ?? "")" , formattedAddress: place.formattedAddress)
+            self.setZoom(latitude: self.location?.latitude, longitude: self.location?.longitude)
         }
         dismiss(animated: true, completion: nil)
     }
@@ -243,5 +344,86 @@ extension EditAddressViewController: GMSAutocompleteResultsViewControllerDelegat
                            didFailAutocompleteWithError error: Error){
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
+    }
+}
+
+extension EditAddressViewController: CLLocationManagerDelegate {
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+            switch manager.authorizationStatus {
+            case .notDetermined:
+                // Request the appropriate authorization based on the needs of the app
+                locationManager.requestWhenInUseAuthorization()
+                // manager.requestAlwaysAuthorization()
+            case .restricted:
+                print("Sorry, restricted")
+                // Optional: Offer to take user to app's settings screen
+            case .denied:
+                print("Sorry, denied")
+                // Optional: Offer to take user to app's settings screen
+            case .authorizedAlways, .authorizedWhenInUse:
+                // The app has permission so start getting location updates
+                manager.startUpdatingLocation()
+            @unknown default:
+                print("Unknown status")
+            }
+        }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
+        print("Error while updating location " + error.localizedDescription)
+        
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last! as CLLocation
+        
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        self.location = location.coordinate
+        
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+
+            guard let placemark = placemarks?.first else {
+                let errorString = error?.localizedDescription ?? "Unexpected Error"
+                print("Unable to reverse geocode the given location. Error: \(errorString)")
+                return
+            }
+
+            let reversedGeoLocation = ReversedGeoLocation(with: placemark)
+            print(reversedGeoLocation.formattedAddress)
+            
+            self.setAddress(addressTitle: "\(reversedGeoLocation.name) \(reversedGeoLocation.city)" , formattedAddress: reversedGeoLocation.formattedAddress)
+            self.setZoom(latitude: self.location?.latitude, longitude: self.location?.longitude)
+        }
+    }
+}
+
+struct ReversedGeoLocation {
+    let name: String            // eg. Apple Inc.
+    let streetName: String      // eg. Infinite Loop
+    let streetNumber: String    // eg. 1
+    let city: String            // eg. Cupertino
+    let state: String           // eg. CA
+    let zipCode: String         // eg. 95014
+    let country: String         // eg. United States
+    let isoCountryCode: String  // eg. US
+
+    var formattedAddress: String {
+        return """
+        \(name), \(streetNumber) \(streetName),
+        \(city), \(state) \(zipCode) \(country)
+        """
+    }
+
+    // Handle optionals as needed
+    init(with placemark: CLPlacemark) {
+        self.name           = placemark.name ?? ""
+        self.streetName     = placemark.thoroughfare ?? ""
+        self.streetNumber   = placemark.subThoroughfare ?? ""
+        self.city           = placemark.locality ?? ""
+        self.state          = placemark.administrativeArea ?? ""
+        self.zipCode        = placemark.postalCode ?? ""
+        self.country        = placemark.country ?? ""
+        self.isoCountryCode = placemark.isoCountryCode ?? ""
     }
 }

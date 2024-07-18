@@ -13,7 +13,7 @@ extension HomeViewController {
         let success: Bool?
         let message: String?
         var userResponseData: ModelGetUserResponseData?
-        let recordNotFound: Bool?
+        let recordFound: Bool?
         let innerExceptionMessage, token: String?
     }
 
