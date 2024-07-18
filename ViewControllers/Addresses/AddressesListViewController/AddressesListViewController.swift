@@ -67,10 +67,6 @@ class AddressesListViewController: UIViewController {
             }
         }
     }
-    
-    var arrayTitle = ["Mango", "Ferrerri", "Toyota", "Honda", "Cycle", "iPhone", "Android", "Serina"]
-    var arrayAddress = ["A quick brown", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog", "A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog A quick brown fox jumps over the lazy dog"]
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()

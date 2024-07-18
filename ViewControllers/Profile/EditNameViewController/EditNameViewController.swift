@@ -21,8 +21,8 @@ class EditNameViewController: UIViewController {
         didSet {
             if modelEditProfileResponse?.success ?? false {
                 self.showAlertCustomPopup(title: "Success", message: self.modelEditProfileResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    modelGetUserResponse?.userResponseData?.firstname = self.modelEditProfileResponse?.userResponseData?.firstname
-                    modelGetUserResponse?.userResponseData?.lastName = self.modelEditProfileResponse?.userResponseData?.lastName
+                    modelGetUserProfileResponse?.userResponseData?.firstname = self.modelEditProfileResponse?.userResponseData?.firstname
+                    modelGetUserProfileResponse?.userResponseData?.lastName = self.modelEditProfileResponse?.userResponseData?.lastName
                     self.editProfileResponseHandler?()
                     self.popViewController(animated: true)
                 }
@@ -39,8 +39,8 @@ class EditNameViewController: UIViewController {
         setData()
     }
     func setData() {
-        textFieldFirstName.text = modelGetUserResponse?.userResponseData?.firstname
-        textFieldLastName.text = modelGetUserResponse?.userResponseData?.lastName
+        textFieldFirstName.text = modelGetUserProfileResponse?.userResponseData?.firstname
+        textFieldLastName.text = modelGetUserProfileResponse?.userResponseData?.lastName
     }
     
     @IBAction func buttonBack(_ sender: Any) {

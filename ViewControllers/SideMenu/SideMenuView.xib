@@ -268,6 +268,7 @@
             </constraints>
             <connections>
                 <outlet property="buttonBack" destination="uEc-re-XV5" id="CxJ-Hm-uzP"/>
+                <outlet property="imageViewProfile" destination="fgc-PF-PzA" id="Wo2-je-Rdv"/>
                 <outlet property="tableView" destination="tjG-LK-JTb" id="077-W7-EtK"/>
             </connections>
             <point key="canvasLocation" x="139.69465648854961" y="19.718309859154932"/>

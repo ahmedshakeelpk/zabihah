@@ -110,14 +110,14 @@ class ProfileViewController: UIViewController {
     }
     
     func setData() {
-        labelName.text = "\(modelGetUserResponse?.userResponseData?.firstname ?? "") \(modelGetUserResponse?.userResponseData?.lastName ?? "")"
-        textFieldName.text = "\(modelGetUserResponse?.userResponseData?.firstname ?? "") \(modelGetUserResponse?.userResponseData?.lastName ?? "")"
+        labelName.text = "\(modelGetUserProfileResponse?.userResponseData?.firstname ?? "") \(modelGetUserProfileResponse?.userResponseData?.lastName ?? "")"
+        textFieldName.text = "\(modelGetUserProfileResponse?.userResponseData?.firstname ?? "") \(modelGetUserProfileResponse?.userResponseData?.lastName ?? "")"
         
-        labelEmail.text = modelGetUserResponse?.userResponseData?.email
-        textFieldEmail.text = modelGetUserResponse?.userResponseData?.email
+        labelEmail.text = modelGetUserProfileResponse?.userResponseData?.email
+        textFieldEmail.text = modelGetUserProfileResponse?.userResponseData?.email
         
-        labelPhone.text = modelGetUserResponse?.userResponseData?.phone
-        textFieldPhone.text = modelGetUserResponse?.userResponseData?.phone
+        labelPhone.text = modelGetUserProfileResponse?.userResponseData?.phone
+        textFieldPhone.text = modelGetUserProfileResponse?.userResponseData?.phone
         
 //        stackViewName.isHidden = buttonEditName.tag == 0
 //        stackViewEmail.isHidden = buttonEditEmail.tag == 0

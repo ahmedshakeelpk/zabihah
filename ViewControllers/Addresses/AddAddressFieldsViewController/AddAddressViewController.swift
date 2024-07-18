@@ -19,7 +19,6 @@ class AddAddressViewController: UIViewController {
         }
     }
     @IBOutlet weak var labelMainTitle: UILabel!
-    
     @IBOutlet weak var buttonSearchAddress: UIButton!
     @IBOutlet weak var viewAddNewAddressBackGround: UIView!
     @IBOutlet weak var textFieldLocationInstructionOptional: UITextField!
@@ -65,6 +64,9 @@ class AddAddressViewController: UIViewController {
     
     var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
+            if modelUserAddressesResponseData == nil {
+                return()
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
                 self.labelMainTitle.text = "Edit Address"
                 self.newAddress = self.modelUserAddressesResponseData?.address ?? ""

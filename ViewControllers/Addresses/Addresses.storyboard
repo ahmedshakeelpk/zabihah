@@ -252,7 +252,7 @@
                                 <color key="backgroundColor" systemColor="systemYellowColor"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="marker" translatesAutoresizingMaskIntoConstraints="NO" id="0EP-b2-XWN">
-                                <rect key="frame" x="187" y="266.5" width="40" height="40"/>
+                                <rect key="frame" x="187" y="286.5" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="3UX-Sb-tBb"/>
                                     <constraint firstAttribute="height" constant="40" id="qXW-Wb-jy5"/>
@@ -641,7 +641,7 @@
                             <constraint firstItem="yny-W3-WEf" firstAttribute="trailing" secondItem="p2C-nR-xng" secondAttribute="trailing" id="hEf-3A-Tyc"/>
                             <constraint firstAttribute="trailing" secondItem="c0Q-EE-Lm6" secondAttribute="trailing" id="iOb-hs-dTA"/>
                             <constraint firstItem="c0Q-EE-Lm6" firstAttribute="top" secondItem="yny-W3-WEf" secondAttribute="top" id="iXx-dW-Wri"/>
-                            <constraint firstItem="0EP-b2-XWN" firstAttribute="centerY" secondItem="Cu7-SP-SVR" secondAttribute="centerY" constant="-20" id="lO4-rg-zkq"/>
+                            <constraint firstItem="0EP-b2-XWN" firstAttribute="centerY" secondItem="Cu7-SP-SVR" secondAttribute="centerY" id="lO4-rg-zkq"/>
                             <constraint firstItem="0EP-b2-XWN" firstAttribute="centerX" secondItem="Cu7-SP-SVR" secondAttribute="centerX" id="pSO-Pq-Dey"/>
                         </constraints>
                     </view>

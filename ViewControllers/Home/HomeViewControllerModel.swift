@@ -9,7 +9,7 @@ import Foundation
 
 extension HomeViewController {
     // MARK: - ModelGetUserResponse
-    struct ModelGetUserResponse: Codable {
+    struct ModelGetUserProfileResponse: Codable {
         let success: Bool?
         let message: String?
         var userResponseData: ModelGetUserResponseData?

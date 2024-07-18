@@ -7,12 +7,14 @@
 
 import UIKit
 import Foundation
+import Kingfisher
 
 class SideMenuView: UIView {
     
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var tableView: TableViewContentSized!
-    
+    @IBOutlet weak var imageViewProfile: UIImageView!
+
     var closeMenuHandler: ((IndexPath) -> ())!
     var viewController = UIViewController()
 
@@ -34,7 +36,6 @@ class SideMenuView: UIView {
         super.init(frame: frame)
         
         //            loadViewFromNib()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -102,6 +103,8 @@ class SideMenuView: UIView {
             self.tableView.delegate = self
             self.tableView.dataSource = self
             self.tableView.reloadData()
+            
+            self.imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "")
         }
     }
 }
@@ -183,5 +186,20 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
         else {
             return 170
         }
+    }
+}
+
+
+extension UIImageView {
+    func setImage(urlString: String) {
+        self.kf.setImage(with: URL(string: urlString), placeholder: nil, options: nil, progressBlock: nil, completionHandler: { result in
+        switch result {
+            case .success(let value):
+                        print("Image: \(value.image). Got from: \(value.cacheType)")
+            self.image = value.image
+            case .failure(let error):
+                        print("Error: \(error)")
+            }
+        })
     }
 }

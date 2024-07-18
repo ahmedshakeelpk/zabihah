@@ -22,9 +22,9 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var buttonSearchLocation: UIButton!
     
-    var modelGetUserResponseLocal: ModelGetUserResponse? {
+    var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
         didSet {
-            modelGetUserResponse = modelGetUserResponseLocal
+            modelGetUserProfileResponse = modelGetUserResponseLocal
         }
     }
     
@@ -122,7 +122,7 @@ class HomeViewController: UIViewController {
         APIs.postAPI(apiName: .getuser, methodType: .get, encoding: URLEncoding.default) { responseData, success, errorMsg in
             print(responseData ?? "")
             print(success)
-            let model: ModelGetUserResponse? = APIs.decodeDataToObject(data: responseData)
+            let model: ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserResponseLocal = model
         }
     }

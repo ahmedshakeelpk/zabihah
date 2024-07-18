@@ -10,6 +10,7 @@ target 'zabihah' do
 pod 'Alamofire'
 pod "FlagPhoneNumber"
 pod 'IQKeyboardManager'
+pod 'Kingfisher'
 
 #https://github.com/chronotruck/FlagPhoneNumber
 
