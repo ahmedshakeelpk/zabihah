@@ -43,12 +43,9 @@ class AddressesListViewController: UIViewController {
 //                tableView.backgroundView = imageView
 //                imageView.contentMode = .scaleAspectFit
 //                imageView.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
-                
-                
             }
             else {
                 imageViewNoAddressFound.isHidden = true
-
             }
         }
     }

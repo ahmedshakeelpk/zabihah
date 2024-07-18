@@ -126,7 +126,6 @@ class  EditAddressViewController: UIViewController {
     }
     
     func locationConfiguration() {
-        
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -182,7 +181,10 @@ class  EditAddressViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         vc.modelUserAddressesResponseData = modelUserAddressesResponseData
         vc.newAddressAddedHandler = {
-            self.getUserAddress()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.popViewController(animated: true)
+                self.buttonContinueHandler?(self.location!)
+            }
         }
         vc.location = location
         vc.newAddress = labelAddress.text!
