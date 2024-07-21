@@ -18,9 +18,11 @@ class EditEmailPhoneViewController: UIViewController {
     @IBOutlet weak var stackViewPhoneNumber: UIStackView!
     @IBOutlet weak var stackViewEmail: UIStackView!
     @IBOutlet weak var buttonBack: UIButton!
-
+    @IBOutlet weak var textFieldEmail: UITextField!
+    @IBOutlet weak var labelEmail: UILabel!
     
     var isFromEmail: Bool = false
+    var isOtpVerified = false
 
     override func viewDidAppear(_ animated: Bool) {
         
@@ -30,9 +32,12 @@ class EditEmailPhoneViewController: UIViewController {
         viewBackGroundButtonSend.radius(radius: 8)
         viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
         viewBackGroundPhoneNumber.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        labelEmail.text = ""
+
         if isFromEmail {
             stackViewPhoneNumber.isHidden = true
-        }
+            textFieldEmail.text = modelGetUserProfileResponse?.userResponseData?.email ?? ""
+        } 
         else {
             stackViewEmail.isHidden = true
             textFieldPhoneNumber.setFlag(countryCode: .US)
@@ -46,12 +51,49 @@ class EditEmailPhoneViewController: UIViewController {
     }
     
     @IBAction func buttonSendVerificationCode(_ sender: Any) {
-        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpEmailViewController") as! OtpEmailViewController
-        vc.isFromEmail = isFromEmail
-        self.navigationController?.pushViewController(vc, animated: true)
+        if isFromEmail {
+            if textFieldEmail.text == "" {
+                self.showToast(message: "Enter Email!")
+                return()
+            }
+        }
+        else {
+            if textFieldPhoneNumber.text == "" {
+                self.showToast(message: "Enter Phone Number!")
+                return()
+            }
+        }
+        sendnotification()
+    }
+    var modelSendnotificationResponse: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? {
+        didSet {
+            if modelSendnotificationResponse?.success ?? false {
+                navigateToOtpEmailViewController()
+            }
+            else {
+                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+            }
+        }
     }
     
-
+    func navigateToOtpEmailViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpEmailViewController") as! OtpEmailViewController
+        vc.isFromEmail = isFromEmail
+        vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.text!
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func sendnotification() {
+        let parameters: [String: Any] = [
+            "recipient": isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
+            "device": isFromEmail ? "email" : "phone",
+            "validate": true //it will check if user exist in DB
+        ]
+        
+        APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelSendnotificationResponse = model
+        }
+    }
 }
 
 extension EditEmailPhoneViewController: FPNTextFieldDelegate {

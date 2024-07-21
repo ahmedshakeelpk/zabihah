@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		25B9C910AE48A827758E769A /* Pods_zabihah.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A346B501407BE41A776A091D /* Pods_zabihah.framework */; };
+		6A00FEF82C4CAB7C0006E324 /* FindHalalFood.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A00FEF72C4CAB7C0006E324 /* FindHalalFood.storyboard */; };
+		6A00FEFA2C4CAB9D0006E324 /* FindHalalFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00FEF92C4CAB9D0006E324 /* FindHalalFoodViewController.swift */; };
+		6A00FF022C4CAC890006E324 /* FindHalalFoodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */; };
+		6A00FF032C4CAC890006E324 /* FindHalalFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */; };
 		6A16E0002C36703B00E1383B /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16DFFF2C36703B00E1383B /* ViewExtension.swift */; };
 		6A16E0032C36789C00E1383B /* LoginWithEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16E0022C36789C00E1383B /* LoginWithEmailViewController.swift */; };
 		6A16E0062C367A1B00E1383B /* StoryBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16E0052C367A1B00E1383B /* StoryBoard.swift */; };
@@ -78,8 +82,6 @@
 		6AD0C0262C3BF54E0051D99A /* OtpLoginViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C0252C3BF54E0051D99A /* OtpLoginViewControllerModel.swift */; };
 		6AD0C0292C3BF5A20051D99A /* BlurBackGroundViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C0282C3BF5A20051D99A /* BlurBackGroundViewExtension.swift */; };
 		6AD0C02B2C3BF7CF0051D99A /* RegisterationViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C02A2C3BF7CF0051D99A /* RegisterationViewControllerModel.swift */; };
-		6AD39E532C3D733700BDAC05 /* HomeViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E512C3D733700BDAC05 /* HomeViewControllerCell.swift */; };
-		6AD39E542C3D733700BDAC05 /* HomeViewControllerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E522C3D733700BDAC05 /* HomeViewControllerCell.xib */; };
 		6AD39E562C3D7CCD00BDAC05 /* HomeBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E552C3D7CCD00BDAC05 /* HomeBaseCell.swift */; };
 		6AD39E592C3D7EA200BDAC05 /* HomeFoodItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E572C3D7EA200BDAC05 /* HomeFoodItemCell.swift */; };
 		6AD39E5A2C3D7EA200BDAC05 /* HomeFoodItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E582C3D7EA200BDAC05 /* HomeFoodItemCell.xib */; };
@@ -95,6 +97,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6A00FEF72C4CAB7C0006E324 /* FindHalalFood.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FindHalalFood.storyboard; sourceTree = "<group>"; };
+		6A00FEF92C4CAB9D0006E324 /* FindHalalFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHalalFoodViewController.swift; sourceTree = "<group>"; };
+		6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHalalFoodCell.swift; sourceTree = "<group>"; };
+		6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FindHalalFoodCell.xib; sourceTree = "<group>"; };
 		6A16DFFF2C36703B00E1383B /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		6A16E0022C36789C00E1383B /* LoginWithEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailViewController.swift; sourceTree = "<group>"; };
 		6A16E0052C367A1B00E1383B /* StoryBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryBoard.swift; sourceTree = "<group>"; };
@@ -167,8 +173,6 @@
 		6AD0C0252C3BF54E0051D99A /* OtpLoginViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpLoginViewControllerModel.swift; sourceTree = "<group>"; };
 		6AD0C0282C3BF5A20051D99A /* BlurBackGroundViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurBackGroundViewExtension.swift; sourceTree = "<group>"; };
 		6AD0C02A2C3BF7CF0051D99A /* RegisterationViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterationViewControllerModel.swift; sourceTree = "<group>"; };
-		6AD39E512C3D733700BDAC05 /* HomeViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerCell.swift; sourceTree = "<group>"; };
-		6AD39E522C3D733700BDAC05 /* HomeViewControllerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeViewControllerCell.xib; sourceTree = "<group>"; };
 		6AD39E552C3D7CCD00BDAC05 /* HomeBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBaseCell.swift; sourceTree = "<group>"; };
 		6AD39E572C3D7EA200BDAC05 /* HomeFoodItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFoodItemCell.swift; sourceTree = "<group>"; };
 		6AD39E582C3D7EA200BDAC05 /* HomeFoodItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeFoodItemCell.xib; sourceTree = "<group>"; };
@@ -207,14 +211,59 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		6A00FEF62C4CAB590006E324 /* FindHalalFood */ = {
+			isa = PBXGroup;
+			children = (
+				6A00FEFF2C4CAC670006E324 /* FindHalalFoodCell */,
+				6A00FEF72C4CAB7C0006E324 /* FindHalalFood.storyboard */,
+				6A00FEF92C4CAB9D0006E324 /* FindHalalFoodViewController.swift */,
+			);
+			path = FindHalalFood;
+			sourceTree = "<group>";
+		};
+		6A00FEFB2C4CAC0B0006E324 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				6A3AB5722C3956DB0030F016 /* HomeViewController.swift */,
+				6A9BD3C22C414810008BBDF5 /* HomeViewControllerModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		6A00FEFD2C4CAC310006E324 /* HomeMenuCell */ = {
+			isa = PBXGroup;
+			children = (
+				6A62691F2C3D154C00DA844F /* HomeMenuCell.swift */,
+				6A6269202C3D154C00DA844F /* HomeMenuCell.xib */,
+			);
+			path = HomeMenuCell;
+			sourceTree = "<group>";
+		};
+		6A00FEFE2C4CAC4D0006E324 /* HomeBaseCell */ = {
+			isa = PBXGroup;
+			children = (
+				6AD39E552C3D7CCD00BDAC05 /* HomeBaseCell.swift */,
+			);
+			path = HomeBaseCell;
+			sourceTree = "<group>";
+		};
+		6A00FEFF2C4CAC670006E324 /* FindHalalFoodCell */ = {
+			isa = PBXGroup;
+			children = (
+				6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */,
+				6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */,
+			);
+			path = FindHalalFoodCell;
+			sourceTree = "<group>";
+		};
 		6A16DFFC2C366EEA00E1383B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				6A3AB5962C3A7A140030F016 /* Addresses */,
 				6A3AB5762C3958850030F016 /* SideMenu */,
 				6A3AB5712C3956CB0030F016 /* Home */,
-				6A16E00F2C36B8CB00E1383B /* Login */,
+				6A3AB5962C3A7A140030F016 /* Addresses */,
 				6A28D84F2C37D21900F5A95F /* Profile */,
+				6A16E00F2C36B8CB00E1383B /* Login */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -348,14 +397,10 @@
 		6A3AB5712C3956CB0030F016 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				6A6269262C3D3D6B00DA844F /* Cells */,
 				6A3AB5742C3956E70030F016 /* Home.storyboard */,
-				6A3AB5722C3956DB0030F016 /* HomeViewController.swift */,
-				6A9BD3C22C414810008BBDF5 /* HomeViewControllerModel.swift */,
-				6AD39E512C3D733700BDAC05 /* HomeViewControllerCell.swift */,
-				6AD39E522C3D733700BDAC05 /* HomeViewControllerCell.xib */,
-				6A62691F2C3D154C00DA844F /* HomeMenuCell.swift */,
-				6A6269202C3D154C00DA844F /* HomeMenuCell.xib */,
+				6A00FEFB2C4CAC0B0006E324 /* Home */,
+				6A00FEF62C4CAB590006E324 /* FindHalalFood */,
+				6A6269262C3D3D6B00DA844F /* HomeCells */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -438,16 +483,17 @@
 			path = LabelExtension;
 			sourceTree = "<group>";
 		};
-		6A6269262C3D3D6B00DA844F /* Cells */ = {
+		6A6269262C3D3D6B00DA844F /* HomeCells */ = {
 			isa = PBXGroup;
 			children = (
-				6AD39E552C3D7CCD00BDAC05 /* HomeBaseCell.swift */,
+				6A00FEFE2C4CAC4D0006E324 /* HomeBaseCell */,
+				6A00FEFD2C4CAC310006E324 /* HomeMenuCell */,
 				6AD39E8D2C3E902E00BDAC05 /* HomePrayerSpacesCell */,
 				6AD39E842C3E5B0100BDAC05 /* HomeSectionHeaderCell */,
 				6AD39E7F2C3E468200BDAC05 /* HomeCuisinesCell */,
 				6AD39E5B2C3D7EB400BDAC05 /* HomeFoodItemCell */,
 			);
-			path = Cells;
+			path = HomeCells;
 			sourceTree = "<group>";
 		};
 		6A6FC3EF2C3572000050B6B2 = {
@@ -715,7 +761,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A6FC4052C3572020050B6B2 /* Assets.xcassets in Resources */,
+				6A00FF022C4CAC890006E324 /* FindHalalFoodCell.xib in Resources */,
 				6A3AB57C2C3966E00030F016 /* SideMenuView.xib in Resources */,
+				6A00FEF82C4CAB7C0006E324 /* FindHalalFood.storyboard in Resources */,
 				6A3AB5862C39703B0030F016 /* SideMenuViewCell.xib in Resources */,
 				6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */,
 				6A3AB5752C3956E70030F016 /* Home.storyboard in Resources */,
@@ -727,7 +775,6 @@
 				6AD39E882C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib in Resources */,
 				6A28D8512C37D30500F5A95F /* Profile.storyboard in Resources */,
 				6AD39E8C2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.xib in Resources */,
-				6AD39E542C3D733700BDAC05 /* HomeViewControllerCell.xib in Resources */,
 				6A6269342C3D3EDD00DA844F /* HomeFoodItemSubCell.xib in Resources */,
 				6A6FC4032C3572000050B6B2 /* Base in Resources */,
 				6A6269222C3D154C00DA844F /* HomeMenuCell.xib in Resources */,
@@ -826,7 +873,6 @@
 				6A3AB59E2C3A80470030F016 /* AddressesCell.swift in Sources */,
 				6A6FC4112C357D490050B6B2 /* AppColorsExtension.swift in Sources */,
 				6A3AB58F2C39E2DC0030F016 /* SideMenuViewHeaderViewCell.swift in Sources */,
-				6AD39E532C3D733700BDAC05 /* HomeViewControllerCell.swift in Sources */,
 				6A3AB56F2C3956A40030F016 /* SideTownModel.swift in Sources */,
 				6A9BD3CE2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift in Sources */,
 				6A6FC3FC2C3572000050B6B2 /* AppDelegate.swift in Sources */,
@@ -838,6 +884,7 @@
 				6A16E00D2C3687F500E1383B /* OTPTextField.swift in Sources */,
 				6A62693B2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.swift in Sources */,
 				6AD0C02B2C3BF7CF0051D99A /* RegisterationViewControllerModel.swift in Sources */,
+				6A00FF032C4CAC890006E324 /* FindHalalFoodCell.swift in Sources */,
 				6A9BD3C62C4237A8008BBDF5 /* ProfileDeleteViewController.swift in Sources */,
 				6A3AB5702C3956A40030F016 /* SideTown.swift in Sources */,
 				6AD0C0162C3BE43D0051D99A /* APIsName.swift in Sources */,
@@ -852,6 +899,7 @@
 				6A28D8542C37D32B00F5A95F /* ProfileViewController.swift in Sources */,
 				6AD39E562C3D7CCD00BDAC05 /* HomeBaseCell.swift in Sources */,
 				6A3AB5952C3A61B80030F016 /* SideMenuViewFooterViewCell.swift in Sources */,
+				6A00FEFA2C4CAB9D0006E324 /* FindHalalFoodViewController.swift in Sources */,
 				6A9BD3C32C414810008BBDF5 /* HomeViewControllerModel.swift in Sources */,
 				6A3DD1C52C365BEC003F1F44 /* ViewControllerExtension.swift in Sources */,
 				6A9BD3C12C412A74008BBDF5 /* FingerPrintHardCodedData.swift in Sources */,
@@ -1017,25 +1065,31 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9H4VJSM9PG;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = zabihah/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "your location";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "your location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Login;
-				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 5.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.halalfire.zabihahlite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1048,25 +1102,31 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9H4VJSM9PG;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = zabihah/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "your location";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "your location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Login;
-				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 5.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.halalfire.zabihahlite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

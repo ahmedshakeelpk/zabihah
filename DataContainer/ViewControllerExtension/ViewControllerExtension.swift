@@ -85,7 +85,7 @@ extension UIViewController {
     }
 
     
-    func dismissToViewController<T>(viewController: T) {
+    func popToViewController<T>(viewController: T) {
         for controller in self.navigationController!.viewControllers as Array {
             if controller.isKind(of: viewController.self as! AnyClass) {
                 self.navigationController!.popToViewController(controller, animated: true)

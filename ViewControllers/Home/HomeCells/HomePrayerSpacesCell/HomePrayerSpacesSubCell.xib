@@ -584,6 +584,7 @@
                 <outlet property="collectionView" destination="8Aj-X7-eHy" id="4Y1-jC-Vaw"/>
                 <outlet property="labelItemType" destination="tjU-G3-8y8" id="YRX-8R-YrE"/>
                 <outlet property="stackViewBackGround" destination="LKW-y4-ENN" id="h1a-fS-PVG"/>
+                <outlet property="stackViewRatingBackGround" destination="Se2-j0-BVO" id="5pi-5M-ams"/>
                 <outlet property="viewBikeBackGround" destination="6P6-8y-xzr" id="8Os-Ru-gGx"/>
                 <outlet property="viewCallBackGround" destination="09f-ZB-IwC" id="vuc-Lt-l5Y"/>
                 <outlet property="viewItemTypeBackGround" destination="5th-pD-igU" id="qJz-fE-Wth"/>

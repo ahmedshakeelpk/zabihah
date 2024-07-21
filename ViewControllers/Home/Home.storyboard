@@ -415,21 +415,75 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vhu-Cv-cf2">
                                 <rect key="frame" x="0.0" y="295" width="393" height="523"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="UJd-18-aMy">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lnt-xu-sB4">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="523"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <outlet property="dataSource" destination="Rgs-nB-hx9" id="r5H-oI-DCm"/>
-                                            <outlet property="delegate" destination="Rgs-nB-hx9" id="Qbr-ew-Ko4"/>
-                                        </connections>
-                                    </tableView>
+                                        <subviews>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="UJd-18-aMy">
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="523"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="Rgs-nB-hx9" id="r5H-oI-DCm"/>
+                                                    <outlet property="delegate" destination="Rgs-nB-hx9" id="Qbr-ew-Ko4"/>
+                                                </connections>
+                                            </tableView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PQo-wd-HQF" customClass="GMSMapView">
+                                                <rect key="frame" x="0.0" y="523" width="393" height="0.0"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            </view>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="PQo-wd-HQF" firstAttribute="leading" secondItem="lnt-xu-sB4" secondAttribute="leading" id="9y4-fU-oyf"/>
+                                            <constraint firstAttribute="bottom" secondItem="PQo-wd-HQF" secondAttribute="bottom" id="BoP-uj-dB4"/>
+                                            <constraint firstAttribute="trailing" secondItem="PQo-wd-HQF" secondAttribute="trailing" id="DSP-qA-YZk"/>
+                                            <constraint firstItem="PQo-wd-HQF" firstAttribute="top" secondItem="lnt-xu-sB4" secondAttribute="top" constant="523" id="K6k-Hu-cus"/>
+                                        </constraints>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.94901960784313721" green="0.95686274509803915" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="UJd-18-aMy" secondAttribute="bottom" id="C6h-St-QxX"/>
-                                    <constraint firstAttribute="trailing" secondItem="UJd-18-aMy" secondAttribute="trailing" id="vaR-0Y-iad"/>
-                                    <constraint firstItem="UJd-18-aMy" firstAttribute="top" secondItem="Vhu-Cv-cf2" secondAttribute="top" id="xd2-oV-pcB"/>
-                                    <constraint firstItem="UJd-18-aMy" firstAttribute="leading" secondItem="Vhu-Cv-cf2" secondAttribute="leading" id="zb4-dI-ADp"/>
+                                    <constraint firstItem="lnt-xu-sB4" firstAttribute="leading" secondItem="Vhu-Cv-cf2" secondAttribute="leading" id="Db3-Si-gE7"/>
+                                    <constraint firstAttribute="bottom" secondItem="lnt-xu-sB4" secondAttribute="bottom" id="ddv-79-X6W"/>
+                                    <constraint firstItem="lnt-xu-sB4" firstAttribute="top" secondItem="Vhu-Cv-cf2" secondAttribute="top" id="leg-pW-6mq"/>
+                                    <constraint firstAttribute="trailing" secondItem="lnt-xu-sB4" secondAttribute="trailing" id="yQW-eu-qCs"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dbu-6v-USn">
+                                <rect key="frame" x="126" y="758" width="141" height="40"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mapViewHome" translatesAutoresizingMaskIntoConstraints="NO" id="yKW-YO-1dk">
+                                        <rect key="frame" x="20" y="10" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="ZRS-EG-c0c"/>
+                                            <constraint firstAttribute="width" constant="20" id="wIm-We-Awr"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Map view" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EHO-y9-T0C">
+                                        <rect key="frame" x="48" y="0.0" width="73" height="40"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3R-eD-POk">
+                                        <rect key="frame" x="0.0" y="0.0" width="141" height="45"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <action selector="buttonMapViewListView:" destination="Rgs-nB-hx9" eventType="touchUpInside" id="gaa-YD-yX7"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.21176470588235294" green="0.25490196078431371" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="EHO-y9-T0C" firstAttribute="top" secondItem="dbu-6v-USn" secondAttribute="top" id="0tT-8E-Bb6"/>
+                                    <constraint firstItem="EHO-y9-T0C" firstAttribute="leading" secondItem="yKW-YO-1dk" secondAttribute="trailing" constant="8" symbolic="YES" id="7Uw-uc-dgM"/>
+                                    <constraint firstAttribute="trailing" secondItem="h3R-eD-POk" secondAttribute="trailing" id="AyJ-7t-Qf6"/>
+                                    <constraint firstItem="yKW-YO-1dk" firstAttribute="centerY" secondItem="EHO-y9-T0C" secondAttribute="centerY" id="GAZ-k3-3ET"/>
+                                    <constraint firstItem="h3R-eD-POk" firstAttribute="leading" secondItem="dbu-6v-USn" secondAttribute="leading" id="KaD-Im-tou"/>
+                                    <constraint firstItem="h3R-eD-POk" firstAttribute="top" secondItem="dbu-6v-USn" secondAttribute="top" id="ORJ-t2-Sc0"/>
+                                    <constraint firstItem="yKW-YO-1dk" firstAttribute="leading" secondItem="dbu-6v-USn" secondAttribute="leading" constant="20" id="OZb-0V-zqV"/>
+                                    <constraint firstAttribute="bottom" secondItem="EHO-y9-T0C" secondAttribute="bottom" id="VRF-XO-T4c"/>
+                                    <constraint firstAttribute="trailing" secondItem="EHO-y9-T0C" secondAttribute="trailing" constant="20" id="Yj8-wx-g4P"/>
+                                    <constraint firstAttribute="bottom" secondItem="h3R-eD-POk" secondAttribute="bottom" constant="-5" id="cEN-OJ-fsN"/>
+                                    <constraint firstAttribute="height" constant="40" id="ghI-EF-I9O"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -443,8 +497,10 @@
                             <constraint firstItem="PHP-tm-IgL" firstAttribute="top" secondItem="3kh-Kd-FO1" secondAttribute="top" id="ZT9-rt-frd"/>
                             <constraint firstItem="PHP-tm-IgL" firstAttribute="trailing" secondItem="3kh-Kd-FO1" secondAttribute="trailing" id="adt-Hx-JVg"/>
                             <constraint firstItem="Vhu-Cv-cf2" firstAttribute="trailing" secondItem="3kh-Kd-FO1" secondAttribute="trailing" id="afa-d7-Wxk"/>
+                            <constraint firstItem="dbu-6v-USn" firstAttribute="centerX" secondItem="3kh-Kd-FO1" secondAttribute="centerX" id="hDw-3v-OhX"/>
                             <constraint firstItem="3kh-Kd-FO1" firstAttribute="bottom" secondItem="Vhu-Cv-cf2" secondAttribute="bottom" id="hMb-Sl-bLx"/>
                             <constraint firstItem="3kh-Kd-FO1" firstAttribute="trailing" secondItem="Vhu-Cv-cf2" secondAttribute="trailing" id="nIY-d4-RpH"/>
+                            <constraint firstItem="3kh-Kd-FO1" firstAttribute="bottom" secondItem="dbu-6v-USn" secondAttribute="bottom" constant="20" id="pav-cO-L8q"/>
                             <constraint firstItem="PHP-tm-IgL" firstAttribute="leading" secondItem="3kh-Kd-FO1" secondAttribute="leading" id="tUi-2N-TvK"/>
                             <constraint firstItem="Vhu-Cv-cf2" firstAttribute="top" secondItem="PHP-tm-IgL" secondAttribute="bottom" id="wZK-1E-uyI"/>
                         </constraints>
@@ -452,16 +508,21 @@
                     <navigationItem key="navigationItem" id="Dma-YX-Xow"/>
                     <connections>
                         <outlet property="buttonCart" destination="gqa-VF-Lim" id="hh6-9x-gY1"/>
+                        <outlet property="buttonMapViewListView" destination="h3R-eD-POk" id="Gz7-8L-yea"/>
                         <outlet property="buttonNotification" destination="5Gt-OH-p5s" id="4HL-hg-zh8"/>
                         <outlet property="buttonSearchLocation" destination="hGe-yo-bJq" id="Ljf-3n-GK3"/>
                         <outlet property="buttonSideMenu" destination="Uoa-nT-98W" id="A4n-cX-bmt"/>
                         <outlet property="collectionView" destination="cOq-8U-uUT" id="ZQ1-Vv-Ibp"/>
+                        <outlet property="imageViewListViewMapView" destination="yKW-YO-1dk" id="oyu-6F-Zyk"/>
+                        <outlet property="labelMapViewListView" destination="EHO-y9-T0C" id="bYZ-Se-YhK"/>
+                        <outlet property="mapView" destination="PQo-wd-HQF" id="xgk-NS-TBL"/>
                         <outlet property="stackViewFilterResultBackGround" destination="O0M-b4-XDd" id="rU6-30-Lya"/>
                         <outlet property="stackViewSearchNTextFieldNearLocationBackGround" destination="YJr-Ce-f0d" id="J5y-5l-Xaw"/>
                         <outlet property="stackViewSearchNearLocationBackGround" destination="4SB-OA-hDd" id="4Yh-ay-tJC"/>
                         <outlet property="tableView" destination="UJd-18-aMy" id="WSC-hZ-XLQ"/>
                         <outlet property="textFieldFilterResult" destination="4Bz-Wf-F6J" id="x0m-4F-Xf4"/>
                         <outlet property="textFieldSearchLocation" destination="GpS-77-3Qo" id="ZEh-gO-Kb1"/>
+                        <outlet property="viewMapViewBackground" destination="dbu-6v-USn" id="mkg-5F-KiL"/>
                         <outlet property="viewSettingBackGround" destination="BJw-IC-zeA" id="8em-gz-0s2"/>
                     </connections>
                 </viewController>
@@ -757,6 +818,7 @@
         <image name="editMehroonAddresses" width="20" height="20"/>
         <image name="houseAddresses" width="24" height="24"/>
         <image name="locationWhiteHome" width="16" height="16"/>
+        <image name="mapViewHome" width="20" height="20"/>
         <image name="menuHome" width="24" height="24"/>
         <image name="notificationWhiteHome" width="20" height="20"/>
         <image name="searchMehroonMisc" width="20" height="20"/>

@@ -237,7 +237,7 @@ class RegisterationViewController: UIViewController {
             myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
         }
         myActionSheet.addAction(galleryAction)
-        myActionSheet.addAction(documentAction)
+//        myActionSheet.addAction(documentAction)
         myActionSheet.addAction(cancelAction)
         print("Action Sheet call")
         
@@ -286,14 +286,13 @@ extension RegisterationViewController: FPNTextFieldDelegate {
 ///Blob Upload Storage
 extension RegisterationViewController {
     func uploadOnBlob(token: String) {
-        let currentDate1 = Date()
-        let fileName1 = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
-        uploadImageToBlobStorage(token: token, image: UIImage(named: "dummyFood")!, blobName: fileName1)
+        uploadImageToBlobStorage(token: token, image: imageViewUser.image!)
     }
     
-    func uploadImageToBlobStorage(token: String, image: UIImage, blobName: String) {
-        
+    func uploadImageToBlobStorage(token: String, image: UIImage) {
         //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
+        let currentDate1 = Date()
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
         
         let tempToken = token.components(separatedBy: "?")
         
@@ -305,7 +304,7 @@ extension RegisterationViewController {
         azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
             if success {
                 print("Image uploaded successfully!")
-                if let imageURL = self.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
+                if let imageURL = azureBlobStorage.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
                     print("Image URL: \(imageURL)")
                     DispatchQueue.main.async {
                         self.userSignup(imageUrl: "\(imageURL)")
@@ -318,73 +317,6 @@ extension RegisterationViewController {
             }
         }
         return()
-    }
-    
-    
-    struct AzureBlobStorage {
-        let containerURL: String
-        let sasToken: String
-        
-        init(containerURL: String, sasToken: String) {
-            self.containerURL = containerURL
-            self.sasToken = sasToken
-        }
-        
-        func uploadImage(image: UIImage, blobName: String, completion: @escaping (Bool, Error?) -> Void) {
-            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-                completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to data"]))
-                return
-            }
-            
-            let uploadURLString = "\(containerURL)/\(blobName)?\(sasToken)"
-            guard let uploadURL = URL(string: uploadURLString) else {
-                completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
-                return
-            }
-            
-            var request = URLRequest(url: uploadURL)
-            request.httpMethod = "PUT"
-            request.setValue("BlockBlob", forHTTPHeaderField: "x-ms-blob-type")
-            request.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
-            request.httpBody = imageData
-            
-            let session = URLSession.shared
-            let task = session.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    completion(false, error)
-                    return
-                }
-                
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    completion(false, NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response from server"]))
-                    return
-                }
-                
-                if httpResponse.statusCode == 201 {
-                    completion(true, nil)
-                } else {
-                    let statusCodeError = NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to upload image, status code: \(httpResponse.statusCode)"])
-                    completion(false, statusCodeError)
-                }
-            }
-            
-            task.resume()
-        }
-    }
-    
-    // Function to construct the URL of the image in Azure Blob Storage
-    func getImageURL(storageAccountName: String, containerName: String, blobName: String, sasToken: String? = nil) -> URL? {
-        // Construct the base URL
-        var urlString = "https://\(storageAccountName).blob.core.windows.net/\(containerName)/\(blobName)"
-        
-        // Append the SAS token if provided
-        if let token = sasToken {
-            if token != "" {
-                urlString += "?\(token)"
-            }
-        }
-        
-        return URL(string: urlString)
     }
 }
 

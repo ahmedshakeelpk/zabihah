@@ -77,7 +77,6 @@ class  EditAddressViewController: UIViewController {
                         setAddress(addressTitle: modelRecord.title ?? "", formattedAddress: modelRecord.address ?? "")
                         setZoom(latitude: modelRecord.latitude, longitude: modelRecord.longitude)
                         location = CLLocationCoordinate2D(latitude: modelRecord.latitude!, longitude: modelRecord.longitude!)
-                        
                     }
                 }
             }
@@ -150,8 +149,15 @@ class  EditAddressViewController: UIViewController {
 //            return()
 //        }
         if location != nil {
-            popViewController(animated: true)
-            buttonContinueHandler?(location!)
+            for controller in self.navigationController!.viewControllers as Array {
+                if controller.isKind(of: HomeViewController.self) {
+                    if let targetViewController = controller as? HomeViewController {
+                        targetViewController.getuser()
+                        self.navigationController!.popToViewController(controller, animated: true)
+                    }
+                    break
+                }
+            }
         }
     }
 
@@ -281,11 +287,12 @@ extension EditAddressViewController: GMSMapViewDelegate {
         if self.isDisableUpdateLocation! {
             return()
         }
-
         if modelUserAddressesResponseData != nil {
             labelButtonSaveAsNew.textColor = .black
             buttonSaveAsNew.isUserInteractionEnabled = true
             labelButtonSaveAsNew.text = "Update"
+            buttonContinue.isUserInteractionEnabled = true
+            viewButtonContinueBackGround.backgroundColor = .clrBlack
         }
         
         let latitude = mapView.camera.target.latitude
@@ -319,6 +326,8 @@ extension EditAddressViewController: GMSAutocompleteViewControllerDelegate {
             labelButtonSaveAsNew.textColor = .black
             buttonSaveAsNew.isUserInteractionEnabled = true
             labelButtonSaveAsNew.text = "Update"
+            buttonContinue.isUserInteractionEnabled = true
+            viewButtonContinueBackGround.backgroundColor = .clrBlack
         }
         print("Place name: \(place.name ?? "")")
         print("Place ID: \(place.placeID ?? "")")

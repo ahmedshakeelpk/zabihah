@@ -37,6 +37,7 @@ extension UIColor {
     static let clrDarkGreen = UIColor(hexString: "5cc99a")
     static let clrTextNormal = UIColor(hexString: "202734")
     static let clrGray = UIColor(hexString: "555555")
+    static let clrUnselectedImage = UIColor(hexString: "4B5565")
 
 
     static let clrOrangeWithOccupacy10 = UIColor(hexString: "F19434", alpha: 0.10)

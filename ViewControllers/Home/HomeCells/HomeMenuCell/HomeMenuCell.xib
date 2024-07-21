@@ -97,10 +97,10 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xha-ue-Erd">
-                                <rect key="frame" x="8" y="59" width="90" height="1"/>
+                                <rect key="frame" x="8" y="58" width="90" height="2"/>
                                 <color key="backgroundColor" red="0.59999999999999998" green="0.0" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="BMe-dj-R5B"/>
+                                    <constraint firstAttribute="height" constant="2" id="BMe-dj-R5B"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -129,6 +129,7 @@
                 <outlet property="imageViewTitle" destination="Fov-bC-hbI" id="Ofo-Tp-pNa"/>
                 <outlet property="labelName" destination="wip-CK-T90" id="qIh-QI-aNu"/>
                 <outlet property="viewImageViewTitleBackGround" destination="n2z-9o-aoI" id="RnS-KT-LTW"/>
+                <outlet property="viewSelectedMenuBackGround" destination="Xha-ue-Erd" id="F70-NG-t1r"/>
             </connections>
             <point key="canvasLocation" x="181.67938931297709" y="18.30985915492958"/>
         </collectionViewCell>

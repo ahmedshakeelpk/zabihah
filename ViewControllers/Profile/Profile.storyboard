@@ -100,7 +100,7 @@
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jQH-eY-K7w">
                                                                 <rect key="frame" x="20" y="0.0" width="353" height="180"/>
                                                                 <subviews>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyProfileImageProfile" translatesAutoresizingMaskIntoConstraints="NO" id="nib-06-2OG">
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyProfileImageProfile" translatesAutoresizingMaskIntoConstraints="NO" id="nib-06-2OG">
                                                                         <rect key="frame" x="111.66666666666666" y="25" width="130" height="130"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="130" id="9mV-YH-J4D"/>
@@ -110,25 +110,28 @@
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kZi-aE-O9t">
                                                                         <rect key="frame" x="152.66666666666666" y="131" width="48" height="48"/>
                                                                         <subviews>
-                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="editLogin" translatesAutoresizingMaskIntoConstraints="NO" id="SP8-8I-9je">
-                                                                                <rect key="frame" x="0.0" y="-4" width="48" height="52"/>
+                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="editMehroonAddresses" translatesAutoresizingMaskIntoConstraints="NO" id="SP8-8I-9je">
+                                                                                <rect key="frame" x="14" y="14" width="20" height="20"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="20" id="RIG-Q4-oU7"/>
+                                                                                    <constraint firstAttribute="height" constant="20" id="pfO-bM-f5w"/>
+                                                                                </constraints>
                                                                             </imageView>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t8a-Dg-4ON">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
                                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                                 <connections>
-                                                                                    <action selector="buttonEdit:" destination="Lho-3Y-kwV" eventType="touchUpInside" id="uJI-IO-GBH"/>
+                                                                                    <action selector="buttonEditProfilePhoto:" destination="42d-wH-NAp" eventType="touchUpInside" id="I42-W4-J7M"/>
                                                                                 </connections>
                                                                             </button>
                                                                         </subviews>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="bottom" secondItem="SP8-8I-9je" secondAttribute="bottom" id="0Mb-fg-fSH"/>
+                                                                            <constraint firstItem="SP8-8I-9je" firstAttribute="centerY" secondItem="kZi-aE-O9t" secondAttribute="centerY" id="0rQ-Gz-Nz3"/>
                                                                             <constraint firstAttribute="trailing" secondItem="t8a-Dg-4ON" secondAttribute="trailing" id="4dS-oj-JVh"/>
                                                                             <constraint firstAttribute="bottom" secondItem="t8a-Dg-4ON" secondAttribute="bottom" id="7iC-s0-DFG"/>
+                                                                            <constraint firstItem="SP8-8I-9je" firstAttribute="centerX" secondItem="kZi-aE-O9t" secondAttribute="centerX" id="Ba5-Vs-bbR"/>
                                                                             <constraint firstAttribute="height" constant="48" id="LZc-aL-gqX"/>
-                                                                            <constraint firstItem="SP8-8I-9je" firstAttribute="leading" secondItem="kZi-aE-O9t" secondAttribute="leading" id="dGY-mW-QYC"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="SP8-8I-9je" secondAttribute="trailing" id="g5w-Zg-V6J"/>
                                                                             <constraint firstAttribute="width" constant="48" id="nIv-jI-H0W"/>
                                                                             <constraint firstItem="t8a-Dg-4ON" firstAttribute="top" secondItem="kZi-aE-O9t" secondAttribute="top" id="nwn-7u-uVe"/>
                                                                             <constraint firstItem="t8a-Dg-4ON" firstAttribute="leading" secondItem="kZi-aE-O9t" secondAttribute="leading" id="rj5-xd-mYr"/>
@@ -1473,6 +1476,8 @@
                         <outlet property="buttonEditEmail" destination="HHw-SC-52M" id="k9s-2u-FHm"/>
                         <outlet property="buttonEditName" destination="CSd-CE-zzc" id="6JX-Lu-Ffd"/>
                         <outlet property="buttonEditPhoneNumber" destination="hdu-JY-Oyp" id="CVM-FE-rPV"/>
+                        <outlet property="buttonEditProfilePhoto" destination="t8a-Dg-4ON" id="4Mk-sx-CM5"/>
+                        <outlet property="imageViewProfile" destination="nib-06-2OG" id="OJS-FQ-PJD"/>
                         <outlet property="labelEmail" destination="oPm-sy-scY" id="yXr-Wn-8aQ"/>
                         <outlet property="labelName" destination="ElN-pd-eRc" id="KUq-lU-sWs"/>
                         <outlet property="labelPhone" destination="FfU-Px-U1s" id="LvO-NM-Cs3"/>
@@ -1489,6 +1494,7 @@
                         <outlet property="textFieldPhone" destination="Leu-Hz-wO7" id="kWu-wj-6U2"/>
                         <outlet property="viewAppleBackGround" destination="JJd-75-w8h" id="xcF-u3-ztj"/>
                         <outlet property="viewBackGroundNameTitle" destination="QbV-Gs-eaD" id="VGY-GM-4Gx"/>
+                        <outlet property="viewButtonEditBackGround" destination="kZi-aE-O9t" id="tNU-7v-M7q"/>
                         <outlet property="viewFaceBookBackGround" destination="IHG-ww-glj" id="CcX-Ld-wTn"/>
                         <outlet property="viewLabelEmailBackGround" destination="mjf-gl-M1R" id="g9h-j5-395"/>
                         <outlet property="viewLabelNameBackGround" destination="bPT-Lx-Cb2" id="vyT-9h-lvm"/>
@@ -1504,7 +1510,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bIa-k7-a5V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="Lho-3Y-kwV" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2310.6870229007632" y="300.7042253521127"/>
         </scene>
@@ -2311,7 +2316,7 @@
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ftK-Kr-giD">
                                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit email address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v7H-Qc-Xs1">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change email address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v7H-Qc-Xs1">
                                                                         <rect key="frame" x="20" y="8" width="353" height="42"/>
                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                                         <color key="textColor" red="0.16078431369999999" green="0.16078431369999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -2342,7 +2347,7 @@
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vil-Dc-zN8">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="353" height="135"/>
                                                                                 <subviews>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will send you a code to log in" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qwX-o9-ekB">
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will send you a code on that email" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qwX-o9-ekB">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="353" height="19"/>
                                                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                                                         <color key="textColor" red="0.27843137254901962" green="0.32941176470588235" blue="0.40392156862745099" alpha="1" colorSpace="calibratedRGB"/>
@@ -2712,8 +2717,10 @@
                     <connections>
                         <outlet property="buttonBack" destination="7gL-4G-oUP" id="NXi-z8-sLh"/>
                         <outlet property="buttonSendVerificationCode" destination="fLS-OE-WmA" id="3pi-Ar-hBc"/>
+                        <outlet property="labelEmail" destination="cHY-7p-Own" id="ql1-F9-Ib8"/>
                         <outlet property="stackViewEmail" destination="4kP-je-YUn" id="IfY-mC-JgM"/>
                         <outlet property="stackViewPhoneNumber" destination="bhW-rx-iXb" id="Wae-sr-Y2E"/>
+                        <outlet property="textFieldEmail" destination="nTa-kl-lYF" id="C8o-eZ-5ZY"/>
                         <outlet property="textFieldPhoneNumber" destination="gqI-MA-chn" id="YdB-Qx-LQA"/>
                         <outlet property="viewBackGroundButtonSend" destination="9Oc-Y0-7z6" id="9Yx-4o-dEl"/>
                         <outlet property="viewBackGroundEmail" destination="YdU-bz-Hhr" id="gjI-7J-kLE"/>
@@ -2873,46 +2880,46 @@
                                         <rect key="frame" x="16" y="42" width="361" height="288"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Add new address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fhP-e8-OTH">
-                                                <rect key="frame" x="0.0" y="0.0" width="361" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="361" height="26"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                 <color key="textColor" red="0.12549019607843137" green="0.16078431372549018" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Lh-tm-rc7">
-                                                <rect key="frame" x="0.0" y="24" width="361" height="16"/>
+                                                <rect key="frame" x="0.0" y="26" width="361" height="16"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="jFK-wV-dVd"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Are you sure you want to " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUC-YL-W1C">
-                                                <rect key="frame" x="0.0" y="40" width="361" height="19.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="42" width="361" height="19.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                 <color key="textColor" red="0.12549019607843137" green="0.16078431372549018" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xgV-QS-Dok">
-                                                <rect key="frame" x="0.0" y="59.333333333333371" width="361" height="5"/>
+                                                <rect key="frame" x="0.0" y="61.333333333333371" width="361" height="5"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="5" id="Hb3-iy-teE"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="delete your account? " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Qk-w0-OFL">
-                                                <rect key="frame" x="0.0" y="64.333333333333371" width="361" height="19.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="66.333333333333371" width="361" height="19.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                 <color key="textColor" red="0.12549019607843137" green="0.16078431372549018" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kr6-Tv-fjF">
-                                                <rect key="frame" x="0.0" y="83.666666666666629" width="361" height="12"/>
+                                                <rect key="frame" x="0.0" y="85.666666666666629" width="361" height="12"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="12" id="GAf-lN-It0"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="This will permanently remove your personal data, preferences, and reviews." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8W3-BF-l7S">
-                                                <rect key="frame" x="0.0" y="95.666666666666629" width="361" height="40.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="97.666666666666629" width="361" height="38.333333333333343"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" red="0.32156862745098036" green="0.32156862745098036" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -3074,7 +3081,7 @@
         <image name="backGrayMisc" width="20" height="20"/>
         <image name="dummyProfileImageProfile" width="192" height="192"/>
         <image name="editGrayMisc" width="24" height="24"/>
-        <image name="editLogin" width="52" height="52"/>
+        <image name="editMehroonAddresses" width="20" height="20"/>
         <image name="emailLogin" width="20" height="20"/>
         <image name="emailVerificationLogin" width="80" height="80"/>
         <image name="facebookLogin" width="24" height="24"/>

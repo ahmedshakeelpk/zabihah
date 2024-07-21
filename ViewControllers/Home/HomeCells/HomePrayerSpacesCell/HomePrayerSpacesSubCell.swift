@@ -15,6 +15,8 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
     @IBOutlet weak var viewCallBackGround: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewRatingBackGround: UIView!
+    @IBOutlet weak var stackViewRatingBackGround: UIStackView!
+
     @IBOutlet weak var stackViewBackGround: UIStackView!
     
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
@@ -32,7 +34,6 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         collectionView.delegate = self
         collectionView.dataSource = self
     }
-
 }
 
 extension HomePrayerSpacesSubCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

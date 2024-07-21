@@ -91,13 +91,11 @@ class AddAddressViewController: UIViewController {
     var newAddressAddedHandler: (() -> ())!
     var addressEditHandler: (() -> ())!
 
-
     var modelAddUserAddressResponse: ModelAddUserAddressResponse? {
         didSet {
             if modelAddUserAddressResponse?.success ?? false {
                 showAlertCustomPopup(title: "Success", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    self.popViewController(animated: true)
-                    self.newAddressAddedHandler?()
+                    
                 }
             }
             else {

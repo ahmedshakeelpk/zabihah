@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class OtpEmailViewController: UIViewController{
     
@@ -21,22 +22,42 @@ class OtpEmailViewController: UIViewController{
     @IBOutlet weak var labelDescription: UILabel!
     @IBOutlet weak var labelResendCodeTimer: UILabel!
   
-    
+    var isOtpSuccessFullHandler: (() -> ())!
+    var stringPhoneEmail = ""
+    var otpString = ""
     var resendCodeCounter = 5
     var resendCodeTimer = Timer()
 
     
     var isFromEmail: Bool = false
-    var isFromRegistrationViewController: Bool = false
-    
+
+    var modelOtpResponse: OtpLoginViewController.ModelOtpResponse? {
+        didSet {
+            if modelOtpResponse?.success ?? false {
+                showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
+                    for controller in self.navigationController!.viewControllers as Array {
+                        if controller.isKind(of: ProfileViewController.self) {
+                            if let targetViewController = controller as? ProfileViewController {
+                                targetViewController.getuser()
+                                self.navigationController!.popToViewController(controller, animated: true)
+                            }
+                            break
+                        }
+                    }
+                }
+            }
+            else {
+                showAlertCustomPopup(title: "Error", message: modelOtpResponse?.message ?? "", iconName: .iconError)
+            }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-       
+        labelContactType.text = stringPhoneEmail
         viewBackGroundButtonContinue.radius(radius: 8)
         viewBackGroundButtonResend.radius(radius: 8)
-        
         viewBackGroundButtonResend.backgroundColor = .clrDarkBlueWithOccupacy05
         setupOtpViewConfiguration()
         startOtpTimer()
@@ -51,18 +72,15 @@ class OtpEmailViewController: UIViewController{
         }
     }
     @IBAction func buttonBack(_ sender: Any) {
-        popViewController(animated: true)
+        self.popToViewController(viewController: ProfileViewController.self)
     }
     @IBAction func buttonContinue(_ sender: Any) {
-//        if isFromRegistrationViewController {
-//            let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
-//            self.navigationController?.pushViewController(vc, animated: true)
-//        }
-//        else {
-//            let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RegisterationViewController") as! RegisterationViewController
-//            vc.isFromEmail = isFromEmail
-//            self.navigationController?.pushViewController(vc, animated: true)
-//        }
+        if otpString != "" {
+            verifyOtp()
+        }
+        else {
+            self.showToast(message: "Enter OTP!")
+        }
     }
     
     @IBAction func buttonResend(_ sender: Any) {
@@ -111,6 +129,16 @@ class OtpEmailViewController: UIViewController{
     }
     //Resend Code Timer Functionality *********
 
+    func verifyOtp() {
+        let parameters: Parameters = [
+            "otp": otpString
+        ]
+        
+        APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            let model: OtpLoginViewController.ModelOtpResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelOtpResponse = model
+        }
+    }
 }
 extension OtpEmailViewController: OTPFieldViewDelegate {
     func shouldBecomeFirstResponderForOTP(otpTextFieldIndex index: Int) -> Bool {

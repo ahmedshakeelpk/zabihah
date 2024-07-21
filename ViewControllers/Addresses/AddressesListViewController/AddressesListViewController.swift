@@ -172,5 +172,14 @@ extension AddressesListViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
         selectedAddressIndex = indexPath.row
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: HomeViewController.self) {
+                if let targetViewController = controller as? HomeViewController {
+                    targetViewController.getuser()
+                    self.navigationController!.popToViewController(controller, animated: true)
+                }
+                break
+            }
+        }
     }
 }

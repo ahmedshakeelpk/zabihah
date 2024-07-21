@@ -70,6 +70,8 @@ public extension SideMenu {
     }
     
     func openMenu() {
+        NotificationCenter.default.post(name: Notification.Name("kUserProfileUpdate"), object: nil)
+        
         changeNavBarStatus(to: .hide)
         updateMenuOriginX(for: .opened)
         menuState = .opened
