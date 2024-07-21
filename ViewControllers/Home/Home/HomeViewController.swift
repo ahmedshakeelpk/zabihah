@@ -9,6 +9,9 @@ import UIKit
 import Alamofire
 import GoogleMaps
 
+extension HomeViewController: GMSMapViewDelegate{
+    
+}
 class HomeViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var imageViewListViewMapView: UIImageView!
@@ -71,6 +74,8 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mapView.delegate = self
         self.getuser()
         sideMenuSetup()
         viewMapViewBackground.circle()
