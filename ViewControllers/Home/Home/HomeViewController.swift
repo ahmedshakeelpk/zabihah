@@ -13,6 +13,7 @@ extension HomeViewController: GMSMapViewDelegate{
     
 }
 class HomeViewController: UIViewController {
+    @IBOutlet weak var buttonFilters: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var imageViewListViewMapView: UIImageView!
     @IBOutlet weak var buttonMapViewListView: UIButton!
@@ -110,6 +111,9 @@ class HomeViewController: UIViewController {
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
     }
     
+    @IBAction func buttonFilters(_ sender: Any) {
+        navigateToHomeFilterViewController()
+    }
     @IBAction func buttonSideMenu(_ sender: Any) {
         openMenu()
     }
@@ -168,6 +172,11 @@ class HomeViewController: UIViewController {
     
     func navigateToEditAddressesViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func navigateToHomeFilterViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeFilterViewController") as! HomeFilterViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

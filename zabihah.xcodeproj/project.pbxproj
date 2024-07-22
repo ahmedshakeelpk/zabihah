@@ -68,6 +68,7 @@
 		6A9BD3CE2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3CD2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift */; };
 		6A9BD3DC2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3DB2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift */; };
 		6A9BD3EB2C48FB04008BBDF5 /* FPNTextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3EA2C48FB04008BBDF5 /* FPNTextFieldExtension.swift */; };
+		6ACE9B652C4E2ECA005E39A4 /* HomeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACE9B642C4E2ECA005E39A4 /* HomeFilterViewController.swift */; };
 		6AD0C00D2C3BA61F0051D99A /* AddAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C00C2C3BA61F0051D99A /* AddAddressViewController.swift */; };
 		6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */; };
 		6AD0C0112C3BC55C0051D99A /* AddAddressFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */; };
@@ -159,6 +160,7 @@
 		6A9BD3CD2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAddressViewControllerModel.swift; sourceTree = "<group>"; };
 		6A9BD3DB2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressViewControllerModel.swift; sourceTree = "<group>"; };
 		6A9BD3EA2C48FB04008BBDF5 /* FPNTextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPNTextFieldExtension.swift; sourceTree = "<group>"; };
+		6ACE9B642C4E2ECA005E39A4 /* HomeFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFilterViewController.swift; sourceTree = "<group>"; };
 		6AD0C00C2C3BA61F0051D99A /* AddAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressViewController.swift; sourceTree = "<group>"; };
 		6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressFieldsCell.swift; sourceTree = "<group>"; };
 		6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAddressFieldsCell.xib; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 		6A00FEFB2C4CAC0B0006E324 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				6ACE9B632C4E2EAE005E39A4 /* HomeFilterViewController */,
 				6A3AB5722C3956DB0030F016 /* HomeViewController.swift */,
 				6A9BD3C22C414810008BBDF5 /* HomeViewControllerModel.swift */,
 			);
@@ -594,6 +597,14 @@
 			path = FPNTextFieldExtension;
 			sourceTree = "<group>";
 		};
+		6ACE9B632C4E2EAE005E39A4 /* HomeFilterViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6ACE9B642C4E2ECA005E39A4 /* HomeFilterViewController.swift */,
+			);
+			path = HomeFilterViewController;
+			sourceTree = "<group>";
+		};
 		6AD0C00B2C3BA6100051D99A /* AddAddressFieldsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -876,6 +887,7 @@
 				6A3AB56F2C3956A40030F016 /* SideTownModel.swift in Sources */,
 				6A9BD3CE2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift in Sources */,
 				6A6FC3FC2C3572000050B6B2 /* AppDelegate.swift in Sources */,
+				6ACE9B652C4E2ECA005E39A4 /* HomeFilterViewController.swift in Sources */,
 				6AD39E822C3E469000BDAC05 /* HomeCuisinesCell.swift in Sources */,
 				6A16E0032C36789C00E1383B /* LoginWithEmailViewController.swift in Sources */,
 				6AD0C01A2C3BF3B80051D99A /* IconNames.swift in Sources */,
