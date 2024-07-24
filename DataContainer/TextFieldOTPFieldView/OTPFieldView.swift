@@ -232,9 +232,9 @@ import UIKit
                     enteredOTPString.append(secureEntryData[index])
                 }
             }
+            delegate?.enteredOTP(otp: enteredOTPString)
             
             if enteredOTPString.count == fieldsCount {
-                delegate?.enteredOTP(otp: enteredOTPString)
                 
                 // Check if all OTP fields have been filled or not. Based on that call the 2 delegate methods.
                 let isValid = delegate?.hasEnteredAllOTP(hasEnteredAll: (enteredOTPString.count == fieldsCount)) ?? false

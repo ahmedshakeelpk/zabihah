@@ -26,9 +26,14 @@ class RegisterationViewController: UIViewController {
     @IBOutlet weak var viewBackGroundPhoneNumber: UIView!
     @IBOutlet weak var stackViewEmail: UIView!
     
+    var isOtpVerified = false
     var isFromEmail: Bool = false
     var stringPhoneEmail = ""
-    var isImageUploaded = false
+    var isImageUploaded = false {
+        didSet {
+            fieldVilidation()
+        }
+    }
     var modelGetBlobContainer: ModelGetBlobContainer? {
         didSet {
             print(modelGetBlobContainer?.token as Any)
@@ -51,9 +56,9 @@ class RegisterationViewController: UIViewController {
             if modelSignUpResponse?.success ?? false {
                 if let token = modelSignUpResponse?.token {
                     kAccessToken = token
+                    kDefaults.set(kAccessToken, forKey: "kAccessToken")
                 }
-                navigateToHomeViewController()
-                
+                navigateToRootHomeViewController()
             }
             else {
                 showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
@@ -63,8 +68,44 @@ class RegisterationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setConfiguration()
+    }
+    
+    @IBAction func buttonBack(_ sender: Any) {
+        popViewController(animated: true)
+    }
+    
+    @IBAction func buttonEdit(_ sender: Any) {
+        funcMyActionSheet()
+    }
+    
+    @IBAction func buttonContinue(_ sender: Any) {
+        if isOtpVerified {
+            if let token = self.modelGetBlobContainer?.token {
+                if isImageUploaded {
+                    self.uploadOnBlob(token: token)
+                }
+                else {
+                    self.userSignup()
+                }
+            }
+            else {
+                getblobcontainer()
+            }
+        }
+        else {
+            sendnotification()
+        }
+    }
+    
+    func setConfiguration() {
+        textFieldEmail.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        textFieldLastName.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        textFieldFirstName.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        fieldVilidation()
         
-        viewBackGroundButtonContinue.radius(radius: 8)
+        buttonAgree.tag = 1
+        imageViewUser.circle()
         labelTermsAndConditions.setTwoColorWithUnderLine(textFirst: "I agree to ", textSecond: "terms and conditions.", colorFirst: .clrDarkBlue, colorSecond: .clrApp)
         if isFromEmail {
             viewBackGroundPhoneNumber.radius(radius: 4, color: .clrBorder, borderWidth: 0.5)
@@ -72,50 +113,40 @@ class RegisterationViewController: UIViewController {
             textFieldPhoneNumber.setFlag(countryCode: .US)
             textFieldPhoneNumber.delegate = self
             textFieldPhoneNumber.displayMode = .list // .picker by default
+            textFieldEmail.text = stringPhoneEmail
         }
         else {
+            textFieldPhoneNumber.text = stringPhoneEmail
             stackViewPhoneNumber.isHidden = true
         }
         getblobcontainer()
     }
-    @IBAction func buttonBack(_ sender: Any) {
-        popViewController(animated: true)
-    }
-    @IBAction func buttonEdit(_ sender: Any) {
-        funcMyActionSheet()
-    }
-    @IBAction func buttonContinue(_ sender: Any) {
+    
+    @objc func fieldVilidation() {
+        var isValid = true
         if textFieldFirstName.text == "" {
-            self.showToast(message: "Enter first name!")
+            isValid = false
         }
         else if textFieldLastName.text == "" {
-            self.showToast(message: "Enter last name!")
+            isValid = false
         }
         else if isFromEmail ? textFieldPhoneNumber.text == "" : textFieldEmail.text == "" {
-            self.showToast(message: "Enter \(isFromEmail ? "Phone Number" : "Email")!")
+            isValid = false
         }
-        else if !isImageUploaded {
-            self.showToast(message: "Upload your image")
+//        else if !isImageUploaded {
+//            isValid = false
+//        }
+        else if buttonAgree.tag == 0 {
+            isValid = false
         }
-        else {
-            if isOtpVerified {
-                if let token = self.modelGetBlobContainer?.token {
-                    self.uploadOnBlob(token: token)
-                }
-                else {
-                    getblobcontainer()
-                }
-            }
-            else {
-                sendnotification()
-            }
-        }
+        buttonContinue.isEnabled = isValid
+        viewBackGroundButtonContinue.backgroundColor = isValid ? .clrLightBlue : .clrDisableButton
     }
-    var isOtpVerified = false
+    
     func navigateToOtpLoginViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
         vc.isFromRegistrationViewController = true
-        vc.stringPhoneEmail = stringPhoneEmail
+        vc.stringPhoneEmail = isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : textFieldEmail.text!
         vc.isOtpSuccessFullHandler = {
             
             self.isOtpVerified = true
@@ -126,24 +157,31 @@ class RegisterationViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    @IBOutlet weak var imageViewCheck: UIImageView!
     @IBAction func buttonAgree(_ sender: Any) {
+        if buttonAgree.tag == 0 {
+            buttonAgree.tag = 1
+            imageViewCheck.image = UIImage(named: "checkLogin")
+        }
+        else {
+            imageViewCheck.image = UIImage(named: "unCheckLogin")
+            buttonAgree.tag = 0
+        }
+        fieldVilidation()
     }
     
-    func navigateToHomeViewController() {
-        //        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
-        //        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
-        //            self.sceneDelegate?.window?.rootViewController = navigationController
-        //        }
-        
-        let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-        self.navigationController?.pushViewController(vc, animated: true)
+    func navigateToRootHomeViewController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
+        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
+            self.sceneDelegate?.window?.rootViewController = navigationController
+        }
     }
-    
-    func userSignup(imageUrl: String) {
+
+    func userSignup(imageUrl: String? = "") {
         let parameters: Parameters = [
             "firstname": textFieldFirstName.text!,
             "lastName": textFieldLastName.text!,
-            "email": !isFromEmail ? stringPhoneEmail : textFieldEmail.text!,
+            "email": isFromEmail ? stringPhoneEmail : textFieldEmail.text!,
             "phone": isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : stringPhoneEmail,
             "photo": imageUrl,
             //            "photo": "https://zabihahblob.blob.core.windows.net/profileimage/742473352.835877.jpg",
@@ -277,8 +315,10 @@ extension RegisterationViewController: FPNTextFieldDelegate {
             //          textFieldPhoneNumber.getFormattedPhoneNumber(format: .National),       // Output "06 00 00 00 01"
             //          textFieldPhoneNumber.getFormattedPhoneNumber(format: .RFC3966),        // Output "tel:+33-6-00-00-00-01"
             //          textFieldPhoneNumber.getRawPhoneNumber()                               // Output "600000001"
+            fieldVilidation()
         } else {
             // Do something...
+            fieldVilidation()
         }
     }
 }
@@ -345,13 +385,13 @@ extension RegisterationViewController: UIDocumentPickerDelegate, UINavigationCon
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageViewUser.image = image
             isImageUploaded = true
-            if let imageData = image.jpegData(compressionQuality: 0.75) {
-                //                let fileData = imageData
-            }
-            
-            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-                //                let fileName = imageUrl.lastPathComponent
-            }
+//            if let imageData = image.jpegData(compressionQuality: 0.75) {
+//                //                let fileData = imageData
+//            }
+//            
+//            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+//                //                let fileName = imageUrl.lastPathComponent
+//            }
         }
         self.dismiss(animated: true, completion: nil)
     }
@@ -373,3 +413,5 @@ extension RegisterationViewController: UIDocumentPickerDelegate, UINavigationCon
         dismiss(animated: true, completion: nil)
     }
 }
+
+

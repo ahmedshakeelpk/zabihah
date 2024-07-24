@@ -8,6 +8,7 @@
 import UIKit
 
 class AddressesCell: UITableViewCell {
+    @IBOutlet weak var buttonCheck: UIButton!
     @IBOutlet weak var buttonEdit: UIButton!
     @IBOutlet weak var buttonDelete: UIButton!
     @IBOutlet weak var labelTitle: UILabel!
@@ -20,6 +21,7 @@ class AddressesCell: UITableViewCell {
     var index: Int!
     var buttonDeleteHandler: ((Int) -> ())!
     var buttonEditHandler: ((Int) -> ())!
+    var buttonCheckHandler: ((Int) -> ())!
     
     var selectedAddressIndex: Int? {
         didSet {
@@ -59,6 +61,9 @@ class AddressesCell: UITableViewCell {
     }
     @IBAction func buttonEdit(_ sender: UIButton) {
         buttonEditHandler?(index)
+    }
+    @IBAction func buttonCheck(_ sender: Any) {
+        buttonCheckHandler?(index)
     }
     
 }

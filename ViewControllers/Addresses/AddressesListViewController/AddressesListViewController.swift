@@ -151,6 +151,29 @@ class AddressesListViewController: UIViewController {
 
         present(refreshAlert, animated: true, completion: nil)
     }
+    func buttonCheckHandler(index: Int) {
+        editUserAddress(index: index)
+    }
+    var modelEditUserAddressResponse: AddAddressViewController.ModelEditUserAddressResponse? {
+        didSet {
+            if modelEditUserAddressResponse?.success ?? false {
+                getUserAddress()
+            }
+            else {
+                showAlertCustomPopup(title: "Error", message: modelEditUserAddressResponse?.message ?? "", iconName: .iconError)
+            }
+        }
+    }
+    func editUserAddress(index: Int) {
+        let parameters: Parameters = [
+            "id": modelGetUserAddressResponse?.userAddressesResponseData?[index].id ?? "",
+            "isDefault": true
+        ]
+        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg in
+            let model: AddAddressViewController.ModelEditUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelEditUserAddressResponse = model
+        }
+    }
 }
 
 extension AddressesListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -166,6 +189,8 @@ extension AddressesListViewController: UITableViewDelegate, UITableViewDataSourc
         cell.selectedAddressIndex = selectedAddressIndex
         cell.buttonEditHandler = buttonEditAddress
         cell.buttonDeleteHandler = buttonDeleteAddress
+        cell.buttonCheckHandler = buttonCheckHandler
+        
         return cell
     }
     

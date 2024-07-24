@@ -97,7 +97,7 @@ class SideMenuView: UIView {
         myActionSheet.view.tintColor = UIColor.black
         let galleryAction = UIAlertAction(title: "Logout", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
-            self.navigateToRootViewController()
+            self.navigateToRootLoginViewController()
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
@@ -112,7 +112,7 @@ class SideMenuView: UIView {
         myActionSheet.addAction(cancelAction)
         viewController.present(myActionSheet, animated: true, completion: nil)
     }
-    func navigateToRootViewController() {
+    func navigateToRootLoginViewController() {
         let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.login.rawValue, bundle:nil)
         if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationLoginViewController") as? UINavigationController {
             viewController.sceneDelegate?.window?.rootViewController = navigationController

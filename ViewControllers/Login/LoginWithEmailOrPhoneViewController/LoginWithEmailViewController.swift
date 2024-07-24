@@ -39,26 +39,11 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        textFieldEmail.text = "ahmedshakeelpk@gmail.com"
+//        textFieldEmail.text = "ahmedshakeelpk@gmail.com"
 //        textFieldEmail.text = "projectapipk@gmail.com"
-        textFieldPhoneNumber.text = "+923115284424"
-        viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundPhoneNumber.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundButtonSendVerificationCode.radius(radius: 8)
+//        textFieldPhoneNumber.text = "+923115284424"
         
-        if isFromEmail {
-            labelTitle.text = "Confirm your email"
-            stackViewPhoneNumber.isHidden = true
-        }
-        else {
-            labelTitle.text = "Confirm your phone"
-            stackViewEmail.isHidden = true
-            imageViewTitleType.image = UIImage(named: "phoneLogo")
-
-            textFieldPhoneNumber.setFlag(countryCode: .US)
-            textFieldPhoneNumber.delegate = self
-            textFieldPhoneNumber.displayMode = .list // .picker by default
-        }
+        setConfiguration()
     }
 
     @IBAction func buttonBack(_ sender: Any) {
@@ -80,27 +65,61 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         sendnotification()
     }
     
+    func setConfiguration() {
+        textFieldEmail.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        textFieldPhoneNumber.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        
+        viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        viewBackGroundPhoneNumber.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        viewBackGroundButtonSendVerificationCode.radius(radius: 8)
+        
+        if isFromEmail {
+            labelTitle.text = "Confirm your email"
+            stackViewPhoneNumber.isHidden = true
+        }
+        else {
+            labelTitle.text = "Confirm your phone"
+            stackViewEmail.isHidden = true
+            imageViewTitleType.image = UIImage(named: "phoneLogo")
+
+            textFieldPhoneNumber.setFlag(countryCode: .US)
+            textFieldPhoneNumber.delegate = self
+            textFieldPhoneNumber.displayMode = .list // .picker by default
+        }
+        
+        fieldVilidation()
+    }
+    @objc func fieldVilidation() {
+        var isValid = true
+        if isFromEmail {
+            if textFieldEmail.text == "" {
+                isValid = false
+            }
+        }
+        else {
+            if textFieldPhoneNumber.text == "" {
+                isValid = false
+            }
+        }
+        buttonSendVerificationCode.isEnabled = isValid
+        viewBackGroundButtonSendVerificationCode.backgroundColor = isValid ? .clrLightBlue : .clrDisableButton
+    }
+    
     func navigateToOtpLoginViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
         vc.isFromEmail = isFromEmail
-        vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.text!
-        if modelSendnotificationResponse?.recordFound ?? false {
-            vc.isRegisterationRequest = false
-            vc.isOtpSuccessFullHandler = {
-                self.navigateToHomeViewController()
-            }
+        vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
+        vc.isOtpSuccessFullHandler = {
+            self.navigateToRootHomeViewController()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func navigateToHomeViewController() {
+    func navigateToRootHomeViewController() {
         let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
         if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
             self.sceneDelegate?.window?.rootViewController = navigationController
         }
-        
-//        let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-//        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func sendnotification() {

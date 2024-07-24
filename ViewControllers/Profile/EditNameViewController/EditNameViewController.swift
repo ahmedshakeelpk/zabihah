@@ -37,10 +37,29 @@ class EditNameViewController: UIViewController {
         super.viewDidLoad()
         viewBackGroundButtonSave.radius(radius: 8)
         setData()
+        setConfiguration()
     }
     func setData() {
         textFieldFirstName.text = modelGetUserProfileResponse?.userResponseData?.firstname
         textFieldLastName.text = modelGetUserProfileResponse?.userResponseData?.lastName
+    }
+    
+    func setConfiguration() {
+        textFieldFirstName.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        textFieldLastName.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        
+        fieldVilidation()
+    }
+    @objc func fieldVilidation() {
+        var isValid = true
+        if textFieldFirstName.text == "" {
+            isValid = false
+        }
+        else if textFieldLastName.text == "" {
+            isValid = false
+        }
+        buttonSave.isEnabled = isValid
+        viewBackGroundButtonSave.backgroundColor = isValid ? .clrLightBlue : .clrDisableButton
     }
     
     @IBAction func buttonBack(_ sender: Any) {

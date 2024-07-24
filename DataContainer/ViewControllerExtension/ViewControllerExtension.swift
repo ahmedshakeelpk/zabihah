@@ -92,6 +92,15 @@ extension UIViewController {
                 break
             }
         }
+        //        for controller in self.navigationController!.viewControllers as Array {
+        //                        if controller.isKind(of: ProfileViewController.self) {
+        //                            if let targetViewController = controller as? ProfileViewController {
+        //                                targetViewController.getuser()
+        //                                self.navigationController!.popToViewController(controller, animated: true)
+        //                            }
+        //                            break
+        //                        }
+        //                    }
     }
     
 }

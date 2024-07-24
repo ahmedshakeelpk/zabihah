@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (5.9.1)
   - AZSClient (0.2.6)
+  - Cosmos (25.0.1)
   - FirebaseAnalytics (10.29.0):
     - FirebaseAnalytics/AdIdSupport (= 10.29.0)
     - FirebaseCore (~> 10.0)
@@ -99,6 +100,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - AZSClient
+  - Cosmos
   - FirebaseAnalytics
   - FlagPhoneNumber
   - GoogleMaps
@@ -110,6 +112,7 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - AZSClient
+    - Cosmos
     - FirebaseAnalytics
     - FirebaseCore
     - FirebaseCoreInternal
@@ -127,6 +130,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
   AZSClient: efd576cabf56f97e38cb1b614739f4b0c1906392
+  Cosmos: 02db0a1c953107049bfd2d7af19ceef55ecb7e98
   FirebaseAnalytics: 23717de130b779aa506e757edb9713d24b6ffeda
   FirebaseCore: 30e9c1cbe3d38f5f5e75f48bfcea87d7c358ec16
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
@@ -141,6 +145,6 @@ SPEC CHECKSUMS:
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
 
-PODFILE CHECKSUM: d2cee3b227dede2abf5331866f550d4eff4b1b8c
+PODFILE CHECKSUM: 6027a1c2cc3dc060425db9f9fefd2cfbe9374ea2
 
 COCOAPODS: 1.15.2

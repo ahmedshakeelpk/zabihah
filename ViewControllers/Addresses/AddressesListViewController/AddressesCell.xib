@@ -40,11 +40,22 @@
                                                                     <constraint firstAttribute="width" constant="24" id="qeQ-sN-Umz"/>
                                                                 </constraints>
                                                             </imageView>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mue-Ii-mXc">
+                                                                <rect key="frame" x="0.0" y="0.0" width="42" height="94"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <connections>
+                                                                    <action selector="buttonCheck:" destination="7ca-8f-Ove" eventType="touchUpInside" id="Qru-vw-Bgr"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
+                                                            <constraint firstItem="Mue-Ii-mXc" firstAttribute="leading" secondItem="ZcO-SS-ZAs" secondAttribute="leading" id="8a5-5c-2s3"/>
+                                                            <constraint firstAttribute="bottom" secondItem="Mue-Ii-mXc" secondAttribute="bottom" id="99E-CU-Ihw"/>
                                                             <constraint firstItem="7aO-LI-Cll" firstAttribute="centerY" secondItem="ZcO-SS-ZAs" secondAttribute="centerY" id="HSy-N3-seq"/>
+                                                            <constraint firstAttribute="trailing" secondItem="Mue-Ii-mXc" secondAttribute="trailing" id="OYQ-lr-mW9"/>
                                                             <constraint firstItem="7aO-LI-Cll" firstAttribute="leading" secondItem="ZcO-SS-ZAs" secondAttribute="leading" constant="12" id="hgb-0x-LpZ"/>
+                                                            <constraint firstItem="Mue-Ii-mXc" firstAttribute="top" secondItem="ZcO-SS-ZAs" secondAttribute="top" id="lbO-a7-fXa"/>
                                                             <constraint firstAttribute="trailing" secondItem="7aO-LI-Cll" secondAttribute="trailing" constant="6" id="pgi-t8-gLQ"/>
                                                         </constraints>
                                                     </view>
@@ -188,6 +199,7 @@
             <viewLayoutGuide key="safeArea" id="dlY-ly-TjR"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="buttonCheck" destination="Mue-Ii-mXc" id="6d3-Gv-y2k"/>
                 <outlet property="buttonDelete" destination="0xx-gW-4u0" id="NiS-iH-WVU"/>
                 <outlet property="buttonEdit" destination="d6v-YN-DUv" id="wWG-EB-Iu8"/>
                 <outlet property="imageViewCheck" destination="7aO-LI-Cll" id="tbd-T6-7ZM"/>

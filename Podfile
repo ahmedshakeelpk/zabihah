@@ -11,6 +11,7 @@ pod 'Alamofire'
 pod "FlagPhoneNumber"
 pod 'IQKeyboardManager'
 pod 'Kingfisher'
+pod 'Cosmos'
 
 #https://github.com/chronotruck/FlagPhoneNumber
 

@@ -21,16 +21,36 @@ class OtpLoginViewController: UIViewController{
     @IBOutlet weak var labelContactType: UILabel!
     @IBOutlet weak var labelDescription: UILabel!
     @IBOutlet weak var labelResendCodeTimer: UILabel!
-  
-    var otpString = ""
-    var resendCodeCounter = 5
+
+    var otpString: String!
     var resendCodeTimer = Timer()
     var isFromEmail: Bool = false
     var isFromRegistrationViewController: Bool = false
     var stringPhoneEmail = ""
-    var isRegisterationRequest: Bool = true
     
     var isOtpSuccessFullHandler: (() -> ())!
+    
+    var otpEntered: Bool! = false {
+        didSet {
+            buttonContinue.isEnabled = otpEntered
+            viewBackGroundButtonContinue.backgroundColor = otpEntered ? .clrLightBlue : .clrDisableButton
+        }
+    }
+    var resendCodeCounter = 50 {
+        didSet {
+            buttonResend.isEnabled = resendCodeCounter <= 0
+            viewBackGroundButtonResend.backgroundColor = resendCodeCounter <= 0 ? .clrLightBlue : .clrDisableButton
+            
+            if resendCodeCounter <= 0 {
+                resendCodeTimer.invalidate()
+                labelResendCodeTimer.text = "Resend Verification Code"
+            }
+            else {
+                labelResendCodeTimer.text = "Resend in \(resendCodeCounter) seconds"
+                print("Resend in \(resendCodeCounter) seconds")
+            }
+        }
+    }
     var modelOtpResponse: ModelOtpResponse? {
         didSet {
             if modelOtpResponse?.success ?? false {
@@ -40,17 +60,19 @@ class OtpLoginViewController: UIViewController{
                         self.isOtpSuccessFullHandler?()
                     }
                 }
-                else if !isRegisterationRequest {
-                    kAccessToken = modelOtpResponse?.token ?? ""
-                    kDefaults.set(kAccessToken, forKey: "kAccessToken")
-                    popViewController(animated: false)
-                    DispatchQueue.main.async {
-                        self.isOtpSuccessFullHandler?()
-                    }
-                }
                 else {
-                    showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
-                        self.navigateToRegisterationViewController()
+                    if modelOtpResponse?.recordFound ?? false {
+                        kAccessToken = modelOtpResponse?.token ?? ""
+                        kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                        popViewController(animated: false)
+                        DispatchQueue.main.async {
+                            self.isOtpSuccessFullHandler?()
+                        }
+                    }
+                    else {
+                        showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
+                            self.navigateToRegisterationViewController()
+                        }
                     }
                 }
             }
@@ -78,12 +100,11 @@ class OtpLoginViewController: UIViewController{
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
+        otpEntered = false
         labelContactType.text = stringPhoneEmail
         viewBackGroundButtonContinue.radius(radius: 8)
         viewBackGroundButtonResend.radius(radius: 8)
         
-        viewBackGroundButtonResend.backgroundColor = .clrDarkBlueWithOccupacy05
         setupOtpViewConfiguration()
         startOtpTimer()
         if isFromEmail {
@@ -100,7 +121,7 @@ class OtpLoginViewController: UIViewController{
         popViewController(animated: true)
     }
     @IBAction func buttonContinue(_ sender: Any) {
-        if otpString != "" {
+        if otpEntered {
             verifyOtp()
         }
         else {
@@ -142,23 +163,13 @@ class OtpLoginViewController: UIViewController{
        resendCodeTimer.invalidate()
      }
     func startOtpTimer() {
-        resendCodeCounter = 5
-        buttonResend.isEnabled = false
+        resendCodeCounter = 50
         labelResendCodeTimer.text = ""
-        viewBackGroundButtonResend.backgroundColor = .clrDarkBlueWithOccupacy05
 
         self.resendCodeTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimerLabel), userInfo: nil, repeats: true)
     }
     @objc func updateTimerLabel() {
         resendCodeCounter -= 1
-        labelResendCodeTimer.text = "Resend in \(resendCodeCounter) seconds"
-        print("Resend in \(resendCodeCounter) seconds")
-        if resendCodeCounter == 0 {
-            buttonResend.isEnabled = true
-            resendCodeTimer.invalidate()
-            labelResendCodeTimer.text = "Resend Verification Code"
-            viewBackGroundButtonResend.backgroundColor = .clrLightBlue
-        }
     }
     //Resend Code Timer Functionality *********
     
@@ -166,7 +177,7 @@ class OtpLoginViewController: UIViewController{
     
     func verifyOtp() {
         let parameters: Parameters = [
-            "otp": otpString
+            "otp": otpString ?? ""
         ]
         
         APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg in
@@ -208,7 +219,7 @@ extension OtpLoginViewController: OTPFieldViewDelegate {
     }
     
     func hasEnteredAllOTP(hasEnteredAll: Bool) -> Bool {
-        
+        otpEntered = hasEnteredAll
         return true
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import FlagPhoneNumber
+import Alamofire
 
 class EditEmailPhoneViewController: UIViewController {
 
@@ -23,27 +24,25 @@ class EditEmailPhoneViewController: UIViewController {
     
     var isFromEmail: Bool = false
     var isOtpVerified = false
+    var editProfileResponseHandler: (() -> ())!
 
+    var modelSendnotificationResponse: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? {
+        didSet {
+            if modelSendnotificationResponse?.success ?? false {
+                navigateToOtpEmailViewController()
+            }
+            else {
+                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+            }
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewBackGroundButtonSend.radius(radius: 8)
-        viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundPhoneNumber.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        labelEmail.text = ""
 
-        if isFromEmail {
-            stackViewPhoneNumber.isHidden = true
-            textFieldEmail.text = modelGetUserProfileResponse?.userResponseData?.email ?? ""
-        } 
-        else {
-            stackViewEmail.isHidden = true
-            textFieldPhoneNumber.setFlag(countryCode: .US)
-            textFieldPhoneNumber.delegate = self
-            textFieldPhoneNumber.displayMode = .list // .picker by default
-        }
+        setConfiguration()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -65,23 +64,54 @@ class EditEmailPhoneViewController: UIViewController {
         }
         sendnotification()
     }
-    var modelSendnotificationResponse: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? {
-        didSet {
-            if modelSendnotificationResponse?.success ?? false {
-                navigateToOtpEmailViewController()
-            }
-            else {
-                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+    
+    func setConfiguration() {
+        textFieldEmail.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        textFieldPhoneNumber.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        
+        viewBackGroundButtonSend.radius(radius: 8)
+        viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        viewBackGroundPhoneNumber.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        labelEmail.text = ""
+        
+        if isFromEmail {
+            stackViewPhoneNumber.isHidden = true
+        }
+        else {
+            stackViewEmail.isHidden = true
+            textFieldPhoneNumber.setFlag(countryCode: .US)
+            textFieldPhoneNumber.delegate = self
+            textFieldPhoneNumber.displayMode = .list // .picker by default
+        }
+        
+        fieldVilidation()
+    }
+    @objc func fieldVilidation() {
+        var isValid = true
+        if isFromEmail {
+            if textFieldEmail.text == "" {
+                isValid = false
             }
         }
+        else {
+            if textFieldPhoneNumber.text == "" {
+                isValid = false
+            }
+        }
+        buttonSendVerificationCode.isEnabled = isValid
+        viewBackGroundButtonSend.backgroundColor = isValid ? .clrLightBlue : .clrDisableButton
     }
     
     func navigateToOtpEmailViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpEmailViewController") as! OtpEmailViewController
         vc.isFromEmail = isFromEmail
-        vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.text!
+        vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
+        vc.isOtpSuccessFullHandler = {
+            self.editprofile()
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
     func sendnotification() {
         let parameters: [String: Any] = [
             "recipient": isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
@@ -92,6 +122,36 @@ class EditEmailPhoneViewController: UIViewController {
         APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelSendnotificationResponse = model
+        }
+    }
+    
+    var modelEditProfileResponse: EditNameViewController.ModelEditProfileResponse? {
+        didSet {
+            if modelEditProfileResponse?.success ?? false {
+                if self.isFromEmail {
+                    modelGetUserProfileResponse?.userResponseData?.email = self.textFieldEmail.text!
+                }
+                else {
+                    modelGetUserProfileResponse?.userResponseData?.phone = self.textFieldPhoneNumber.getCompletePhoneNumber()
+                }
+                self.popViewController(animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.editProfileResponseHandler?()
+                }
+            }
+            else {
+                showAlertCustomPopup(title: "Error", message: modelEditProfileResponse?.message ?? "", iconName: .iconError)
+            }
+        }
+    }
+    
+    func editprofile() {
+        let parameters: Parameters = [
+            isFromEmail ? "email" : "phone" : isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
+        ]
+        APIs.postAPI(apiName: .editprofile, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
+            let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelEditProfileResponse = model
         }
     }
 }

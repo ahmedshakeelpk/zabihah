@@ -18,7 +18,7 @@ extension UIColor {
     static let clrUnselected = UIColor(hexString: "F8FAFC")
 
     static let clrDarkBlue = UIColor(hexString: "101828")
-    static let clrDarkBlueWithOccupacy05 = UIColor(hexString: "CDD5DF", alpha: 0.5)
+    static let clrDisableButton = UIColor(hexString: "CDD5DF")
 
     //StatusBar Colors
     static let clrMehroonStatusBar = UIColor(hexString: "8C1B11")

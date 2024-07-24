@@ -32,12 +32,13 @@ class AddAddressViewController: UIViewController {
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var viewButtonBackBackGround: UIView!
     @IBOutlet weak var buttonSave: UIButton!
+    @IBOutlet weak var viewBackGroundButtonSave: ViewButtonSetting!
     
     let arrayNames = ["Home", "Office", "Person", "Other"]
     let arrayNamesIconMehroon = ["houseMehroon", "briefcaseMehroon", "userMehroon", "addCircleMehroon"]
     let arrayNamesIconWhite = ["houseWhite", "briefcaseWhite", "userWhite", "addCircleWhite"]
 
-
+    var isEditAddress = false
     var newAddress = String()
     var location: CLLocationCoordinate2D? {
         didSet {
@@ -95,7 +96,8 @@ class AddAddressViewController: UIViewController {
         didSet {
             if modelAddUserAddressResponse?.success ?? false {
                 showAlertCustomPopup(title: "Success", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    
+                    self.popViewController(animated: true)
+                    self.newAddressAddedHandler?()
                 }
             }
             else {
@@ -107,12 +109,7 @@ class AddAddressViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewButtonBackBackGround.radius(radius: 8)
-        viewSwitchDefaultAddressBackGround.radius(radius: 8)
-        viewAddNewAddressBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
-        AddAddressFieldsCell.register(collectionView: collectionView)
-        self.setLocation()
-        textFieldDeliveryInstruction.addTarget(self, action: #selector(textFieldDeliveryInstructionEditingChanged), for: .editingChanged)
+        setConfiguration()
     }
     @objc func textFieldDeliveryInstructionEditingChanged() {
         if let count = textFieldDeliveryInstruction.text?.count {
@@ -149,6 +146,28 @@ class AddAddressViewController: UIViewController {
         
     }
     
+    
+    func setConfiguration() {
+        textFieldAddress.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
+        
+        viewButtonBackBackGround.radius(radius: 8)
+        viewSwitchDefaultAddressBackGround.radius(radius: 8)
+        viewAddNewAddressBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
+        AddAddressFieldsCell.register(collectionView: collectionView)
+        self.setLocation()
+        textFieldDeliveryInstruction.addTarget(self, action: #selector(textFieldDeliveryInstructionEditingChanged), for: .editingChanged)
+        
+        fieldVilidation()
+    }
+    @objc func fieldVilidation() {
+        var isValid = true
+        if textFieldAddress.text == "" {
+            isValid = false
+        }
+        buttonSave.isEnabled = isValid
+        viewBackGroundButtonSave.backgroundColor = isValid ? .clrLightBlue : .clrDisableButton
+    }
+    
     // Present the Autocomplete view controller when the button is pressed.
     @objc func autocompleteClicked() {
         let autocompleteController = GMSAutocompleteViewController()
@@ -168,7 +187,7 @@ class AddAddressViewController: UIViewController {
         marker.position = CLLocationCoordinate2DMake(lat, long)
         marker.map = self.mapView
     }
-    var isEditAddress = false
+
     func addUserAddress() {
         let parameters: Parameters = [
 //            "id": locationId ?? "",
@@ -204,6 +223,10 @@ class AddAddressViewController: UIViewController {
             self.modelEditUserAddressResponse = model
         }
     }
+    
+    
+    
+    
 }
 
 
@@ -257,11 +280,11 @@ extension AddAddressViewController: GMSMapViewDelegate {
 extension AddAddressViewController: GMSAutocompleteViewControllerDelegate {
     // Handle the user's selection.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        print("Place name: \(place.name)")
-        print("Place ID: \(place.placeID)")
-        print("Place attributions: \(place.attributions)")
-        print("Place coordinate: \(place.coordinate)")
-        print("Place attributions: \(place.attributions ?? NSAttributedString(string: ""))")
+//        print("Place name: \(place.name)")
+//        print("Place ID: \(place.placeID)")
+//        print("Place attributions: \(place.attributions)")
+//        print("Place coordinate: \(place.coordinate)")
+//        print("Place attributions: \(place.attributions ?? NSAttributedString(string: ""))")
         self.newAddress = place.name ?? ""
         locationId = place.placeID ?? ""
         location = place.coordinate
@@ -297,9 +320,9 @@ extension AddAddressViewController: GMSAutocompleteResultsViewControllerDelegate
                            didAutocompleteWith place: GMSPlace) {
         //    searchController?.isActive = false
         // Do something with the selected place.
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
+//        print("Place name: \(place.name)")
+//        print("Place address: \(place.formattedAddress)")
+//        print("Place attributions: \(place.attributions)")
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,

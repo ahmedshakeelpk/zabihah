@@ -1314,6 +1314,7 @@
                         <outlet property="textFieldDeliveryInstruction" destination="xwf-5Y-b2a" id="SqY-xx-FYC"/>
                         <outlet property="textFieldLocationInstructionOptional" destination="PvJ-Es-f51" id="TdK-OT-EaA"/>
                         <outlet property="viewAddNewAddressBackGround" destination="f24-cw-h6N" id="zsc-7y-bQg"/>
+                        <outlet property="viewBackGroundButtonSave" destination="eqi-FI-6IX" id="pFh-d9-Yb2"/>
                         <outlet property="viewButtonBackBackGround" destination="In3-f8-6tZ" id="QFv-Mv-pPj"/>
                         <outlet property="viewSwitchDefaultAddressBackGround" destination="Edf-tO-W6i" id="8rO-8w-1M9"/>
                     </connections>

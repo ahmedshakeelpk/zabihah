@@ -112,7 +112,7 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func buttonFilters(_ sender: Any) {
-        navigateToHomeFilterViewController()
+        presentToHomeFilterViewController()
     }
     @IBAction func buttonSideMenu(_ sender: Any) {
         openMenu()
@@ -175,9 +175,13 @@ class HomeViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func navigateToHomeFilterViewController() {
+    func presentToHomeFilterViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeFilterViewController") as! HomeFilterViewController
-        self.navigationController?.pushViewController(vc, animated: true)
+        vc.buttonFilterHandler = { parameters in
+            print(parameters)
+        }
+        
+        self.present(vc, animated: true)
     }
     
     func getuser() {       

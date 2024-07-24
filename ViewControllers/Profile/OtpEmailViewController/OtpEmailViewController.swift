@@ -24,27 +24,42 @@ class OtpEmailViewController: UIViewController{
   
     var isOtpSuccessFullHandler: (() -> ())!
     var stringPhoneEmail = ""
-    var otpString = ""
-    var resendCodeCounter = 5
+    
     var resendCodeTimer = Timer()
-
     
     var isFromEmail: Bool = false
-
+    var otpEntered: Bool! = false {
+        didSet {
+            buttonContinue.isEnabled = otpEntered
+            viewBackGroundButtonContinue.backgroundColor = otpEntered ? .clrLightBlue : .clrDisableButton
+        }
+    }
+    var resendCodeCounter = 50 {
+        didSet {
+            buttonResend.isEnabled = resendCodeCounter <= 0
+            viewBackGroundButtonResend.backgroundColor = resendCodeCounter <= 0 ? .clrLightBlue : .clrDisableButton
+            
+            if resendCodeCounter <= 0 {
+                resendCodeTimer.invalidate()
+                labelResendCodeTimer.text = "Resend Verification Code"
+            }
+            else {
+                labelResendCodeTimer.text = "Resend in \(resendCodeCounter) seconds"
+                print("Resend in \(resendCodeCounter) seconds")
+            }
+        }
+    }
+   
+    var otpString: String!
     var modelOtpResponse: OtpLoginViewController.ModelOtpResponse? {
         didSet {
             if modelOtpResponse?.success ?? false {
-                showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
-                    for controller in self.navigationController!.viewControllers as Array {
-                        if controller.isKind(of: ProfileViewController.self) {
-                            if let targetViewController = controller as? ProfileViewController {
-                                targetViewController.getuser()
-                                self.navigationController!.popToViewController(controller, animated: true)
-                            }
-                            break
-                        }
-                    }
+                self.popViewController(animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.isOtpSuccessFullHandler?()
                 }
+//                showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
+//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelOtpResponse?.message ?? "", iconName: .iconError)
@@ -53,26 +68,25 @@ class OtpEmailViewController: UIViewController{
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
-        labelContactType.text = stringPhoneEmail
+        otpEntered = false
+        
         viewBackGroundButtonContinue.radius(radius: 8)
         viewBackGroundButtonResend.radius(radius: 8)
-        viewBackGroundButtonResend.backgroundColor = .clrDarkBlueWithOccupacy05
+        viewBackGroundButtonResend.backgroundColor = .clrDisableButton
         setupOtpViewConfiguration()
         startOtpTimer()
         if isFromEmail {
             labelTitle.text = "Confirm your email"
-            labelContactType.text = "email@domain.com"
         }
         else {
             labelTitle.text = "Confirm your phone"
-            labelContactType.text = " +1 (555) 000-0000."
             imageViewTitleType.image = UIImage(named: "phoneVerificationLogin")
         }
+        labelContactType.text = stringPhoneEmail
     }
     @IBAction func buttonBack(_ sender: Any) {
-        self.popToViewController(viewController: ProfileViewController.self)
+        self.popViewController(animated: true)
     }
     @IBAction func buttonContinue(_ sender: Any) {
         if otpString != "" {
@@ -110,28 +124,19 @@ class OtpEmailViewController: UIViewController{
        resendCodeTimer.invalidate()
      }
     func startOtpTimer() {
-        resendCodeCounter = 5
-        buttonResend.isEnabled = false
+        resendCodeCounter = 50
         labelResendCodeTimer.text = ""
-        viewBackGroundButtonResend.backgroundColor = .clrDarkBlueWithOccupacy05
 
         self.resendCodeTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimerLabel), userInfo: nil, repeats: true)
     }
     @objc func updateTimerLabel() {
         resendCodeCounter -= 1
-        labelResendCodeTimer.text = "Resend in \(resendCodeCounter) seconds"
-        if resendCodeCounter == 0 {
-            buttonResend.isEnabled = true
-            resendCodeTimer.invalidate()
-            labelResendCodeTimer.text = "Resend Verification Code"
-            viewBackGroundButtonResend.backgroundColor = .clrLightBlue
-        }
     }
     //Resend Code Timer Functionality *********
 
     func verifyOtp() {
         let parameters: Parameters = [
-            "otp": otpString
+            "otp": otpString ?? ""
         ]
         
         APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg in
@@ -148,10 +153,11 @@ extension OtpEmailViewController: OTPFieldViewDelegate {
     
     func enteredOTP(otp: String) {
         print(otp)
+        otpString = otp
     }
     
     func hasEnteredAllOTP(hasEnteredAll: Bool) -> Bool {
-        
+        otpEntered = hasEnteredAll
         return true
     }
 }

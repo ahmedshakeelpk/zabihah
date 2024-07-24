@@ -125,8 +125,16 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func switchOffers(_ sender: Any) {
+        let parameters: Parameters = [
+            "isUpdateSubcription": switchOffers.isOn
+        ]
+        editprofile(parameters: parameters)
     }
     @IBAction func switchEvents(_ sender: Any) {
+        let parameters: Parameters = [
+            "isNewsLetterSubcription": switchEvents.isOn
+        ]
+        editprofile(parameters: parameters)
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -147,11 +155,17 @@ class ProfileViewController: UIViewController {
     @IBAction func buttonEditEmail(_ sender: Any) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditEmailPhoneViewController") as! EditEmailPhoneViewController
         vc.isFromEmail = true
+        vc.editProfileResponseHandler = {
+            self.setData()
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBAction func buttonEditPhoneNumber(_ sender: Any) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditEmailPhoneViewController") as! EditEmailPhoneViewController
+        vc.editProfileResponseHandler = {
+            self.setData()
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -165,6 +179,8 @@ class ProfileViewController: UIViewController {
         labelPhone.text = modelGetUserProfileResponse?.userResponseData?.phone
         textFieldPhone.text = modelGetUserProfileResponse?.userResponseData?.phone
         imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "")
+        switchOffers.isOn = modelGetUserProfileResponse?.userResponseData?.isUpdateSubcription ?? false
+        switchEvents.isOn = modelGetUserProfileResponse?.userResponseData?.isNewsLetterSubcription ?? false
     }
     
     func navigateToProfileDeleteViewController() {
@@ -269,16 +285,8 @@ class ProfileViewController: UIViewController {
         self.present(myActionSheet, animated: true, completion: nil)
     }
             
-    func editprofile(imageUrl: String) {
-        let parameters: Parameters = [
-//            "firstname": textFieldFirstName.text!,
-//            "lastName": textFieldLastName.text!,
-//              "email": "string",
-//              "phone": "string",
-              "photo": imageUrl,
-//              "isUpdateSubcription": true,
-//              "isNewsLetterSubcription": true
-        ]
+    func editprofile(parameters: Parameters) {
+        
         APIs.postAPI(apiName: .editprofile, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
             let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelEditProfileResponse = model
@@ -316,7 +324,10 @@ extension ProfileViewController {
                 if let imageURL = azureBlobStorage.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
                     print("Image URL: \(imageURL)")
                     DispatchQueue.main.async {
-                        self.editprofile(imageUrl: "\(imageURL)")
+                        let parameters: Parameters = [
+                            "photo": "\(imageURL)"
+                        ]
+                        self.editprofile(parameters: parameters)
                     }
                 } else {
                     print("Failed to construct image URL")
