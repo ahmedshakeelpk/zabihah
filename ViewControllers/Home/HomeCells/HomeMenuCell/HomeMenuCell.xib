@@ -31,18 +31,18 @@
                                                 <rect key="frame" x="28" y="0.0" width="50" height="40"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1bill" translatesAutoresizingMaskIntoConstraints="NO" id="Fov-bC-hbI">
-                                                        <rect key="frame" x="13" y="8" width="24" height="24"/>
+                                                        <rect key="frame" x="13" y="8" width="20" height="20"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="24" id="dXy-qA-0L5"/>
-                                                            <constraint firstAttribute="width" constant="24" id="rq6-lg-175"/>
+                                                            <constraint firstAttribute="height" constant="20" id="dXy-qA-0L5"/>
+                                                            <constraint firstAttribute="width" constant="20" id="rq6-lg-175"/>
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="Fov-bC-hbI" firstAttribute="centerX" secondItem="n2z-9o-aoI" secondAttribute="centerX" id="BT6-WJ-ywa"/>
+                                                    <constraint firstItem="Fov-bC-hbI" firstAttribute="centerX" secondItem="n2z-9o-aoI" secondAttribute="centerX" constant="-2" id="BT6-WJ-ywa"/>
                                                     <constraint firstAttribute="width" constant="50" id="qgh-J9-fOl"/>
-                                                    <constraint firstItem="Fov-bC-hbI" firstAttribute="centerY" secondItem="n2z-9o-aoI" secondAttribute="centerY" id="wgn-VB-T0F"/>
+                                                    <constraint firstItem="Fov-bC-hbI" firstAttribute="centerY" secondItem="n2z-9o-aoI" secondAttribute="centerY" constant="-2" id="wgn-VB-T0F"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -66,7 +66,7 @@
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wip-CK-T90">
                                                                 <rect key="frame" x="0.0" y="0.0" width="106" height="20"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                                 <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
