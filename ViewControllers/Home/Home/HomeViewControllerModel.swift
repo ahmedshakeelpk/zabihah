@@ -26,4 +26,23 @@ extension HomeViewController {
         let photo: String?
         var lastName: String?
     }
+    
+    // MARK: - ModelGetFeaturedRestaurants
+    struct ModelGetFeaturedRestaurantsResponse: Codable {
+        let recordFound, success: Bool?
+        let message, innerExceptionMessage: String?
+        let featuredRestuarantResponseData: [FeaturedRestuarantResponseDatum]?
+    }
+
+    // MARK: - FeaturedRestuarantResponseDatum
+    struct FeaturedRestuarantResponseDatum: Codable {
+        let address, phone: String?
+        let rating, distance: Double?
+        let gallaryCount, reviews: Int?
+        let iconImage: String?
+        let isDelivery: Bool?
+        let name: String?
+        let tags: String?
+        let visits: Int??
+    }
 }

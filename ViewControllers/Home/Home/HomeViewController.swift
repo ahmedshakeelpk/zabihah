@@ -31,7 +31,16 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var buttonSearchLocation: UIButton!
     @IBOutlet weak var labelMapViewListView: UILabel!
-
+    var modelGetFeaturedRestaurantsResponse: ModelGetFeaturedRestaurantsResponse? {
+        didSet {
+            if modelGetFeaturedRestaurantsResponse?.success ?? false {
+                
+            }
+            else {
+                
+            }
+        }
+    }
     var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
         didSet {
             modelGetUserProfileResponse = modelGetUserResponseLocal
@@ -196,18 +205,23 @@ class HomeViewController: UIViewController {
     
     func getFeaturedRestaurants() {
         let parameters: Parameters = [
-              "lat": 0,
-              "long": 0,
-              "radius": 0,
-              "rating": 0,
-              "isalcoholic": true,
-              "isHalal": true
+            "lat": 37.8690971,
+            "long": -122.2930876,
+            "radius": 0,
+            "rating": 0,
+            "isalcoholic": false,
+            "isHalal": true
         ]
         APIs.postAPI(apiName: .getfeaturedrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-//            let model: ModelAddUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-//            self.modelAddUserAddressResponse = model
+            let model: ModelGetFeaturedRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetFeaturedRestaurantsResponse = model
         }
     }
+    
+   
+    
+    
+
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
