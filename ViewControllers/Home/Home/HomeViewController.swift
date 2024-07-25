@@ -76,8 +76,13 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setConfiguration()
+        getuser()
+        getFeaturedRestaurants()
+    }
+    
+    func setConfiguration() {
         mapView.delegate = self
-        self.getuser()
         sideMenuSetup()
         viewMapViewBackground.circle()
         stackViewFilterResultBackGround.radius(radius: 8)
@@ -97,7 +102,6 @@ class HomeViewController: UIViewController {
         //MARK: - Add Extra spacing in tableView
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
 
-        
         if #available(iOS 15.0, *) {
             self.tableView.sectionHeaderTopPadding = 0
         }
@@ -143,9 +147,6 @@ class HomeViewController: UIViewController {
     
     func sideMenuSetup() {
         let myCustomView: SideMenuView = UIView.fromNib()
-
-        
-//        let headerView = UINib(nibName: "SideMenuView", bundle: Bundle(for: SideMenuView.self)).instantiate(withOwner: self, options: nil)[0] as! UIView
         let menuView = UIView(frame: CGRect(x: 0, y: 0, width: myCustomView.frame.width - 80, height: UIScreen.main.bounds.height))
         menuView.addSubview(myCustomView)
         menuView.frame.size.width = myCustomView.frame.width - 80
@@ -190,6 +191,21 @@ class HomeViewController: UIViewController {
             print(success)
             let model: ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserResponseLocal = model
+        }
+    }
+    
+    func getFeaturedRestaurants() {
+        let parameters: Parameters = [
+              "lat": 0,
+              "long": 0,
+              "radius": 0,
+              "rating": 0,
+              "isalcoholic": true,
+              "isHalal": true
+        ]
+        APIs.postAPI(apiName: .getfeaturedrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+//            let model: ModelAddUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+//            self.modelAddUserAddressResponse = model
         }
     }
 }

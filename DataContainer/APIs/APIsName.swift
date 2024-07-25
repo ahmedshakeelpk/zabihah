@@ -19,6 +19,9 @@ struct APIsName {
         case verifyOtp = "api/Otp/verifyOtp"
         case getblobcontainer = "api/Blob/getblobcontainer"
         
+        //MARK:- Restaurant
+        case getfeaturedrestaurants = "api/Restaurant/getfeaturedrestaurants"
+        
         //MARK:- V1
         case usersignup = "v1/User/usersignup"
         case getuser = "v1/User/getuser"
@@ -28,8 +31,6 @@ struct APIsName {
         case adduseraddress = "v1/User/adduseraddress"
         case edituseraddress = "v1/User/edituseraddress"
         case deleteuseraddress = "v1/User/deleteuseraddress"
-        
-        
         
     }
 }
