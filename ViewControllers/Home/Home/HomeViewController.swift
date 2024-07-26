@@ -31,14 +31,36 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var buttonSearchLocation: UIButton!
     @IBOutlet weak var labelMapViewListView: UILabel!
+    
+    var location: CLLocationCoordinate2D? {
+        didSet {
+            
+            
+        }
+    }
+    
     var modelGetFeaturedRestaurantsResponse: ModelGetFeaturedRestaurantsResponse? {
         didSet {
-            if modelGetFeaturedRestaurantsResponse?.success ?? false {
-                
+            
+            let indexOf = listItems.map { $0.identifier }.firstIndex { identifier in
+                identifier == HomeFoodItemCell.nibName()
             }
-            else {
+            print(indexOf ?? 0)
+            if (indexOf != nil) {
+                let recordCount = ((modelGetFeaturedRestaurantsResponse?.featuredRestuarantResponseData as Any) as AnyObject).count ?? 0
                 
+                if recordCount > 0 {
+                    let data = modelGetFeaturedRestaurantsResponse?.featuredRestuarantResponseData as Any
+                    let rowHeight = 240
+                    let identifier = HomeFoodItemCell.nibName()
+                    let sectionName = "Featured near you"
+                    listItems[indexOf!] = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
+                    let indexPath = IndexPath(row: 0, section: indexOf!)
+//                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                    self.tableView.reloadSections(IndexSet(integer: indexOf ?? 0), with: .automatic)
+                }
             }
+            
         }
     }
     var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
@@ -53,7 +75,8 @@ class HomeViewController: UIViewController {
             if selectedMenuCell == 0 {
                 //MARK: - Add Items In tableView
                 listItems = [
-                    HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "Featured near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+                    
+                    HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
                     HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
                     HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
                     HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
@@ -87,7 +110,9 @@ class HomeViewController: UIViewController {
         
         setConfiguration()
         getuser()
-        getFeaturedRestaurants()
+        
+        location = CLLocationCoordinate2D(latitude: 37.8690971, longitude: -122.2930876)
+        getFeaturedRestaurants(parameters: nil)
     }
     
     func setConfiguration() {
@@ -187,10 +212,11 @@ class HomeViewController: UIViewController {
     
     func presentToHomeFilterViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeFilterViewController") as! HomeFilterViewController
+        vc.location = location
         vc.buttonFilterHandler = { parameters in
             print(parameters)
+            self.getFeaturedRestaurants(parameters: parameters)
         }
-        
         self.present(vc, animated: true)
     }
     
@@ -203,25 +229,23 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func getFeaturedRestaurants() {
-        let parameters: Parameters = [
-            "lat": 37.8690971,
-            "long": -122.2930876,
-            "radius": 0,
-            "rating": 0,
-            "isalcoholic": false,
-            "isHalal": true
-        ]
+    func getFeaturedRestaurants(parameters: [String: Any]? = nil) {
+        var parameters = parameters
+        if parameters == nil {
+            parameters = [
+                "lat": 37.8690971,
+                "long": -122.2930876,
+                "radius": 0,
+                "rating": 0,
+                "isalcoholic": false,
+                "isHalal": true
+            ]
+        }
         APIs.postAPI(apiName: .getfeaturedrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetFeaturedRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetFeaturedRestaurantsResponse = model
         }
     }
-    
-   
-    
-    
-
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -265,7 +289,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let heightForRow = (listItems[indexPath.section]).rowHeight
+        let heightForRow = (listItems[indexPath.section]).rowHeight ?? 0
         return CGFloat(heightForRow)
     }
     
@@ -307,9 +331,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             print((listItems[indexPath.section]).identifier)
         }
         print(indexPath.section)
-        cell.setupWithType(type: listItems[indexPath.section])
-        cell.viewController = self
-        cell.indexPath = indexPath
+
+        cell.updateCell(data: listItems[indexPath.section], indexPath: indexPath, viewController: self)
         return cell
     }
     

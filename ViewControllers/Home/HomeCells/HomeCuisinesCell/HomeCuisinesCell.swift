@@ -24,9 +24,8 @@ class HomeCuisinesCell: HomeBaseCell {
         // Configure the view for the selected state
     }
     
-    override func setupWithType(type: HomeListItem) {
-        super.setupWithType(type: type)
-        
+    override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
+        super.updateCell(data: data, indexPath: indexPath, viewController: viewController)
     }
 }
 

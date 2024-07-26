@@ -235,8 +235,8 @@ class  EditAddressViewController: UIViewController {
     }
     
     func setAddress(addressTitle: String? = "", formattedAddress: String? = "") {
-        labelAddressTitle.text = addressTitle
-        labelAddress.text = formattedAddress
+//        labelAddressTitle.text = addressTitle
+//        labelAddress.text = formattedAddress
         
         modelUserAddressesResponseData?.name = addressTitle
         modelUserAddressesResponseData?.address = formattedAddress

@@ -11,6 +11,13 @@ class HomeFoodItemCell: HomeBaseCell {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var dataRecord: HomeBaseCell.HomeListItem!
+    var modelFeaturedRestuarantResponseData: [HomeViewController.ModelGetFeaturedRestaurantsResponseData]? {
+        didSet {
+            
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -27,10 +34,14 @@ class HomeFoodItemCell: HomeBaseCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        dataRecord = data as? HomeBaseCell.HomeListItem
+        modelFeaturedRestuarantResponseData = dataRecord.data as? [HomeViewController.ModelGetFeaturedRestaurantsResponseData]
+        collectionView.reloadData()
     }
     
-    override func setupWithType(type: HomeListItem) {
-        super.setupWithType(type: type)
+    override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
+        super.updateCell(data: data, indexPath: indexPath, viewController: viewController)
+        
         
     }
 }
@@ -47,7 +58,7 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return modelFeaturedRestuarantResponseData?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -57,6 +68,7 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
             if self.indexPath.section == 2 {
                 cell.imageViewItem.image = UIImage(named: "dummyFood2")
             }
+            cell.modelFeaturedRestuarantResponseData = self.modelFeaturedRestuarantResponseData?[indexPath.item]
         }
         return cell
     }

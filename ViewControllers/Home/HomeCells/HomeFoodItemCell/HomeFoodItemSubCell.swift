@@ -9,8 +9,17 @@ import UIKit
 
 class HomeFoodItemSubCell: UICollectionViewCell {
     
+    @IBOutlet weak var viewBackGroundNewRestaurant: UIView!
+    @IBOutlet weak var labelRestaurantName: UILabel!
+    @IBOutlet weak var labelRestaurantAddress: UILabel!
+    @IBOutlet weak var labelRating: UILabel!
+    @IBOutlet weak var labelComments: UILabel!
+    @IBOutlet weak var labelReuse: UILabel!
+    @IBOutlet weak var labelPictures: UILabel!
+    @IBOutlet weak var labelDistance: UILabel!
     @IBOutlet weak var viewItemTypeBackGround: UIView!
     @IBOutlet weak var labelItemType: UILabel!
+    @IBOutlet weak var imageViewRestaurant: UIImageView!
     @IBOutlet weak var viewBikeBackGround: UIView!
     @IBOutlet weak var viewCallBackGround: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -20,6 +29,24 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     
     var indexPath: IndexPath! = nil
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
+    
+    var modelFeaturedRestuarantResponseData: HomeViewController.ModelGetFeaturedRestaurantsResponseData? {
+        didSet {
+            labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
+            labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
+            labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
+            labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
+            labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
+            labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)"
+            imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "")
+            imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "")
+            
+            viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
+            if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
+                viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false
+            }
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,6 +60,8 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         HomeFoodItemSubSuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        imageViewRestaurant.circle()
     }
 
 }

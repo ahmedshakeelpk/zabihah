@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import GooglePlaces
+import Cosmos
 
 class HomeFilterViewController: UIViewController {
-
+    
+    @IBOutlet weak var starRatingView: CosmosView!
+    
+    @IBOutlet weak var labelStarRating: UILabel!
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var rangeSlider: RangeSlider! {
         didSet {
@@ -29,26 +34,41 @@ class HomeFilterViewController: UIViewController {
             switchHideAlcoholPlaces.onTintColor = .clrApp
         }
     }
-
+    
     @IBOutlet weak var buttonCross: UIButton!
     
     var buttonFilterHandler: (([String: Any]) -> ())!
-    
-    
+    var location: CLLocationCoordinate2D? {
+        didSet {
+            
+            
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         rangeSlider.addTarget(self, action: #selector(self.rangeSliderValueChanged(_:)), for: .valueChanged)
         viewBackGround.roundCorners(corners: [.topRight, .topLeft], radius: 20)
-
+        getStarRating()
+    }
+    
+    func getStarRating() {
+        starRatingView.didTouchCosmos = { [self] rating in
+            labelStarRating.text = "\(starRatingView.rating)"
+        }
     }
     @IBAction func buttonFilter(_ sender: Any) {
         self.dismiss(animated: true) {
             let parameters = [
-                "String" : "Any",
-                "Int" : 2
+                "lat": self.location?.latitude ?? 0,
+                "long": self.location?.longitude ?? 0,
+                "radius": self.labelRangeEnd.text!,
+                "rating": self.labelStarRating.text!,
+                "isalcoholic": self.switchHideAlcoholPlaces.isOn,
+                "isHalal": self.switchHideHalalPlaces.isOn
             ] as! [String: Any]
+            
             self.buttonFilterHandler?(parameters)
         }
     }
@@ -63,9 +83,9 @@ class HomeFilterViewController: UIViewController {
     
     @objc func rangeSliderValueChanged(_ rangeSlider: RangeSlider) {
       print("Range slider value changed: (\(rangeSlider.lowerValue) , \(rangeSlider.upperValue))")
-        
-        
         labelRangeStart.text = "\(Int(rangeSlider.lowerValue))"
         labelRangeEnd.text = "\(Int(rangeSlider.upperValue))"
     }
 }
+
+

@@ -10,7 +10,8 @@ import UIKit
 
 class HomeBaseCell: UITableViewCell {
     var viewController = UIViewController()
-    var type : HomeListItem!
+    var data : Any!
+//    var type : HomeListItem!
     var indexPath: IndexPath!
     
     override func awakeFromNib() {
@@ -24,17 +25,24 @@ class HomeBaseCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func setupWithType(type : HomeListItem){
-        self.type = type
+//    func setupWithType(type : HomeListItem){
+//        self.type = type
+//    }
+  
+    func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
+        self.viewController = viewController
+        self.indexPath = indexPath
+        self.data = data
     }
+
 }
 
 extension HomeBaseCell {
     struct HomeListItem {
-        let identifier : String
-        let sectionName : String
-        let rowHeight : Int
-        var data : Any
+        var identifier : String
+        var sectionName : String?
+        var rowHeight : Int?
+        var data : Any?
     }
 }
 

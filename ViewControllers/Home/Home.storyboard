@@ -1066,10 +1066,10 @@
                                                                                         <real key="value" value="0.0"/>
                                                                                     </userDefinedRuntimeAttribute>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                        <real key="value" value="100000"/>
+                                                                                        <real key="value" value="300"/>
                                                                                     </userDefinedRuntimeAttribute>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="upperValue">
-                                                                                        <real key="value" value="100000"/>
+                                                                                        <real key="value" value="300"/>
                                                                                     </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                             </view>
@@ -1295,14 +1295,14 @@
                                                                                         <rect key="frame" x="0.0" y="0.0" width="335" height="50"/>
                                                                                         <subviews>
                                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="edo-j2-r28" customClass="CosmosView" customModule="Cosmos">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="309.33333333333331" height="50"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="324.33333333333331" height="50"/>
                                                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                                 <userDefinedRuntimeAttributes>
                                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
                                                                                                         <integer key="value" value="5"/>
                                                                                                     </userDefinedRuntimeAttribute>
                                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="rating">
-                                                                                                        <real key="value" value="2"/>
+                                                                                                        <real key="value" value="0.0"/>
                                                                                                     </userDefinedRuntimeAttribute>
                                                                                                     <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
                                                                                                         <color key="value" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1318,8 +1318,8 @@
                                                                                                     </userDefinedRuntimeAttribute>
                                                                                                 </userDefinedRuntimeAttributes>
                                                                                             </view>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.2" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLM-I4-CBu">
-                                                                                                <rect key="frame" x="309.33333333333331" y="0.0" width="25.666666666666686" height="50"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLM-I4-CBu">
+                                                                                                <rect key="frame" x="324.33333333333331" y="0.0" width="10.666666666666686" height="50"/>
                                                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                                                                 <color key="textColor" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -1467,7 +1467,9 @@
                         <outlet property="buttonFilter" destination="d99-ad-h2h" id="c4A-JI-pCW"/>
                         <outlet property="labelRangeEnd" destination="ycZ-gy-zQi" id="kqE-D4-Cuw"/>
                         <outlet property="labelRangeStart" destination="Kx3-am-5jh" id="Yoh-86-daS"/>
+                        <outlet property="labelStarRating" destination="OLM-I4-CBu" id="7hk-mC-r1o"/>
                         <outlet property="rangeSlider" destination="QSR-W0-lIF" id="bH9-I1-UfL"/>
+                        <outlet property="starRatingView" destination="edo-j2-r28" id="pPE-WZ-5wW"/>
                         <outlet property="switchHideAlcoholPlaces" destination="Vfc-rQ-DYZ" id="kZQ-5v-Swf"/>
                         <outlet property="switchHideHalalPlaces" destination="M93-fU-3Am" id="6Fn-Wp-yaW"/>
                         <outlet property="viewBackGround" destination="fk9-pP-7We" id="of3-JH-6e2"/>

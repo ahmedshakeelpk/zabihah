@@ -27,6 +27,7 @@ extension UIColor {
 
     
     static let clrOrange = UIColor(hexString: "F19434")
+    static let clrRed = UIColor(hexString: "D92D20")
     static let clrLightRed = UIColor(hexString: "EE6266")
     static let clrLightGray = UIColor(hexString: "E5E5E5")
     static let clrBlack = UIColor(hexString: "202734")
