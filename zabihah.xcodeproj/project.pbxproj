@@ -69,6 +69,11 @@
 		6A9BD3DC2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3DB2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift */; };
 		6A9BD3EB2C48FB04008BBDF5 /* FPNTextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3EA2C48FB04008BBDF5 /* FPNTextFieldExtension.swift */; };
 		6ACA061F2C50BF8400EE8F43 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA061E2C50BF8400EE8F43 /* RangeSlider.swift */; };
+		6ACA065A2C5665AC00EE8F43 /* Delivery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ACA06592C5665AC00EE8F43 /* Delivery.storyboard */; };
+		6ACA065D2C56697000EE8F43 /* DeliveryDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA065C2C56697000EE8F43 /* DeliveryDetailsViewController.swift */; };
+		6ACA06602C56A47300EE8F43 /* FoodItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ACA065F2C56A47300EE8F43 /* FoodItemCollectionViewCell.xib */; };
+		6ACA06612C56A47300EE8F43 /* FoodItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA065E2C56A47300EE8F43 /* FoodItemCollectionViewCell.swift */; };
+		6ACA06632C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA06622C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift */; };
 		6ACE9B652C4E2ECA005E39A4 /* HomeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACE9B642C4E2ECA005E39A4 /* HomeFilterViewController.swift */; };
 		6AD0C00D2C3BA61F0051D99A /* AddAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C00C2C3BA61F0051D99A /* AddAddressViewController.swift */; };
 		6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */; };
@@ -162,6 +167,11 @@
 		6A9BD3DB2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressViewControllerModel.swift; sourceTree = "<group>"; };
 		6A9BD3EA2C48FB04008BBDF5 /* FPNTextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPNTextFieldExtension.swift; sourceTree = "<group>"; };
 		6ACA061E2C50BF8400EE8F43 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
+		6ACA06592C5665AC00EE8F43 /* Delivery.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Delivery.storyboard; sourceTree = "<group>"; };
+		6ACA065C2C56697000EE8F43 /* DeliveryDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryDetailsViewController.swift; sourceTree = "<group>"; };
+		6ACA065E2C56A47300EE8F43 /* FoodItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		6ACA065F2C56A47300EE8F43 /* FoodItemCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FoodItemCollectionViewCell.xib; sourceTree = "<group>"; };
+		6ACA06622C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryDetailsViewController2.swift; sourceTree = "<group>"; };
 		6ACE9B642C4E2ECA005E39A4 /* HomeFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFilterViewController.swift; sourceTree = "<group>"; };
 		6AD0C00C2C3BA61F0051D99A /* AddAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressViewController.swift; sourceTree = "<group>"; };
 		6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressFieldsCell.swift; sourceTree = "<group>"; };
@@ -264,6 +274,7 @@
 		6A16DFFC2C366EEA00E1383B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6ACA06582C5665A200EE8F43 /* Delivery */,
 				6A3AB5762C3958850030F016 /* SideMenu */,
 				6A3AB5712C3956CB0030F016 /* Home */,
 				6A3AB5962C3A7A140030F016 /* Addresses */,
@@ -608,6 +619,26 @@
 			path = RangeSlider;
 			sourceTree = "<group>";
 		};
+		6ACA06582C5665A200EE8F43 /* Delivery */ = {
+			isa = PBXGroup;
+			children = (
+				6ACA065B2C56696000EE8F43 /* DeliveryDetails */,
+				6ACA06592C5665AC00EE8F43 /* Delivery.storyboard */,
+			);
+			path = Delivery;
+			sourceTree = "<group>";
+		};
+		6ACA065B2C56696000EE8F43 /* DeliveryDetails */ = {
+			isa = PBXGroup;
+			children = (
+				6ACA06622C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift */,
+				6ACA065C2C56697000EE8F43 /* DeliveryDetailsViewController.swift */,
+				6ACA065E2C56A47300EE8F43 /* FoodItemCollectionViewCell.swift */,
+				6ACA065F2C56A47300EE8F43 /* FoodItemCollectionViewCell.xib */,
+			);
+			path = DeliveryDetails;
+			sourceTree = "<group>";
+		};
 		6ACE9B632C4E2EAE005E39A4 /* HomeFilterViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -783,6 +814,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A6FC4052C3572020050B6B2 /* Assets.xcassets in Resources */,
+				6ACA06602C56A47300EE8F43 /* FoodItemCollectionViewCell.xib in Resources */,
 				6A00FF022C4CAC890006E324 /* FindHalalFoodCell.xib in Resources */,
 				6A3AB57C2C3966E00030F016 /* SideMenuView.xib in Resources */,
 				6A00FEF82C4CAB7C0006E324 /* FindHalalFood.storyboard in Resources */,
@@ -792,6 +824,7 @@
 				6AD39E912C3E904600BDAC05 /* HomePrayerSpacesCell.xib in Resources */,
 				6A6269382C3D3EF500DA844F /* HomeCuisinesSubCell.xib in Resources */,
 				6A6FC4082C3572020050B6B2 /* Base in Resources */,
+				6ACA065A2C5665AC00EE8F43 /* Delivery.storyboard in Resources */,
 				6AD39E5A2C3D7EA200BDAC05 /* HomeFoodItemCell.xib in Resources */,
 				6A3AB59D2C3A80470030F016 /* AddressesCell.xib in Resources */,
 				6AD39E882C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib in Resources */,
@@ -903,6 +936,7 @@
 				6A16E0032C36789C00E1383B /* LoginWithEmailViewController.swift in Sources */,
 				6AD0C01A2C3BF3B80051D99A /* IconNames.swift in Sources */,
 				6A9BD3CC2C439AA1008BBDF5 /* AddressesViewControllerModel.swift in Sources */,
+				6ACA065D2C56697000EE8F43 /* DeliveryDetailsViewController.swift in Sources */,
 				6A6269372C3D3EF500DA844F /* HomeCuisinesSubCell.swift in Sources */,
 				6A16E00D2C3687F500E1383B /* OTPTextField.swift in Sources */,
 				6A62693B2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.swift in Sources */,
@@ -928,6 +962,7 @@
 				6A9BD3C12C412A74008BBDF5 /* FingerPrintHardCodedData.swift in Sources */,
 				6AD0C0222C3BF4320051D99A /* EmptyVC.swift in Sources */,
 				6AD0C0242C3BF5380051D99A /* LoginWithEmailViewControllerModel.swift in Sources */,
+				6ACA06612C56A47300EE8F43 /* FoodItemCollectionViewCell.swift in Sources */,
 				6A9BD3EB2C48FB04008BBDF5 /* FPNTextFieldExtension.swift in Sources */,
 				6A62691E2C3D0F6400DA844F /* TextFieldExtension.swift in Sources */,
 				6A9BD3CA2C439937008BBDF5 /* UISettingDesign.swift in Sources */,
@@ -938,6 +973,7 @@
 				6ACA061F2C50BF8400EE8F43 /* RangeSlider.swift in Sources */,
 				6AD39E942C3EAC5200BDAC05 /* Constants.swift in Sources */,
 				6A3AB5682C390A830030F016 /* EditEmailPhoneViewController.swift in Sources */,
+				6ACA06632C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift in Sources */,
 				6AD0C0262C3BF54E0051D99A /* OtpLoginViewControllerModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
