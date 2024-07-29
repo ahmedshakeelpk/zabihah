@@ -8,6 +8,7 @@
 import UIKit
 
 class DeliveryDetailsViewController: UIViewController {
+    @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var collectionViewCountry: UICollectionView!
     @IBOutlet weak var collectionViewType: UICollectionView!
     @IBOutlet weak var collectionViewFoodItem: UICollectionView!
@@ -27,6 +28,9 @@ class DeliveryDetailsViewController: UIViewController {
 
 
         // Do any additional setup after loading the view.
+    }
+    @IBAction func buttonBack(_ sender: Any) {
+        self.popViewController(animated: true)
     }
     
 

@@ -13,7 +13,7 @@
 		6A00FF022C4CAC890006E324 /* FindHalalFoodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */; };
 		6A00FF032C4CAC890006E324 /* FindHalalFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */; };
 		6A16E0002C36703B00E1383B /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16DFFF2C36703B00E1383B /* ViewExtension.swift */; };
-		6A16E0032C36789C00E1383B /* LoginWithEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16E0022C36789C00E1383B /* LoginWithEmailViewController.swift */; };
+		6A16E0032C36789C00E1383B /* LoginWithEmailOrPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16E0022C36789C00E1383B /* LoginWithEmailOrPhoneViewController.swift */; };
 		6A16E0062C367A1B00E1383B /* StoryBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16E0052C367A1B00E1383B /* StoryBoard.swift */; };
 		6A16E0092C36818B00E1383B /* OtpLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16E0082C36818B00E1383B /* OtpLoginViewController.swift */; };
 		6A16E00C2C3687F500E1383B /* OTPFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16E00A2C3687F500E1383B /* OTPFieldView.swift */; };
@@ -74,6 +74,11 @@
 		6ACA06602C56A47300EE8F43 /* FoodItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ACA065F2C56A47300EE8F43 /* FoodItemCollectionViewCell.xib */; };
 		6ACA06612C56A47300EE8F43 /* FoodItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA065E2C56A47300EE8F43 /* FoodItemCollectionViewCell.swift */; };
 		6ACA06632C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA06622C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift */; };
+		6ACA06652C579A5400EE8F43 /* DeliveryDetailsViewController3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA06642C579A5400EE8F43 /* DeliveryDetailsViewController3.swift */; };
+		6ACA06682C57B00700EE8F43 /* RecentPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA06662C57B00700EE8F43 /* RecentPhotoCell.swift */; };
+		6ACA06692C57B00700EE8F43 /* RecentPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ACA06672C57B00700EE8F43 /* RecentPhotoCell.xib */; };
+		6ACA066C2C57B9AB00EE8F43 /* SocialConnectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA066A2C57B9AB00EE8F43 /* SocialConnectCell.swift */; };
+		6ACA066D2C57B9AB00EE8F43 /* SocialConnectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ACA066B2C57B9AB00EE8F43 /* SocialConnectCell.xib */; };
 		6ACE9B652C4E2ECA005E39A4 /* HomeFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACE9B642C4E2ECA005E39A4 /* HomeFilterViewController.swift */; };
 		6AD0C00D2C3BA61F0051D99A /* AddAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C00C2C3BA61F0051D99A /* AddAddressViewController.swift */; };
 		6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD0C00F2C3BC55C0051D99A /* AddAddressFieldsCell.xib */; };
@@ -85,7 +90,7 @@
 		6AD0C01E2C3BF3F00051D99A /* AlertPopup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AD0C01B2C3BF3F00051D99A /* AlertPopup.storyboard */; };
 		6AD0C01F2C3BF3F00051D99A /* AlertPopupMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C01C2C3BF3F00051D99A /* AlertPopupMessage.swift */; };
 		6AD0C0222C3BF4320051D99A /* EmptyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C0202C3BF4320051D99A /* EmptyVC.swift */; };
-		6AD0C0242C3BF5380051D99A /* LoginWithEmailViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C0232C3BF5380051D99A /* LoginWithEmailViewControllerModel.swift */; };
+		6AD0C0242C3BF5380051D99A /* LoginWithEmailOrPhoneViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C0232C3BF5380051D99A /* LoginWithEmailOrPhoneViewControllerModel.swift */; };
 		6AD0C0262C3BF54E0051D99A /* OtpLoginViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C0252C3BF54E0051D99A /* OtpLoginViewControllerModel.swift */; };
 		6AD0C0292C3BF5A20051D99A /* BlurBackGroundViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C0282C3BF5A20051D99A /* BlurBackGroundViewExtension.swift */; };
 		6AD0C02B2C3BF7CF0051D99A /* RegisterationViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD0C02A2C3BF7CF0051D99A /* RegisterationViewControllerModel.swift */; };
@@ -109,7 +114,7 @@
 		6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHalalFoodCell.swift; sourceTree = "<group>"; };
 		6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FindHalalFoodCell.xib; sourceTree = "<group>"; };
 		6A16DFFF2C36703B00E1383B /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
-		6A16E0022C36789C00E1383B /* LoginWithEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailViewController.swift; sourceTree = "<group>"; };
+		6A16E0022C36789C00E1383B /* LoginWithEmailOrPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailOrPhoneViewController.swift; sourceTree = "<group>"; };
 		6A16E0052C367A1B00E1383B /* StoryBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryBoard.swift; sourceTree = "<group>"; };
 		6A16E0082C36818B00E1383B /* OtpLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpLoginViewController.swift; sourceTree = "<group>"; };
 		6A16E00A2C3687F500E1383B /* OTPFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPFieldView.swift; sourceTree = "<group>"; };
@@ -172,6 +177,11 @@
 		6ACA065E2C56A47300EE8F43 /* FoodItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		6ACA065F2C56A47300EE8F43 /* FoodItemCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FoodItemCollectionViewCell.xib; sourceTree = "<group>"; };
 		6ACA06622C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryDetailsViewController2.swift; sourceTree = "<group>"; };
+		6ACA06642C579A5400EE8F43 /* DeliveryDetailsViewController3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryDetailsViewController3.swift; sourceTree = "<group>"; };
+		6ACA06662C57B00700EE8F43 /* RecentPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPhotoCell.swift; sourceTree = "<group>"; };
+		6ACA06672C57B00700EE8F43 /* RecentPhotoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecentPhotoCell.xib; sourceTree = "<group>"; };
+		6ACA066A2C57B9AB00EE8F43 /* SocialConnectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialConnectCell.swift; sourceTree = "<group>"; };
+		6ACA066B2C57B9AB00EE8F43 /* SocialConnectCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SocialConnectCell.xib; sourceTree = "<group>"; };
 		6ACE9B642C4E2ECA005E39A4 /* HomeFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFilterViewController.swift; sourceTree = "<group>"; };
 		6AD0C00C2C3BA61F0051D99A /* AddAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressViewController.swift; sourceTree = "<group>"; };
 		6AD0C00E2C3BC55C0051D99A /* AddAddressFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressFieldsCell.swift; sourceTree = "<group>"; };
@@ -183,7 +193,7 @@
 		6AD0C01B2C3BF3F00051D99A /* AlertPopup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlertPopup.storyboard; sourceTree = "<group>"; };
 		6AD0C01C2C3BF3F00051D99A /* AlertPopupMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertPopupMessage.swift; sourceTree = "<group>"; };
 		6AD0C0202C3BF4320051D99A /* EmptyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyVC.swift; sourceTree = "<group>"; };
-		6AD0C0232C3BF5380051D99A /* LoginWithEmailViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailViewControllerModel.swift; sourceTree = "<group>"; };
+		6AD0C0232C3BF5380051D99A /* LoginWithEmailOrPhoneViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailOrPhoneViewControllerModel.swift; sourceTree = "<group>"; };
 		6AD0C0252C3BF54E0051D99A /* OtpLoginViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpLoginViewControllerModel.swift; sourceTree = "<group>"; };
 		6AD0C0282C3BF5A20051D99A /* BlurBackGroundViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurBackGroundViewExtension.swift; sourceTree = "<group>"; };
 		6AD0C02A2C3BF7CF0051D99A /* RegisterationViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterationViewControllerModel.swift; sourceTree = "<group>"; };
@@ -303,8 +313,8 @@
 		6A16E0012C36787800E1383B /* LoginWithEmailOrPhoneViewController */ = {
 			isa = PBXGroup;
 			children = (
-				6A16E0022C36789C00E1383B /* LoginWithEmailViewController.swift */,
-				6AD0C0232C3BF5380051D99A /* LoginWithEmailViewControllerModel.swift */,
+				6A16E0022C36789C00E1383B /* LoginWithEmailOrPhoneViewController.swift */,
+				6AD0C0232C3BF5380051D99A /* LoginWithEmailOrPhoneViewControllerModel.swift */,
 			);
 			path = LoginWithEmailOrPhoneViewController;
 			sourceTree = "<group>";
@@ -631,10 +641,15 @@
 		6ACA065B2C56696000EE8F43 /* DeliveryDetails */ = {
 			isa = PBXGroup;
 			children = (
+				6ACA06642C579A5400EE8F43 /* DeliveryDetailsViewController3.swift */,
 				6ACA06622C56AFD800EE8F43 /* DeliveryDetailsViewController2.swift */,
 				6ACA065C2C56697000EE8F43 /* DeliveryDetailsViewController.swift */,
 				6ACA065E2C56A47300EE8F43 /* FoodItemCollectionViewCell.swift */,
 				6ACA065F2C56A47300EE8F43 /* FoodItemCollectionViewCell.xib */,
+				6ACA06662C57B00700EE8F43 /* RecentPhotoCell.swift */,
+				6ACA06672C57B00700EE8F43 /* RecentPhotoCell.xib */,
+				6ACA066A2C57B9AB00EE8F43 /* SocialConnectCell.swift */,
+				6ACA066B2C57B9AB00EE8F43 /* SocialConnectCell.xib */,
 			);
 			path = DeliveryDetails;
 			sourceTree = "<group>";
@@ -820,8 +835,10 @@
 				6A00FEF82C4CAB7C0006E324 /* FindHalalFood.storyboard in Resources */,
 				6A3AB5862C39703B0030F016 /* SideMenuViewCell.xib in Resources */,
 				6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */,
+				6ACA066D2C57B9AB00EE8F43 /* SocialConnectCell.xib in Resources */,
 				6A3AB5752C3956E70030F016 /* Home.storyboard in Resources */,
 				6AD39E912C3E904600BDAC05 /* HomePrayerSpacesCell.xib in Resources */,
+				6ACA06692C57B00700EE8F43 /* RecentPhotoCell.xib in Resources */,
 				6A6269382C3D3EF500DA844F /* HomeCuisinesSubCell.xib in Resources */,
 				6A6FC4082C3572020050B6B2 /* Base in Resources */,
 				6ACA065A2C5665AC00EE8F43 /* Delivery.storyboard in Resources */,
@@ -919,10 +936,12 @@
 				6A3AB56B2C390BF30030F016 /* OtpEmailViewController.swift in Sources */,
 				6A16E0122C36B8F900E1383B /* RegisterationViewController.swift in Sources */,
 				6A3AB5872C39703B0030F016 /* SideMenuViewCell.swift in Sources */,
+				6ACA066C2C57B9AB00EE8F43 /* SocialConnectCell.swift in Sources */,
 				6A3AB5982C3A7A2D0030F016 /* AddressesListViewController.swift in Sources */,
 				6AD39E8B2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift in Sources */,
 				6A16E0002C36703B00E1383B /* ViewExtension.swift in Sources */,
 				6A28D8572C37DEEC00F5A95F /* EditNameViewController.swift in Sources */,
+				6ACA06652C579A5400EE8F43 /* DeliveryDetailsViewController3.swift in Sources */,
 				6A16E0092C36818B00E1383B /* OtpLoginViewController.swift in Sources */,
 				6A6FC4002C3572000050B6B2 /* LoginViewController.swift in Sources */,
 				6A3AB59E2C3A80470030F016 /* AddressesCell.swift in Sources */,
@@ -933,7 +952,7 @@
 				6A6FC3FC2C3572000050B6B2 /* AppDelegate.swift in Sources */,
 				6ACE9B652C4E2ECA005E39A4 /* HomeFilterViewController.swift in Sources */,
 				6AD39E822C3E469000BDAC05 /* HomeCuisinesCell.swift in Sources */,
-				6A16E0032C36789C00E1383B /* LoginWithEmailViewController.swift in Sources */,
+				6A16E0032C36789C00E1383B /* LoginWithEmailOrPhoneViewController.swift in Sources */,
 				6AD0C01A2C3BF3B80051D99A /* IconNames.swift in Sources */,
 				6A9BD3CC2C439AA1008BBDF5 /* AddressesViewControllerModel.swift in Sources */,
 				6ACA065D2C56697000EE8F43 /* DeliveryDetailsViewController.swift in Sources */,
@@ -958,10 +977,11 @@
 				6A3AB5952C3A61B80030F016 /* SideMenuViewFooterViewCell.swift in Sources */,
 				6A00FEFA2C4CAB9D0006E324 /* FindHalalFoodViewController.swift in Sources */,
 				6A9BD3C32C414810008BBDF5 /* HomeViewControllerModel.swift in Sources */,
+				6ACA06682C57B00700EE8F43 /* RecentPhotoCell.swift in Sources */,
 				6A3DD1C52C365BEC003F1F44 /* ViewControllerExtension.swift in Sources */,
 				6A9BD3C12C412A74008BBDF5 /* FingerPrintHardCodedData.swift in Sources */,
 				6AD0C0222C3BF4320051D99A /* EmptyVC.swift in Sources */,
-				6AD0C0242C3BF5380051D99A /* LoginWithEmailViewControllerModel.swift in Sources */,
+				6AD0C0242C3BF5380051D99A /* LoginWithEmailOrPhoneViewControllerModel.swift in Sources */,
 				6ACA06612C56A47300EE8F43 /* FoodItemCollectionViewCell.swift in Sources */,
 				6A9BD3EB2C48FB04008BBDF5 /* FPNTextFieldExtension.swift in Sources */,
 				6A62691E2C3D0F6400DA844F /* TextFieldExtension.swift in Sources */,

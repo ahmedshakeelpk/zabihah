@@ -76,10 +76,13 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         if isFromEmail {
             labelTitle.text = "Confirm your email"
             stackViewPhoneNumber.isHidden = true
+            stackViewEmail.isHidden = false
+            imageViewTitleType.image = UIImage(named: "smsLogin")
         }
         else {
             labelTitle.text = "Confirm your phone"
             stackViewEmail.isHidden = true
+            stackViewPhoneNumber.isHidden = false
             imageViewTitleType.image = UIImage(named: "phoneLogo")
 
             textFieldPhoneNumber.setFlag(countryCode: .US)
@@ -134,6 +137,11 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
             let model: ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelSendnotificationResponse = model
         }
+    }
+    
+    func userAlreadyExistFromRegistration() {
+        isFromEmail = !isFromEmail
+        setConfiguration()
     }
 }
 

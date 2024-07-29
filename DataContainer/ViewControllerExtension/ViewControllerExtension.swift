@@ -85,13 +85,17 @@ extension UIViewController {
     }
 
     
-    func popToViewController<T>(viewController: T) {
-        for controller in self.navigationController!.viewControllers as Array {
+    func popToViewController<T>(viewController: T) -> UIViewController? {
+        for controller in (self.navigationController?.viewControllers ?? []) as Array {
             if controller.isKind(of: viewController.self as! AnyClass) {
-                self.navigationController!.popToViewController(controller, animated: true)
+                DispatchQueue.main.async {
+                    self.navigationController!.popToViewController(controller, animated: true)
+                }
+                return controller
                 break
             }
         }
+        return nil
         //        for controller in self.navigationController!.viewControllers as Array {
         //                        if controller.isKind(of: ProfileViewController.self) {
         //                            if let targetViewController = controller as? ProfileViewController {

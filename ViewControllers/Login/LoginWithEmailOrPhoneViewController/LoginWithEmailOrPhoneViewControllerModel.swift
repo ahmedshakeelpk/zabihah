@@ -1,5 +1,5 @@
 //
-//  LoginWithEmailViewControllerModel.swift
+//  LoginWithEmailOrPhoneViewControllerModel.swift
 //  zabihah
 //
 //  Created by Shakeel Ahmed on 08/07/2024.

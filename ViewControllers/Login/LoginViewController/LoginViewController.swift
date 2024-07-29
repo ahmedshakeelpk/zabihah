@@ -52,7 +52,7 @@ class LoginViewController: UIViewController {
     }
     @IBAction func buttonPhoneLogin(_ sender: Any) {
 //        navigateToHomeViewController()
-        navigateToDeliveryDetails2ViewController()
+        navigateToDeliveryDetails3ViewController()
 //        navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
@@ -104,6 +104,9 @@ class LoginViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController2") as! DeliveryDetailsViewController2
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
+    func navigateToDeliveryDetails3ViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
 }

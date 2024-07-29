@@ -46,7 +46,29 @@ class RegisterationViewController: UIViewController {
                 navigateToOtpLoginViewController()
             }
             else {
-                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError, buttonNames: [
+                    [
+                        "buttonName": "Cancel",
+                        "buttonBackGroundColor": UIColor.white,
+                        "buttonTextColor": UIColor.clrRed] as [String : Any],
+                    [
+                        "buttonName": "LogIn",
+                        "buttonBackGroundColor": UIColor.clrRed,
+                        "buttonTextColor": UIColor.white]
+                ] as? [[String: AnyObject]]) {buttonName in
+                    if buttonName == "Cancel" {
+                        
+                    }
+                    else if buttonName == "LogIn" {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            if let viewController = self.popToViewController(viewController: LoginWithEmailOrPhoneViewController.self) {
+                                if let targetViewController = viewController as? LoginWithEmailOrPhoneViewController {
+                                    targetViewController.userAlreadyExistFromRegistration()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -107,6 +129,10 @@ class RegisterationViewController: UIViewController {
         buttonAgree.tag = 1
         imageViewUser.circle()
         labelTermsAndConditions.setTwoColorWithUnderLine(textFirst: "I agree to ", textSecond: "terms and conditions.", colorFirst: .clrDarkBlue, colorSecond: .clrApp)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunctionOnLabel))
+        labelTermsAndConditions.isUserInteractionEnabled = true
+        labelTermsAndConditions.addGestureRecognizer(tap)
+        
         if isFromEmail {
             viewBackGroundPhoneNumber.radius(radius: 4, color: .clrBorder, borderWidth: 0.5)
             stackViewEmail.isHidden = true
@@ -121,7 +147,12 @@ class RegisterationViewController: UIViewController {
         }
         getblobcontainer()
     }
-    
+    @objc
+    func tapFunctionOnLabel(sender:UITapGestureRecognizer) {
+        if let url = URL(string: "https://www.zabihah.com/com/tos") {
+            UIApplication.shared.open(url)
+        }
+    }
     @objc func fieldVilidation() {
         var isValid = true
         if textFieldFirstName.text == "" {
@@ -148,7 +179,6 @@ class RegisterationViewController: UIViewController {
         vc.isFromRegistrationViewController = true
         vc.stringPhoneEmail = isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : textFieldEmail.text!
         vc.isOtpSuccessFullHandler = {
-            
             self.isOtpVerified = true
             if let token = self.modelGetBlobContainer?.token {
                 self.uploadOnBlob(token: token)
@@ -156,7 +186,12 @@ class RegisterationViewController: UIViewController {
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
+    func navigateToRootLoginViewController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.login.rawValue, bundle:nil)
+        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationLoginViewController") as? UINavigationController {
+            self.sceneDelegate?.window?.rootViewController = navigationController
+        }
+    }
     @IBOutlet weak var imageViewCheck: UIImageView!
     @IBAction func buttonAgree(_ sender: Any) {
         if buttonAgree.tag == 0 {
