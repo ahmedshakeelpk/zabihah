@@ -10,6 +10,14 @@ import UIKit
 class HomeCuisinesCell: HomeBaseCell {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    var dataRecord: HomeBaseCell.HomeListItem!
+    var modelCuisineResponse: [HomeViewController.ModelCuisine]? {
+        didSet {
+            
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -22,6 +30,9 @@ class HomeCuisinesCell: HomeBaseCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        dataRecord = data as? HomeBaseCell.HomeListItem
+        modelCuisineResponse = dataRecord.data as? [HomeViewController.ModelCuisine]
+        collectionView.reloadData()
     }
     
     override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
@@ -41,12 +52,12 @@ extension HomeCuisinesCell: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return modelCuisineResponse?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCuisinesSubCell.nibName(), for: indexPath) as! HomeCuisinesSubCell
-        
+        cell.modelCuisine = modelCuisineResponse?[indexPath.item]
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

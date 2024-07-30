@@ -30,7 +30,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     var indexPath: IndexPath! = nil
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
     
-    var modelFeaturedRestuarantResponseData: HomeViewController.ModelGetFeaturedRestaurantsResponseData? {
+    var modelFeaturedRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
         didSet {
             labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
             labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
@@ -38,12 +38,12 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
             labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
             labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)"
-            imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderFoodItem")
-            imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-            viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
-            if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
-                viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false
-            }
+            imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+            imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+//            viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
+//            if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
+//                viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false
+//            }
         }
     }
 

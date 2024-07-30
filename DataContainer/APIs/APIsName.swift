@@ -20,7 +20,7 @@ struct APIsName {
         case getblobcontainer = "api/Blob/getblobcontainer"
         
         //MARK:- Restaurant
-        case getfeaturedrestaurants = "api/Restaurant/getfeaturedrestaurants"
+        case gethomerestaurants = "api/Restaurant/gethomerestaurants"
         
         //MARK:- V1
         case usersignup = "v1/User/usersignup"

@@ -26,42 +26,51 @@ extension HomeViewController {
         let photo: String?
         var lastName: String?
     }
-    
-    // MARK: - ModelGetFeaturedRestaurants
-//    struct ModelGetFeaturedRestaurantsResponse: Codable {
-//        let recordFound, success: Bool?
-//        let message, innerExceptionMessage: String?
-//        let modelFeaturedRestuarantResponseData: [ModelFeaturedRestuarantResponseData]?
-//    }
-//
-//    // MARK: - FeaturedRestuarantResponseDatum
-//    struct ModelFeaturedRestuarantResponseData: Codable {
-//        let address, phone: String?
-//        let rating, distance: Double?
-//        let gallaryCount, reviews: Int?
-//        let iconImage: String?
-//        let isDelivery: Bool?
-//        let name: String?
-//        let tags: String?
-//        let visits: Int?
-//    }
-    
-    
-    // MARK: - ModelGetFeaturedRestaurantsResponse
-    struct ModelGetFeaturedRestaurantsResponse: Codable {
-        let recordFound, success: Bool?
+
+    // MARK: - ModelGetHomeRestaurantsResponse
+    struct ModelGetHomeRestaurantsResponse: Codable {
+        let restuarantResponseData: [ModelRestuarantResponseData]?
+        let totalCountHalal: Int?
+        let success: Bool?
         let message, innerExceptionMessage: String?
-        let featuredRestuarantResponseData: [ModelGetFeaturedRestaurantsResponseData]
+        let featuredRestuarantResponseData: [ModelRestuarantResponseData]?
+        let cuisine: [ModelCuisine]?
+        let recordFound: Bool?
     }
 
-    // MARK: - FeaturedRestuarantResponseDatum
-    struct ModelGetFeaturedRestaurantsResponseData: Codable {
-        let address, phone: String?
-        let rating, distance: Double?
-        let gallaryCount, reviews: Int?
-        let iconImage, coverImage: String?
-        let isDelivery, isClosed, isNew: Bool?
-        let name, tags: String?
-        let visits: Int?
+    // MARK: - Cuisine
+    struct ModelCuisine: Codable {
+        let name, image: String?
     }
+
+    // MARK: - RestuarantResponseDatum
+    struct ModelRestuarantResponseData: Codable {
+        let rating: Double?
+        let coverImage: String?
+        let phone: String?
+        let isDelivery: Bool?
+        let distanceUnit: DistanceUnit?
+        let createdOn: String?
+        let iconImage: String?
+        let visits: Int?
+        let tags: String?
+        let gallaryCount: Int?
+        let address: String?
+        let reviews: Int?
+        let distance: Double?
+        let name: String?
+        let status: Status?
+    }
+
+    enum DistanceUnit: String, Codable {
+        case m = "m"
+        case mi = "mi"
+    }
+
+    enum Status: String, Codable {
+        case close = "Close"
+        case empty = ""
+        case statusOpen = "Open"
+    }
+
 }

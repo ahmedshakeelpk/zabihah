@@ -12,7 +12,7 @@ class HomeFoodItemCell: HomeBaseCell {
     @IBOutlet weak var collectionView: UICollectionView!
     
     var dataRecord: HomeBaseCell.HomeListItem!
-    var modelFeaturedRestuarantResponseData: [HomeViewController.ModelGetFeaturedRestaurantsResponseData]? {
+    var modelFeaturedRestuarantResponseData: [HomeViewController.ModelRestuarantResponseData]? {
         didSet {
             
         }
@@ -35,14 +35,12 @@ class HomeFoodItemCell: HomeBaseCell {
 
         // Configure the view for the selected state
         dataRecord = data as? HomeBaseCell.HomeListItem
-        modelFeaturedRestuarantResponseData = dataRecord.data as? [HomeViewController.ModelGetFeaturedRestaurantsResponseData]
+        modelFeaturedRestuarantResponseData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData]
         collectionView.reloadData()
     }
     
     override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
         super.updateCell(data: data, indexPath: indexPath, viewController: viewController)
-        
-        
     }
 }
 

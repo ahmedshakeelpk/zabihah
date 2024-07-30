@@ -14,6 +14,13 @@ class HomeCuisinesSubCell: UICollectionViewCell {
     @IBOutlet weak var imageViewTitle: UIImageView!
     @IBOutlet weak var viewImageViewTitleBackGround: UIView!
 
+    var modelCuisine: HomeViewController.ModelCuisine? {
+        didSet {
+            labelName.text = modelCuisine?.name
+            imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: "placeHolderRestaurant")
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

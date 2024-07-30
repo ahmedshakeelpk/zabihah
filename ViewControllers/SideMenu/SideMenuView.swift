@@ -22,7 +22,7 @@ class SideMenuView: UIView {
     var viewController = UIViewController()
 
     var arrayTitle = ["Your profile", "Your addresses","Your payment methods"]
-    var arrayTitleIcon = ["userProfileSideMenu", "locationSideMenu","paymentSideMenu"]
+    var arrayTitleIcon = ["placeHolderUser", "locationSideMenu","paymentSideMenu"]
     var arrayOther = ["Your reviews", "Your favorite places","Buy it again", "Logout"]
     var arrayOtherIcon = ["reviewSideMenu", "favouriteSideMenu","buySideMenu", "logoutSideMenu"]
     var buttonBackHandler: (() -> ())!
@@ -130,7 +130,7 @@ class SideMenuView: UIView {
     @objc func setData() {
         labelFullName.text = "\(modelGetUserProfileResponse?.userResponseData?.firstname ?? "") \(modelGetUserProfileResponse?.userResponseData?.lastName ?? "")"
         labelAddress.text = modelGetUserProfileResponse?.userResponseData?.email ?? ""
-        imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "")
+        imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "", placeHolderIcon: "placeHolderUser")
     }
     
     func sideMenuIntiliziation() {
