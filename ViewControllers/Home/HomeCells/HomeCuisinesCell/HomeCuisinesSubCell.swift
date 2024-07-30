@@ -17,7 +17,7 @@ class HomeCuisinesSubCell: UICollectionViewCell {
     var modelCuisine: HomeViewController.ModelCuisine? {
         didSet {
             labelName.text = modelCuisine?.name
-            imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: "placeHolderRestaurant")
+            imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: "placeHolderCuisine")
         }
     }
     
