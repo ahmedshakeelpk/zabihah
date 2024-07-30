@@ -13,5 +13,5 @@ class SideMenuViewHeaderViewCell: UITableViewHeaderFooterView {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-    }
+    } 
 }
