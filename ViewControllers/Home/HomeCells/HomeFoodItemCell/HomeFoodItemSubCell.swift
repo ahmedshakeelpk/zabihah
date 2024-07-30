@@ -38,9 +38,8 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
             labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
             labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)"
-            imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "")
-            imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "")
-            
+            imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+            imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderRestaurant")
             viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
             if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
                 viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false

@@ -246,16 +246,4 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-extension UIImageView {
-    func setImage(urlString: String) {
-        self.kf.setImage(with: URL(string: urlString), placeholder: nil, options: nil, progressBlock: nil, completionHandler: { result in
-        switch result {
-            case .success(let value):
-                        print("Image: \(value.image). Got from: \(value.cacheType)")
-            self.image = value.image
-            case .failure(let error):
-                        print("Error: \(error)")
-            }
-        })
-    }
-}
+
