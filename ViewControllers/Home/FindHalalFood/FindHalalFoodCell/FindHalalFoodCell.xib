@@ -164,7 +164,7 @@
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PB9-t7-gza">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="33" height="38"/>
                                                                                 <subviews>
-                                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyBurgerKing" translatesAutoresizingMaskIntoConstraints="NO" id="kZO-or-fP3">
+                                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyBurgerKing" translatesAutoresizingMaskIntoConstraints="NO" id="kZO-or-fP3">
                                                                                         <rect key="frame" x="0.0" y="6.6666666666666572" width="25" height="25"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="width" constant="25" id="1Es-O9-p17"/>
@@ -570,9 +570,19 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="collectionView" destination="Sht-wP-k7f" id="epG-BV-YTs"/>
+                <outlet property="imageViewItem" destination="TGS-pV-fpa" id="Q7g-LW-pDd"/>
+                <outlet property="imageViewRestaurant" destination="kZO-or-fP3" id="rDT-FZ-vAx"/>
+                <outlet property="labelComments" destination="DOQ-4l-mqE" id="053-BG-0GT"/>
+                <outlet property="labelDistance" destination="Erc-VR-spL" id="wNR-te-Ks8"/>
                 <outlet property="labelItemType" destination="0D9-7r-Mwy" id="2lh-Gn-k4S"/>
+                <outlet property="labelPictures" destination="JOj-9j-hGJ" id="fvb-5f-amw"/>
+                <outlet property="labelRating" destination="p7Y-2q-XgG" id="58y-pn-Er5"/>
+                <outlet property="labelRestaurantAddress" destination="EEb-9f-woP" id="jLB-ic-Efy"/>
+                <outlet property="labelRestaurantName" destination="wQF-Yx-ZtT" id="WTT-2F-LAl"/>
+                <outlet property="labelReuse" destination="YHt-kL-s9h" id="PDD-Ek-qN0"/>
                 <outlet property="stackViewBackGround" destination="bJ2-vo-poJ" id="Nh0-jG-17Y"/>
                 <outlet property="stackViewRatingBackGround" destination="hjx-n4-6Zn" id="rBo-o9-3ig"/>
+                <outlet property="viewBackGroundNewRestaurant" destination="E2w-hf-Lny" id="eGX-5Y-Oqz"/>
                 <outlet property="viewBikeBackGround" destination="1xG-4S-U7A" id="2Ji-7r-NPn"/>
                 <outlet property="viewCallBackGround" destination="ojZ-jF-O3n" id="DC8-OD-c41"/>
                 <outlet property="viewItemTypeBackGround" destination="E2w-hf-Lny" id="TOE-9Q-eHn"/>

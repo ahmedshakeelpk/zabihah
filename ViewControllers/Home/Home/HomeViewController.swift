@@ -35,13 +35,27 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var labelMapViewListView: UILabel!
     
     var locationManager = CLLocationManager()
+    var selectedCusine: String = "" {
+        didSet {
+            pageNumberHalalFood = 0
+        }
+    }
+    var pageNumberHalalFood: Int! = 0 {
+        didSet {
+            if pageNumberHalalFood >= modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                return()
+            }
+            getHalalRestaurants(pageSize: pageNumberHalalFood, cuisine: selectedCusine)
+        }
+    }
+    
     var userLocation: CLLocation! {
         didSet {
             if selectedMenuCell == 0 {
                 getFeaturedRestaurants()
             }
             else if selectedMenuCell == 1 {
-                getHalalRestaurants(pageSize: 0, cuisine: "")
+                selectedCusine = ""
             }
         }
     }
@@ -75,16 +89,8 @@ class HomeViewController: UIViewController {
     
     var modelGetHalalRestaurantResponse: ModelGetHalalRestaurantResponse? {
         didSet {
-            let recordFeatureCell = addFeaturedCell()
             var indexPathArray = [IndexPath]()
             var indexSetArray = [Int]()
-            if recordFeatureCell.2 > 0 {
-                listItems[recordFeatureCell.1] = recordFeatureCell.0
-                let indexPath = IndexPath(row: 0, section: recordFeatureCell.1)
-                indexPathArray.append(indexPath)
-                indexSetArray.append(recordFeatureCell.1)
-            }
-            
             let recordCuisineCell = addCuisineCell()
             if recordCuisineCell.2 > 0 {
                 listItems[recordCuisineCell.1] = recordCuisineCell.0
@@ -92,14 +98,20 @@ class HomeViewController: UIViewController {
                 indexPathArray.append(indexPath)
                 indexSetArray.append(recordCuisineCell.1)
             }
-            
-//            self.tableView.reloadRows(at: indexPathArray, with: .none)
-            for item in indexSetArray {
-                self.tableView.reloadSections(IndexSet(integer: item), with: .automatic)
+            let recordFindHalalFoodCell = addFindHalalFoodCell()
+            if recordFindHalalFoodCell.2 > 0 {
+                listItems[recordFindHalalFoodCell.1] = recordFindHalalFoodCell.0
+                let indexPath = IndexPath(row: 0, section: recordFindHalalFoodCell.1)
+                indexPathArray.append(indexPath)
+                indexSetArray.append(recordFindHalalFoodCell.1)
             }
+//            for item in indexSetArray {
+//                self.tableView.reloadSections(IndexSet(integer: item), with: .automatic)
+//            }
             if indexSetArray.count == 0 {
-                self.tableView.reloadData()
+                
             }
+            self.tableView.reloadData()
         }
     }
     
@@ -109,15 +121,7 @@ class HomeViewController: UIViewController {
             sideMenuSetup()
         }
     }
-    func addCellInList() {
-        viewMapViewBackground.isHidden = false
-        listItems = [
-            HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
-        HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
-        HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-        HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
-        ]
-    }
+    
     var selectedMenuCell: Int = 0 {
         didSet {
             addCellInList()
@@ -132,7 +136,7 @@ class HomeViewController: UIViewController {
             else if selectedMenuCell == 1 {
                 listItems = [
                     addCuisineCell().0,
-                    addFeaturedCell().0,
+                    addFindHalalFoodCell().0,
                 ]
             }
             else if selectedMenuCell == 2 {
@@ -158,7 +162,6 @@ class HomeViewController: UIViewController {
         
         setConfiguration()
         getuser()
-        getFeaturedRestaurants()
     }
     
     func setConfiguration() {
@@ -197,9 +200,8 @@ class HomeViewController: UIViewController {
         //Location Services
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
-        locationManager.requestLocation()
         
-        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
+//        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
     }
     
     @IBAction func buttonFilters(_ sender: Any) {
@@ -324,7 +326,15 @@ class HomeViewController: UIViewController {
         ] as [String : Any]
         
         APIs.postAPI(apiName: .gethalalrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: ModelGetHalalRestaurantResponse? = APIs.decodeDataToObject(data: responseData)
+            var model: ModelGetHalalRestaurantResponse? = APIs.decodeDataToObject(data: responseData)
+            
+            if self.pageNumberHalalFood > 0 {
+                if var record = self.modelGetHalalRestaurantResponse?.halalRestuarantResponseData {
+                    var oldModel = record
+                    oldModel.append(contentsOf: model?.halalRestuarantResponseData ?? [])
+                    model?.halalRestuarantResponseData = oldModel
+                }
+            }
             self.modelGetHalalRestaurantResponse = model
         }
     }
@@ -333,7 +343,8 @@ class HomeViewController: UIViewController {
         if section == 1 {
             selectedMenuCell = section
             collectionView.reloadData()
-            getHalalRestaurants(pageSize: 0, cuisine: "")
+            selectedCusine = ""
+            
         }
     }
 }
@@ -373,6 +384,17 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
+    
+    //Show Last Cell (for Table View)
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if selectedMenuCell == 1 {
+            if indexPath.row == ((modelGetHalalRestaurantResponse?.halalRestuarantResponseData?.count ?? 0) - 1) {
+                print("came to last row")
+                pageNumberHalalFood += 1
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let titleForHeader = (listItems[section]).sectionName
         if titleForHeader == "" {
@@ -405,26 +427,23 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if selectedMenuCell == 0 {
             return 1
         }
-        else {
+        else if selectedMenuCell == 1 {
             if section == 0 {
                 return 1
             }
             else {
-                return 5
+                return modelGetHalalRestaurantResponse?.halalRestuarantResponseData?.count ?? 0
             }
+        }
+        else {
+            return 2
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: (listItems[indexPath.section]).identifier) as! HomeBaseCell
-        if selectedMenuCell == 0 {
-            print((listItems[indexPath.section]).identifier)
-        }
-        else {
-            print((listItems[indexPath.section]).identifier)
-        }
+        print((listItems[indexPath.section]).identifier)
         print(indexPath.section)
-
         cell.updateCell(data: listItems[indexPath.section], indexPath: indexPath, viewController: self)
         return cell
     }
@@ -435,8 +454,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             myHeader.section = section
             if myHeader.labelTitle != nil {
                 myHeader.modelGetHomeRestaurantsResponse = modelGetHomeRestaurantsResponse
+                myHeader.modelGetHalalRestaurantResponse = modelGetHalalRestaurantResponse
                 myHeader.sectionName = "\((listItems[section]).sectionName ?? "")"
                 myHeader.buttonViewAllHandler = buttonViewAllHandler
+                myHeader.selectedMenuCell = selectedMenuCell
             }
             return myHeader
         }
@@ -453,7 +474,8 @@ extension HomeViewController: HomeCuisinesCellDelegate {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
             print(indexOf)
             selectedMenuCell = indexOf
-            getHalalRestaurants(pageSize: 0, cuisine: modelGetHomeRestaurantsResponse?.cuisine?[indexPath.item].name ?? "")
+            selectedCusine = modelGetHomeRestaurantsResponse?.cuisine?[indexPath.item].name ?? ""
+            getHalalRestaurants(pageSize: 0, cuisine: selectedCusine)
         }
         print("IndexPath For \(HomeCuisinesCell.nibName()): \(indexPath)")
     }
@@ -466,6 +488,17 @@ extension HomeViewController {
             identifierLocal == identifier
         }
         return indexOf
+    }
+    
+    func addCellInList() {
+        viewMapViewBackground.isHidden = false
+        listItems = [
+            HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+        HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+        HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+        HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+        HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
+        ]
     }
     
     func addFeaturedCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
@@ -490,6 +523,25 @@ extension HomeViewController {
             }
         }
         return (HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+    }
+    
+    func addFindHalalFoodCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
+        if let indexOf = findIndexOfIdentifier(identifier: FindHalalFoodCell.nibName()) {
+            var modelHalalRestuarantResponseData = [ModelRestuarantResponseData]()
+            modelHalalRestuarantResponseData = modelGetHalalRestaurantResponse?.halalRestuarantResponseData ?? []
+            
+            print(indexOf)
+            let recordCount = modelHalalRestuarantResponseData.count
+            if recordCount > 0 {
+                let data = modelHalalRestuarantResponseData as Any
+                let rowHeight = 260
+                let identifier = FindHalalFoodCell.nibName()
+                let sectionName = ""
+                let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
+                return (record, indexOf, recordCount)
+            }
+        }
+        return (HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
     }
     func addCuisineCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {

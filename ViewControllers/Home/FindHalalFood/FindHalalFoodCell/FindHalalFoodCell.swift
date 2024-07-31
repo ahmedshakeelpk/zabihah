@@ -9,17 +9,48 @@ import UIKit
 
 class FindHalalFoodCell: HomeBaseCell {
     
+    @IBOutlet weak var viewBackGroundNewRestaurant: UIView!
+    @IBOutlet weak var labelRestaurantName: UILabel!
+    @IBOutlet weak var labelRestaurantAddress: UILabel!
+    @IBOutlet weak var labelRating: UILabel!
+    @IBOutlet weak var labelComments: UILabel!
+    @IBOutlet weak var labelReuse: UILabel!
+    @IBOutlet weak var labelPictures: UILabel!
+    @IBOutlet weak var labelDistance: UILabel!
     @IBOutlet weak var viewItemTypeBackGround: UIView!
     @IBOutlet weak var labelItemType: UILabel!
+    @IBOutlet weak var imageViewRestaurant: UIImageView!
     @IBOutlet weak var viewBikeBackGround: UIView!
     @IBOutlet weak var viewCallBackGround: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewRatingBackGround: UIView!
-    @IBOutlet weak var stackViewRatingBackGround: UIStackView!
+    @IBOutlet weak var imageViewItem: UIImageView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
+    @IBOutlet weak var stackViewRatingBackGround: UIStackView!
+
+    var dataRecord: HomeBaseCell.HomeListItem!
+
     
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
     let arrayIconNames = ["home", "chefHatHome", "Pickup & delivery", "Prayer spaces"]
+    
+    
+    var modelFeaturedRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
+        didSet {
+            labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
+            labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
+            labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
+            labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
+            labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
+            labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)"
+            imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+            imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+//            viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
+//            if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
+//                viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false
+//            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,12 +64,23 @@ class FindHalalFoodCell: HomeBaseCell {
         HomeFoodItemSubSuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
+        imageViewRestaurant.circle()
+        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
+    }
+    
+    override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
+        // Configure the view for the selected state
+        dataRecord = data as? HomeBaseCell.HomeListItem
+        if let modelData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData] {
+            modelFeaturedRestuarantResponseData = modelData[indexPath.row]
+        }
+        collectionView.reloadData()
     }
 }
 

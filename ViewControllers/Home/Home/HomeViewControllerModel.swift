@@ -77,7 +77,7 @@ extension HomeViewController {
     
     // MARK: - ModelGetHalalRestaurantResponse
     struct ModelGetHalalRestaurantResponse: Codable {
-        let halalRestuarantResponseData: [ModelRestuarantResponseData]?
+        var halalRestuarantResponseData: [ModelRestuarantResponseData]?
         let totalCountHalal, totalPages: Int?
         let success: Bool?
         let message, innerExceptionMessage: String?

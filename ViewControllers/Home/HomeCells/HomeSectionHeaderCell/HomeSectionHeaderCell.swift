@@ -13,6 +13,7 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelViewAll: UILabel!
     
+    var selectedMenuCell: Int!
     var section: Int!
     var buttonViewAllHandler: ((_ section: Int) -> ())!
     
@@ -30,14 +31,25 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
             else {
                 labelViewAll.text = "View All"
                 buttonViewAll.isEnabled = true
-                if section == 1 {
-                    labelTitle.text = "\(modelGetHomeRestaurantsResponse?.cuisine?.count ?? 0)\(sectionName ?? "")"
+                if selectedMenuCell == 1 {
+                    labelViewAll.text = ""
+                    labelTitle.text = "\(modelGetHalalRestaurantResponse?.cuisine?.count ?? 0)\(sectionName ?? "")"
+                }
+                else {
+                    if section == 1 {
+                        labelTitle.text = "\(modelGetHomeRestaurantsResponse?.cuisine?.count ?? 0)\(sectionName ?? "")"
+                    }
                 }
             }
         }
     }
     
     var modelGetHomeRestaurantsResponse: HomeViewController.ModelGetHomeRestaurantsResponse? {
+        didSet {
+            
+        }
+    }
+    var modelGetHalalRestaurantResponse: HomeViewController.ModelGetHalalRestaurantResponse? {
         didSet {
             
         }
