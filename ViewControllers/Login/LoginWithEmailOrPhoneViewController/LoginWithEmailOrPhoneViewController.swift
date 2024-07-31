@@ -74,13 +74,13 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         viewBackGroundButtonSendVerificationCode.radius(radius: 8)
         
         if isFromEmail {
-            labelTitle.text = "Confirm your email"
+            labelTitle.text = "Sign in with email"
             stackViewPhoneNumber.isHidden = true
             stackViewEmail.isHidden = false
             imageViewTitleType.image = UIImage(named: "smsLogin")
         }
         else {
-            labelTitle.text = "Confirm your phone"
+            labelTitle.text = "Sign in with phone"
             stackViewEmail.isHidden = true
             stackViewPhoneNumber.isHidden = false
             imageViewTitleType.image = UIImage(named: "phoneLogo")

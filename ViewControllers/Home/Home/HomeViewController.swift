@@ -8,6 +8,8 @@
 import UIKit
 import Alamofire
 import GoogleMaps
+import CoreLocation
+
 
 extension HomeViewController: GMSMapViewDelegate{
     
@@ -32,12 +34,18 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var buttonSearchLocation: UIButton!
     @IBOutlet weak var labelMapViewListView: UILabel!
     
-    var location: CLLocationCoordinate2D? {
+    var locationManager = CLLocationManager()
+    var userLocation: CLLocation! {
         didSet {
-            
+            if selectedMenuCell == 0 {
+                getFeaturedRestaurants()
+            }
+            else if selectedMenuCell == 1 {
+                getHalalRestaurants(pageSize: 0, cuisine: "")
+            }
         }
     }
-    
+
     var modelGetHomeRestaurantsResponse: ModelGetHomeRestaurantsResponse? {
         didSet {
             let recordFeatureCell = addFeaturedCell()
@@ -102,6 +110,7 @@ class HomeViewController: UIViewController {
         }
     }
     func addCellInList() {
+        viewMapViewBackground.isHidden = false
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
         HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
@@ -113,18 +122,17 @@ class HomeViewController: UIViewController {
         didSet {
             addCellInList()
             if selectedMenuCell == 0 {
+                viewMapViewBackground.isHidden = true
                 //MARK: - Add Items In tableView
                 listItems = [
                     addFeaturedCell().0,
                     addCuisineCell().0,
-//                    HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-//                    HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
                 ]
             }
             else if selectedMenuCell == 1 {
                 listItems = [
-                    HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-                    HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
+                    addCuisineCell().0,
+                    addFeaturedCell().0,
                 ]
             }
             else if selectedMenuCell == 2 {
@@ -154,8 +162,6 @@ class HomeViewController: UIViewController {
     }
     
     func setConfiguration() {
-        location = CLLocationCoordinate2D(latitude: 37.8690971, longitude: -122.2930876)
-        
         mapView.delegate = self
         sideMenuSetup()
         viewMapViewBackground.circle()
@@ -187,6 +193,13 @@ class HomeViewController: UIViewController {
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
+        
+        //Location Services
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.delegate = self
+        locationManager.requestLocation()
+        
+        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
     }
     
     @IBAction func buttonFilters(_ sender: Any) {
@@ -252,12 +265,18 @@ class HomeViewController: UIViewController {
     
     func presentToHomeFilterViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeFilterViewController") as! HomeFilterViewController
-        vc.location = location
+        vc.location = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
         vc.buttonFilterHandler = { parameters in
             print(parameters)
             self.getFeaturedRestaurants(parameters: parameters)
         }
         self.present(vc, animated: true)
+    }
+    
+    func selectedAddress(modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData) {
+        let model = modelUserAddressesResponseData
+        self.userLocation = CLLocation(latitude: model.latitude ?? 0, longitude: model.longitude ?? 0)
+        self.textFieldSearchLocation.text = modelUserAddressesResponseData.address
     }
     
     func getuser() {       
@@ -271,14 +290,20 @@ class HomeViewController: UIViewController {
     
     func getFeaturedRestaurants(parameters: [String: Any]? = nil) {
         var parameters = parameters
-        parameters = [
-            "lat": location?.latitude as Any,
-            "long": location?.longitude as Any,
-            "radius": 0,
-            "rating": 0,
-            "isalcoholic": false,
-            "isHalal": true
-        ]
+        if parameters == nil {
+            parameters = [
+                "lat": userLocation?.coordinate.latitude as Any,
+                "long": userLocation?.coordinate.longitude as Any,
+                "radius": 0,
+                "rating": 0,
+                "isalcoholic": false,
+                "isHalal": true
+            ]
+        }
+        else {
+            parameters?["lat"] = userLocation?.coordinate.latitude as Any
+            parameters?["long"] = userLocation?.coordinate.longitude as Any
+        }
         APIs.postAPI(apiName: .gethomerestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetHomeRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetHomeRestaurantsResponse = model
@@ -286,9 +311,9 @@ class HomeViewController: UIViewController {
     }
     
     func getHalalRestaurants(pageSize: Int, cuisine: String, parameters: [String: Any]? = nil) {
-        var parameters = [
-            "lat": 37.8690971,
-            "long": -122.2930876,
+        let parameters = [
+            "lat": userLocation?.coordinate.latitude as Any,
+            "long": userLocation?.coordinate.longitude as Any,
             "radius": 0,
             "rating": 0,
             "isalcoholic": false,
@@ -480,7 +505,7 @@ extension HomeViewController {
             let recordCount = cuisine.count
             if recordCount > 0 {
                 let data = cuisine as Any
-                let rowHeight = 100
+                let rowHeight = 120
                 let identifier = HomeCuisinesCell.nibName()
                 let sectionName = " cuisines near you"
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
@@ -489,4 +514,29 @@ extension HomeViewController {
         }
         return (HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 1, 0)
     }
+}
+extension HomeViewController : CLLocationManagerDelegate {
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+         print("error:: \(error.localizedDescription)")
+    }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.requestLocation()
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            locationManager.stopUpdatingLocation()
+            self.userLocation = location
+            print(" Lat \(location.coordinate.latitude) ,  Longitude \(location.coordinate.longitude)")
+        }
+        if locations.first != nil {
+            print("location:: \(locations[0])")
+        }
+
+    }
+
 }

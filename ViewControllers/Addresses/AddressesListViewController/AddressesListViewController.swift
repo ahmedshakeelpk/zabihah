@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import GooglePlaces
 
 class AddressesListViewController: UIViewController {
 
@@ -201,6 +202,9 @@ extension AddressesListViewController: UITableViewDelegate, UITableViewDataSourc
             if controller.isKind(of: HomeViewController.self) {
                 if let targetViewController = controller as? HomeViewController {
                     targetViewController.getuser()
+                    if let model = modelGetUserAddressResponse?.userAddressesResponseData?[indexPath.row] {
+                        targetViewController.selectedAddress(modelUserAddressesResponseData: model)
+                    }
                     self.navigationController!.popToViewController(controller, animated: true)
                 }
                 break

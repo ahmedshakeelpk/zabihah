@@ -178,7 +178,7 @@ class ProfileViewController: UIViewController {
         
         labelPhone.text = modelGetUserProfileResponse?.userResponseData?.phone
         textFieldPhone.text = modelGetUserProfileResponse?.userResponseData?.phone
-        imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "")
+        imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "", placeHolderIcon: "placeHolderUser")
         switchOffers.isOn = modelGetUserProfileResponse?.userResponseData?.isUpdateSubcription ?? false
         switchEvents.isOn = modelGetUserProfileResponse?.userResponseData?.isNewsLetterSubcription ?? false
     }

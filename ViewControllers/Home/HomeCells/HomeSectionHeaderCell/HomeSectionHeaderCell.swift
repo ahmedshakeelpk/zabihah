@@ -18,6 +18,7 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
     
     var sectionName: String? {
         didSet {
+            labelTitle.text = sectionName
             if sectionName?.lowercased() == "" {
                 labelViewAll.text = ""
                 buttonViewAll.isEnabled = false
@@ -29,13 +30,9 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
             else {
                 labelViewAll.text = "View All"
                 buttonViewAll.isEnabled = true
-            }
-            if section == 1 {
-                
-                labelTitle.text = "\(modelGetHomeRestaurantsResponse?.cuisine?.count ?? 0)\(sectionName ?? "")"
-            }
-            else {
-                labelTitle.text = sectionName
+                if section == 1 {
+                    labelTitle.text = "\(modelGetHomeRestaurantsResponse?.cuisine?.count ?? 0)\(sectionName ?? "")"
+                }
             }
         }
     }

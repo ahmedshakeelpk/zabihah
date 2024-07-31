@@ -193,7 +193,7 @@ class  EditAddressViewController: UIViewController {
             }
         }
         vc.location = location
-        vc.newAddress = labelAddress.text!
+        vc.newAddress = labelAddressTitle.text!
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
