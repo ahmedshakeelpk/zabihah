@@ -240,7 +240,7 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
             return 0;
         }
         else {
-            return 170
+            return 210
         }
     }
 }
