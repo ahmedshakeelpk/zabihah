@@ -35,7 +35,6 @@ class HomeViewController: UIViewController {
     var location: CLLocationCoordinate2D? {
         didSet {
             
-            
         }
     }
     
@@ -54,7 +53,7 @@ class HomeViewController: UIViewController {
             let recordCuisineCell = addCuisineCell()
             if recordCuisineCell.2 > 0 {
                 listItems[recordCuisineCell.1] = recordCuisineCell.0
-                var indexPath = IndexPath(row: 0, section: recordCuisineCell.1)
+                let indexPath = IndexPath(row: 0, section: recordCuisineCell.1)
                 indexPathArray.append(indexPath)
                 indexSetArray.append(recordCuisineCell.1)
             }
@@ -65,60 +64,61 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    func addFeaturedCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
-        let indexOf = listItems?.map { $0.identifier }.firstIndex { identifier in
-            identifier == HomeFoodItemCell.nibName()
-        }
-        print(indexOf ?? 0)
-        if (indexOf != nil) {
-            let recordCount = ((modelGetHomeRestaurantsResponse?.featuredRestuarantResponseData as Any) as AnyObject).count ?? 0
+    
+    var modelGetHalalRestaurantResponse: ModelGetHalalRestaurantResponse? {
+        didSet {
+            let recordFeatureCell = addFeaturedCell()
+            var indexPathArray = [IndexPath]()
+            var indexSetArray = [Int]()
+            if recordFeatureCell.2 > 0 {
+                listItems[recordFeatureCell.1] = recordFeatureCell.0
+                let indexPath = IndexPath(row: 0, section: recordFeatureCell.1)
+                indexPathArray.append(indexPath)
+                indexSetArray.append(recordFeatureCell.1)
+            }
             
-            if recordCount > 0 {
-                let data = modelGetHomeRestaurantsResponse?.featuredRestuarantResponseData as Any
-                let rowHeight = 240
-                let identifier = HomeFoodItemCell.nibName()
-                let sectionName = "Featured near you"
-                let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
-                return (record, indexOf!, recordCount)
+            let recordCuisineCell = addCuisineCell()
+            if recordCuisineCell.2 > 0 {
+                listItems[recordCuisineCell.1] = recordCuisineCell.0
+                let indexPath = IndexPath(row: 0, section: recordCuisineCell.1)
+                indexPathArray.append(indexPath)
+                indexSetArray.append(recordCuisineCell.1)
+            }
+            
+//            self.tableView.reloadRows(at: indexPathArray, with: .none)
+            for item in indexSetArray {
+                self.tableView.reloadSections(IndexSet(integer: item), with: .automatic)
+            }
+            if indexSetArray.count == 0 {
+                self.tableView.reloadData()
             }
         }
-        return (HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
     }
-    func addCuisineCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
-        let indexOf = listItems?.map { $0.identifier }.firstIndex { identifier in
-            identifier == HomeCuisinesCell.nibName()
-        }
-        print(indexOf ?? 0)
-        if (indexOf != nil) {
-            let recordCount = ((modelGetHomeRestaurantsResponse?.cuisine as Any) as AnyObject).count ?? 0
-            
-            if recordCount > 0 {
-                let data = modelGetHomeRestaurantsResponse?.cuisine as Any
-                let rowHeight = 100
-                let identifier = HomeCuisinesCell.nibName()
-                let sectionName = " cuisines near you"
-                let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
-                return (record, indexOf!, recordCount)
-            }
-        }
-        return (HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 1, 0)
-    }
+    
     var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
         didSet {
             modelGetUserProfileResponse = modelGetUserResponseLocal
             sideMenuSetup()
         }
     }
+    func addCellInList() {
+        listItems = [
+            HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+        HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+        HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+        HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
+        ]
+    }
     var selectedMenuCell: Int = 0 {
         didSet {
-            listItems = nil
+            addCellInList()
             if selectedMenuCell == 0 {
                 //MARK: - Add Items In tableView
                 listItems = [
                     addFeaturedCell().0,
                     addCuisineCell().0,
-                    HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-                    HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
+//                    HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+//                    HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
                 ]
             }
             else if selectedMenuCell == 1 {
@@ -128,7 +128,7 @@ class HomeViewController: UIViewController {
                 ]
             }
             else if selectedMenuCell == 2 {
-                
+                listItems = nil
             }
             else if selectedMenuCell == 3 {
                 listItems = [
@@ -287,10 +287,30 @@ class HomeViewController: UIViewController {
         }
     }
     
+    func getHalalRestaurants(pageSize: Int, cuisine: String, parameters: [String: Any]? = nil) {
+        var parameters = [
+            "lat": 37.8690971,
+            "long": -122.2930876,
+            "radius": 0,
+            "rating": 0,
+            "isalcoholic": false,
+            "isHalal": true,
+            "page": 0,
+            "pageSize": 0,
+            "cuisine": cuisine
+        ] as [String : Any]
+        
+        APIs.postAPI(apiName: .gethalalrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            let model: ModelGetHalalRestaurantResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetHalalRestaurantResponse = model
+        }
+    }
+    
     func buttonViewAllHandler(section: Int) {
         if section == 1 {
             selectedMenuCell = section
             collectionView.reloadData()
+            getHalalRestaurants(pageSize: 0, cuisine: "")
         }
     }
 }
@@ -321,6 +341,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedMenuCell = indexPath.item
+        if selectedMenuCell == 1 {
+            collectionView.reloadData()
+            getHalalRestaurants(pageSize: 0, cuisine: "")
+        }
     }
 }
 
@@ -398,5 +422,73 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
+    }
+}
+
+extension HomeViewController: HomeCuisinesCellDelegate {
+    func didSelectRow(indexPath: IndexPath) {
+        if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
+            print(indexOf)
+            selectedMenuCell = indexOf
+            getHalalRestaurants(pageSize: 0, cuisine: modelGetHomeRestaurantsResponse?.cuisine?[indexPath.item].name ?? "")
+        }
+        print("IndexPath For \(HomeCuisinesCell.nibName()): \(indexPath)")
+    }
+}
+
+
+extension HomeViewController {
+    func findIndexOfIdentifier(identifier: String) -> Int? {
+        let indexOf = listItems?.map { $0.identifier }.firstIndex { identifierLocal in
+            identifierLocal == identifier
+        }
+        return indexOf
+    }
+    
+    func addFeaturedCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
+        if let indexOf = findIndexOfIdentifier(identifier: HomeFoodItemCell.nibName()) {
+            var featuredRestuarantResponseData = [ModelRestuarantResponseData]()
+            if selectedMenuCell == 0 {
+                featuredRestuarantResponseData = modelGetHomeRestaurantsResponse?.featuredRestuarantResponseData ?? []
+            }
+            else if selectedMenuCell == 1 {
+                featuredRestuarantResponseData = modelGetHalalRestaurantResponse?.halalRestuarantResponseData ?? []
+            }
+            
+            print(indexOf)
+            let recordCount = featuredRestuarantResponseData.count
+            if recordCount > 0 {
+                let data = featuredRestuarantResponseData as Any
+                let rowHeight = 240
+                let identifier = HomeFoodItemCell.nibName()
+                let sectionName = "Featured near you"
+                let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
+                return (record, indexOf, recordCount)
+            }
+        }
+        return (HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+    }
+    func addCuisineCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
+        if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
+            var cuisine = [ModelCuisine]()
+            if selectedMenuCell == 0 {
+                cuisine = modelGetHomeRestaurantsResponse?.cuisine ?? []
+            }
+            else if selectedMenuCell == 1 {
+                cuisine = modelGetHalalRestaurantResponse?.cuisine ?? []
+            }
+            
+            print(indexOf)
+            let recordCount = cuisine.count
+            if recordCount > 0 {
+                let data = cuisine as Any
+                let rowHeight = 100
+                let identifier = HomeCuisinesCell.nibName()
+                let sectionName = " cuisines near you"
+                let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
+                return (record, indexOf, recordCount)
+            }
+        }
+        return (HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 1, 0)
     }
 }

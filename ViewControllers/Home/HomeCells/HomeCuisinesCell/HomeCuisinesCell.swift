@@ -7,14 +7,18 @@
 
 import UIKit
 
+protocol HomeCuisinesCellDelegate: AnyObject {
+    func didSelectRow(indexPath: IndexPath)
+}
 class HomeCuisinesCell: HomeBaseCell {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var delegate: HomeCuisinesCellDelegate!
     var dataRecord: HomeBaseCell.HomeListItem!
     var modelCuisineResponse: [HomeViewController.ModelCuisine]? {
         didSet {
-            
+
         }
     }
     
@@ -33,6 +37,7 @@ class HomeCuisinesCell: HomeBaseCell {
         dataRecord = data as? HomeBaseCell.HomeListItem
         modelCuisineResponse = dataRecord.data as? [HomeViewController.ModelCuisine]
         collectionView.reloadData()
+        delegate = viewController as? any HomeCuisinesCellDelegate
     }
     
     override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
@@ -69,7 +74,7 @@ extension HomeCuisinesCell: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        selectedCell = indexPath.item
-        collectionView.reloadData()
+        delegate?.didSelectRow(indexPath: indexPath)
     }
 }
 

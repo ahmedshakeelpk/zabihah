@@ -72,5 +72,17 @@ extension HomeViewController {
         case empty = ""
         case statusOpen = "Open"
     }
+    
+//    **********************
+    
+    // MARK: - ModelGetHalalRestaurantResponse
+    struct ModelGetHalalRestaurantResponse: Codable {
+        let halalRestuarantResponseData: [ModelRestuarantResponseData]?
+        let totalCountHalal, totalPages: Int?
+        let success: Bool?
+        let message, innerExceptionMessage: String?
+        let cuisine: [ModelCuisine]?
+        let recordFound: Bool?
+    }
 
 }
