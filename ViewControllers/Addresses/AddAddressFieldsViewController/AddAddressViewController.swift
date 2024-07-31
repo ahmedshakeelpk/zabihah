@@ -45,6 +45,7 @@ class AddAddressViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.textFieldAddress.text = self.newAddress
                 self.setLocation(latitude: self.location?.latitude, longitude: self.location?.longitude)
+                self.fieldVilidation()
             }
         }
     }

@@ -150,12 +150,12 @@ class HomeViewController: UIViewController {
         
         setConfiguration()
         getuser()
-        
-        location = CLLocationCoordinate2D(latitude: 37.8690971, longitude: -122.2930876)
-        getFeaturedRestaurants(parameters: nil)
+        getFeaturedRestaurants()
     }
     
     func setConfiguration() {
+        location = CLLocationCoordinate2D(latitude: 37.8690971, longitude: -122.2930876)
+        
         mapView.delegate = self
         sideMenuSetup()
         viewMapViewBackground.circle()
@@ -271,16 +271,14 @@ class HomeViewController: UIViewController {
     
     func getFeaturedRestaurants(parameters: [String: Any]? = nil) {
         var parameters = parameters
-        if parameters == nil {
-            parameters = [
-                "lat": 37.8690971,
-                "long": -122.2930876,
-                "radius": 0,
-                "rating": 0,
-                "isalcoholic": false,
-                "isHalal": true
-            ]
-        }
+        parameters = [
+            "lat": location?.latitude as Any,
+            "long": location?.longitude as Any,
+            "radius": 0,
+            "rating": 0,
+            "isalcoholic": false,
+            "isHalal": true
+        ]
         APIs.postAPI(apiName: .gethomerestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetHomeRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetHomeRestaurantsResponse = model
