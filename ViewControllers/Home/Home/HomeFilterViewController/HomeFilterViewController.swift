@@ -11,14 +11,15 @@ import Cosmos
 
 class HomeFilterViewController: UIViewController {
     
+    @IBOutlet weak var sliderRange: UISlider!
     @IBOutlet weak var starRatingView: CosmosView!
     
     @IBOutlet weak var labelStarRating: UILabel!
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var rangeSlider: RangeSlider! {
         didSet {
-            labelRangeStart.text = "\(Int(rangeSlider.lowerValue))"
-            labelRangeEnd.text = "\(Int(rangeSlider.upperValue))"
+//            labelRangeStart.text = "\(Int(rangeSlider.lowerValue))"
+            labelRangeEnd.text = "\(Int(sliderRange?.maximumValue ?? 0))"
         }
     }
     @IBOutlet weak var labelRangeStart: UILabel!
@@ -58,12 +59,15 @@ class HomeFilterViewController: UIViewController {
             labelStarRating.text = "\(starRatingView.rating)"
         }
     }
+    @IBAction func sliderRange(_ sender: UISlider) {
+        labelRangeEnd.text = "\(Int(sender.value))ml"
+    }
     @IBAction func buttonFilter(_ sender: Any) {
         self.dismiss(animated: true) {
             let parameters = [
                 "lat": self.location?.latitude ?? 0,
                 "long": self.location?.longitude ?? 0,
-                "radius": self.labelRangeEnd.text!,
+                "radius": self.labelRangeEnd.text!.getIntegerValue(),
                 "rating": self.labelStarRating.text!,
                 "isalcoholic": self.switchHideAlcoholPlaces.isOn,
                 "isHalal": self.switchHideHalalPlaces.isOn
