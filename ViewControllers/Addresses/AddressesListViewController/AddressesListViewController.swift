@@ -100,6 +100,8 @@ class AddressesListViewController: UIViewController {
             let model: ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserAddressResponse = model
         }
+        
+        
     }
     
     func deleteUserAddress(index: Int) {

@@ -28,8 +28,8 @@ class HomeMenuCell: UICollectionViewCell {
         imageViewTitle.image = imageViewTitle.image?.withRenderingMode(.alwaysTemplate)
 
         if indexPath.item == selectedMenuCell {
-            viewSelectedMenuBackGround.backgroundColor = .clrApp
-            imageViewTitle.tintColor = .clrApp
+            viewSelectedMenuBackGround.backgroundColor = .colorApp
+            imageViewTitle.tintColor = .colorApp
         }
         else {
             viewSelectedMenuBackGround.backgroundColor = .white

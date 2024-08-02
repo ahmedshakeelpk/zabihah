@@ -357,16 +357,16 @@
                                         <rect key="frame" x="0.0" y="166" width="393" height="70"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jp2-s8-WU0">
-                                                <rect key="frame" x="20" y="5" width="353" height="60"/>
+                                                <rect key="frame" x="0.0" y="5" width="393" height="60"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="XIW-fN-Bby">
-                                                        <rect key="frame" x="0.0" y="0.0" width="353" height="60"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="60"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YIq-ci-MNt">
-                                                                <rect key="frame" x="0.0" y="0.0" width="353" height="60"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="393" height="60"/>
                                                                 <subviews>
                                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cOq-8U-uUT">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="353" height="60"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="60"/>
                                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="E5s-pL-3mR">
                                                                             <size key="itemSize" width="72" height="56"/>
@@ -417,8 +417,8 @@
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="Jp2-s8-WU0" secondAttribute="bottom" constant="5" id="4G2-6t-gni"/>
                                             <constraint firstAttribute="height" constant="70" id="ER1-7B-8vO"/>
-                                            <constraint firstAttribute="trailing" secondItem="Jp2-s8-WU0" secondAttribute="trailing" constant="20" symbolic="YES" id="rHA-Aw-Jz1"/>
-                                            <constraint firstItem="Jp2-s8-WU0" firstAttribute="leading" secondItem="qSq-Qv-25C" secondAttribute="leading" constant="20" id="xPC-sR-npd"/>
+                                            <constraint firstAttribute="trailing" secondItem="Jp2-s8-WU0" secondAttribute="trailing" id="rHA-Aw-Jz1"/>
+                                            <constraint firstItem="Jp2-s8-WU0" firstAttribute="leading" secondItem="qSq-Qv-25C" secondAttribute="leading" id="xPC-sR-npd"/>
                                             <constraint firstItem="Jp2-s8-WU0" firstAttribute="top" secondItem="qSq-Qv-25C" secondAttribute="top" constant="5" id="ykU-SZ-kLN"/>
                                         </constraints>
                                     </view>

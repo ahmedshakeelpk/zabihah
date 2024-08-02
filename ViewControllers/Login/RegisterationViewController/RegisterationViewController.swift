@@ -128,7 +128,7 @@ class RegisterationViewController: UIViewController {
         
         buttonAgree.tag = 1
         imageViewUser.circle()
-        labelTermsAndConditions.setTwoColorWithUnderLine(textFirst: "I agree to ", textSecond: "terms and conditions.", colorFirst: .clrDarkBlue, colorSecond: .clrApp)
+        labelTermsAndConditions.setTwoColorWithUnderLine(textFirst: "I agree to ", textSecond: "terms and conditions.", colorFirst: .clrDarkBlue, colorSecond: .colorApp)
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunctionOnLabel))
         labelTermsAndConditions.isUserInteractionEnabled = true
         labelTermsAndConditions.addGestureRecognizer(tap)

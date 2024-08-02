@@ -50,12 +50,12 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet weak var switchOffers: UISwitch!{
         didSet{
-            switchOffers.onTintColor = .clrApp
+            switchOffers.onTintColor = .colorApp
         }
     }
     @IBOutlet weak var switchEvents: UISwitch!{
         didSet{
-            switchEvents.onTintColor = .clrApp
+            switchEvents.onTintColor = .colorApp
         }
     }
     @IBOutlet weak var viewTextFieldNameMainBackGround: UIView!

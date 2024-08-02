@@ -35,17 +35,19 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var labelMapViewListView: UILabel!
     
     var locationManager = CLLocationManager()
-    var selectedCusine: String = "" {
+    var selectedCuisine: String = "" {
         didSet {
-            pageNumberHalalFood = 0
+            pageNumberHalalFood = 1
         }
     }
-    var pageNumberHalalFood: Int! = 0 {
+    var pageNumberHalalFood: Int! = 1 {
         didSet {
-            if pageNumberHalalFood >= modelGetHalalRestaurantResponse?.totalPages ?? 0 {
-                return()
+            if pageNumberHalalFood > 1 {
+                if pageNumberHalalFood > modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                    return()
+                }
             }
-            getHalalRestaurants(pageSize: pageNumberHalalFood, cuisine: selectedCusine)
+            getHalalRestaurants(pageSize: pageNumberHalalFood, cuisine: selectedCuisine)
         }
     }
     
@@ -55,7 +57,7 @@ class HomeViewController: UIViewController {
                 getFeaturedRestaurants()
             }
             else if selectedMenuCell == 1 {
-                selectedCusine = ""
+                selectedCuisine = ""
             }
         }
     }
@@ -184,6 +186,7 @@ class HomeViewController: UIViewController {
         
         //MARK: - Add Extra spacing in tableView
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
 
         if #available(iOS 15.0, *) {
             self.tableView.sectionHeaderTopPadding = 0
@@ -314,13 +317,13 @@ class HomeViewController: UIViewController {
     
     func getHalalRestaurants(pageSize: Int, cuisine: String, parameters: [String: Any]? = nil) {
         let parameters = [
-            "lat": userLocation?.coordinate.latitude as Any,
-            "long": userLocation?.coordinate.longitude as Any,
+            "lat": userLocation?.coordinate.latitude ?? 0,
+            "long": userLocation?.coordinate.longitude ?? 0,
             "radius": 0,
             "rating": 0,
             "isalcoholic": false,
             "isHalal": true,
-            "page": 0,
+            "page": Int(pageSize),
             "pageSize": 0,
             "cuisine": cuisine
         ] as [String : Any]
@@ -329,7 +332,7 @@ class HomeViewController: UIViewController {
             var model: ModelGetHalalRestaurantResponse? = APIs.decodeDataToObject(data: responseData)
             
             if self.pageNumberHalalFood > 0 {
-                if var record = self.modelGetHalalRestaurantResponse?.halalRestuarantResponseData {
+                if let record = self.modelGetHalalRestaurantResponse?.halalRestuarantResponseData {
                     var oldModel = record
                     oldModel.append(contentsOf: model?.halalRestuarantResponseData ?? [])
                     model?.halalRestuarantResponseData = oldModel
@@ -343,7 +346,7 @@ class HomeViewController: UIViewController {
         if section == 1 {
             selectedMenuCell = section
             collectionView.reloadData()
-            selectedCusine = ""
+            selectedCuisine = ""
             
         }
     }
@@ -353,7 +356,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        let width = arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]).width + 10
+        let width = arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)]).width + 10
         return CGSize(width: width, height: 60)
     }
     
@@ -474,8 +477,7 @@ extension HomeViewController: HomeCuisinesCellDelegate {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
             print(indexOf)
             selectedMenuCell = indexOf
-            selectedCusine = modelGetHomeRestaurantsResponse?.cuisine?[indexPath.item].name ?? ""
-            getHalalRestaurants(pageSize: 0, cuisine: selectedCusine)
+            selectedCuisine = modelGetHomeRestaurantsResponse?.cuisine?[indexPath.item].name ?? ""
         }
         print("IndexPath For \(HomeCuisinesCell.nibName()): \(indexPath)")
     }
@@ -556,7 +558,11 @@ extension HomeViewController {
             print(indexOf)
             let recordCount = cuisine.count
             if recordCount > 0 {
-                let data = cuisine as Any
+                let data =  [
+                    "data": cuisine as Any,
+                    "selectedCuisine": selectedCuisine
+                ]
+                
                 let rowHeight = 120
                 let identifier = HomeCuisinesCell.nibName()
                 let sectionName = " cuisines near you"

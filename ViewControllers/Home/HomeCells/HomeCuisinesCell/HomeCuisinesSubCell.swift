@@ -20,6 +20,16 @@ class HomeCuisinesSubCell: UICollectionViewCell {
             imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: "placeHolderCuisine")
         }
     }
+    var selectedCuisine: String? = "" {
+        didSet {
+            if selectedCuisine == modelCuisine?.name {
+                labelName.textColor = .colorApp
+            }
+            else {
+                labelName.textColor = .colorLabel
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

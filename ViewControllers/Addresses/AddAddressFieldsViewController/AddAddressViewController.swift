@@ -15,7 +15,7 @@ class AddAddressViewController: UIViewController {
    
     @IBOutlet weak var switchDefaultAddress: UISwitch!{
         didSet{
-            switchDefaultAddress.onTintColor = .clrApp
+            switchDefaultAddress.onTintColor = .colorApp
         }
     }
     @IBOutlet weak var labelMainTitle: UILabel!
@@ -248,7 +248,7 @@ extension AddAddressViewController: UICollectionViewDataSource, UICollectionView
         cell.labelName.text = arrayNames[indexPath.item]        
         if selectedCell != nil {
             if indexPath.item == selectedCell {
-                cell.viewImageViewTitleBackGround.backgroundColor = .clrApp
+                cell.viewImageViewTitleBackGround.backgroundColor = .colorApp
                 cell.imageViewTitle.image = UIImage(named: "\(arrayNamesIconWhite[indexPath.item])")
             }
             else {

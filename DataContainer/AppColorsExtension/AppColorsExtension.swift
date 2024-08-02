@@ -10,8 +10,13 @@ import UIKit
 
 extension UIColor {
     // Ma Colors
-    static let clrApp = UIColor(hexString: "990001")
+    static let colorApp = UIColor(hexString: "990001")
     static let clrBorder = UIColor(hexString: "D0D5DD")
+    
+    
+    static let colorLabel = UIColor(hexString: "525252")
+    
+    
     
     
     static let clrLightBlue = UIColor(hexString: "364152")

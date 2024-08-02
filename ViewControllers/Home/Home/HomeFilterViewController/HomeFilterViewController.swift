@@ -27,12 +27,12 @@ class HomeFilterViewController: UIViewController {
     @IBOutlet weak var buttonFilter: UIButton!
     @IBOutlet weak var switchHideHalalPlaces: UISwitch! {
         didSet{
-            switchHideHalalPlaces.onTintColor = .clrApp
+            switchHideHalalPlaces.onTintColor = .colorApp
         }
     }
     @IBOutlet weak var switchHideAlcoholPlaces: UISwitch! {
         didSet{
-            switchHideAlcoholPlaces.onTintColor = .clrApp
+            switchHideAlcoholPlaces.onTintColor = .colorApp
         }
     }
     
