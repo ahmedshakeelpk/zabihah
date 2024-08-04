@@ -33,7 +33,7 @@ extension HomeViewController {
         let totalCountHalal: Int?
         let success: Bool?
         let message, innerExceptionMessage: String?
-        let featuredRestuarantResponseData: [ModelRestuarantResponseData]?
+        var featuredRestuarantResponseData: [ModelRestuarantResponseData]?
         let cuisine: [ModelCuisine]?
         let recordFound: Bool?
     }
@@ -45,34 +45,27 @@ extension HomeViewController {
 
     // MARK: - RestuarantResponseDatum
     struct ModelRestuarantResponseData: Codable {
-        let rating: Double?
-        let coverImage: String?
-        let phone: String?
-        let isDelivery: Bool?
-        let distanceUnit: DistanceUnit?
-        let createdOn: String?
         let iconImage: String?
+        let status, tags: String?
+        let createdOn: String?
         let visits: Int?
-        let tags: String?
-        let gallaryCount: Int?
-        let address: String?
-        let reviews: Int?
-        let distance: Double?
+        var isFavorites: Bool?
         let name: String?
-        let status: Status?
-    }
-
-    enum DistanceUnit: String, Codable {
-        case m = "m"
-        case mi = "mi"
-    }
-
-    enum Status: String, Codable {
-        case close = "Close"
-        case empty = ""
-        case statusOpen = "Open"
+        let reviews: Int?
+        let long: Double?
+        let id: String?
+        let coverImage: String?
+        let titleImage: String?
+        let phone: String?
+        let distance: Double?
+        let isDelivery: Bool?
+        let distanceUnit: String?
+        let lat, rating: Double?
+        let address: String?
+        let gallaryCount: Int?
     }
     
+
 //    **********************
     
     // MARK: - ModelGetHalalRestaurantResponse

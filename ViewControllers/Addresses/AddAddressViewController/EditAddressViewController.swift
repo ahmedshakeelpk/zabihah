@@ -204,10 +204,10 @@ class  EditAddressViewController: UIViewController {
     
     func navigateToAddAddressViewControllerFromEditButton() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        vc.addressEditHandler = {
+        vc.addressEditHandler = { location in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.popViewController(animated: false)
-                self.buttonContinueHandler(CLLocationCoordinate2D())
+                self.buttonContinueHandler?(location)
             }
         }
         vc.isEditAddress = true

@@ -133,7 +133,7 @@ class AddressesListViewController: UIViewController {
     
     func navigateToAddAddressViewControllerFromEditButton(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        vc.addressEditHandler = {
+        vc.addressEditHandler = { location in
             self.getUserAddress()
         }
         vc.isEditAddress = true

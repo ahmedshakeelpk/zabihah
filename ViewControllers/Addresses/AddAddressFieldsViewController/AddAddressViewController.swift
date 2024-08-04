@@ -55,7 +55,7 @@ class AddAddressViewController: UIViewController {
             if modelEditUserAddressResponse?.success ?? false {
                 showAlertCustomPopup(title: "Success", message: modelEditUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
                     self.popViewController(animated: true)
-                    self.addressEditHandler?()
+                    self.addressEditHandler?(self.location!)
                 }
             }
             else {
@@ -91,7 +91,7 @@ class AddAddressViewController: UIViewController {
     var locationId: String!
     var selectedCell: Int! = 0
     var newAddressAddedHandler: (() -> ())!
-    var addressEditHandler: (() -> ())!
+    var addressEditHandler: ((CLLocationCoordinate2D) -> ())!
 
     var modelAddUserAddressResponse: ModelAddUserAddressResponse? {
         didSet {

@@ -7,8 +7,13 @@
 
 import UIKit
 
+protocol HomeFoodItemSubCellDelegate: AnyObject {
+    func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath)
+}
+
 class HomeFoodItemSubCell: UICollectionViewCell {
-    
+    @IBOutlet weak var imageViewFavourite: UIImageView!
+    @IBOutlet weak var buttonFavourite: UIButton!
     @IBOutlet weak var viewBackGroundNewRestaurant: UIView!
     @IBOutlet weak var labelRestaurantName: UILabel!
     @IBOutlet weak var labelRestaurantAddress: UILabel!
@@ -27,23 +32,29 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     @IBOutlet weak var imageViewItem: UIImageView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
     
+    var delegate: HomeFoodItemSubCellDelegate!
+    var buttonFavouriteHandler: (() -> ())!
+    var viewController = UIViewController()
     var indexPath: IndexPath! = nil
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
-    
-    var modelFeaturedRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
+//    var isFavourite = false
+    var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
-            labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
-            labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
-            labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
-            labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
-            labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
-            labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)"
-            imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-            imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
-//            viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
-//            if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
-//                viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false
-//            }
+            print(modelPostFavouriteRestaurantsResponse as Any)
+            if modelPostFavouriteRestaurantsResponse?.success ?? false {
+                if let isFavourite = self.modelFeaturedRestuarantResponseData?.isFavorites {
+                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath)
+                    modelFeaturedRestuarantResponseData.isFavorites = !(isFavourite)
+                }
+            }
+            else {
+                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
+            }
+        }
+    }
+    var modelFeaturedRestuarantResponseData: HomeViewController.ModelRestuarantResponseData! {
+        didSet {
+            setData()
         }
     }
 
@@ -61,8 +72,48 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         collectionView.dataSource = self
         
         imageViewRestaurant.circle()
+        
+        setData()
     }
-
+    @IBAction func buttonFavourite(_ sender: Any) {
+        delegate = viewController as? any HomeFoodItemSubCellDelegate
+        postFavouriteRestaurants()
+    }
+    
+    struct ModelPostFavouriteRestaurantsResponse: Codable {
+        let recordFound, success: Bool?
+        let message, innerExceptionMessage: String?
+        let token: String?
+    }
+    
+    func setData() {
+        labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
+        labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
+        labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
+        labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
+        labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
+        labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"
+        
+        imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+        imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+        imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+        
+//            viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
+//            if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
+//                viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false
+//            }
+    }
+    func postFavouriteRestaurants() {
+        var parameters = [
+            "restaurantId": modelFeaturedRestuarantResponseData?.id ?? "",
+              "isMark": !(modelFeaturedRestuarantResponseData?.isFavorites ?? false)
+        ] as [String : Any]
+       
+        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelPostFavouriteRestaurantsResponse = model
+        }
+    }
 }
 
 extension HomeFoodItemSubCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -94,7 +145,6 @@ extension HomeFoodItemSubCell: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        selectedCell = indexPath.item
         collectionView.reloadData()
     }
 }

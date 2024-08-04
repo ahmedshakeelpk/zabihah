@@ -23,6 +23,9 @@ struct APIsName {
         case gethomerestaurants = "api/Restaurant/gethomerestaurants"
         case gethalalrestaurants = "api/Restaurant/gethalalrestaurants"
         
+        //MARK:- Favorite
+        case postfavouriterestaurants = "api/Favorite/postfavouriterestaurants"
+        
         //MARK:- V1
         case usersignup = "v1/User/usersignup"
         case getuser = "v1/User/getuser"

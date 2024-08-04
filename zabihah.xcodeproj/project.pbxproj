@@ -110,6 +110,8 @@
 		6AD4772B2C5A4792004AAABE /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4772A2C5A4792004AAABE /* BundleExtension.swift */; };
 		6AD4772E2C5A69D5004AAABE /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4772D2C5A69D5004AAABE /* StringExtension.swift */; };
 		6AD477312C5B60B3004AAABE /* CommonAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD477302C5B60B3004AAABE /* CommonAPIs.swift */; };
+		6AD4776A2C5F4757004AAABE /* MarkerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD477692C5F4757004AAABE /* MarkerInfoView.swift */; };
+		6AD4776C2C5F4FD9004AAABE /* MarkerInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD4776B2C5F4FD9004AAABE /* MarkerInfoView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -217,6 +219,8 @@
 		6AD4772A2C5A4792004AAABE /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		6AD4772D2C5A69D5004AAABE /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		6AD477302C5B60B3004AAABE /* CommonAPIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonAPIs.swift; sourceTree = "<group>"; };
+		6AD477692C5F4757004AAABE /* MarkerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerInfoView.swift; sourceTree = "<group>"; };
+		6AD4776B2C5F4FD9004AAABE /* MarkerInfoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MarkerInfoView.xib; sourceTree = "<group>"; };
 		91520087A2A49726690DC81C /* Pods-zabihah.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zabihah.release.xcconfig"; path = "Target Support Files/Pods-zabihah/Pods-zabihah.release.xcconfig"; sourceTree = "<group>"; };
 		A346B501407BE41A776A091D /* Pods_zabihah.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_zabihah.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2CC534B8BF0FE464856E0BA /* Pods-zabihah.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zabihah.debug.xcconfig"; path = "Target Support Files/Pods-zabihah/Pods-zabihah.debug.xcconfig"; sourceTree = "<group>"; };
@@ -246,6 +250,7 @@
 		6A00FEF62C4CAB590006E324 /* FindHalalFood */ = {
 			isa = PBXGroup;
 			children = (
+				6AD477662C5F4730004AAABE /* MarkerInfoView */,
 				6A00FEFF2C4CAC670006E324 /* FindHalalFoodCell */,
 				6A00FEF72C4CAB7C0006E324 /* FindHalalFood.storyboard */,
 				6A00FEF92C4CAB9D0006E324 /* FindHalalFoodViewController.swift */,
@@ -803,6 +808,15 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		6AD477662C5F4730004AAABE /* MarkerInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				6AD477692C5F4757004AAABE /* MarkerInfoView.swift */,
+				6AD4776B2C5F4FD9004AAABE /* MarkerInfoView.xib */,
+			);
+			path = MarkerInfoView;
+			sourceTree = "<group>";
+		};
 		86F74EFCB81C26290E036422 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -887,6 +901,7 @@
 				6A6FC4082C3572020050B6B2 /* Base in Resources */,
 				6ACA065A2C5665AC00EE8F43 /* Delivery.storyboard in Resources */,
 				6AD39E5A2C3D7EA200BDAC05 /* HomeFoodItemCell.xib in Resources */,
+				6AD4776C2C5F4FD9004AAABE /* MarkerInfoView.xib in Resources */,
 				6A3AB59D2C3A80470030F016 /* AddressesCell.xib in Resources */,
 				6AD39E882C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib in Resources */,
 				6A28D8512C37D30500F5A95F /* Profile.storyboard in Resources */,
@@ -1009,6 +1024,7 @@
 				6A00FF032C4CAC890006E324 /* FindHalalFoodCell.swift in Sources */,
 				6A9BD3C62C4237A8008BBDF5 /* ProfileDeleteViewController.swift in Sources */,
 				6A3AB5702C3956A40030F016 /* SideTown.swift in Sources */,
+				6AD4776A2C5F4757004AAABE /* MarkerInfoView.swift in Sources */,
 				6AD0C0162C3BE43D0051D99A /* APIsName.swift in Sources */,
 				6AD477312C5B60B3004AAABE /* CommonAPIs.swift in Sources */,
 				6AD0C0112C3BC55C0051D99A /* AddAddressFieldsCell.swift in Sources */,
@@ -1195,7 +1211,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1232,7 +1248,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

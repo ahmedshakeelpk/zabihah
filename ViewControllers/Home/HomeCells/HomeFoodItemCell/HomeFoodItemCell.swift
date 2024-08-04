@@ -11,12 +11,13 @@ class HomeFoodItemCell: HomeBaseCell {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var dataRecord: HomeBaseCell.HomeListItem!
-    var modelFeaturedRestuarantResponseData: [HomeViewController.ModelRestuarantResponseData]? {
+    var buttonFavouriteHandler: (() -> ())!
+    var dataRecord: HomeBaseCell.HomeListItem! {
         didSet {
             
         }
     }
+    var modelFeaturedRestuarantResponseData: [HomeViewController.ModelRestuarantResponseData]!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,23 +25,20 @@ class HomeFoodItemCell: HomeBaseCell {
         collectionView.delegate = self
         collectionView.dataSource = self
         HomeFoodItemSubCell.register(collectionView: collectionView)
-        if indexPath != nil {
-//            print(self.indexPath.section as Any)
-        }
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        dataRecord = data as? HomeBaseCell.HomeListItem
-        modelFeaturedRestuarantResponseData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData]
-        collectionView.reloadData()
+        
     }
     
     override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
         super.updateCell(data: data, indexPath: indexPath, viewController: viewController)
+        dataRecord = data as? HomeBaseCell.HomeListItem
+        modelFeaturedRestuarantResponseData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData]
+        collectionView.reloadData()
     }
 }
 
@@ -62,10 +60,9 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeFoodItemSubCell.nibName(), for: indexPath) as! HomeFoodItemSubCell
         if self.indexPath != nil {
-            cell.indexPath = self.indexPath
-            if self.indexPath.section == 2 {
-                cell.imageViewItem.image = UIImage(named: "dummyFood2")
-            }
+            cell.indexPath = indexPath
+            cell.buttonFavouriteHandler = buttonFavouriteHandler
+            cell.viewController = viewController
             cell.modelFeaturedRestuarantResponseData = self.modelFeaturedRestuarantResponseData?[indexPath.item]
         }
         return cell
@@ -74,7 +71,7 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
 //            DispatchQueue.main.async {
 //                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
 //            }
-        
+//        (cell as! HomeFoodItemSubCell).setData()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

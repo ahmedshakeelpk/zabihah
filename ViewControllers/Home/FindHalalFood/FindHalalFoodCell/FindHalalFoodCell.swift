@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import GoogleMaps
+import GooglePlaces
+
 
 class FindHalalFoodCell: HomeBaseCell {
     
@@ -33,7 +36,6 @@ class FindHalalFoodCell: HomeBaseCell {
     
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
     let arrayIconNames = ["home", "chefHatHome", "Pickup & delivery", "Prayer spaces"]
-    
     
     var modelFeaturedRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
         didSet {
@@ -75,15 +77,41 @@ class FindHalalFoodCell: HomeBaseCell {
     }
     
     override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
+        super.updateCell(data: data, indexPath: indexPath, viewController: viewController)
         // Configure the view for the selected state
         dataRecord = data as? HomeBaseCell.HomeListItem
         if let modelData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData] {
             modelFeaturedRestuarantResponseData = modelData[indexPath.row]
         }
         collectionView.reloadData()
+        drawMarkerOnMap()
+    }
+    
+    func drawMarkerOnMap() {
+        /// Marker - Google Place marker
+        let marker: GMSMarker = GMSMarker() // Allocating Marker
+        marker.title = modelFeaturedRestuarantResponseData?.name // Setting title
+        marker.snippet = modelFeaturedRestuarantResponseData?.address // Setting sub title
+        marker.icon = UIImage(named: "markerHome") // Marker icon
+        marker.appearAnimation = .pop // Appearing animation. default
+        marker.userData = modelFeaturedRestuarantResponseData
+        
+        let location = CLLocationCoordinate2D(latitude: modelFeaturedRestuarantResponseData?.lat ?? 0, longitude: modelFeaturedRestuarantResponseData?.long ?? 0)
+        marker.position = location
+        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
+        setZoom(location: location)
+    }
+    
+    func setZoom(location: CLLocationCoordinate2D) {
+        let lat = location.latitude
+        let long = location.longitude
+        
+        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 14)
+        (viewController as? HomeViewController)?.mapView.camera = camera
+//        mapView.isMyLocationEnabled = true
+        (viewController as? HomeViewController)?.mapView.delegate = self
     }
 }
-
 extension FindHalalFoodCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -118,3 +146,36 @@ extension FindHalalFoodCell: UICollectionViewDataSource, UICollectionViewDelegat
         collectionView.reloadData()
     }
 }
+
+extension FindHalalFoodCell: GMSMapViewDelegate {
+    func mapView(_ mapView: GMSMapView, markerInfoContents marker: GMSMarker) -> UIView? {
+        
+        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 170, height: 135))
+        let infoView = Bundle.loadView(fromNib: "MarkerInfoView", withType: MarkerInfoView.self)
+        view.addSubview(infoView)
+        if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
+            infoView.modelFeaturedRestuarantResponseData = modelData
+        }
+        return view
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
+        print("when click on info View")
+    }
+    
+    @objc func tapOnMapInfoView() {
+        print("tapOnMapInfoView")
+        print("when click on info View")
+    }
+}
+extension Bundle {
+    static func loadView<T>(fromNib name: String, withType type: T.Type) -> T {
+        if let view = Bundle.main.loadNibNamed(name, owner: nil, options: nil)?.first as? T {
+            return view
+        }
+//        Bundle.main.loadNibNamed("MarkerInfoView", owner: nil, options: nil)?.first as? MarkerInfoView
+        fatalError("Could not load view with type " + String(describing: type))
+    }
+}
+
+

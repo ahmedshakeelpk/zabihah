@@ -9,6 +9,7 @@ import UIKit
 
 extension UIImageView {
     func setImage(urlString: String, placeHolderIcon: String? = nil) {
+        self.image = nil
         self.kf.setImage(with: URL(string: urlString), placeholder: nil, options: nil, progressBlock: nil, completionHandler: { result in
             switch result {
             case .success(let value):

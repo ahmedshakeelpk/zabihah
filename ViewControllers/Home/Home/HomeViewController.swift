@@ -62,8 +62,14 @@ class HomeViewController: UIViewController {
         }
     }
 
+    var dontTriggerModelGetHomeRestaurantsResponseObservers:Bool = false
+
     var modelGetHomeRestaurantsResponse: ModelGetHomeRestaurantsResponse? {
         didSet {
+            if dontTriggerModelGetHomeRestaurantsResponseObservers {
+                dontTriggerModelGetHomeRestaurantsResponseObservers = false
+                return
+            }
             let recordFeatureCell = addFeaturedCell()
             var indexPathArray = [IndexPath]()
             var indexSetArray = [Int]()
@@ -129,6 +135,7 @@ class HomeViewController: UIViewController {
             addCellInList()
             if selectedMenuCell == 0 {
                 viewMapViewBackground.isHidden = true
+                mapView.isHidden = true
                 //MARK: - Add Items In tableView
                 listItems = [
                     addFeaturedCell().0,
@@ -265,6 +272,11 @@ class HomeViewController: UIViewController {
     
     func navigateToEditAddressesViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
+        vc.buttonContinueHandler = { location in
+            print(location as Any)
+            self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
+//            self.textFieldSearchLocation.text = modelUserAddressesResponseData.address
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -299,7 +311,7 @@ class HomeViewController: UIViewController {
             parameters = [
                 "lat": userLocation?.coordinate.latitude as Any,
                 "long": userLocation?.coordinate.longitude as Any,
-                "radius": 0,
+//                "radius": 50,
                 "rating": 0,
                 "isalcoholic": false,
                 "isHalal": true
@@ -319,7 +331,7 @@ class HomeViewController: UIViewController {
         let parameters = [
             "lat": userLocation?.coordinate.latitude ?? 0,
             "long": userLocation?.coordinate.longitude ?? 0,
-            "radius": 0,
+//            "radius": 50,
             "rating": 0,
             "isalcoholic": false,
             "isHalal": true,
@@ -347,7 +359,6 @@ class HomeViewController: UIViewController {
             selectedMenuCell = section
             collectionView.reloadData()
             selectedCuisine = ""
-            
         }
     }
 }
@@ -494,6 +505,7 @@ extension HomeViewController {
     
     func addCellInList() {
         viewMapViewBackground.isHidden = false
+        buttonMapViewListView.tag = 0
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
         HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
@@ -594,7 +606,13 @@ extension HomeViewController : CLLocationManagerDelegate {
         if locations.first != nil {
             print("location:: \(locations[0])")
         }
-
     }
+}
 
+extension HomeViewController: HomeFoodItemSubCellDelegate {
+    func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath) {
+        dontTriggerModelGetHomeRestaurantsResponseObservers = true
+        modelGetHomeRestaurantsResponse?.featuredRestuarantResponseData?[indexPath.item].isFavorites = isFavourite
+        
+    }
 }
