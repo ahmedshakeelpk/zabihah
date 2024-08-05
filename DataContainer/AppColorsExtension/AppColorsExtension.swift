@@ -11,8 +11,9 @@ import UIKit
 extension UIColor {
     // Ma Colors
     static let colorApp = UIColor(hexString: "990001")
-    static let clrBorder = UIColor(hexString: "D0D5DD")
-    
+    static let colorBorder = UIColor(hexString: "D0D5DD")
+    static let colorRed = UIColor(hexString: "990001")
+
     
     static let colorLabel = UIColor(hexString: "525252")
     
@@ -32,11 +33,10 @@ extension UIColor {
 
     
     static let clrOrange = UIColor(hexString: "F19434")
-    static let clrRed = UIColor(hexString: "D92D20")
     static let clrLightRed = UIColor(hexString: "EE6266")
     static let clrLightGray = UIColor(hexString: "E5E5E5")
     static let clrBlack = UIColor(hexString: "202734")
-    static let clrGreen = UIColor(hexString: "00CC96")
+    static let colorGreen = UIColor(hexString: "00CC96")
     static let clrGreen2nd = UIColor(hexString: "ABEFC6")
     static let clrLightGreen = UIColor(hexString: "ECFDF3")
 //    static let clrLightGreen = UIColor(hexString: "70d478")

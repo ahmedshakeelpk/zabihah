@@ -41,10 +41,10 @@ class LoginViewController: UIViewController {
         
         self.view.backgroundColor = .white
         setStatusBarTopColor(color: .clrWhiteStatusBar)
-        viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundPhone.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundFaceBook.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundApple.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        viewBackGroundEmail.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        viewBackGroundPhone.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        viewBackGroundFaceBook.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        viewBackGroundApple.radius(radius: 8, color: .colorBorder, borderWidth: 1)
     }
     
     @IBAction func buttonEmailLogin(_ sender: Any) {

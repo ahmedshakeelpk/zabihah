@@ -36,6 +36,8 @@ extension HomeViewController {
         var featuredRestuarantResponseData: [ModelRestuarantResponseData]?
         let cuisine: [ModelCuisine]?
         let recordFound: Bool?
+        let token: String?
+        let mosqueResponseData: [ModelRestuarantResponseData]?
     }
 
     // MARK: - Cuisine
@@ -64,7 +66,6 @@ extension HomeViewController {
         let address: String?
         let gallaryCount: Int?
     }
-    
 
 //    **********************
     

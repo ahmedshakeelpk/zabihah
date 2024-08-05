@@ -78,20 +78,31 @@
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J55-iS-7hy">
                                                                                         <rect key="frame" x="1.6666666666666856" y="6.6666666666666679" width="25" height="25"/>
                                                                                         <subviews>
-                                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heartWhiteMisc" translatesAutoresizingMaskIntoConstraints="NO" id="Ctz-C0-f3j">
+                                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heartUnFavourite" translatesAutoresizingMaskIntoConstraints="NO" id="Ctz-C0-f3j">
                                                                                                 <rect key="frame" x="3.3333333333333144" y="3.3333333333333321" width="18" height="18"/>
                                                                                                 <constraints>
                                                                                                     <constraint firstAttribute="width" constant="18" id="1WU-9w-rNV"/>
                                                                                                     <constraint firstAttribute="height" constant="18" id="40B-RJ-Iic"/>
                                                                                                 </constraints>
                                                                                             </imageView>
+                                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dX-Kl-j63">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                                                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                                                <connections>
+                                                                                                    <action selector="buttonFavourite:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BRt-81-i4M"/>
+                                                                                                </connections>
+                                                                                            </button>
                                                                                         </subviews>
                                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                         <constraints>
+                                                                                            <constraint firstAttribute="trailing" secondItem="1dX-Kl-j63" secondAttribute="trailing" id="3ug-Rt-A6J"/>
                                                                                             <constraint firstAttribute="height" constant="25" id="7o0-vc-wjZ"/>
+                                                                                            <constraint firstItem="1dX-Kl-j63" firstAttribute="top" secondItem="J55-iS-7hy" secondAttribute="top" id="E4D-fu-cvH"/>
                                                                                             <constraint firstItem="Ctz-C0-f3j" firstAttribute="centerX" secondItem="J55-iS-7hy" secondAttribute="centerX" id="TTc-TN-M36"/>
                                                                                             <constraint firstAttribute="width" constant="25" id="agc-Mv-SYj"/>
+                                                                                            <constraint firstAttribute="bottom" secondItem="1dX-Kl-j63" secondAttribute="bottom" id="eML-bL-mms"/>
                                                                                             <constraint firstItem="Ctz-C0-f3j" firstAttribute="centerY" secondItem="J55-iS-7hy" secondAttribute="centerY" id="gFL-fo-d74"/>
+                                                                                            <constraint firstItem="1dX-Kl-j63" firstAttribute="leading" secondItem="J55-iS-7hy" secondAttribute="leading" id="pn7-Zo-1Ct"/>
                                                                                         </constraints>
                                                                                     </view>
                                                                                 </subviews>
@@ -569,7 +580,9 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="buttonFavourite" destination="1dX-Kl-j63" id="FQh-Xh-oDz"/>
                 <outlet property="collectionView" destination="Sht-wP-k7f" id="epG-BV-YTs"/>
+                <outlet property="imageViewFavourite" destination="Ctz-C0-f3j" id="cpD-B4-TN9"/>
                 <outlet property="imageViewItem" destination="TGS-pV-fpa" id="Q7g-LW-pDd"/>
                 <outlet property="imageViewRestaurant" destination="kZO-or-fP3" id="rDT-FZ-vAx"/>
                 <outlet property="labelComments" destination="DOQ-4l-mqE" id="053-BG-0GT"/>
@@ -596,7 +609,7 @@
         <image name="dummyBurgerKing" width="28" height="28"/>
         <image name="dummyFood2" width="226" height="124"/>
         <image name="galleryGrayHome" width="12" height="12"/>
-        <image name="heartWhiteMisc" width="16" height="16"/>
+        <image name="heartUnFavourite" width="16" height="16"/>
         <image name="messageGrayHome" width="12" height="12"/>
         <image name="repeatGrayHome" width="12" height="12"/>
         <image name="routingMehroonHome" width="12" height="12"/>

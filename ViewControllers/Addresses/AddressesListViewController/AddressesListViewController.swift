@@ -100,8 +100,6 @@ class AddressesListViewController: UIViewController {
             let model: ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserAddressResponse = model
         }
-        
-        
     }
     
     func deleteUserAddress(index: Int) {
@@ -124,7 +122,7 @@ class AddressesListViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
         vc.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[index]
        
-        vc.buttonContinueHandler = { location in
+        vc.buttonContinueHandler = { (address, location) in
             print("button continue pressed \(String(describing: location))")
             self.getUserAddress()
         }

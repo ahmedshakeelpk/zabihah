@@ -50,10 +50,10 @@ class RegisterationViewController: UIViewController {
                     [
                         "buttonName": "Cancel",
                         "buttonBackGroundColor": UIColor.white,
-                        "buttonTextColor": UIColor.clrRed] as [String : Any],
+                        "buttonTextColor": UIColor.colorRed] as [String : Any],
                     [
                         "buttonName": "LogIn",
-                        "buttonBackGroundColor": UIColor.clrRed,
+                        "buttonBackGroundColor": UIColor.colorRed,
                         "buttonTextColor": UIColor.white]
                 ] as? [[String: AnyObject]]) {buttonName in
                     if buttonName == "Cancel" {
@@ -134,7 +134,7 @@ class RegisterationViewController: UIViewController {
         labelTermsAndConditions.addGestureRecognizer(tap)
         
         if isFromEmail {
-            viewBackGroundPhoneNumber.radius(radius: 4, color: .clrBorder, borderWidth: 0.5)
+            viewBackGroundPhoneNumber.radius(radius: 4, color: .colorBorder, borderWidth: 0.5)
             stackViewEmail.isHidden = true
             textFieldPhoneNumber.setFlag(countryCode: .US)
             textFieldPhoneNumber.delegate = self

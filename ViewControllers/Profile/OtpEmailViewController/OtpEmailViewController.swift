@@ -105,8 +105,8 @@ class OtpEmailViewController: UIViewController{
         self.viewTextFieldOtp.fieldsCount = 4
         self.viewTextFieldOtp.fieldBorderWidth = 2
         self.viewTextFieldOtp.fieldPlaceHolder = "0"
-        self.viewTextFieldOtp.defaultBorderColor = .clrBorder
-        self.viewTextFieldOtp.filledBorderColor = .clrBorder
+        self.viewTextFieldOtp.defaultBorderColor = .colorBorder
+        self.viewTextFieldOtp.filledBorderColor = .colorBorder
         self.viewTextFieldOtp.fieldTextColor = .colorApp
         self.viewTextFieldOtp.cursorColor = .colorApp
         self.viewTextFieldOtp.displayType = .roundedCorner

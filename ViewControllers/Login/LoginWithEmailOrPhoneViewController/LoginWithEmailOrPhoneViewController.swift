@@ -69,8 +69,8 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         textFieldEmail.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
         textFieldPhoneNumber.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
         
-        viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundPhoneNumber.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        viewBackGroundEmail.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        viewBackGroundPhoneNumber.radius(radius: 8, color: .colorBorder, borderWidth: 1)
         viewBackGroundButtonSendVerificationCode.radius(radius: 8)
         
         if isFromEmail {

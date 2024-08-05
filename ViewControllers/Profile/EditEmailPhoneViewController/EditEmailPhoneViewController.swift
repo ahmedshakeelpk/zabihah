@@ -70,8 +70,8 @@ class EditEmailPhoneViewController: UIViewController {
         textFieldPhoneNumber.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
         
         viewBackGroundButtonSend.radius(radius: 8)
-        viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundPhoneNumber.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        viewBackGroundEmail.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        viewBackGroundPhoneNumber.radius(radius: 8, color: .colorBorder, borderWidth: 1)
         labelEmail.text = ""
         
         if isFromEmail {

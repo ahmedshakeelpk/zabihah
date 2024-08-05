@@ -46,7 +46,7 @@ class  EditAddressViewController: UIViewController {
         }
     }
     var locationManager = CLLocationManager()
-    var buttonContinueHandler: ((CLLocationCoordinate2D?) -> ())!
+    var buttonContinueHandler: ((String, CLLocationCoordinate2D?) -> ())!
 
     
     var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
@@ -152,7 +152,9 @@ class  EditAddressViewController: UIViewController {
             for controller in self.navigationController!.viewControllers as Array {
                 if controller.isKind(of: HomeViewController.self) {
                     if let targetViewController = controller as? HomeViewController {
-                        targetViewController.getuser()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            self.buttonContinueHandler?(self.labelAddress.text!, self.location!)
+                        }
                         self.navigationController!.popToViewController(controller, animated: true)
                     }
                     break
@@ -189,11 +191,11 @@ class  EditAddressViewController: UIViewController {
         vc.newAddressAddedHandler = {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.popViewController(animated: true)
-                self.buttonContinueHandler?(self.location!)
+                self.buttonContinueHandler?(self.labelAddress.text!, self.location!)
             }
         }
+        vc.newAddress = labelAddress.text!
         vc.location = location
-        vc.newAddress = labelAddressTitle.text!
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -204,14 +206,22 @@ class  EditAddressViewController: UIViewController {
     
     func navigateToAddAddressViewControllerFromEditButton() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        vc.addressEditHandler = { location in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.popViewController(animated: false)
-                self.buttonContinueHandler?(location)
-            }
+        
+        if modelUserAddressesResponseData == nil {
+            vc.newAddress = labelAddress.text!
+            vc.location = self.location
         }
         vc.isEditAddress = true
         vc.modelUserAddressesResponseData = modelUserAddressesResponseData
+        
+        vc.addressEditHandler = { location in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.popViewController(animated: false)
+                self.buttonContinueHandler?(self.labelAddress.text!, self.location!)
+            }
+        }
+        
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -236,7 +246,7 @@ class  EditAddressViewController: UIViewController {
     
     func setAddress(addressTitle: String? = "", formattedAddress: String? = "") {
 //        labelAddressTitle.text = addressTitle
-//        labelAddress.text = formattedAddress
+        labelAddress.text = formattedAddress
         
         modelUserAddressesResponseData?.name = addressTitle
         modelUserAddressesResponseData?.address = formattedAddress

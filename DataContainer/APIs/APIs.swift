@@ -263,7 +263,7 @@ print(str)
     
     static func queryString2(_ value: String, params: [String: Any]) -> String? {
         var components = URLComponents(string: value)
-        components?.queryItems = params.map { element in URLQueryItem(name: element.key, value: element.value as! String) }
+        components?.queryItems = params.map { element in URLQueryItem(name: element.key, value: element.value as? String) }
 
         return components?.url?.absoluteString
     }
@@ -272,7 +272,7 @@ print(str)
 //        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
 
-        var completeUrl = APIPath.baseUrl + apiName.rawValue
+        let completeUrl = APIPath.baseUrl + apiName.rawValue
         
         let url = URL(string: completeUrl)!
 
@@ -281,6 +281,9 @@ print(str)
 //        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("*/*", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 50 // 50 secs
+        request.timeoutInterval = 50 // 50 secs
+
 //        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
         if kAccessToken != "" {

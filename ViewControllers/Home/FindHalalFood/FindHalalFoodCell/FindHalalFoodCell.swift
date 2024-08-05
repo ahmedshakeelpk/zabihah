@@ -10,7 +10,17 @@ import GoogleMaps
 import GooglePlaces
 
 
+protocol FindHalalFoodCellDelegate: AnyObject {
+    func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UITableViewCell)
+}
+
 class FindHalalFoodCell: HomeBaseCell {
+    
+    struct ModelPostFavouriteRestaurantsResponse: Codable {
+        let recordFound, success: Bool?
+        let message, innerExceptionMessage: String?
+        let token: String?
+    }
     
     @IBOutlet weak var viewBackGroundNewRestaurant: UIView!
     @IBOutlet weak var labelRestaurantName: UILabel!
@@ -30,27 +40,52 @@ class FindHalalFoodCell: HomeBaseCell {
     @IBOutlet weak var imageViewItem: UIImageView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
-
-    var dataRecord: HomeBaseCell.HomeListItem!
-
+    @IBOutlet weak var imageViewFavourite: UIImageView!
+    @IBOutlet weak var buttonFavourite: UIButton!
     
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
     let arrayIconNames = ["home", "chefHatHome", "Pickup & delivery", "Prayer spaces"]
     
-    var modelFeaturedRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
+    var dataRecord: HomeBaseCell.HomeListItem!
+    var delegate: FindHalalFoodCellDelegate!
+    
+    var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
-            labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
-            labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
-            labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
-            labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
-            labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
-            labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)"
-            imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-            imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
-//            viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
-//            if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
-//                viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false
-//            }
+            print(modelPostFavouriteRestaurantsResponse as Any)
+            if modelPostFavouriteRestaurantsResponse?.success ?? false {
+                if let isFavourite = self.halalRestuarantResponseData?.isFavorites {
+                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: FindHalalFoodCell())
+//                    halalRestuarantResponseData?.isFavorites = !(isFavourite)
+                }
+            }
+            else {
+                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
+            }
+        }
+    }
+    
+    var halalRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
+        didSet {
+            DispatchQueue.main.async {
+                self.labelRestaurantName.text = self.halalRestuarantResponseData?.name
+                self.labelRestaurantAddress.text = self.halalRestuarantResponseData?.address
+                self.labelRating.text = "\(self.halalRestuarantResponseData?.rating ?? 0)"
+                self.labelComments.text = "\(self.halalRestuarantResponseData?.reviews ?? 0)"
+                self.labelPictures.text = "\(self.halalRestuarantResponseData?.gallaryCount ?? 0)"
+                self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)"
+                self.imageViewRestaurant.setImage(urlString: self.halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+                self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+                self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+                
+                self.viewBackGroundNewRestaurant.isHidden = self.halalRestuarantResponseData?.status == ""
+                self.labelItemType.text = self.halalRestuarantResponseData?.status
+                if self.halalRestuarantResponseData?.status?.lowercased() == "close" {
+                    self.viewBackGroundNewRestaurant.backgroundColor = .colorRed
+                }
+                else if self.halalRestuarantResponseData?.status?.lowercased() == "new" {
+                    self.viewBackGroundNewRestaurant.backgroundColor = .colorGreen
+                }
+            }
         }
     }
     
@@ -67,7 +102,6 @@ class FindHalalFoodCell: HomeBaseCell {
         collectionView.delegate = self
         collectionView.dataSource = self
         imageViewRestaurant.circle()
-        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -81,22 +115,27 @@ class FindHalalFoodCell: HomeBaseCell {
         // Configure the view for the selected state
         dataRecord = data as? HomeBaseCell.HomeListItem
         if let modelData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData] {
-            modelFeaturedRestuarantResponseData = modelData[indexPath.row]
+            halalRestuarantResponseData = modelData[indexPath.row]
         }
         collectionView.reloadData()
         drawMarkerOnMap()
     }
     
+    @IBAction func buttonFavourite(_ sender: Any) {
+        delegate = viewController as? any FindHalalFoodCellDelegate
+        postFavouriteRestaurants()
+    }
+    
     func drawMarkerOnMap() {
         /// Marker - Google Place marker
         let marker: GMSMarker = GMSMarker() // Allocating Marker
-        marker.title = modelFeaturedRestuarantResponseData?.name // Setting title
-        marker.snippet = modelFeaturedRestuarantResponseData?.address // Setting sub title
+        marker.title = halalRestuarantResponseData?.name // Setting title
+        marker.snippet = halalRestuarantResponseData?.address // Setting sub title
         marker.icon = UIImage(named: "markerHome") // Marker icon
         marker.appearAnimation = .pop // Appearing animation. default
-        marker.userData = modelFeaturedRestuarantResponseData
+        marker.userData = halalRestuarantResponseData
         
-        let location = CLLocationCoordinate2D(latitude: modelFeaturedRestuarantResponseData?.lat ?? 0, longitude: modelFeaturedRestuarantResponseData?.long ?? 0)
+        let location = CLLocationCoordinate2D(latitude: halalRestuarantResponseData?.lat ?? 0, longitude: halalRestuarantResponseData?.long ?? 0)
         marker.position = location
         marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
         setZoom(location: location)
@@ -111,7 +150,20 @@ class FindHalalFoodCell: HomeBaseCell {
 //        mapView.isMyLocationEnabled = true
         (viewController as? HomeViewController)?.mapView.delegate = self
     }
+    
+    func postFavouriteRestaurants() {
+        let parameters = [
+            "restaurantId": halalRestuarantResponseData?.id ?? "",
+              "isMark": !(halalRestuarantResponseData?.isFavorites ?? false)
+        ] as [String : Any]
+       
+        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelPostFavouriteRestaurantsResponse = model
+        }
+    }
 }
+
 extension FindHalalFoodCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -138,7 +190,6 @@ extension FindHalalFoodCell: UICollectionViewDataSource, UICollectionViewDelegat
 //            DispatchQueue.main.async {
 //                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
 //            }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -168,6 +219,7 @@ extension FindHalalFoodCell: GMSMapViewDelegate {
         print("when click on info View")
     }
 }
+
 extension Bundle {
     static func loadView<T>(fromNib name: String, withType type: T.Type) -> T {
         if let view = Bundle.main.loadNibNamed(name, owner: nil, options: nil)?.first as? T {

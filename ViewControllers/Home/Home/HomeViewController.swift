@@ -19,6 +19,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var imageViewListViewMapView: UIImageView!
     @IBOutlet weak var buttonMapViewListView: UIButton!
+    
     @IBOutlet weak var viewMapViewBackground: UIView!
     @IBOutlet weak var buttonSideMenu: UIButton!
     @IBOutlet weak var buttonCart: UIButton!
@@ -40,6 +41,7 @@ class HomeViewController: UIViewController {
             pageNumberHalalFood = 1
         }
     }
+    
     var pageNumberHalalFood: Int! = 1 {
         didSet {
             if pageNumberHalalFood > 1 {
@@ -63,7 +65,32 @@ class HomeViewController: UIViewController {
     }
 
     var dontTriggerModelGetHomeRestaurantsResponseObservers:Bool = false
+    var dontTriggerModelGetHalalRestaurantResponseObservers:Bool = false
 
+    var modelGetUserAddressResponse: AddressesListViewController.ModelGetUserAddressResponse? {
+        didSet {
+            if modelGetUserAddressResponse?.userAddressesResponseData?.count ?? 0 > 0 {
+                if let defaultAddressIndex = modelGetUserAddressResponse?.userAddressesResponseData?.firstIndex(where: { model in
+                    model.isDefault ?? false
+                }) {
+                    let latitude = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex].latitude ?? 0
+                    
+                    let longitude = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex].longitude ?? 0
+                    
+                    userLocation = CLLocation(latitude: latitude, longitude: longitude)
+                }
+                else {
+                    print("No default address found.")
+                }
+                tableView.reloadData()
+            }
+            else {
+                print("User have No address in list.")
+                navigateToAddAddressViewController()
+            }
+        }
+    }
+    
     var modelGetHomeRestaurantsResponse: ModelGetHomeRestaurantsResponse? {
         didSet {
             if dontTriggerModelGetHomeRestaurantsResponseObservers {
@@ -97,6 +124,10 @@ class HomeViewController: UIViewController {
     
     var modelGetHalalRestaurantResponse: ModelGetHalalRestaurantResponse? {
         didSet {
+            if dontTriggerModelGetHalalRestaurantResponseObservers {
+                dontTriggerModelGetHalalRestaurantResponseObservers = false
+                return
+            }
             var indexPathArray = [IndexPath]()
             var indexSetArray = [Int]()
             let recordCuisineCell = addCuisineCell()
@@ -132,10 +163,10 @@ class HomeViewController: UIViewController {
     
     var selectedMenuCell: Int = 0 {
         didSet {
+            pageNumberHalalFood = 0
             addCellInList()
             if selectedMenuCell == 0 {
                 viewMapViewBackground.isHidden = true
-                mapView.isHidden = true
                 //MARK: - Add Items In tableView
                 listItems = [
                     addFeaturedCell().0,
@@ -143,6 +174,7 @@ class HomeViewController: UIViewController {
                 ]
             }
             else if selectedMenuCell == 1 {
+                pageNumberHalalFood = 1
                 listItems = [
                     addCuisineCell().0,
                     addFindHalalFoodCell().0,
@@ -208,8 +240,8 @@ class HomeViewController: UIViewController {
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
         
         //Location Services
-        locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
         
 //        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
     }
@@ -224,20 +256,8 @@ class HomeViewController: UIViewController {
         navigateToEditAddressesViewController()
     }
     @IBAction func buttonMapViewListView(_ sender: Any) {
-        if buttonMapViewListView.tag == 0 {
-            mapView.isHidden = false
-            tableView.isHidden = true
-            buttonMapViewListView.tag = 1
-            imageViewListViewMapView.image = UIImage(named: "listViewHome")
-            labelMapViewListView.text = "List View"
-        }
-        else {
-            mapView.isHidden = true
-            tableView.isHidden = false
-            buttonMapViewListView.tag = 0
-            imageViewListViewMapView.image = UIImage(named: "mapViewHome")
-            labelMapViewListView.text = "Map View"
-        }
+        buttonMapViewListView.tag = buttonMapViewListView.tag == 0 ? 1 : 0
+        setMapList()
     }
     @IBAction func buttonNotification(_ sender: Any) {
     }
@@ -270,18 +290,32 @@ class HomeViewController: UIViewController {
         sideMenu.toggleMenu()
     }
     
+    func navigateToAddAddressViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
+        
+        vc.newAddressAddedHandler = {
+            self.getUserAddress()
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     func navigateToEditAddressesViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
-        vc.buttonContinueHandler = { location in
+        vc.location = CLLocationCoordinate2D(latitude: userLocation?.coordinate.latitude ?? 0, longitude: userLocation?.coordinate.longitude ?? 0)
+        
+        vc.buttonContinueHandler = { (address, location) in
             print(location as Any)
             self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
-//            self.textFieldSearchLocation.text = modelUserAddressesResponseData.address
+            self.textFieldSearchLocation.text = address
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    
     func presentToHomeFilterViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeFilterViewController") as! HomeFilterViewController
+        if userLocation?.coordinate.latitude == nil && userLocation?.coordinate.longitude == nil {
+            return()
+        }
         vc.location = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
         vc.buttonFilterHandler = { parameters in
             print(parameters)
@@ -296,7 +330,23 @@ class HomeViewController: UIViewController {
         self.textFieldSearchLocation.text = modelUserAddressesResponseData.address
     }
     
-    func getuser() {       
+    func setMapList() {
+        if buttonMapViewListView.tag == 1 {
+            mapView.isHidden = false
+            tableView.isHidden = true
+            imageViewListViewMapView.image = UIImage(named: "listViewHome")
+            labelMapViewListView.text = "List View"
+        }
+        else {
+            mapView.isHidden = true
+            tableView.isHidden = false
+            buttonMapViewListView.tag = 0
+            imageViewListViewMapView.image = UIImage(named: "mapViewHome")
+            labelMapViewListView.text = "Map View"
+        }
+    }
+    
+    func getuser() {
         APIs.postAPI(apiName: .getuser, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg in
             print(responseData ?? "")
             print(success)
@@ -343,7 +393,7 @@ class HomeViewController: UIViewController {
         APIs.postAPI(apiName: .gethalalrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             var model: ModelGetHalalRestaurantResponse? = APIs.decodeDataToObject(data: responseData)
             
-            if self.pageNumberHalalFood > 0 {
+            if self.pageNumberHalalFood > 1 {
                 if let record = self.modelGetHalalRestaurantResponse?.halalRestuarantResponseData {
                     var oldModel = record
                     oldModel.append(contentsOf: model?.halalRestuarantResponseData ?? [])
@@ -359,6 +409,13 @@ class HomeViewController: UIViewController {
             selectedMenuCell = section
             collectionView.reloadData()
             selectedCuisine = ""
+        }
+    }
+    
+    func getUserAddress() {
+        APIs.postAPI(apiName: .getuseraddress, methodType: .get, viewController: self) { responseData, success, errorMsg in
+            let model: AddressesListViewController.ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserAddressResponse = model
         }
     }
 }
@@ -391,7 +448,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         selectedMenuCell = indexPath.item
         if selectedMenuCell == 1 {
             collectionView.reloadData()
-            getHalalRestaurants(pageSize: 0, cuisine: "")
+            selectedCuisine = ""
         }
     }
 }
@@ -505,7 +562,9 @@ extension HomeViewController {
     
     func addCellInList() {
         viewMapViewBackground.isHidden = false
+        mapView.isHidden = true
         buttonMapViewListView.tag = 0
+        setMapList()
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
         HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
@@ -593,13 +652,35 @@ extension HomeViewController : CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
-            locationManager.requestLocation()
+//            locationManager.requestLocation()
         }
+
+        switch status {
+            case .notDetermined:
+                locationManager.requestAlwaysAuthorization()
+                break
+            case .authorizedWhenInUse:
+                locationManager.startUpdatingLocation()
+                break
+            case .authorizedAlways:
+                locationManager.startUpdatingLocation()
+                break
+            case .restricted:
+                // restricted by e.g. parental controls. User can't enable Location Services
+                break
+            case .denied:
+                // user denied your app access to Location Services, but can grant access from Settings.app
+            self.getUserAddress()
+                break
+            default:
+                break
+            }
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            locationManager.stopUpdatingLocation()
+            locationManager.stopUpdatingHeading()
+            locationManager.delegate = nil
             self.userLocation = location
             print(" Lat \(location.coordinate.latitude) ,  Longitude \(location.coordinate.longitude)")
         }
@@ -609,10 +690,16 @@ extension HomeViewController : CLLocationManagerDelegate {
     }
 }
 
-extension HomeViewController: HomeFoodItemSubCellDelegate {
-    func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath) {
+
+extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDelegate {
+    func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UICollectionViewCell) {
         dontTriggerModelGetHomeRestaurantsResponseObservers = true
         modelGetHomeRestaurantsResponse?.featuredRestuarantResponseData?[indexPath.item].isFavorites = isFavourite
-        
+    }
+    
+    func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UITableViewCell) {
+//        dontTriggerModelGetHalalRestaurantResponseObservers = true
+        modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.item].isFavorites = isFavourite
     }
 }
+

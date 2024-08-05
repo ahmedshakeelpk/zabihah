@@ -8,7 +8,7 @@
 import UIKit
 
 protocol HomeFoodItemSubCellDelegate: AnyObject {
-    func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath)
+    func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UICollectionViewCell)
 }
 
 class HomeFoodItemSubCell: UICollectionViewCell {
@@ -43,7 +43,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             print(modelPostFavouriteRestaurantsResponse as Any)
             if modelPostFavouriteRestaurantsResponse?.success ?? false {
                 if let isFavourite = self.modelFeaturedRestuarantResponseData?.isFavorites {
-                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath)
+                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomeFoodItemSubCell())
                     modelFeaturedRestuarantResponseData.isFavorites = !(isFavourite)
                 }
             }
@@ -98,13 +98,17 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
         imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
         
-//            viewBackGroundNewRestaurant.backgroundColor = (modelFeaturedRestuarantResponseData?.isClosed ?? false) ? .clrRed : .clrGreen
-//            if !(modelFeaturedRestuarantResponseData?.isClosed ?? false) {
-//                viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.isNew ?? false
-//            }
+        viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.status == ""
+        labelItemType.text = modelFeaturedRestuarantResponseData?.status
+        if modelFeaturedRestuarantResponseData?.status?.lowercased() == "close" {
+            viewBackGroundNewRestaurant.backgroundColor = .colorRed
+        }
+        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" {
+            viewBackGroundNewRestaurant.backgroundColor = .colorGreen
+        }
     }
     func postFavouriteRestaurants() {
-        var parameters = [
+        let parameters = [
             "restaurantId": modelFeaturedRestuarantResponseData?.id ?? "",
               "isMark": !(modelFeaturedRestuarantResponseData?.isFavorites ?? false)
         ] as [String : Any]

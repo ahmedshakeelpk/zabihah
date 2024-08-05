@@ -126,12 +126,14 @@ class ProfileViewController: UIViewController {
     
     @IBAction func switchOffers(_ sender: Any) {
         let parameters: Parameters = [
-            "isUpdateSubcription": switchOffers.isOn
+            "isUpdateSubcription": switchOffers.isOn,
+            "isNewsLetterSubcription": switchEvents.isOn
         ]
         editprofile(parameters: parameters)
     }
     @IBAction func switchEvents(_ sender: Any) {
         let parameters: Parameters = [
+            "isUpdateSubcription": switchOffers.isOn,
             "isNewsLetterSubcription": switchEvents.isOn
         ]
         editprofile(parameters: parameters)
