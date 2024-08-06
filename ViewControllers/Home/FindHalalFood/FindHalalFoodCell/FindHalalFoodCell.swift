@@ -43,7 +43,7 @@ class FindHalalFoodCell: HomeBaseCell {
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
     
-    let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
+    var arrayNames = [String]()
     let arrayIconNames = ["home", "chefHatHome", "Pickup & delivery", "Prayer spaces"]
     
     var dataRecord: HomeBaseCell.HomeListItem!
@@ -66,28 +66,33 @@ class FindHalalFoodCell: HomeBaseCell {
     
     var halalRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
         didSet {
-            DispatchQueue.main.async {
-                self.labelRestaurantName.text = self.halalRestuarantResponseData?.name
-                self.labelRestaurantAddress.text = self.halalRestuarantResponseData?.address
-                self.labelRating.text = "\(self.halalRestuarantResponseData?.rating ?? 0)"
-                self.labelComments.text = "\(self.halalRestuarantResponseData?.reviews ?? 0)"
-                self.labelPictures.text = "\(self.halalRestuarantResponseData?.gallaryCount ?? 0)"
-                self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)"
-                self.imageViewRestaurant.setImage(urlString: self.halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-                self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
-                self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-                
-                self.viewBackGroundNewRestaurant.isHidden = self.halalRestuarantResponseData?.status == ""
-                self.labelItemType.text = self.halalRestuarantResponseData?.status
-                if self.halalRestuarantResponseData?.status?.lowercased() == "close" {
-                    self.viewBackGroundNewRestaurant.backgroundColor = .colorRed
+            self.labelRestaurantName.text = self.halalRestuarantResponseData?.name
+            self.labelRestaurantAddress.text = self.halalRestuarantResponseData?.address
+            self.labelRating.text = "\(self.halalRestuarantResponseData?.rating ?? 0)"
+            self.labelComments.text = "\(self.halalRestuarantResponseData?.reviews ?? 0)"
+            self.labelPictures.text = "\(self.halalRestuarantResponseData?.gallaryCount ?? 0)"
+            self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)"
+            self.imageViewRestaurant.setImage(urlString: self.halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+            self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+            self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+            
+            self.viewBackGroundNewRestaurant.isHidden = self.halalRestuarantResponseData?.status == ""
+            self.labelItemType.text = self.halalRestuarantResponseData?.status
+            if self.halalRestuarantResponseData?.status?.lowercased() == "close" {
+                self.viewBackGroundNewRestaurant.backgroundColor = .colorRed
+            }
+            else if self.halalRestuarantResponseData?.status?.lowercased() == "new" || self.halalRestuarantResponseData?.status?.lowercased() == "open"{
+                self.viewBackGroundNewRestaurant.backgroundColor = .colorGreen
+            }
+            else if self.halalRestuarantResponseData?.status?.lowercased() != "" {
+                self.viewBackGroundNewRestaurant.backgroundColor = .colorOrange
+            }
+            if var tags = halalRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
+                if tags.last == "" || tags.last == " "{
+                    tags.removeLast()
                 }
-                else if self.halalRestuarantResponseData?.status?.lowercased() == "new" || self.halalRestuarantResponseData?.status?.lowercased() == "open"{
-                    self.viewBackGroundNewRestaurant.backgroundColor = .colorGreen
-                }
-                else if self.halalRestuarantResponseData?.status?.lowercased() != "" {
-                    self.viewBackGroundNewRestaurant.backgroundColor = .colorOrange
-                }
+                arrayNames = tags
+                collectionView.reloadData()
             }
         }
     }

@@ -201,7 +201,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H7I-bP-aMx">
                                 <rect key="frame" x="76.666666666666686" y="356.33333333333331" width="240" height="164.33333333333331"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderFoodItem" translatesAutoresizingMaskIntoConstraints="NO" id="M25-ux-fdO">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderRestaurant" translatesAutoresizingMaskIntoConstraints="NO" id="M25-ux-fdO">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="240" id="JpP-oH-38e"/>
@@ -265,7 +265,7 @@
         <image name="addressesTitleBackGround" width="344" height="160"/>
         <image name="backWhiteMisc" width="20" height="20"/>
         <image name="locationMehroonMisc" width="52" height="64"/>
-        <image name="placeHolderFoodItem" width="226" height="124"/>
+        <image name="placeHolderRestaurant" width="28" height="28"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -33,7 +33,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nv3-6W-RKW">
                                                         <rect key="frame" x="0.0" y="0.0" width="43" height="94"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="houseAddresses" translatesAutoresizingMaskIntoConstraints="NO" id="01V-XI-81a">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderRestaurant" translatesAutoresizingMaskIntoConstraints="NO" id="01V-XI-81a">
                                                                 <rect key="frame" x="6" y="34.666666666666664" width="25" height="25"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="25" id="EPi-OI-wmz"/>
@@ -152,7 +152,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="houseAddresses" width="24" height="24"/>
+        <image name="placeHolderRestaurant" width="28" height="28"/>
         <image name="trashAddresses" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

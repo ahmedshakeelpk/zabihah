@@ -36,7 +36,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     var buttonFavouriteHandler: (() -> ())!
     var viewController = UIViewController()
     var indexPath: IndexPath! = nil
-    let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
+    var arrayNames = [String]()
 //    var isFavourite = false
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
@@ -108,6 +108,13 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         }
         else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {
             viewBackGroundNewRestaurant.backgroundColor = .colorOrange
+        }
+        if var tags = modelFeaturedRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
+            if tags.last == "" || tags.last == " "{
+                tags.removeLast()
+            }
+            arrayNames = tags
+            collectionView.reloadData()
         }
     }
     func postFavouriteRestaurants() {
