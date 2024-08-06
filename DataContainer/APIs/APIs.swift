@@ -296,7 +296,7 @@ print(str)
         print("Parameters: \(String(describing: parameters ?? nil))")
         print("Headers: \(kAccessToken)")
         
-        var parameters = parameters
+        let parameters = parameters
 
 //        request.httpBody = jsonData
         //print("\(APIs.json(from: parameters)))")

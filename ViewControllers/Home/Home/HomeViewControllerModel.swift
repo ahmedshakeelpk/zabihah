@@ -29,7 +29,7 @@ extension HomeViewController {
 
     // MARK: - ModelGetHomeRestaurantsResponse
     struct ModelGetHomeRestaurantsResponse: Codable {
-        let restuarantResponseData: [ModelRestuarantResponseData]?
+        var restuarantResponseData: [ModelRestuarantResponseData]?
         let totalCountHalal: Int?
         let success: Bool?
         let message, innerExceptionMessage: String?
@@ -37,7 +37,7 @@ extension HomeViewController {
         let cuisine: [ModelCuisine]?
         let recordFound: Bool?
         let token: String?
-        let mosqueResponseData: [ModelRestuarantResponseData]?
+        var mosqueResponseData: [ModelRestuarantResponseData]?
     }
 
     // MARK: - Cuisine

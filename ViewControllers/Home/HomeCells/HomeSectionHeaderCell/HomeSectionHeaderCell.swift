@@ -24,7 +24,7 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                 labelViewAll.text = ""
                 buttonViewAll.isEnabled = false
             }
-            else if sectionName?.lowercased() == "Featured Near You".lowercased() {
+            else if sectionName?.lowercased() == "Featured Near You".lowercased() || section == 3 {
                 labelViewAll.text = ""
                 buttonViewAll.isEnabled = false
             }
