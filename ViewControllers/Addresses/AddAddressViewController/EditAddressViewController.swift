@@ -58,7 +58,7 @@ class  EditAddressViewController: UIViewController {
     }
     var userCurrentLocation: CLLocation! {
         didSet {
-
+            
         }
     }
     var location: CLLocationCoordinate2D? {
@@ -67,6 +67,7 @@ class  EditAddressViewController: UIViewController {
                 modelUserAddressesResponseData?.latitude = location?.latitude
                 modelUserAddressesResponseData?.longitude = location?.longitude
             }
+            calculateNewAndOldLatititudeLongitude()
         }
     }
     var defaultAddressIndex: Int? = 0
@@ -104,7 +105,7 @@ class  EditAddressViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        drawCircleForRadiusForGoogleMap()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -236,7 +237,7 @@ class  EditAddressViewController: UIViewController {
         let lat = latitude!
         let long = longitude!
         
-        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 14)
+        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 15)
         mapView.camera = camera
         mapView.isMyLocationEnabled = true
         mapView.delegate = self
@@ -289,6 +290,33 @@ class  EditAddressViewController: UIViewController {
         APIs.postAPI(apiName: .getuseraddress, methodType: .get, viewController: self) { responseData, success, errorMsg in
             let model: AddressesListViewController.ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserAddressResponse = model
+        }
+    }
+    
+    func drawCircleForRadiusForGoogleMap() {
+        let circleRadius = 20.0 * 1609.34 // 20 miles in meters
+        let circleCenter : CLLocationCoordinate2D  = CLLocationCoordinate2DMake(userCurrentLocation.coordinate.latitude, userCurrentLocation.coordinate.longitude);
+        let circ = GMSCircle(position: circleCenter, radius: circleRadius)
+        circ.fillColor = UIColor(red: 0.0, green: 0.7, blue: 0, alpha: 0.1)
+        circ.strokeColor = .colorApp
+        circ.strokeWidth = 3.5;
+        circ.map = self.mapView;
+    }
+    
+    func calculateNewAndOldLatititudeLongitude() {
+        //My location
+        let myLocation = userCurrentLocation
+        //My Next Destination
+        let myNextDestination = CLLocation(latitude: self.location?.latitude ?? 0, longitude: self.location?.longitude ?? 0)
+
+        //Finding my distance to my next destination (in km)
+        let distance = (myLocation?.distance(from: myNextDestination) ?? 0) / 1000
+        
+        if distance > 38 {
+            labelAddressTitle?.text = labelAddress?.text!
+        }
+        else {
+            labelAddressTitle?.text = "Searching around your current location     "
         }
     }
 }
