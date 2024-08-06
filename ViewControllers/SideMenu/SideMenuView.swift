@@ -82,6 +82,7 @@ class SideMenuView: UIView {
                 print("case 1")
             case 1:
                 print("case 2")
+                navigateToMyFavouritesViewController()
             case 3:
                 actionSheetLogout()
             default:
@@ -124,6 +125,10 @@ class SideMenuView: UIView {
     }
     func navigateToAddressesListViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToMyFavouritesViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.myFavourites.rawValue, bundle: nil).instantiateViewController(withIdentifier: "MyFavouritesViewController") as! MyFavouritesViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     

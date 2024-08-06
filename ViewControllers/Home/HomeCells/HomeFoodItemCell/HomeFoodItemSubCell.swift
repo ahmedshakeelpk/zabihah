@@ -154,6 +154,6 @@ extension HomeFoodItemSubCell: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.reloadData()
+//        collectionView.reloadData()
     }
 }

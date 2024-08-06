@@ -15,5 +15,6 @@ struct StoryBoard {
         case home = "Home"
         case addresses = "Addresses"
         case delivery = "Delivery"
+        case myFavourites = "MyFavourites"
     }
 }

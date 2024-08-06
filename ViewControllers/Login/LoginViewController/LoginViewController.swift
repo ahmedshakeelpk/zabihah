@@ -23,7 +23,9 @@ class LoginViewController: UIViewController {
     
 
     override func viewDidAppear(_ animated: Bool) {
-
+        if kAccessToken != "" {
+            navigateToHomeViewController()
+        }
     }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if #available(iOS 13.0, *) {

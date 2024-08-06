@@ -231,7 +231,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         setConfiguration()
-        
     }
     
     func setConfiguration() {

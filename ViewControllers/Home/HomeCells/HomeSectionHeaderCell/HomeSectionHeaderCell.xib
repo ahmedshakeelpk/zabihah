@@ -106,6 +106,7 @@
                 <outlet property="buttonViewAll" destination="JNY-jZ-vba" id="8x4-kb-gHn"/>
                 <outlet property="labelTitle" destination="C0F-Bn-R2P" id="xaw-lY-RzT"/>
                 <outlet property="labelViewAll" destination="Ij8-ov-X96" id="ngs-8a-Y56"/>
+                <outlet property="viewButtonViewAllBackGround" destination="SCg-Nq-GB9" id="l5P-4w-wRr"/>
             </connections>
             <point key="canvasLocation" x="32.824427480916029" y="-98.591549295774655"/>
         </view>

@@ -25,6 +25,7 @@ struct APIsName {
         
         //MARK:- Favorite
         case postfavouriterestaurants = "api/Favorite/postfavouriterestaurants"
+        case getfavouritebyuser = "api/Favorite/getfavouritebyuser"
         
         //MARK:- V1
         case usersignup = "v1/User/usersignup"

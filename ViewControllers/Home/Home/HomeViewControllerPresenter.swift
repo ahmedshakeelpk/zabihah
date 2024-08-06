@@ -226,11 +226,20 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if let myHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HomeSectionHeaderCell") as? HomeSectionHeaderCell {
             myHeader.section = section
             if myHeader.labelTitle != nil {
+                var cuisineCount = ""
+                if selectedMenuCell == 0 {
+                    cuisineCount = "\(modelGetHomeRestaurantsResponse?.totalCountHalal ?? 0)"
+                }
+                else if selectedMenuCell == 1 {
+                    cuisineCount = "\(modelGetHalalRestaurantResponse?.totalCountHalal ?? 0)"
+                }
+                myHeader.cuisineCount = cuisineCount
+                myHeader.selectedMenuCell = selectedMenuCell
+                myHeader.sectionName = "\((listItems[section]).sectionName ?? "")"
+                
                 myHeader.modelGetHomeRestaurantsResponse = modelGetHomeRestaurantsResponse
                 myHeader.modelGetHalalRestaurantResponse = modelGetHalalRestaurantResponse
-                myHeader.sectionName = "\((listItems[section]).sectionName ?? "")"
                 myHeader.buttonViewAllHandler = buttonViewAllHandler
-                myHeader.selectedMenuCell = selectedMenuCell
             }
             return myHeader
         }
@@ -380,7 +389,7 @@ extension HomeViewController {
                 
                 let rowHeight = 120
                 let identifier = HomeCuisinesCell.nibName()
-                let sectionName = " cuisines near you"
+                let sectionName = "Restaurant near you"
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }

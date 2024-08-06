@@ -8,6 +8,7 @@
 import UIKit
 
 class HomeSectionHeaderCell: UITableViewHeaderFooterView {
+    @IBOutlet weak var viewButtonViewAllBackGround: UIView!
     
     @IBOutlet weak var buttonViewAll: UIButton!
     @IBOutlet weak var labelTitle: UILabel!
@@ -16,29 +17,55 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
     var selectedMenuCell: Int!
     var section: Int!
     var buttonViewAllHandler: ((_ section: Int) -> ())!
-    
+    var cuisineCount: String? {
+        didSet {
+            
+        }
+    }
     var sectionName: String? {
         didSet {
-            labelTitle.text = sectionName
-            if sectionName?.lowercased() == "" {
-                labelViewAll.text = ""
-                buttonViewAll.isEnabled = false
-            }
-            else if sectionName?.lowercased() == "Featured Near You".lowercased() || section == 3 {
-                labelViewAll.text = ""
-                buttonViewAll.isEnabled = false
-            }
-            else {
-                labelViewAll.text = "View All"
-                buttonViewAll.isEnabled = true
-                if selectedMenuCell == 1 {
-                    labelViewAll.text = ""
-                    labelTitle.text = "\(modelGetHalalRestaurantResponse?.cuisine?.count ?? 0)\(sectionName ?? "")"
+            labelTitle.isHidden = true
+            viewButtonViewAllBackGround.isHidden = true
+            
+            
+            if selectedMenuCell == 0 {
+                if section == 0 {
+                    //Hide
+                    viewButtonViewAllBackGround.isHidden = true
+                    if sectionName != "" {
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.isHidden = false
+                    }
+                }
+                else if section == 1 {
+                    //Show
+                    viewButtonViewAllBackGround.isHidden = false
+                    if sectionName != "" {
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.isHidden = false
+                    }
+                }
+                if section == 2 {
+                    //Hide
+                    viewButtonViewAllBackGround.isHidden = true
+                }
+                else if section == 3 {
+                    //Show
+                    viewButtonViewAllBackGround.isHidden = false
                 }
                 else {
-                    if section == 1 {
-                        labelTitle.text = "\(modelGetHomeRestaurantsResponse?.cuisine?.count ?? 0)\(sectionName ?? "")"
+                    viewButtonViewAllBackGround.isHidden = true
+                }
+            }
+            else if selectedMenuCell == 1 {
+                if section == 0 {
+                    if sectionName != "" {
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.isHidden = false
                     }
+                }
+                else {
+                    
                 }
             }
         }

@@ -20,6 +20,8 @@ class HomeFilterViewController: UIViewController {
         didSet {
 //            labelRangeStart.text = "\(Int(rangeSlider.lowerValue))"
             labelRangeEnd.text = "\(Int(sliderRange?.maximumValue ?? 0))"
+            rangeSlider.maximumValue = 20
+            labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))ml"
         }
     }
     @IBOutlet weak var labelRangeStart: UILabel!
