@@ -20,12 +20,17 @@ class EditNameViewController: UIViewController {
     var modelEditProfileResponse: ModelEditProfileResponse? {
         didSet {
             if modelEditProfileResponse?.success ?? false {
-                self.showAlertCustomPopup(title: "Success", message: self.modelEditProfileResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    modelGetUserProfileResponse?.userResponseData?.firstname = self.modelEditProfileResponse?.userResponseData?.firstname
-                    modelGetUserProfileResponse?.userResponseData?.lastName = self.modelEditProfileResponse?.userResponseData?.lastName
-                    self.editProfileResponseHandler?()
-                    self.popViewController(animated: true)
-                }
+                modelGetUserProfileResponse?.userResponseData?.firstname = self.modelEditProfileResponse?.userResponseData?.firstname
+                modelGetUserProfileResponse?.userResponseData?.lastName = self.modelEditProfileResponse?.userResponseData?.lastName
+                self.editProfileResponseHandler?()
+                self.popViewController(animated: true)
+                
+//                self.showAlertCustomPopup(title: "Success", message: self.modelEditProfileResponse?.message ?? "", iconName: .iconSuccess) { _ in
+//                    modelGetUserProfileResponse?.userResponseData?.firstname = self.modelEditProfileResponse?.userResponseData?.firstname
+//                    modelGetUserProfileResponse?.userResponseData?.lastName = self.modelEditProfileResponse?.userResponseData?.lastName
+//                    self.editProfileResponseHandler?()
+//                    self.popViewController(animated: true)
+//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelEditProfileResponse?.message ?? "", iconName: .iconError)

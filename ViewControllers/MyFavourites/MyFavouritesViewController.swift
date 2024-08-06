@@ -44,10 +44,10 @@ class MyFavouritesViewController: UIViewController {
         didSet {
             if modelDeleteUserAddressResponse?.success ?? false {
                 getFavouriteByUser()
-                showAlertCustomPopup(title: "Success", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    self.tableView.reloadData()
-                    self.getFavouriteByUser()
-                }
+//                showAlertCustomPopup(title: "Success", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
+//                    self.tableView.reloadData()
+//                    self.getFavouriteByUser()
+//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconError)

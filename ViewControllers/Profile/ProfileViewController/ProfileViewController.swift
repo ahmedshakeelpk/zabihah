@@ -77,9 +77,10 @@ class ProfileViewController: UIViewController {
     var modelGetDeleteUserResponse: ModelGetDeleteUserResponse? {
         didSet {
             if modelGetDeleteUserResponse?.success ?? false {
-                self.showAlertCustomPopup(title: "Success", message: self.modelGetDeleteUserResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    self.navigateToRootViewController()
-                }
+                self.navigateToRootViewController()
+//                self.showAlertCustomPopup(title: "Success", message: self.modelGetDeleteUserResponse?.message ?? "", iconName: .iconSuccess) { _ in
+//                    self.navigateToRootViewController()
+//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelGetDeleteUserResponse?.message ?? "", iconName: .iconError)

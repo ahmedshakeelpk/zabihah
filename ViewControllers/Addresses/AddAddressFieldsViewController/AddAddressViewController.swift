@@ -53,10 +53,12 @@ class AddAddressViewController: UIViewController {
     var modelEditUserAddressResponse: ModelEditUserAddressResponse? {
         didSet {
             if modelEditUserAddressResponse?.success ?? false {
-                showAlertCustomPopup(title: "Success", message: modelEditUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    self.popViewController(animated: true)
-                    self.addressEditHandler?(self.location!)
-                }
+                self.popViewController(animated: true)
+                self.addressEditHandler?(self.location!)
+//                showAlertCustomPopup(title: "Success", message: modelEditUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
+//                    self.popViewController(animated: true)
+//                    self.addressEditHandler?(self.location!)
+//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconError)
@@ -96,10 +98,12 @@ class AddAddressViewController: UIViewController {
     var modelAddUserAddressResponse: ModelAddUserAddressResponse? {
         didSet {
             if modelAddUserAddressResponse?.success ?? false {
-                showAlertCustomPopup(title: "Success", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    self.popViewController(animated: true)
-                    self.newAddressAddedHandler?()
-                }
+                self.popViewController(animated: true)
+                self.newAddressAddedHandler?()
+//                showAlertCustomPopup(title: "Success", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
+//                    self.popViewController(animated: true)
+//                    self.newAddressAddedHandler?()
+//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconError)

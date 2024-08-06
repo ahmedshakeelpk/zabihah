@@ -33,7 +33,6 @@ class AddressesListViewController: UIViewController {
                 else {
                     print("No default address found.")
                 }
-                tableView.reloadData()
             }
             
             if tableView.visibleCells.count == 0 {
@@ -48,6 +47,7 @@ class AddressesListViewController: UIViewController {
             else {
                 imageViewNoAddressFound.isHidden = true
             }
+            tableView.reloadData()
         }
     }
     
@@ -55,10 +55,10 @@ class AddressesListViewController: UIViewController {
         didSet {
             if modelDeleteUserAddressResponse?.success ?? false {
                 getUserAddress()
-                showAlertCustomPopup(title: "Success", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-                    self.tableView.reloadData()
-                    self.getUserAddress()
-                }
+//                showAlertCustomPopup(title: "Success", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
+//                    self.tableView.reloadData()
+//                    self.getUserAddress()
+//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconError)
@@ -103,9 +103,6 @@ class AddressesListViewController: UIViewController {
     }
     
     func deleteUserAddress(index: Int) {
-        let parameters: Parameters = [
-            "id": modelGetUserAddressResponse?.userAddressesResponseData?[index].id ?? ""
-        ]
         let id = modelGetUserAddressResponse?.userAddressesResponseData?[index].id ?? ""
         
         let url = "\(APIsName.name.deleteuseraddress.rawValue)/\(id)"

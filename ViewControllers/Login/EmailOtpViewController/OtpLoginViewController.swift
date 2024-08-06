@@ -70,9 +70,10 @@ class OtpLoginViewController: UIViewController{
                         }
                     }
                     else {
-                        showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
-                            self.navigateToRegisterationViewController()
-                        }
+                        self.navigateToRegisterationViewController()
+//                        showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
+//                            self.navigateToRegisterationViewController()
+//                        }
                     }
                 }
             }
@@ -86,9 +87,9 @@ class OtpLoginViewController: UIViewController{
         didSet {
             if modelSendnotificationResponse?.success ?? false {
                 startOtpTimer()
-                DispatchQueue.main.async {
-                    self.showAlertCustomPopup(title: "Success", message: self.modelSendnotificationResponse?.message ?? "", iconName: .iconSuccess)
-                }
+//                DispatchQueue.main.async {
+//                    self.showAlertCustomPopup(title: "Success", message: self.modelSendnotificationResponse?.message ?? "", iconName: .iconSuccess)
+//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
