@@ -82,8 +82,11 @@ class FindHalalFoodCell: HomeBaseCell {
                 if self.halalRestuarantResponseData?.status?.lowercased() == "close" {
                     self.viewBackGroundNewRestaurant.backgroundColor = .colorRed
                 }
-                else if self.halalRestuarantResponseData?.status?.lowercased() == "new" {
+                else if self.halalRestuarantResponseData?.status?.lowercased() == "new" || self.halalRestuarantResponseData?.status?.lowercased() == "open"{
                     self.viewBackGroundNewRestaurant.backgroundColor = .colorGreen
+                }
+                else if self.halalRestuarantResponseData?.status?.lowercased() != "" {
+                    self.viewBackGroundNewRestaurant.backgroundColor = .colorOrange
                 }
             }
         }
@@ -153,8 +156,9 @@ class FindHalalFoodCell: HomeBaseCell {
     
     func postFavouriteRestaurants() {
         let parameters = [
-            "restaurantId": halalRestuarantResponseData?.id ?? "",
-              "isMark": !(halalRestuarantResponseData?.isFavorites ?? false)
+            "Id": halalRestuarantResponseData?.id ?? "",
+            "isMark": !(halalRestuarantResponseData?.isFavorites ?? false),
+            "type" : "rest"
         ] as [String : Any]
        
         APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in

@@ -119,6 +119,8 @@
 		6AD4777F2C61DA47004AAABE /* HomeRestaurantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4777B2C61DA47004AAABE /* HomeRestaurantCell.swift */; };
 		6AD477822C61DB08004AAABE /* HomeRestaurantSubCuisineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD477802C61DB08004AAABE /* HomeRestaurantSubCuisineCell.xib */; };
 		6AD477832C61DB08004AAABE /* HomeRestaurantSubCuisineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD477812C61DB08004AAABE /* HomeRestaurantSubCuisineCell.swift */; };
+		6AD477862C622990004AAABE /* MyFavouritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD477852C622990004AAABE /* MyFavouritesViewController.swift */; };
+		6AD477882C62299E004AAABE /* MyFavourites.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AD477872C62299E004AAABE /* MyFavourites.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -235,6 +237,8 @@
 		6AD4777B2C61DA47004AAABE /* HomeRestaurantCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRestaurantCell.swift; sourceTree = "<group>"; };
 		6AD477802C61DB08004AAABE /* HomeRestaurantSubCuisineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeRestaurantSubCuisineCell.xib; sourceTree = "<group>"; };
 		6AD477812C61DB08004AAABE /* HomeRestaurantSubCuisineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeRestaurantSubCuisineCell.swift; sourceTree = "<group>"; };
+		6AD477852C622990004AAABE /* MyFavouritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFavouritesViewController.swift; sourceTree = "<group>"; };
+		6AD477872C62299E004AAABE /* MyFavourites.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyFavourites.storyboard; sourceTree = "<group>"; };
 		91520087A2A49726690DC81C /* Pods-zabihah.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zabihah.release.xcconfig"; path = "Target Support Files/Pods-zabihah/Pods-zabihah.release.xcconfig"; sourceTree = "<group>"; };
 		A346B501407BE41A776A091D /* Pods_zabihah.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_zabihah.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2CC534B8BF0FE464856E0BA /* Pods-zabihah.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zabihah.debug.xcconfig"; path = "Target Support Files/Pods-zabihah/Pods-zabihah.debug.xcconfig"; sourceTree = "<group>"; };
@@ -312,6 +316,7 @@
 		6A16DFFC2C366EEA00E1383B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6AD477842C622979004AAABE /* MyFavourites */,
 				6ACA06582C5665A200EE8F43 /* Delivery */,
 				6A3AB5762C3958850030F016 /* SideMenu */,
 				6A3AB5712C3956CB0030F016 /* Home */,
@@ -846,6 +851,15 @@
 			path = HomeRestaurantCell;
 			sourceTree = "<group>";
 		};
+		6AD477842C622979004AAABE /* MyFavourites */ = {
+			isa = PBXGroup;
+			children = (
+				6AD477852C622990004AAABE /* MyFavouritesViewController.swift */,
+				6AD477872C62299E004AAABE /* MyFavourites.storyboard */,
+			);
+			path = MyFavourites;
+			sourceTree = "<group>";
+		};
 		86F74EFCB81C26290E036422 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -940,6 +954,7 @@
 				6AD4777E2C61DA47004AAABE /* HomeRestaurantCell.xib in Resources */,
 				6A6269222C3D154C00DA844F /* HomeMenuCell.xib in Resources */,
 				6A3AB59A2C3A7A370030F016 /* Addresses.storyboard in Resources */,
+				6AD477882C62299E004AAABE /* MyFavourites.storyboard in Resources */,
 				6AD4777C2C61DA47004AAABE /* HomeRestaurantSubCell.xib in Resources */,
 				6AD477822C61DB08004AAABE /* HomeRestaurantSubCuisineCell.xib in Resources */,
 				6A3AB5912C39EE7F0030F016 /* SideMenuViewHeaderViewCell.xib in Resources */,
@@ -1064,6 +1079,7 @@
 				6AD477312C5B60B3004AAABE /* CommonAPIs.swift in Sources */,
 				6AD0C0112C3BC55C0051D99A /* AddAddressFieldsCell.swift in Sources */,
 				6AD0C00D2C3BA61F0051D99A /* AddAddressViewController.swift in Sources */,
+				6AD477862C622990004AAABE /* MyFavouritesViewController.swift in Sources */,
 				6AD477832C61DB08004AAABE /* HomeRestaurantSubCuisineCell.swift in Sources */,
 				6A3AB5A22C3A97C80030F016 /* EditAddressViewController.swift in Sources */,
 				6AD39E872C3E5B1E00BDAC05 /* HomeSectionHeaderCell.swift in Sources */,

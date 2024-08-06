@@ -8,7 +8,7 @@
 import UIKit
 
 protocol HomeCuisinesCellDelegate: AnyObject {
-    func didSelectRow(indexPath: IndexPath)
+    func didSelectRow(indexPath: IndexPath, cusisineName: String)
 }
 class HomeCuisinesCell: HomeBaseCell {
     
@@ -76,7 +76,9 @@ extension HomeCuisinesCell: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        selectedCell = indexPath.item
-        delegate?.didSelectRow(indexPath: indexPath)
+        selectedCuisine = modelCuisineResponse?[indexPath.item].name ?? ""
+        delegate?.didSelectRow(indexPath: indexPath, cusisineName: selectedCuisine)
+        collectionView.reloadData()
     }
 }
 

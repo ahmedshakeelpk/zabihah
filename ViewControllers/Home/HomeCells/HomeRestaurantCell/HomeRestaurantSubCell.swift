@@ -103,18 +103,19 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         if modelFeaturedRestuarantResponseData?.status?.lowercased() == "close" {
             viewBackGroundNewRestaurant.backgroundColor = .colorRed
         }
-        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" {
+        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" || modelFeaturedRestuarantResponseData?.status?.lowercased() == "open"{
             viewBackGroundNewRestaurant.backgroundColor = .colorGreen
         }
         else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorGreen
+            viewBackGroundNewRestaurant.backgroundColor = .colorOrange
         }
     }
     
     func postFavouriteRestaurants() {
         let parameters = [
-            "restaurantId": modelFeaturedRestuarantResponseData?.id ?? "",
-              "isMark": !(modelFeaturedRestuarantResponseData?.isFavorites ?? false)
+            "Id": modelFeaturedRestuarantResponseData?.id ?? "",
+            "isMark": !(modelFeaturedRestuarantResponseData?.isFavorites ?? false),
+            "type" : "rest"
         ] as [String : Any]
        
         APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in

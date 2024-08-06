@@ -41,18 +41,23 @@ class HomeViewController: UIViewController {
             pageNumberHalalFood = 1
         }
     }
-    
+    var parametersHalalFood: [String: Any]!
     var pageNumberHalalFood: Int! = 1 {
         didSet {
-            if pageNumberHalalFood == 0 {
-                return
+            if selectedMenuCell == 0 {
+                
             }
-            if pageNumberHalalFood > 1 {
-                if pageNumberHalalFood > modelGetHalalRestaurantResponse?.totalPages ?? 0 {
-                    return()
+            else if selectedMenuCell == 1 {
+                if pageNumberHalalFood == 0 {
+                    return
                 }
+                if pageNumberHalalFood > 1 {
+                    if pageNumberHalalFood > modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                        return()
+                    }
+                }
+                getHalalRestaurants(pageSize: pageNumberHalalFood, cuisine: selectedCuisine, parameters: parametersHalalFood)
             }
-            getHalalRestaurants(pageSize: pageNumberHalalFood, cuisine: selectedCuisine)
         }
     }
     
@@ -62,6 +67,7 @@ class HomeViewController: UIViewController {
                 getFeaturedRestaurants()
             }
             else if selectedMenuCell == 1 {
+                parametersHalalFood = nil
                 selectedCuisine = ""
             }
         }
@@ -109,6 +115,9 @@ class HomeViewController: UIViewController {
                 indexPathArray.append(indexPath)
                 indexSetArray.append(recordFeatureCell.1)
             }
+            else {
+                listItems[recordFeatureCell.1] = recordFeatureCell.0
+            }
             
             let recordCuisineCell = addCuisineCell()
             if recordCuisineCell.2 > 0 {
@@ -117,12 +126,18 @@ class HomeViewController: UIViewController {
                 indexPathArray.append(indexPath)
                 indexSetArray.append(recordCuisineCell.1)
             }
+            else {
+                listItems[recordCuisineCell.1] = recordCuisineCell.0
+            }
             let recordRestuarantCell = addRestuarantCell()
             if recordRestuarantCell.2 > 0 {
                 listItems[recordRestuarantCell.1] = recordRestuarantCell.0
                 let indexPath = IndexPath(row: 0, section: 2)
                 indexPathArray.append(indexPath)
                 indexSetArray.append(recordRestuarantCell.1)
+            }
+            else {
+                listItems[recordRestuarantCell.1] = recordRestuarantCell.0
             }
 //            self.tableView.reloadRows(at: indexPathArray, with: .none)
             for item in indexSetArray {
@@ -173,7 +188,7 @@ class HomeViewController: UIViewController {
     
     var selectedMenuCell: Int = 0 {
         didSet {
-            pageNumberHalalFood = 0
+//            pageNumberHalalFood = 0
             addCellInList()
             if selectedMenuCell == 0 {
                 viewMapViewBackground.isHidden = true
@@ -185,11 +200,11 @@ class HomeViewController: UIViewController {
                 ]
             }
             else if selectedMenuCell == 1 {
-                pageNumberHalalFood = 1
                 listItems = [
                     addCuisineCell().0,
                     addFindHalalFoodCell().0,
                 ]
+//                pageNumberHalalFood = 1
             }
             else if selectedMenuCell == 2 {
                 listItems = nil
@@ -311,11 +326,13 @@ class HomeViewController: UIViewController {
 
 
 extension HomeViewController: HomeCuisinesCellDelegate {
-    func didSelectRow(indexPath: IndexPath) {
+    func didSelectRow(indexPath: IndexPath, cusisineName: String) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
             print(indexOf)
-            selectedMenuCell = indexOf
-            selectedCuisine = modelGetHomeRestaurantsResponse?.cuisine?[indexPath.item].name ?? ""
+            if selectedMenuCell != 1 {
+                selectedMenuCell = indexOf
+            }
+            selectedCuisine = cusisineName
         }
         print("IndexPath For \(HomeCuisinesCell.nibName()): \(indexPath)")
     }

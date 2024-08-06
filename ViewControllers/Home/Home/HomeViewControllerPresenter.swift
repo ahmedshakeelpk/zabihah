@@ -40,7 +40,13 @@ extension HomeViewController {
         vc.location = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
         vc.buttonFilterHandler = { parameters in
             print(parameters)
-            self.getFeaturedRestaurants(parameters: parameters)
+            if self.selectedMenuCell == 0 {
+                self.getFeaturedRestaurants(parameters: parameters)
+            }
+            if self.selectedMenuCell == 1 {
+                self.parametersHalalFood = parameters
+                self.selectedCuisine = ""
+            }
         }
         self.present(vc, animated: true)
     }
@@ -72,6 +78,7 @@ extension HomeViewController {
         if section == 1 {
             selectedMenuCell = section
             collectionView.reloadData()
+            parametersHalalFood = nil
             selectedCuisine = ""
         }
     }
@@ -108,18 +115,24 @@ extension HomeViewController {
     }
     
     func getHalalRestaurants(pageSize: Int, cuisine: String, parameters: [String: Any]? = nil) {
-        let parameters = [
-            "lat": userLocation?.coordinate.latitude ?? 0,
-            "long": userLocation?.coordinate.longitude ?? 0,
-//            "radius": 50,
-            "rating": 0,
-            "isalcoholic": false,
-            "isHalal": true,
-            "page": Int(pageSize),
-            "pageSize": 0,
-            "cuisine": cuisine
-        ] as [String : Any]
-        
+        var parameters = parameters
+        if parameters == nil {
+            parameters = [
+                "lat": userLocation?.coordinate.latitude ?? 0,
+                "long": userLocation?.coordinate.longitude ?? 0,
+    //            "radius": 50,
+                "rating": 0,
+                "isalcoholic": false,
+                "isHalal": true,
+                "page": Int(pageSize),
+                "pageSize": 0,
+                "cuisine": cuisine
+            ]
+        }
+        else {
+            parameters?["lat"] = userLocation?.coordinate.latitude as Any
+            parameters?["long"] = userLocation?.coordinate.longitude as Any
+        }
         APIs.postAPI(apiName: .gethalalrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             var model: ModelGetHalalRestaurantResponse? = APIs.decodeDataToObject(data: responseData)
             
@@ -254,10 +267,18 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedMenuCell = indexPath.item
-        if selectedMenuCell == 1 {
-            collectionView.reloadData()
+        
+        if collectionView == collectionView {
+            selectedMenuCell = indexPath.item
+            if selectedMenuCell == 1 {
+                self.parametersHalalFood = nil
+                selectedCuisine = ""
+            }
+        }
+        else {
+            self.parametersHalalFood = nil
             selectedCuisine = ""
+            print("other cell")
         }
     }
 }

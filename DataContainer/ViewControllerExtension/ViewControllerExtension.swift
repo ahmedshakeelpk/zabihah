@@ -46,7 +46,7 @@ extension UIViewController {
 extension UIViewController {
     func showAlertCustomPopup(title:String? = "", message: String? = "", iconName: IconNames.iconNameError = .iconError, buttonNames: [[String: AnyObject]]? = [[
         "buttonName": "OKAY",
-        "buttonBackGroundColor": UIColor.clrOrange,
+        "buttonBackGroundColor": UIColor.colorOrange,
         "buttonTextColor": UIColor.white] as [String : Any]] as? [[String: AnyObject]]
 //    ) {
                               , completion: ((String?) -> Void)? = nil) {

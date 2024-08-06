@@ -24,6 +24,7 @@ class  EditAddressViewController: UIViewController {
         didSet {
             mapView.isMyLocationEnabled = true
             mapView.settings.myLocationButton = true
+            mapView.delegate = self
         }
     }
     @IBOutlet weak var buttonBack: UIButton!
@@ -130,6 +131,7 @@ class  EditAddressViewController: UIViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
+        mapView.isMyLocationEnabled = true
     }
     
     @IBAction func buttonShowSavedAddresses(_ sender: Any) {
