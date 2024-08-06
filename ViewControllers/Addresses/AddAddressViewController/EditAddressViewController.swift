@@ -16,7 +16,8 @@ class  EditAddressViewController: UIViewController {
     @IBOutlet weak var viewAddressMainBackGround: UIView!
     @IBOutlet weak var viewButtonsBackGround: UIView!
     @IBOutlet weak var viewButtonEditBackGround: UIView!
-    
+    @IBOutlet weak var viewButtonContinueBackGround: ViewButtonSetting!
+
     @IBOutlet weak var buttonSearch: UIButton!
     @IBOutlet weak var buttonContinue: UIButton!
     @IBOutlet weak var buttonSaveAsNew: UIButton!
@@ -55,7 +56,11 @@ class  EditAddressViewController: UIViewController {
             isDisableUpdateLocation = true
         }
     }
-    
+    var userCurrentLocation: CLLocation! {
+        didSet {
+
+        }
+    }
     var location: CLLocationCoordinate2D? {
         didSet {
             if modelUserAddressesResponseData != nil {
@@ -98,7 +103,6 @@ class  EditAddressViewController: UIViewController {
         }
     }
     
-    @IBOutlet weak var viewButtonContinueBackGround: ViewButtonSetting!
     override func viewDidAppear(_ animated: Bool) {
         
     }
@@ -121,7 +125,8 @@ class  EditAddressViewController: UIViewController {
             viewButtonContinueBackGround.backgroundColor = .lightGray
         }
         else {
-            getUserAddress()
+//            getUserAddress()
+            self.setZoom(latitude: location?.latitude, longitude: location?.longitude)
         }
     }
     

@@ -60,7 +60,11 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
+    var userCurrentLocation: CLLocation! {
+        didSet {
+
+        }
+    }
     var userLocation: CLLocation! {
         didSet {
             if selectedMenuCell == 0 {
@@ -372,6 +376,7 @@ extension HomeViewController : CLLocationManagerDelegate {
             locationManager.stopUpdatingHeading()
             locationManager.delegate = nil
             self.userLocation = location
+            self.userCurrentLocation = location
             print(" Lat \(location.coordinate.latitude) ,  Longitude \(location.coordinate.longitude)")
         }
         if locations.first != nil {

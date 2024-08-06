@@ -22,7 +22,8 @@ extension HomeViewController {
     func navigateToEditAddressesViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
         vc.location = CLLocationCoordinate2D(latitude: userLocation?.coordinate.latitude ?? 0, longitude: userLocation?.coordinate.longitude ?? 0)
-        
+//        vc.isDisableUpdateLocation = true
+        vc.userCurrentLocation = userCurrentLocation
         vc.buttonContinueHandler = { (address, location) in
             print(location as Any)
             self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)

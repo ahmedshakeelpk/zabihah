@@ -45,6 +45,7 @@ class MyFavouriteCell: UITableViewCell {
         
         viewBackGroundForRadius.setShadow()
         stackViewBackGround.radius(radius: 12)
+        imageViewRestaurant.circle()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
