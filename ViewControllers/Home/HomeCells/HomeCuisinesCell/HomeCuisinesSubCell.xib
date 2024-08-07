@@ -31,26 +31,25 @@
                                                 <rect key="frame" x="10" y="0.0" width="75" height="75"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyCuisine" translatesAutoresizingMaskIntoConstraints="NO" id="B7n-FT-G7h">
-                                                        <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
+                                                        <rect key="frame" x="1" y="1" width="73" height="73"/>
                                                     </imageView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="B7n-FT-G7h" firstAttribute="leading" secondItem="cla-Mp-6YC" secondAttribute="leading" id="5JA-rJ-CMz"/>
+                                                    <constraint firstItem="B7n-FT-G7h" firstAttribute="leading" secondItem="cla-Mp-6YC" secondAttribute="leading" constant="1" id="5JA-rJ-CMz"/>
                                                     <constraint firstAttribute="height" constant="75" id="8dx-OF-753"/>
-                                                    <constraint firstAttribute="trailing" secondItem="B7n-FT-G7h" secondAttribute="trailing" id="VIa-Vs-HOG"/>
+                                                    <constraint firstAttribute="trailing" secondItem="B7n-FT-G7h" secondAttribute="trailing" constant="1" id="VIa-Vs-HOG"/>
                                                     <constraint firstAttribute="width" constant="75" id="WYc-gl-IfX"/>
-                                                    <constraint firstAttribute="bottom" secondItem="B7n-FT-G7h" secondAttribute="bottom" id="gem-8z-lpb"/>
-                                                    <constraint firstItem="B7n-FT-G7h" firstAttribute="top" secondItem="cla-Mp-6YC" secondAttribute="top" id="zmX-cY-kJr"/>
+                                                    <constraint firstAttribute="bottom" secondItem="B7n-FT-G7h" secondAttribute="bottom" constant="1" id="gem-8z-lpb"/>
+                                                    <constraint firstItem="B7n-FT-G7h" firstAttribute="top" secondItem="cla-Mp-6YC" secondAttribute="top" constant="1" id="zmX-cY-kJr"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="cla-Mp-6YC" firstAttribute="centerY" secondItem="kGW-FJ-9TY" secondAttribute="centerY" id="Jlr-I7-bG5"/>
                                             <constraint firstAttribute="height" constant="75" id="SNQ-3m-1TZ"/>
-                                            <constraint firstAttribute="bottom" secondItem="cla-Mp-6YC" secondAttribute="bottom" id="Szl-ZG-bNV"/>
-                                            <constraint firstItem="cla-Mp-6YC" firstAttribute="centerX" secondItem="kGW-FJ-9TY" secondAttribute="centerX" id="fMo-TL-ncA"/>
-                                            <constraint firstItem="cla-Mp-6YC" firstAttribute="top" secondItem="kGW-FJ-9TY" secondAttribute="top" id="nV1-K4-8y2"/>
+                                            <constraint firstItem="cla-Mp-6YC" firstAttribute="centerX" secondItem="kGW-FJ-9TY" secondAttribute="centerX" id="kGH-qh-4a9"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2i-rw-ki6">

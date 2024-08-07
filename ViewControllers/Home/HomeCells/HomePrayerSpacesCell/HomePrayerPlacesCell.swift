@@ -7,9 +7,17 @@
 
 import UIKit
 
-class HomePrayerSpacesCell: HomeBaseCell {
+class HomePrayerPlacesCell: HomeBaseCell {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    var dataRecord: HomeBaseCell.HomeListItem! {
+        didSet {
+            
+        }
+    }
+    var buttonFavouriteHandler: (() -> ())!
+    var modelMosqueResponseData: [HomeViewController.ModelRestuarantResponseData]!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -27,10 +35,15 @@ class HomePrayerSpacesCell: HomeBaseCell {
     
     override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
         super.updateCell(data: data, indexPath: indexPath, viewController: viewController)
+        
+        dataRecord = data as? HomeBaseCell.HomeListItem
+        modelMosqueResponseData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData]
+        collectionView.reloadData()
     }
+    
 }
 
-extension HomePrayerSpacesCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension HomePrayerPlacesCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
             return UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 12)
@@ -42,12 +55,17 @@ extension HomePrayerSpacesCell: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return modelMosqueResponseData?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomePrayerSpacesSubCell.nibName(), for: indexPath) as! HomePrayerSpacesSubCell
-        
+        if self.indexPath != nil {
+            cell.indexPath = indexPath
+            cell.buttonFavouriteHandler = buttonFavouriteHandler
+            cell.viewController = viewController
+            cell.modelMosqueResponseData = self.modelMosqueResponseData?[indexPath.item]
+        }
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

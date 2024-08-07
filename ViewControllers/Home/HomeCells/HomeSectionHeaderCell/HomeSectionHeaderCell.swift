@@ -33,25 +33,29 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                     //Hide
                     viewButtonViewAllBackGround.isHidden = true
                     if sectionName != "" {
-                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.text = "\(sectionName ?? "")"
                         labelTitle.isHidden = false
                     }
                 }
                 else if section == 1 {
                     //Show
-                    viewButtonViewAllBackGround.isHidden = false
                     if sectionName != "" {
+                        viewButtonViewAllBackGround.isHidden = false
                         labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
                         labelTitle.isHidden = false
                     }
                 }
-                if section == 2 {
+                else if section == 2 {
                     //Hide
                     viewButtonViewAllBackGround.isHidden = true
                 }
                 else if section == 3 {
                     //Show
-                    viewButtonViewAllBackGround.isHidden = false
+                    if sectionName != "" {
+                        viewButtonViewAllBackGround.isHidden = false
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.isHidden = false
+                    }
                 }
                 else {
                     viewButtonViewAllBackGround.isHidden = true

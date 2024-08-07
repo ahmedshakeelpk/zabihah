@@ -11,6 +11,13 @@ protocol HomeFoodItemSubCellDelegate: AnyObject {
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UICollectionViewCell)
 }
 
+extension HomeFoodItemSubCell {
+    struct ModelPostFavouriteRestaurantsResponse: Codable {
+        let recordFound, success: Bool?
+        let message, innerExceptionMessage: String?
+        let token: String?
+    }
+}
 class HomeFoodItemSubCell: UICollectionViewCell {
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
@@ -80,11 +87,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         postFavouriteRestaurants()
     }
     
-    struct ModelPostFavouriteRestaurantsResponse: Codable {
-        let recordFound, success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
-    }
+    
     
     func setData() {
         labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name

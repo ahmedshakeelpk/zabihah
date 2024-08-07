@@ -24,7 +24,7 @@ class LoginViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         if kAccessToken != "" {
-            navigateToHomeViewController()
+            navigateToRootHomeViewController()
         }
     }
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -78,6 +78,12 @@ class LoginViewController: UIViewController {
     func navigateToHomeViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToRootHomeViewController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
+        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
+            self.sceneDelegate?.window?.rootViewController = navigationController
+        }
     }
     func navigateToAddressesListViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController

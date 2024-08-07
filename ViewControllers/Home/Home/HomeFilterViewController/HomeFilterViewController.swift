@@ -40,6 +40,7 @@ class HomeFilterViewController: UIViewController {
     
     @IBOutlet weak var buttonCross: UIButton!
     
+    var filterParametersHome: [String: Any]!
     var buttonFilterHandler: (([String: Any]) -> ())!
     var location: CLLocationCoordinate2D? {
         didSet {
@@ -48,12 +49,30 @@ class HomeFilterViewController: UIViewController {
         }
     }
     
+    var selectedMenuCell = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         rangeSlider.addTarget(self, action: #selector(self.rangeSliderValueChanged(_:)), for: .valueChanged)
         viewBackGround.roundCorners(corners: [.topRight, .topLeft], radius: 20)
         getStarRating()
+        if filterParametersHome != nil {
+            if let radius = filterParametersHome["radius"] as? String {
+                labelRangeEnd.text = "\(radius)ml"
+                sliderRange.value = Float(radius) ?? 0
+            }
+            if let rating = filterParametersHome["rating"] as? String {
+                labelStarRating.text = rating
+                starRatingView.rating = Double(rating) ?? 0
+            }
+            if let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool {
+                switchHideAlcoholPlaces.isOn = isAlCoholic
+            }
+            if let isHalal = filterParametersHome["isHalal"] as? Bool {
+                switchHideHalalPlaces.isOn = isHalal
+            }
+        }
     }
     
     func getStarRating() {

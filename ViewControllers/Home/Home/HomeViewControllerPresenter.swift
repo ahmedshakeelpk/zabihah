@@ -21,17 +21,16 @@ extension HomeViewController {
     }
     func navigateToEditAddressesViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
+        vc.addressFromPreviousScreen = textFieldSearchLocation.text!
         vc.location = CLLocationCoordinate2D(latitude: userLocation?.coordinate.latitude ?? 0, longitude: userLocation?.coordinate.longitude ?? 0)
-//        vc.isDisableUpdateLocation = true
-        vc.userCurrentLocation = userCurrentLocation
+        vc.isDisableUpdateLocation = true
         vc.buttonContinueHandler = { (address, location) in
             print(location as Any)
-            self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
             self.textFieldSearchLocation.text = address
+            self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     
     func presentToHomeFilterViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeFilterViewController") as! HomeFilterViewController
@@ -41,14 +40,12 @@ extension HomeViewController {
         vc.location = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
         vc.buttonFilterHandler = { parameters in
             print(parameters)
-            if self.selectedMenuCell == 0 {
-                self.getFeaturedRestaurants(parameters: parameters)
-            }
-            if self.selectedMenuCell == 1 {
-                self.parametersHalalFood = parameters
-                self.selectedCuisine = ""
-            }
+            self.filterParametersHome = parameters
+            self.getFeaturedRestaurants()
+            self.selectedCuisine = ""
         }
+        vc.filterParametersHome = filterParametersHome
+        vc.selectedMenuCell = selectedMenuCell
         self.present(vc, animated: true)
     }
     
@@ -79,7 +76,7 @@ extension HomeViewController {
         if section == 1 {
             selectedMenuCell = section
             collectionView.reloadData()
-            parametersHalalFood = nil
+            filterParametersHome = nil
             selectedCuisine = ""
         }
     }
@@ -93,13 +90,13 @@ extension HomeViewController {
         }
     }
     
-    func getFeaturedRestaurants(parameters: [String: Any]? = nil) {
-        var parameters = parameters
+    func getFeaturedRestaurants() {
+        var parameters = filterParametersHome
         if parameters == nil {
             parameters = [
                 "lat": userLocation?.coordinate.latitude as Any,
                 "long": userLocation?.coordinate.longitude as Any,
-//                "radius": 50,
+                "radius": 20,
                 "rating": 0,
                 "isalcoholic": false,
                 "isHalal": true
@@ -115,13 +112,13 @@ extension HomeViewController {
         }
     }
     
-    func getHalalRestaurants(pageSize: Int, cuisine: String, parameters: [String: Any]? = nil) {
-        var parameters = parameters
+    func getHalalRestaurants(pageSize: Int, cuisine: String) {
+        var parameters = filterParametersHome
         if parameters == nil {
             parameters = [
                 "lat": userLocation?.coordinate.latitude ?? 0,
                 "long": userLocation?.coordinate.longitude ?? 0,
-    //            "radius": 50,
+                "radius": 20,
                 "rating": 0,
                 "isalcoholic": false,
                 "isHalal": true,
@@ -229,10 +226,19 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             if myHeader.labelTitle != nil {
                 var cuisineCount = ""
                 if selectedMenuCell == 0 {
-                    cuisineCount = "\(modelGetHomeRestaurantsResponse?.totalCountHalal ?? 0)"
+                    if section == 1 {
+                        cuisineCount = "\(modelGetHomeRestaurantsResponse?.totalCountHalal ?? 0)"
+                    }
+                    else if section == 3 {
+                        cuisineCount = "\(modelGetHomeRestaurantsResponse?.totalPrayerSpaces ?? 0)"
+                    }
                 }
                 else if selectedMenuCell == 1 {
                     cuisineCount = "\(modelGetHalalRestaurantResponse?.totalCountHalal ?? 0)"
+                    
+                }
+                else if selectedMenuCell == 3 {
+                    cuisineCount = "\(modelGetHalalRestaurantResponse?.totalPrayerSpaces ?? 0)"
                 }
                 myHeader.cuisineCount = cuisineCount
                 myHeader.selectedMenuCell = selectedMenuCell
@@ -277,17 +283,15 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        filterParametersHome = nil
         if collectionView == collectionView {
             selectedMenuCell = indexPath.item
             if selectedMenuCell == 1 {
-                self.parametersHalalFood = nil
                 selectedCuisine = ""
             }
         }
         else {
-            self.parametersHalalFood = nil
-            selectedCuisine = ""
+//            selectedCuisine = ""
             print("other cell")
         }
     }
@@ -310,7 +314,7 @@ extension HomeViewController {
             HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 240, data: nil),
-            HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
             HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
     }
@@ -350,6 +354,24 @@ extension HomeViewController {
             }
         }
         return (HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+    }
+    
+    func addPrayerPlacesCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
+        if let indexOf = findIndexOfIdentifier(identifier: HomePrayerPlacesCell.nibName()) {
+            var mosqueResponseData = [ModelRestuarantResponseData]()
+            mosqueResponseData = modelGetHomeRestaurantsResponse?.mosqueResponseData ?? []
+            print(indexOf)
+            let recordCount = mosqueResponseData.count
+            if recordCount > 0 {
+                let data = mosqueResponseData as Any
+                let rowHeight = 240
+                let identifier = HomePrayerPlacesCell.nibName()
+                let sectionName = "Prayer Spaces near you"
+                let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
+                return (record, indexOf, recordCount)
+            }
+        }
+        return (HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
     }
     
     func addFindHalalFoodCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
@@ -401,7 +423,7 @@ extension HomeViewController {
 
 
 
-extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDelegate, HomeRestaurantSubCellDelegate {
+extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDelegate, HomeRestaurantSubCellDelegate, HomePrayerSpacesSubCellDelegate {
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UICollectionViewCell) {
 //        dontTriggerModelGetHomeRestaurantsResponseObservers = true
         if cellType is HomeFoodItemSubCell {
@@ -409,6 +431,9 @@ extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDele
         }
         else if cellType is HomeRestaurantSubCell {
             modelGetHomeRestaurantsResponse?.restuarantResponseData?[indexPath.item].isFavorites = isFavourite
+        }
+        else if cellType is HomePrayerSpacesSubCell {
+            modelGetHomeRestaurantsResponse?.mosqueResponseData?[indexPath.item].isFavorites = isFavourite
         }
     }
     

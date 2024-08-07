@@ -107,8 +107,8 @@
 		6AD39E882C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E862C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib */; };
 		6AD39E8B2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E892C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift */; };
 		6AD39E8C2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E8A2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.xib */; };
-		6AD39E902C3E904600BDAC05 /* HomePrayerSpacesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E8E2C3E904600BDAC05 /* HomePrayerSpacesCell.swift */; };
-		6AD39E912C3E904600BDAC05 /* HomePrayerSpacesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E8F2C3E904600BDAC05 /* HomePrayerSpacesCell.xib */; };
+		6AD39E902C3E904600BDAC05 /* HomePrayerPlacesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E8E2C3E904600BDAC05 /* HomePrayerPlacesCell.swift */; };
+		6AD39E912C3E904600BDAC05 /* HomePrayerPlacesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E8F2C3E904600BDAC05 /* HomePrayerPlacesCell.xib */; };
 		6AD39E942C3EAC5200BDAC05 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E932C3EAC5200BDAC05 /* Constants.swift */; };
 		6AD4772B2C5A4792004AAABE /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4772A2C5A4792004AAABE /* BundleExtension.swift */; };
 		6AD4772E2C5A69D5004AAABE /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4772D2C5A69D5004AAABE /* StringExtension.swift */; };
@@ -228,8 +228,8 @@
 		6AD39E862C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeSectionHeaderCell.xib; sourceTree = "<group>"; };
 		6AD39E892C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFoodItemSubSuisineCell.swift; sourceTree = "<group>"; };
 		6AD39E8A2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeFoodItemSubSuisineCell.xib; sourceTree = "<group>"; };
-		6AD39E8E2C3E904600BDAC05 /* HomePrayerSpacesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePrayerSpacesCell.swift; sourceTree = "<group>"; };
-		6AD39E8F2C3E904600BDAC05 /* HomePrayerSpacesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomePrayerSpacesCell.xib; sourceTree = "<group>"; };
+		6AD39E8E2C3E904600BDAC05 /* HomePrayerPlacesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePrayerPlacesCell.swift; sourceTree = "<group>"; };
+		6AD39E8F2C3E904600BDAC05 /* HomePrayerPlacesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomePrayerPlacesCell.xib; sourceTree = "<group>"; };
 		6AD39E932C3EAC5200BDAC05 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6AD4772A2C5A4792004AAABE /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		6AD4772D2C5A69D5004AAABE /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -804,8 +804,8 @@
 		6AD39E8D2C3E902E00BDAC05 /* HomePrayerSpacesCell */ = {
 			isa = PBXGroup;
 			children = (
-				6AD39E8E2C3E904600BDAC05 /* HomePrayerSpacesCell.swift */,
-				6AD39E8F2C3E904600BDAC05 /* HomePrayerSpacesCell.xib */,
+				6AD39E8E2C3E904600BDAC05 /* HomePrayerPlacesCell.swift */,
+				6AD39E8F2C3E904600BDAC05 /* HomePrayerPlacesCell.xib */,
 				6A6269392C3D3F1E00DA844F /* HomePrayerSpacesSubCell.swift */,
 				6A62693A2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.xib */,
 			);
@@ -956,7 +956,7 @@
 				6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */,
 				6ACA066D2C57B9AB00EE8F43 /* SocialConnectCell.xib in Resources */,
 				6A3AB5752C3956E70030F016 /* Home.storyboard in Resources */,
-				6AD39E912C3E904600BDAC05 /* HomePrayerSpacesCell.xib in Resources */,
+				6AD39E912C3E904600BDAC05 /* HomePrayerPlacesCell.xib in Resources */,
 				6ACA06692C57B00700EE8F43 /* RecentPhotoCell.xib in Resources */,
 				6A6269382C3D3EF500DA844F /* HomeCuisinesSubCell.xib in Resources */,
 				6A6FC4082C3572020050B6B2 /* Base in Resources */,
@@ -1103,7 +1103,7 @@
 				6A3AB5A22C3A97C80030F016 /* EditAddressViewController.swift in Sources */,
 				6AD39E872C3E5B1E00BDAC05 /* HomeSectionHeaderCell.swift in Sources */,
 				6A6269212C3D154C00DA844F /* HomeMenuCell.swift in Sources */,
-				6AD39E902C3E904600BDAC05 /* HomePrayerSpacesCell.swift in Sources */,
+				6AD39E902C3E904600BDAC05 /* HomePrayerPlacesCell.swift in Sources */,
 				6AD0C01F2C3BF3F00051D99A /* AlertPopupMessage.swift in Sources */,
 				6AD4772B2C5A4792004AAABE /* BundleExtension.swift in Sources */,
 				6A16E00C2C3687F500E1383B /* OTPFieldView.swift in Sources */,

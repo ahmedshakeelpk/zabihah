@@ -15,6 +15,9 @@ extension HomeViewController: GMSMapViewDelegate{
     
 }
 class HomeViewController: UIViewController {
+    @IBOutlet weak var imageViewNoRecordFound: UIImageView!
+    @IBOutlet weak var labelNoRecordFound: UILabel!
+    @IBOutlet weak var viewNoDataFound: UIView!
     @IBOutlet weak var buttonFilters: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var imageViewListViewMapView: UIImageView!
@@ -41,7 +44,7 @@ class HomeViewController: UIViewController {
             pageNumberHalalFood = 1
         }
     }
-    var parametersHalalFood: [String: Any]!
+    var filterParametersHome: [String: Any]!
     var pageNumberHalalFood: Int! = 1 {
         didSet {
             if selectedMenuCell == 0 {
@@ -56,24 +59,22 @@ class HomeViewController: UIViewController {
                         return()
                     }
                 }
-                getHalalRestaurants(pageSize: pageNumberHalalFood, cuisine: selectedCuisine, parameters: parametersHalalFood)
+                getHalalRestaurants(pageSize: pageNumberHalalFood, cuisine: selectedCuisine)
             }
         }
     }
-    var userCurrentLocation: CLLocation! {
-        didSet {
 
-        }
-    }
     var userLocation: CLLocation! {
         didSet {
+            filterParametersHome = nil
             if selectedMenuCell == 0 {
-                getFeaturedRestaurants()
+                selectedMenuCell = 0
             }
             else if selectedMenuCell == 1 {
-                parametersHalalFood = nil
-                selectedCuisine = ""
+                selectedMenuCell = 1
             }
+            getFeaturedRestaurants()
+            selectedCuisine = ""
         }
     }
 
@@ -110,14 +111,15 @@ class HomeViewController: UIViewController {
                 dontTriggerModelGetHomeRestaurantsResponseObservers = false
                 return
             }
+            if selectedMenuCell != 0 {
+                return()
+            }
+            
             let recordFeatureCell = addFeaturedCell()
             var indexPathArray = [IndexPath]()
             var indexSetArray = [Int]()
             if recordFeatureCell.2 > 0 {
                 listItems[recordFeatureCell.1] = recordFeatureCell.0
-                let indexPath = IndexPath(row: 0, section: recordFeatureCell.1)
-                indexPathArray.append(indexPath)
-                indexSetArray.append(recordFeatureCell.1)
             }
             else {
                 listItems[recordFeatureCell.1] = recordFeatureCell.0
@@ -126,9 +128,6 @@ class HomeViewController: UIViewController {
             let recordCuisineCell = addCuisineCell()
             if recordCuisineCell.2 > 0 {
                 listItems[recordCuisineCell.1] = recordCuisineCell.0
-                let indexPath = IndexPath(row: 0, section: recordCuisineCell.1)
-                indexPathArray.append(indexPath)
-                indexSetArray.append(recordCuisineCell.1)
             }
             else {
                 listItems[recordCuisineCell.1] = recordCuisineCell.0
@@ -136,17 +135,18 @@ class HomeViewController: UIViewController {
             let recordRestuarantCell = addRestuarantCell()
             if recordRestuarantCell.2 > 0 {
                 listItems[recordRestuarantCell.1] = recordRestuarantCell.0
-                let indexPath = IndexPath(row: 0, section: 2)
-                indexPathArray.append(indexPath)
-                indexSetArray.append(recordRestuarantCell.1)
             }
             else {
                 listItems[recordRestuarantCell.1] = recordRestuarantCell.0
             }
-//            self.tableView.reloadRows(at: indexPathArray, with: .none)
-            for item in indexSetArray {
-//                self.tableView.reloadSections(IndexSet(integer: item), with: .automatic)
+            let recordPrayerPlacesCell = addPrayerPlacesCell()
+            if recordPrayerPlacesCell.2 > 0 {
+                listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
             }
+            else {
+                listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
+            }
+            
             tableView.reloadData()
         }
     }
@@ -157,29 +157,34 @@ class HomeViewController: UIViewController {
                 dontTriggerModelGetHalalRestaurantResponseObservers = false
                 return
             }
-            var indexPathArray = [IndexPath]()
-            var indexSetArray = [Int]()
+            if selectedMenuCell != 1 {
+                return()
+            }
             let recordCuisineCell = addCuisineCell()
             if recordCuisineCell.2 > 0 {
                 listItems[recordCuisineCell.1] = recordCuisineCell.0
-                let indexPath = IndexPath(row: 0, section: recordCuisineCell.1)
-                indexPathArray.append(indexPath)
-                indexSetArray.append(recordCuisineCell.1)
+            }
+            else {
+                listItems[recordCuisineCell.1] = recordCuisineCell.0
             }
             let recordFindHalalFoodCell = addFindHalalFoodCell()
             if recordFindHalalFoodCell.2 > 0 {
                 listItems[recordFindHalalFoodCell.1] = recordFindHalalFoodCell.0
-                let indexPath = IndexPath(row: 0, section: recordFindHalalFoodCell.1)
-                indexPathArray.append(indexPath)
-                indexSetArray.append(recordFindHalalFoodCell.1)
             }
-//            for item in indexSetArray {
-//                self.tableView.reloadSections(IndexSet(integer: item), with: .automatic)
-//            }
-            if indexSetArray.count == 0 {
-                
+            else {
+                listItems[recordFindHalalFoodCell.1] = recordFindHalalFoodCell.0
             }
             self.tableView.reloadData()
+            if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
+                viewNoDataFound.isHidden = false
+                tableView.isHidden = true
+                imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
+                labelNoRecordFound.text = "No Restaurant Found"
+            }
+            else {
+                viewNoDataFound.isHidden = true
+                tableView.isHidden = false
+            }
         }
     }
     
@@ -192,7 +197,6 @@ class HomeViewController: UIViewController {
     
     var selectedMenuCell: Int = 0 {
         didSet {
-//            pageNumberHalalFood = 0
             addCellInList()
             if selectedMenuCell == 0 {
                 viewMapViewBackground.isHidden = true
@@ -201,6 +205,7 @@ class HomeViewController: UIViewController {
                     addFeaturedCell().0,
                     addCuisineCell().0,
                     addRestuarantCell().0,
+                    addPrayerPlacesCell().0
                 ]
             }
             else if selectedMenuCell == 1 {
@@ -208,7 +213,6 @@ class HomeViewController: UIViewController {
                     addCuisineCell().0,
                     addFindHalalFoodCell().0,
                 ]
-//                pageNumberHalalFood = 1
             }
             else if selectedMenuCell == 2 {
                 listItems = nil
@@ -216,7 +220,7 @@ class HomeViewController: UIViewController {
             else if selectedMenuCell == 3 {
                 listItems = [
                     HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-                    HomeBaseCell.HomeListItem(identifier: HomePrayerSpacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
+                    HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
                 ]
             }
             tableView.reloadData()
@@ -253,7 +257,7 @@ class HomeViewController: UIViewController {
         HomeCuisinesCell.register(tableView: tableView)
         HomeRestaurantCell.register(tableView: tableView)
         HomeSectionHeaderCell.register(tableView: tableView)
-        HomePrayerSpacesCell.register(tableView: tableView)
+        HomePrayerPlacesCell.register(tableView: tableView)
         FindHalalFoodCell.register(tableView: tableView)
         
         //MARK: - Add Extra spacing in tableView
@@ -376,7 +380,7 @@ extension HomeViewController : CLLocationManagerDelegate {
             locationManager.stopUpdatingHeading()
             locationManager.delegate = nil
             self.userLocation = location
-            self.userCurrentLocation = location
+            kUserCurrentLocation = location
             print(" Lat \(location.coordinate.latitude) ,  Longitude \(location.coordinate.longitude)")
         }
         if locations.first != nil {

@@ -24,9 +24,11 @@ class HomeCuisinesSubCell: UICollectionViewCell {
         didSet {
             if selectedCuisine == modelCuisine?.name {
                 labelName.textColor = .colorApp
+                viewImageViewTitleBackGround.backgroundColor = .colorApp
             }
             else {
                 labelName.textColor = .colorLabel
+                viewImageViewTitleBackGround.backgroundColor = .white
             }
         }
     }
@@ -37,5 +39,4 @@ class HomeCuisinesSubCell: UICollectionViewCell {
         
         viewImageViewTitleBackGround.radius(radius: 12, color: .white, borderWidth: 2)
     }
-
 }

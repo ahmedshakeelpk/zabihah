@@ -37,8 +37,8 @@ class HomeCuisinesCell: HomeBaseCell {
         dataRecord = data as? HomeBaseCell.HomeListItem
         modelCuisineResponse = (dataRecord.data as? [String : Any])?["data"] as? [HomeViewController.ModelCuisine]
         selectedCuisine =  (dataRecord.data as? [String : Any])?["selectedCuisine"] as? String
-        collectionView.reloadData()
         delegate = viewController as? any HomeCuisinesCellDelegate
+        collectionView.reloadData()
     }
     
     override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {

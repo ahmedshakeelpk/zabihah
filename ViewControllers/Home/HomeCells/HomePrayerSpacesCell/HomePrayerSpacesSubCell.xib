@@ -88,13 +88,24 @@
                                                                                                             <constraint firstAttribute="height" constant="18" id="AFT-0B-twD"/>
                                                                                                         </constraints>
                                                                                                     </imageView>
+                                                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cDq-3C-p3m">
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                                                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                                                        <connections>
+                                                                                                            <action selector="buttonFavourite:" destination="IhX-PP-ERe" eventType="touchUpInside" id="DVi-Ug-n4a"/>
+                                                                                                        </connections>
+                                                                                                    </button>
                                                                                                 </subviews>
                                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <constraints>
+                                                                                                    <constraint firstItem="cDq-3C-p3m" firstAttribute="leading" secondItem="p1Q-Lj-cZs" secondAttribute="leading" id="DS2-Df-M3i"/>
+                                                                                                    <constraint firstItem="cDq-3C-p3m" firstAttribute="top" secondItem="p1Q-Lj-cZs" secondAttribute="top" id="G9H-mJ-rFC"/>
                                                                                                     <constraint firstAttribute="width" constant="25" id="Op9-9W-MQS"/>
                                                                                                     <constraint firstItem="aCj-WI-WIM" firstAttribute="centerX" secondItem="p1Q-Lj-cZs" secondAttribute="centerX" id="RMf-UV-wlr"/>
                                                                                                     <constraint firstItem="aCj-WI-WIM" firstAttribute="centerY" secondItem="p1Q-Lj-cZs" secondAttribute="centerY" id="khn-fe-D7A"/>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="cDq-3C-p3m" secondAttribute="trailing" id="vMF-Gv-Ss3"/>
                                                                                                     <constraint firstAttribute="height" constant="25" id="vP8-Ex-ned"/>
+                                                                                                    <constraint firstAttribute="bottom" secondItem="cDq-3C-p3m" secondAttribute="bottom" id="zce-Dv-ah2"/>
                                                                                                 </constraints>
                                                                                             </view>
                                                                                         </subviews>
@@ -164,8 +175,8 @@
                                                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gdj-mi-mri">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="218" height="38"/>
                                                                                 <subviews>
-                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QJN-xt-C5V">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="33" height="38"/>
+                                                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QJN-xt-C5V">
+                                                                                        <rect key="frame" x="-33" y="0.0" width="33" height="38"/>
                                                                                         <subviews>
                                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyBurgerKing" translatesAutoresizingMaskIntoConstraints="NO" id="Mag-sd-CV0">
                                                                                                 <rect key="frame" x="0.0" y="6.6666666666666572" width="25" height="25"/>
@@ -183,19 +194,19 @@
                                                                                         </constraints>
                                                                                     </view>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxh-lQ-HTo">
-                                                                                        <rect key="frame" x="33" y="0.0" width="125" height="38"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="190" height="38"/>
                                                                                         <subviews>
                                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="RFe-P8-Uau">
-                                                                                                <rect key="frame" x="0.0" y="5" width="119" height="28"/>
+                                                                                                <rect key="frame" x="0.0" y="5" width="184" height="28"/>
                                                                                                 <subviews>
                                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Burger King" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2e-Ag-rqv">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="119" height="16"/>
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="184" height="16"/>
                                                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                                                                         <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <nil key="highlightedColor"/>
                                                                                                     </label>
                                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8CK-t9-p58">
-                                                                                                        <rect key="frame" x="0.0" y="16" width="119" height="12"/>
+                                                                                                        <rect key="frame" x="0.0" y="16" width="184" height="12"/>
                                                                                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                                                                         <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <nil key="highlightedColor"/>
@@ -212,9 +223,9 @@
                                                                                         </constraints>
                                                                                     </view>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="leg-S4-8A3">
-                                                                                        <rect key="frame" x="158" y="0.0" width="60" height="38"/>
+                                                                                        <rect key="frame" x="190" y="0.0" width="28" height="38"/>
                                                                                         <subviews>
-                                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xns-zZ-tMx">
+                                                                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xns-zZ-tMx">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="28" height="38"/>
                                                                                                 <subviews>
                                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6P6-8y-xzr">
@@ -245,7 +256,7 @@
                                                                                                 </constraints>
                                                                                             </view>
                                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OM1-eO-71O">
-                                                                                                <rect key="frame" x="32" y="0.0" width="28" height="38"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="28" height="38"/>
                                                                                                 <subviews>
                                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="09f-ZB-IwC">
                                                                                                         <rect key="frame" x="1.6666666666666572" y="6.6666666666666572" width="25" height="25"/>
@@ -581,12 +592,24 @@
                 <constraint firstItem="yCs-6X-GSr" firstAttribute="leading" secondItem="IhX-PP-ERe" secondAttribute="leading" id="z3z-2D-NeC"/>
             </constraints>
             <connections>
-                <outlet property="collectionView" destination="8Aj-X7-eHy" id="4Y1-jC-Vaw"/>
+                <outlet property="buttonFavourite" destination="cDq-3C-p3m" id="dui-kn-hTt"/>
+                <outlet property="collectionView" destination="8Aj-X7-eHy" id="2oR-Bo-zC6"/>
+                <outlet property="imageViewFavourite" destination="aCj-WI-WIM" id="kya-YC-qmn"/>
+                <outlet property="imageViewItem" destination="V2Q-7D-tYj" id="VsT-Vz-UkM"/>
+                <outlet property="imageViewRestaurant" destination="Mag-sd-CV0" id="z2o-zZ-xMV"/>
+                <outlet property="labelComments" destination="ZgU-zU-OPj" id="vGV-ha-KnY"/>
+                <outlet property="labelDistance" destination="m33-dd-Pqb" id="Y6P-cN-JBa"/>
                 <outlet property="labelItemType" destination="tjU-G3-8y8" id="YRX-8R-YrE"/>
+                <outlet property="labelPictures" destination="TAb-6h-nRZ" id="mhy-GX-HcC"/>
+                <outlet property="labelRating" destination="UdW-tD-J8J" id="0eR-nj-9bm"/>
+                <outlet property="labelRestaurantAddress" destination="8CK-t9-p58" id="Jt1-Fp-1Gs"/>
+                <outlet property="labelRestaurantName" destination="u2e-Ag-rqv" id="59J-on-CC0"/>
+                <outlet property="labelReuse" destination="J8V-1b-74y" id="NzA-S4-R5R"/>
                 <outlet property="stackViewBackGround" destination="LKW-y4-ENN" id="h1a-fS-PVG"/>
                 <outlet property="stackViewRatingBackGround" destination="Se2-j0-BVO" id="5pi-5M-ams"/>
+                <outlet property="viewBackGroundNewRestaurant" destination="5th-pD-igU" id="GAC-X0-Uaf"/>
                 <outlet property="viewBikeBackGround" destination="6P6-8y-xzr" id="8Os-Ru-gGx"/>
-                <outlet property="viewCallBackGround" destination="09f-ZB-IwC" id="vuc-Lt-l5Y"/>
+                <outlet property="viewCallBackGround" destination="09f-ZB-IwC" id="e1n-hA-wv9"/>
                 <outlet property="viewItemTypeBackGround" destination="5th-pD-igU" id="qJz-fE-Wth"/>
                 <outlet property="viewRatingBackGround" destination="e8r-2Y-EFy" id="ehq-h8-XCE"/>
             </connections>
