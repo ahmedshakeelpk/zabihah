@@ -37,6 +37,7 @@ extension HomeViewController {
         if userLocation?.coordinate.latitude == nil && userLocation?.coordinate.longitude == nil {
             return()
         }
+        vc.selectedMenuCell = selectedMenuCell
         vc.location = CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
         vc.buttonFilterHandler = { parameters in
             print(parameters)
@@ -46,7 +47,7 @@ extension HomeViewController {
             }
             else if self.selectedMenuCell == 1 {
                 self.selectedCuisine = ""
-                self.pageNumberHalalFood = 1
+                self.pageNumberForApi = 1
             }
         }
         vc.filterParametersHome = filterParametersHome
@@ -79,6 +80,12 @@ extension HomeViewController {
     
     func buttonViewAllHandler(section: Int) {
         if section == 1 {
+            filterParametersHome = nil
+            selectedCuisine = ""
+            selectedMenuCell = section
+            collectionView.reloadData()
+        }
+        else if section == 3 {
             filterParametersHome = nil
             selectedCuisine = ""
             selectedMenuCell = section
@@ -150,7 +157,7 @@ extension HomeViewController {
         APIs.postAPI(apiName: .gethalalrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             var model: ModelGetHalalRestaurantResponse? = APIs.decodeDataToObject(data: responseData)
             
-            if self.pageNumberHalalFood > 1 {
+            if self.pageNumberForApi > 1 {
                 if let record = self.modelGetHalalRestaurantResponse?.halalRestuarantResponseData {
                     var oldModel = record
                     oldModel.append(contentsOf: model?.halalRestuarantResponseData ?? [])
@@ -158,6 +165,29 @@ extension HomeViewController {
                 }
             }
             self.modelGetHalalRestaurantResponse = model
+        }
+    }
+    
+    func getPrayerPlaces(pageSize: Int) {
+        var parameters = [
+            "lat": userLocation?.coordinate.latitude as Any,
+            "long": userLocation?.coordinate.longitude as Any,
+            "radius": 20,
+            "rating": 0,
+            "page": Int(pageSize),
+            "pageSize": 0,
+        ]
+        
+        if filterParametersHome != nil {
+            let radius = filterParametersHome["radius"] as? String
+            parameters["radius"] = Int(radius ?? "0")
+            let rating = filterParametersHome["rating"] as? String
+            parameters["rating"] = Int(rating ?? "0")
+        }
+        
+        APIs.postAPI(apiName: .getprayerplaces, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg in
+            let model: ModelGetPrayerPlacesResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetPrayerPlacesResponse = model
         }
     }
 
@@ -177,7 +207,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if selectedMenuCell == 1 {
             if indexPath.row == ((modelGetHalalRestaurantResponse?.halalRestuarantResponseData?.count ?? 0) - 1) {
                 print("came to last row")
-                pageNumberHalalFood += 1
+                pageNumberForApi += 1
             }
         }
     }
@@ -223,7 +253,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         else if selectedMenuCell == 3 {
-            return 5
+            if section == 0 {
+                return 1
+            }
+            else {
+                return modelGetPrayerPlacesResponse?.mosqueResponseData?.count ?? 0
+            }
         }
         else {
             return 2
@@ -385,6 +420,25 @@ extension HomeViewController {
         }
         return (HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
     }
+    
+    func addHomePrayerPlacesTabCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
+        if let indexOf = findIndexOfIdentifier(identifier: HomePrayerPlacesTabCell.nibName()) {
+            var mosqueResponseData = [ModelRestuarantResponseData]()
+            mosqueResponseData = modelGetHomeRestaurantsResponse?.mosqueResponseData ?? []
+            print(indexOf)
+            let recordCount = mosqueResponseData.count
+            if recordCount > 0 {
+                let data = mosqueResponseData as Any
+                let rowHeight = 240
+                let identifier = HomePrayerPlacesTabCell.nibName()
+                let sectionName = "Prayer Spaces near you"
+                let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
+                return (record, indexOf, recordCount)
+            }
+        }
+        return (HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+    }
+    
     
     func addFindHalalFoodCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: FindHalalFoodCell.nibName()) {

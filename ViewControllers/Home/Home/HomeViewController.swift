@@ -62,7 +62,7 @@ class HomeViewController: UIViewController {
                 addCuisineCell().0,
                 addFindHalalFoodCell().0,
             ]
-            pageNumberHalalFood = 1
+            pageNumberForApi = 1
         }
         else if selectedMenuCell == 2 {
             listItems = nil
@@ -72,6 +72,7 @@ class HomeViewController: UIViewController {
                 HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
                 HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
             ]
+            pageNumberForApi = 1
         }
         tableView.reloadData()
         collectionView.reloadData()
@@ -85,21 +86,32 @@ class HomeViewController: UIViewController {
             handleMenuTap()
         }
     }
-    var pageNumberHalalFood: Int! = 1 {
+    var pageNumberForApi: Int! = 1 {
         didSet {
             if selectedMenuCell == 0 {
                 
             }
             else if selectedMenuCell == 1 {
-                if pageNumberHalalFood == 0 {
+                if pageNumberForApi == 0 {
                     return
                 }
-                if pageNumberHalalFood > 1 {
-                    if pageNumberHalalFood > modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                if pageNumberForApi > 1 {
+                    if pageNumberForApi > modelGetHalalRestaurantResponse?.totalPages ?? 0 {
                         return()
                     }
                 }
-                getHalalRestaurants(pageSize: pageNumberHalalFood, cuisine: selectedCuisine)
+                getHalalRestaurants(pageSize: pageNumberForApi, cuisine: selectedCuisine)
+            }
+            else if selectedMenuCell == 3 {
+                if pageNumberForApi == 0 {
+                    return
+                }
+                if pageNumberForApi > 1 {
+                    if pageNumberForApi > modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                        return()
+                    }
+                }
+                getPrayerPlaces(pageSize: pageNumberForApi)
             }
         }
     }
@@ -157,6 +169,26 @@ class HomeViewController: UIViewController {
             listItems[recordRestuarantCell.1] = recordRestuarantCell.0
             let recordPrayerPlacesCell = addPrayerPlacesCell()
             listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
+            
+            noRecordFound()
+            tableView.reloadData()
+        }
+    }
+    
+    var modelGetPrayerPlacesResponse: ModelGetPrayerPlacesResponse? {
+        didSet {
+            if dontTriggerModelGetHomeRestaurantsResponseObservers {
+                dontTriggerModelGetHomeRestaurantsResponseObservers = false
+                return
+            }
+            if selectedMenuCell != 3 {
+                return()
+            }
+            
+            let recordCuisineCell = addCuisineCell()
+            listItems[recordCuisineCell.1] = recordCuisineCell.0
+            let recordPrayerPlacesTabCell = addHomePrayerPlacesTabCell()
+            listItems[recordPrayerPlacesTabCell.1] = recordPrayerPlacesTabCell.0
             
             noRecordFound()
             tableView.reloadData()
@@ -222,6 +254,7 @@ class HomeViewController: UIViewController {
         HomeSectionHeaderCell.register(tableView: tableView)
         HomePrayerPlacesCell.register(tableView: tableView)
         FindHalalFoodCell.register(tableView: tableView)
+        HomePrayerPlacesTabCell.register(tableView: tableView)
         
         //MARK: - Add Extra spacing in tableView
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
@@ -368,7 +401,7 @@ extension HomeViewController: HomeCuisinesCellDelegate {
                 selectedMenuCell = indexOf
             }
             else {
-                pageNumberHalalFood = 1
+                pageNumberForApi = 1
             }
         }
         print("IndexPath For \(HomeCuisinesCell.nibName()): \(indexPath)")

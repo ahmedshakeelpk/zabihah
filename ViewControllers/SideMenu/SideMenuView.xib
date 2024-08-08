@@ -98,10 +98,10 @@
                                     <rect key="frame" x="0.0" y="0.0" width="313" height="717"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Vuo-S2-ann">
-                                            <rect key="frame" x="0.0" y="0.0" width="313" height="524.66666666666663"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="313" height="504.66666666666669"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uyc-T3-HoB">
-                                                    <rect key="frame" x="0.0" y="0.0" width="313" height="200"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="313" height="180"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gig-Eg-E31">
                                                             <rect key="frame" x="20" y="0.0" width="273" height="180"/>
@@ -156,11 +156,11 @@
                                                         <constraint firstItem="gig-Eg-E31" firstAttribute="leading" secondItem="uyc-T3-HoB" secondAttribute="leading" constant="20" id="0Oo-04-pe4"/>
                                                         <constraint firstItem="gig-Eg-E31" firstAttribute="top" secondItem="uyc-T3-HoB" secondAttribute="top" id="RBT-Hg-3Dq"/>
                                                         <constraint firstAttribute="trailing" secondItem="gig-Eg-E31" secondAttribute="trailing" constant="20" id="oP3-ay-gFS"/>
-                                                        <constraint firstAttribute="bottom" secondItem="gig-Eg-E31" secondAttribute="bottom" constant="20" id="udM-9I-bAh"/>
+                                                        <constraint firstAttribute="bottom" secondItem="gig-Eg-E31" secondAttribute="bottom" id="udM-9I-bAh"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yP6-rt-h3r">
-                                                    <rect key="frame" x="0.0" y="200" width="313" height="78.666666666666686"/>
+                                                    <rect key="frame" x="0.0" y="180" width="313" height="78.666666666666686"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shahed Amanullah" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPo-3J-Oyu">
                                                             <rect key="frame" x="20" y="0.0" width="273" height="24"/>
@@ -187,14 +187,14 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hEJ-33-Lab">
-                                                    <rect key="frame" x="0.0" y="278.66666666666669" width="313" height="10"/>
+                                                    <rect key="frame" x="0.0" y="258.66666666666669" width="313" height="10"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="10" id="opo-tB-WGU"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2B4-Lc-TMi">
-                                                    <rect key="frame" x="0.0" y="288.66666666666669" width="313" height="128"/>
+                                                    <rect key="frame" x="0.0" y="268.66666666666669" width="313" height="128"/>
                                                     <subviews>
                                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tjG-LK-JTb" customClass="TableViewContentSized" customModule="zabihah" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="0.0" width="313" height="128"/>
@@ -211,14 +211,14 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WCM-ft-Ggp">
-                                                    <rect key="frame" x="0.0" y="416.66666666666663" width="313" height="20"/>
+                                                    <rect key="frame" x="0.0" y="396.66666666666669" width="313" height="20"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="8J1-39-xbD"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RAk-WT-FN8">
-                                                    <rect key="frame" x="0.0" y="436.66666666666663" width="313" height="88"/>
+                                                    <rect key="frame" x="0.0" y="416.66666666666663" width="313" height="88"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="88" id="kh4-Ag-EYt"/>

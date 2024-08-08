@@ -23,6 +23,12 @@ struct APIsName {
         case gethomerestaurants = "api/Restaurant/gethomerestaurants"
         case gethalalrestaurants = "api/Restaurant/gethalalrestaurants"
         
+        
+        //MARK:- Mosque
+        case getprayerplaces = "api/Mosque/getprayerplaces"
+        
+        
+        
         //MARK:- Favorite
         case postfavouriterestaurants = "api/Favorite/postfavouriterestaurants"
         case getfavouritebyuser = "api/Favorite/getfavouritebyuser"

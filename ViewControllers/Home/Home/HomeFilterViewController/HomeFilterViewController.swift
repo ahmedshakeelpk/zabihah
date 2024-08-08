@@ -48,8 +48,13 @@ class HomeFilterViewController: UIViewController {
             
         }
     }
+    @IBOutlet weak var stackViewHalalAlCohal: UIStackView!
     
-    var selectedMenuCell = 0
+    var selectedMenuCell = 0 {
+        didSet {
+
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +77,13 @@ class HomeFilterViewController: UIViewController {
             if let isHalal = filterParametersHome["isHalal"] as? Bool {
                 switchHideHalalPlaces.isOn = isHalal
             }
+        }
+        
+        if selectedMenuCell == 3 {
+            stackViewHalalAlCohal.isHidden = true
+        }
+        else {
+            stackViewHalalAlCohal.isHidden = false
         }
     }
     

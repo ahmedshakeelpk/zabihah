@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		25B9C910AE48A827758E769A /* Pods_zabihah.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A346B501407BE41A776A091D /* Pods_zabihah.framework */; };
-		6A00FEF82C4CAB7C0006E324 /* FindHalalFood.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A00FEF72C4CAB7C0006E324 /* FindHalalFood.storyboard */; };
-		6A00FEFA2C4CAB9D0006E324 /* FindHalalFoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00FEF92C4CAB9D0006E324 /* FindHalalFoodViewController.swift */; };
 		6A00FF022C4CAC890006E324 /* FindHalalFoodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */; };
 		6A00FF032C4CAC890006E324 /* FindHalalFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */; };
 		6A16E0002C36703B00E1383B /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A16DFFF2C36703B00E1383B /* ViewExtension.swift */; };
@@ -60,6 +58,8 @@
 		6A6FC4052C3572020050B6B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6FC4042C3572020050B6B2 /* Assets.xcassets */; };
 		6A6FC4082C3572020050B6B2 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 6A6FC4072C3572020050B6B2 /* Base */; };
 		6A6FC4112C357D490050B6B2 /* AppColorsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6FC4102C357D490050B6B2 /* AppColorsExtension.swift */; };
+		6A706E7D2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A706E7B2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift */; };
+		6A706E7E2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A706E7C2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib */; };
 		6A9BD3C12C412A74008BBDF5 /* FingerPrintHardCodedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3C02C412A74008BBDF5 /* FingerPrintHardCodedData.swift */; };
 		6A9BD3C32C414810008BBDF5 /* HomeViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3C22C414810008BBDF5 /* HomeViewControllerModel.swift */; };
 		6A9BD3C62C4237A8008BBDF5 /* ProfileDeleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3C52C4237A8008BBDF5 /* ProfileDeleteViewController.swift */; };
@@ -127,8 +127,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6A00FEF72C4CAB7C0006E324 /* FindHalalFood.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FindHalalFood.storyboard; sourceTree = "<group>"; };
-		6A00FEF92C4CAB9D0006E324 /* FindHalalFoodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHalalFoodViewController.swift; sourceTree = "<group>"; };
 		6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHalalFoodCell.swift; sourceTree = "<group>"; };
 		6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FindHalalFoodCell.xib; sourceTree = "<group>"; };
 		6A16DFFF2C36703B00E1383B /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
@@ -181,6 +179,8 @@
 		6A6FC4072C3572020050B6B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A6FC4092C3572020050B6B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A6FC4102C357D490050B6B2 /* AppColorsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorsExtension.swift; sourceTree = "<group>"; };
+		6A706E7B2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePrayerPlacesTabCell.swift; sourceTree = "<group>"; };
+		6A706E7C2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomePrayerPlacesTabCell.xib; sourceTree = "<group>"; };
 		6A9BD3C02C412A74008BBDF5 /* FingerPrintHardCodedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPrintHardCodedData.swift; sourceTree = "<group>"; };
 		6A9BD3C22C414810008BBDF5 /* HomeViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerModel.swift; sourceTree = "<group>"; };
 		6A9BD3C52C4237A8008BBDF5 /* ProfileDeleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDeleteViewController.swift; sourceTree = "<group>"; };
@@ -276,8 +276,6 @@
 			children = (
 				6AD477662C5F4730004AAABE /* MarkerInfoView */,
 				6A00FEFF2C4CAC670006E324 /* FindHalalFoodCell */,
-				6A00FEF72C4CAB7C0006E324 /* FindHalalFood.storyboard */,
-				6A00FEF92C4CAB9D0006E324 /* FindHalalFoodViewController.swift */,
 			);
 			path = FindHalalFood;
 			sourceTree = "<group>";
@@ -551,11 +549,12 @@
 		6A6269262C3D3D6B00DA844F /* HomeCells */ = {
 			isa = PBXGroup;
 			children = (
+				6A706E7A2C64ECD80014FF85 /* HomePrayerPlacesTabCell */,
 				6AD477772C61D933004AAABE /* HomeRestaurantCell */,
 				6A00FEFE2C4CAC4D0006E324 /* HomeBaseCell */,
 				6A00FEFD2C4CAC310006E324 /* HomeMenuCell */,
-				6AD39E8D2C3E902E00BDAC05 /* HomePrayerSpacesCell */,
 				6AD39E842C3E5B0100BDAC05 /* HomeSectionHeaderCell */,
+				6AD39E8D2C3E902E00BDAC05 /* HomePrayerPlacesCell */,
 				6AD39E7F2C3E468200BDAC05 /* HomeCuisinesCell */,
 				6AD39E5B2C3D7EB400BDAC05 /* HomeFoodItemCell */,
 			);
@@ -631,6 +630,15 @@
 				6A3DD1C42C365BEC003F1F44 /* ViewControllerExtension.swift */,
 			);
 			path = ViewControllerExtension;
+			sourceTree = "<group>";
+		};
+		6A706E7A2C64ECD80014FF85 /* HomePrayerPlacesTabCell */ = {
+			isa = PBXGroup;
+			children = (
+				6A706E7B2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift */,
+				6A706E7C2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib */,
+			);
+			path = HomePrayerPlacesTabCell;
 			sourceTree = "<group>";
 		};
 		6A9BD3BF2C412A66008BBDF5 /* FingerPrintHardCodedData */ = {
@@ -801,7 +809,7 @@
 			path = HomeSectionHeaderCell;
 			sourceTree = "<group>";
 		};
-		6AD39E8D2C3E902E00BDAC05 /* HomePrayerSpacesCell */ = {
+		6AD39E8D2C3E902E00BDAC05 /* HomePrayerPlacesCell */ = {
 			isa = PBXGroup;
 			children = (
 				6AD39E8E2C3E904600BDAC05 /* HomePrayerPlacesCell.swift */,
@@ -809,7 +817,7 @@
 				6A6269392C3D3F1E00DA844F /* HomePrayerSpacesSubCell.swift */,
 				6A62693A2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.xib */,
 			);
-			path = HomePrayerSpacesCell;
+			path = HomePrayerPlacesCell;
 			sourceTree = "<group>";
 		};
 		6AD39E922C3EAC4500BDAC05 /* Constants */ = {
@@ -950,7 +958,6 @@
 				6ACA06602C56A47300EE8F43 /* FoodItemCollectionViewCell.xib in Resources */,
 				6A00FF022C4CAC890006E324 /* FindHalalFoodCell.xib in Resources */,
 				6A3AB57C2C3966E00030F016 /* SideMenuView.xib in Resources */,
-				6A00FEF82C4CAB7C0006E324 /* FindHalalFood.storyboard in Resources */,
 				6AB93BE92C622EDD0045C195 /* MyFavouriteCell.xib in Resources */,
 				6A3AB5862C39703B0030F016 /* SideMenuViewCell.xib in Resources */,
 				6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */,
@@ -962,6 +969,7 @@
 				6A6FC4082C3572020050B6B2 /* Base in Resources */,
 				6ACA065A2C5665AC00EE8F43 /* Delivery.storyboard in Resources */,
 				6AD39E5A2C3D7EA200BDAC05 /* HomeFoodItemCell.xib in Resources */,
+				6A706E7E2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib in Resources */,
 				6AD4776C2C5F4FD9004AAABE /* MarkerInfoView.xib in Resources */,
 				6A3AB59D2C3A80470030F016 /* AddressesCell.xib in Resources */,
 				6AD39E882C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib in Resources */,
@@ -1074,6 +1082,7 @@
 				6A6FC4112C357D490050B6B2 /* AppColorsExtension.swift in Sources */,
 				6A3AB58F2C39E2DC0030F016 /* SideMenuViewHeaderViewCell.swift in Sources */,
 				6A3AB56F2C3956A40030F016 /* SideTownModel.swift in Sources */,
+				6A706E7D2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift in Sources */,
 				6A9BD3CE2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift in Sources */,
 				6A6FC3FC2C3572000050B6B2 /* AppDelegate.swift in Sources */,
 				6ACE9B652C4E2ECA005E39A4 /* HomeFilterViewController.swift in Sources */,
@@ -1110,7 +1119,6 @@
 				6A28D8542C37D32B00F5A95F /* ProfileViewController.swift in Sources */,
 				6AD39E562C3D7CCD00BDAC05 /* HomeBaseCell.swift in Sources */,
 				6A3AB5952C3A61B80030F016 /* SideMenuViewFooterViewCell.swift in Sources */,
-				6A00FEFA2C4CAB9D0006E324 /* FindHalalFoodViewController.swift in Sources */,
 				6A9BD3C32C414810008BBDF5 /* HomeViewControllerModel.swift in Sources */,
 				6ACA06682C57B00700EE8F43 /* RecentPhotoCell.swift in Sources */,
 				6A3DD1C52C365BEC003F1F44 /* ViewControllerExtension.swift in Sources */,
