@@ -102,10 +102,10 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         
         viewBackGroundNewRestaurant.isHidden = modelMosqueResponseData?.status == ""
         labelItemType.text = modelMosqueResponseData?.status
-        if modelMosqueResponseData?.status?.lowercased() == "close" {
+        if modelMosqueResponseData?.status?.lowercased() == "closed" {
             viewBackGroundNewRestaurant.backgroundColor = .colorRed
         }
-        else if modelMosqueResponseData?.status?.lowercased() == "new" || modelMosqueResponseData?.status?.lowercased() == "open"{
+        else if modelMosqueResponseData?.status?.lowercased() == "new" {
             viewBackGroundNewRestaurant.backgroundColor = .colorGreen
         }
         else if modelMosqueResponseData?.status?.lowercased() != "" {

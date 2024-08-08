@@ -41,8 +41,13 @@ extension HomeViewController {
         vc.buttonFilterHandler = { parameters in
             print(parameters)
             self.filterParametersHome = parameters
-            self.getFeaturedRestaurants()
-            self.selectedCuisine = ""
+            if self.selectedMenuCell == 0 {
+                self.getFeaturedRestaurants()
+            }
+            else if self.selectedMenuCell == 1 {
+                self.selectedCuisine = ""
+                self.pageNumberHalalFood = 1
+            }
         }
         vc.filterParametersHome = filterParametersHome
         vc.selectedMenuCell = selectedMenuCell
@@ -74,10 +79,10 @@ extension HomeViewController {
     
     func buttonViewAllHandler(section: Int) {
         if section == 1 {
-            selectedMenuCell = section
-            collectionView.reloadData()
             filterParametersHome = nil
             selectedCuisine = ""
+            selectedMenuCell = section
+            collectionView.reloadData()
         }
     }
     
@@ -91,46 +96,57 @@ extension HomeViewController {
     }
     
     func getFeaturedRestaurants() {
-        var parameters = filterParametersHome
-        if parameters == nil {
-            parameters = [
-                "lat": userLocation?.coordinate.latitude as Any,
-                "long": userLocation?.coordinate.longitude as Any,
-                "radius": 20,
-                "rating": 0,
-                "isalcoholic": false,
-                "isHalal": true
-            ]
+        var parameters = [
+            "lat": userLocation?.coordinate.latitude as Any,
+            "long": userLocation?.coordinate.longitude as Any,
+            "radius": 20,
+            "rating": 0,
+            "isalcoholic": false,
+            "isHalal": true
+        ]
+        
+        if filterParametersHome != nil {
+            let radius = filterParametersHome["radius"] as? String
+            parameters["radius"] = Int(radius ?? "0")
+            let rating = filterParametersHome["rating"] as? String
+            parameters["rating"] = Int(rating ?? "0")
+            let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool
+            parameters["isalcoholic"] = isAlCoholic
+            let isHalal = filterParametersHome["isHalal"] as? Bool
+            parameters["isHalal"] = isHalal
         }
-        else {
-            parameters?["lat"] = userLocation?.coordinate.latitude as Any
-            parameters?["long"] = userLocation?.coordinate.longitude as Any
-        }
+        
         APIs.postAPI(apiName: .gethomerestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetHomeRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetHomeRestaurantsResponse = model
         }
     }
-    
+        
     func getHalalRestaurants(pageSize: Int, cuisine: String) {
-        var parameters = filterParametersHome
-        if parameters == nil {
-            parameters = [
-                "lat": userLocation?.coordinate.latitude ?? 0,
-                "long": userLocation?.coordinate.longitude ?? 0,
-                "radius": 20,
-                "rating": 0,
-                "isalcoholic": false,
-                "isHalal": true,
-                "page": Int(pageSize),
-                "pageSize": 0,
-                "cuisine": cuisine
-            ]
+        var parameters = [
+            "lat": userLocation?.coordinate.latitude ?? 0,
+            "long": userLocation?.coordinate.longitude ?? 0,
+            "radius": 20,
+            "rating": 0,
+            "isalcoholic": false,
+            "isHalal": true,
+            "page": Int(pageSize),
+            "pageSize": 0,
+            "cuisine": cuisine
+        ] as [String : Any]
+        
+        
+        if filterParametersHome != nil {
+            let radius = filterParametersHome["radius"] as? String
+            parameters["radius"] = Int(radius ?? "0")
+            let rating = filterParametersHome["rating"] as? String
+            parameters["rating"] = Int(rating ?? "0")
+            let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool
+            parameters["isalcoholic"] = isAlCoholic
+            let isHalal = filterParametersHome["isHalal"] as? Bool
+            parameters["isHalal"] = isHalal
         }
-        else {
-            parameters?["lat"] = userLocation?.coordinate.latitude as Any
-            parameters?["long"] = userLocation?.coordinate.longitude as Any
-        }
+        
         APIs.postAPI(apiName: .gethalalrestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             var model: ModelGetHalalRestaurantResponse? = APIs.decodeDataToObject(data: responseData)
             
@@ -205,6 +221,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             else {
                 return modelGetHalalRestaurantResponse?.halalRestuarantResponseData?.count ?? 0
             }
+        }
+        else if selectedMenuCell == 3 {
+            return 5
         }
         else {
             return 2
@@ -284,16 +303,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         filterParametersHome = nil
-        if collectionView == collectionView {
-            selectedMenuCell = indexPath.item
-            if selectedMenuCell == 1 {
-                selectedCuisine = ""
-            }
-        }
-        else {
-//            selectedCuisine = ""
-            print("other cell")
-        }
+        selectedCuisine = ""
+        selectedMenuCell = indexPath.item
     }
 }
 
@@ -317,6 +328,7 @@ extension HomeViewController {
             HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
             HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
+        noRecordFound()
     }
     
     func addFeaturedCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
@@ -412,7 +424,7 @@ extension HomeViewController {
                 
                 let rowHeight = 120
                 let identifier = HomeCuisinesCell.nibName()
-                let sectionName = "Restaurant near you"
+                let sectionName = "Restaurants near you"
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }

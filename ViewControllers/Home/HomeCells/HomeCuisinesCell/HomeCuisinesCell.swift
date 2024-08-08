@@ -76,7 +76,12 @@ extension HomeCuisinesCell: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        selectedCell = indexPath.item
-        selectedCuisine = modelCuisineResponse?[indexPath.item].name ?? ""
+        if modelCuisineResponse?[indexPath.item].name ?? "" == selectedCuisine {
+            selectedCuisine = ""
+        }
+        else {
+            selectedCuisine = modelCuisineResponse?[indexPath.item].name ?? ""
+        }
         delegate?.didSelectRow(indexPath: indexPath, cusisineName: selectedCuisine)
         collectionView.reloadData()
     }

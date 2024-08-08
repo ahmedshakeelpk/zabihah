@@ -92,12 +92,19 @@ class SideMenuView: UIView {
         
     }
     
+    func removeCacheData() {
+        kAccessToken = ""
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "myKey")
+        defaults.synchronize()
+    }
     //Mark:- Choose Image Method
     func actionSheetLogout() {
         var myActionSheet = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
         let galleryAction = UIAlertAction(title: "Logout", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
+            self.removeCacheData()
             self.navigateToRootLoginViewController()
         })
 

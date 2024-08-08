@@ -100,10 +100,10 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         
         viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.status == ""
         labelItemType.text = modelFeaturedRestuarantResponseData?.status
-        if modelFeaturedRestuarantResponseData?.status?.lowercased() == "close" {
+        if modelFeaturedRestuarantResponseData?.status?.lowercased() == "closed" {
             viewBackGroundNewRestaurant.backgroundColor = .colorRed
         }
-        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" || modelFeaturedRestuarantResponseData?.status?.lowercased() == "open"{
+        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" {
             viewBackGroundNewRestaurant.backgroundColor = .colorGreen
         }
         else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {

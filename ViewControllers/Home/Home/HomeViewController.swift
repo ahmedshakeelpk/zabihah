@@ -41,10 +41,50 @@ class HomeViewController: UIViewController {
     var locationManager = CLLocationManager()
     var selectedCuisine: String = "" {
         didSet {
-            pageNumberHalalFood = 1
+//            pageNumberHalalFood = 1
         }
     }
+    
+    func handleMenuTap() {
+        if selectedMenuCell == 0 {
+            viewMapViewBackground.isHidden = true
+            //MARK: - Add Items In tableView
+            listItems = [
+                addFeaturedCell().0,
+                addCuisineCell().0,
+                addRestuarantCell().0,
+                addPrayerPlacesCell().0
+            ]
+            getFeaturedRestaurants()
+        }
+        else if selectedMenuCell == 1 {
+            listItems = [
+                addCuisineCell().0,
+                addFindHalalFoodCell().0,
+            ]
+            pageNumberHalalFood = 1
+        }
+        else if selectedMenuCell == 2 {
+            listItems = nil
+        }
+        else if selectedMenuCell == 3 {
+            listItems = [
+                HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+                HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
+            ]
+        }
+        tableView.reloadData()
+        collectionView.reloadData()
+    }
+    
     var filterParametersHome: [String: Any]!
+    
+    var selectedMenuCell: Int = 0 {
+        didSet {
+            addCellInList()
+            handleMenuTap()
+        }
+    }
     var pageNumberHalalFood: Int! = 1 {
         didSet {
             if selectedMenuCell == 0 {
@@ -63,18 +103,13 @@ class HomeViewController: UIViewController {
             }
         }
     }
-
+    func itself<T>(_ value: T) -> T {
+        return value
+    }
     var userLocation: CLLocation! {
         didSet {
             filterParametersHome = nil
-            if selectedMenuCell == 0 {
-                selectedMenuCell = 0
-            }
-            else if selectedMenuCell == 1 {
-                selectedMenuCell = 1
-            }
-            getFeaturedRestaurants()
-            selectedCuisine = ""
+            self.selectedMenuCell = itself(selectedMenuCell)
         }
     }
 
@@ -114,39 +149,16 @@ class HomeViewController: UIViewController {
             if selectedMenuCell != 0 {
                 return()
             }
-            
             let recordFeatureCell = addFeaturedCell()
-            var indexPathArray = [IndexPath]()
-            var indexSetArray = [Int]()
-            if recordFeatureCell.2 > 0 {
-                listItems[recordFeatureCell.1] = recordFeatureCell.0
-            }
-            else {
-                listItems[recordFeatureCell.1] = recordFeatureCell.0
-            }
-            
+            listItems[recordFeatureCell.1] = recordFeatureCell.0
             let recordCuisineCell = addCuisineCell()
-            if recordCuisineCell.2 > 0 {
-                listItems[recordCuisineCell.1] = recordCuisineCell.0
-            }
-            else {
-                listItems[recordCuisineCell.1] = recordCuisineCell.0
-            }
+            listItems[recordCuisineCell.1] = recordCuisineCell.0
             let recordRestuarantCell = addRestuarantCell()
-            if recordRestuarantCell.2 > 0 {
-                listItems[recordRestuarantCell.1] = recordRestuarantCell.0
-            }
-            else {
-                listItems[recordRestuarantCell.1] = recordRestuarantCell.0
-            }
+            listItems[recordRestuarantCell.1] = recordRestuarantCell.0
             let recordPrayerPlacesCell = addPrayerPlacesCell()
-            if recordPrayerPlacesCell.2 > 0 {
-                listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
-            }
-            else {
-                listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
-            }
+            listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
             
+            noRecordFound()
             tableView.reloadData()
         }
     }
@@ -161,30 +173,12 @@ class HomeViewController: UIViewController {
                 return()
             }
             let recordCuisineCell = addCuisineCell()
-            if recordCuisineCell.2 > 0 {
-                listItems[recordCuisineCell.1] = recordCuisineCell.0
-            }
-            else {
-                listItems[recordCuisineCell.1] = recordCuisineCell.0
-            }
+            listItems[0] = recordCuisineCell.0
             let recordFindHalalFoodCell = addFindHalalFoodCell()
-            if recordFindHalalFoodCell.2 > 0 {
-                listItems[recordFindHalalFoodCell.1] = recordFindHalalFoodCell.0
-            }
-            else {
-                listItems[recordFindHalalFoodCell.1] = recordFindHalalFoodCell.0
-            }
+            listItems[1] = recordFindHalalFoodCell.0
+            
+            noRecordFound()
             self.tableView.reloadData()
-            if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
-                viewNoDataFound.isHidden = false
-                tableView.isHidden = true
-                imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
-                labelNoRecordFound.text = "No Restaurant Found"
-            }
-            else {
-                viewNoDataFound.isHidden = true
-                tableView.isHidden = false
-            }
         }
     }
     
@@ -192,39 +186,6 @@ class HomeViewController: UIViewController {
         didSet {
             modelGetUserProfileResponse = modelGetUserResponseLocal
             sideMenuSetup()
-        }
-    }
-    
-    var selectedMenuCell: Int = 0 {
-        didSet {
-            addCellInList()
-            if selectedMenuCell == 0 {
-                viewMapViewBackground.isHidden = true
-                //MARK: - Add Items In tableView
-                listItems = [
-                    addFeaturedCell().0,
-                    addCuisineCell().0,
-                    addRestuarantCell().0,
-                    addPrayerPlacesCell().0
-                ]
-            }
-            else if selectedMenuCell == 1 {
-                listItems = [
-                    addCuisineCell().0,
-                    addFindHalalFoodCell().0,
-                ]
-            }
-            else if selectedMenuCell == 2 {
-                listItems = nil
-            }
-            else if selectedMenuCell == 3 {
-                listItems = [
-                    HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-                    HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
-                ]
-            }
-            tableView.reloadData()
-            collectionView.reloadData()
         }
     }
 
@@ -243,6 +204,8 @@ class HomeViewController: UIViewController {
     
     func setConfiguration() {
         mapView.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
         sideMenuSetup()
         viewMapViewBackground.circle()
         stackViewFilterResultBackGround.radius(radius: 8)
@@ -270,7 +233,6 @@ class HomeViewController: UIViewController {
         else {
             // it will fix from properties of table view
         }
-        selectedMenuCell = 0
         
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
         NotificationCenter.default.removeObserver(self)
@@ -278,7 +240,17 @@ class HomeViewController: UIViewController {
         
         //Location Services
         locationManager.delegate = self
+//        if CLLocationManager.locationServicesEnabled() {
+//             switch CLLocationManager.authorizationStatus() {
+//                case .notDetermined, .restricted, .denied:
+//                    print("No access")
+//                case .authorizedAlways, .authorizedWhenInUse:
+//                    print("Access")
+//                 
+//             }
+//        }
         locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         
 //        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
     }
@@ -326,6 +298,61 @@ class HomeViewController: UIViewController {
     func toggleMenu() {
         sideMenu.toggleMenu()
     }
+    
+    
+    func noRecordFound() {
+        return()
+        tableView.isHidden = false
+        mapView.isHidden = true
+        viewNoDataFound.isHidden = true
+        if selectedMenuCell == 0 {
+            if modelGetHalalRestaurantResponse?.totalPages == nil {
+                viewNoDataFound.isHidden = false
+                tableView.isHidden = true
+                imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
+                labelNoRecordFound.text = "No Restaurant Found"
+            }
+            else {
+                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
+                    viewNoDataFound.isHidden = false
+                    tableView.isHidden = true
+                    imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
+                    labelNoRecordFound.text = "No Restaurant Found"
+                }
+                else {
+                    viewNoDataFound.isHidden = true
+                    tableView.isHidden = false
+                }
+            }
+        }
+        else if selectedMenuCell == 1 {
+            if modelGetHalalRestaurantResponse?.totalPages == nil {
+                viewNoDataFound.isHidden = false
+                tableView.isHidden = true
+                imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
+                labelNoRecordFound.text = "No Restaurant Found"
+            }
+            else {
+                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
+                    viewNoDataFound.isHidden = false
+                    tableView.isHidden = true
+                    imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
+                    labelNoRecordFound.text = "No Restaurant Found"
+                }
+                else {
+                    viewNoDataFound.isHidden = true
+                    tableView.isHidden = false
+                }
+            }
+        }
+        else if selectedMenuCell == 2 {
+            
+        }
+        else if selectedMenuCell == 3 {
+            
+        }
+        
+    }
 }
 
 
@@ -336,10 +363,13 @@ extension HomeViewController: HomeCuisinesCellDelegate {
     func didSelectRow(indexPath: IndexPath, cusisineName: String) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
             print(indexOf)
+            selectedCuisine = cusisineName
             if selectedMenuCell != 1 {
                 selectedMenuCell = indexOf
             }
-            selectedCuisine = cusisineName
+            else {
+                pageNumberHalalFood = 1
+            }
         }
         print("IndexPath For \(HomeCuisinesCell.nibName()): \(indexPath)")
     }

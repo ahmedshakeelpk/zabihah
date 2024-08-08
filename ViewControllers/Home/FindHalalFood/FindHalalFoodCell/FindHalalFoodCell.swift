@@ -78,10 +78,10 @@ class FindHalalFoodCell: HomeBaseCell {
             
             self.viewBackGroundNewRestaurant.isHidden = self.halalRestuarantResponseData?.status == ""
             self.labelItemType.text = self.halalRestuarantResponseData?.status
-            if self.halalRestuarantResponseData?.status?.lowercased() == "close" {
+            if self.halalRestuarantResponseData?.status?.lowercased() == "closed" {
                 self.viewBackGroundNewRestaurant.backgroundColor = .colorRed
             }
-            else if self.halalRestuarantResponseData?.status?.lowercased() == "new" || self.halalRestuarantResponseData?.status?.lowercased() == "open"{
+            else if self.halalRestuarantResponseData?.status?.lowercased() == "new" {
                 self.viewBackGroundNewRestaurant.backgroundColor = .colorGreen
             }
             else if self.halalRestuarantResponseData?.status?.lowercased() != "" {
