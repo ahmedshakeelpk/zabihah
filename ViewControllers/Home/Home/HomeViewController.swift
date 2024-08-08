@@ -46,6 +46,7 @@ class HomeViewController: UIViewController {
     }
     
     func handleMenuTap() {
+        mapView.clear()
         if selectedMenuCell == 0 {
             viewMapViewBackground.isHidden = true
             //MARK: - Add Items In tableView
