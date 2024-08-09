@@ -26,6 +26,7 @@ class HomeMenuCell: UICollectionViewCell {
     func selectedCell(selectedMenuCell: Int, indexPath: IndexPath) {
         imageViewTitle.image = UIImage(named: arrayNamesIcon[indexPath.item])
         imageViewTitle.image = imageViewTitle.image?.withRenderingMode(.alwaysTemplate)
+        imageViewTitle.image = imageViewTitle.image?.withRenderingMode(.alwaysTemplate)
 
         if indexPath.item == selectedMenuCell {
             viewSelectedMenuBackGround.backgroundColor = .colorApp

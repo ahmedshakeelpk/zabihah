@@ -36,7 +36,7 @@ extension UIView {
 //        self.layer.cornerRadius = radius!
 //        
         
-        self.layer.cornerRadius = 20
+        self.layer.cornerRadius = radius!
         self.clipsToBounds = true
         self.layer.masksToBounds = false
         self.layer.shadowRadius = 7

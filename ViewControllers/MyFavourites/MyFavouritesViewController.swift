@@ -10,11 +10,15 @@ import Alamofire
 import GooglePlaces
 
 class MyFavouritesViewController: UIViewController {
-
+    @IBOutlet weak var imageViewRestaurant: UIImageView!
+    @IBOutlet weak var imageViewMosque: UIImageView!
+    @IBOutlet weak var stackViewButtonTabBackGround: UIStackView!
+    
     @IBOutlet weak var buttonPrayerPlaces: UIButton!
     @IBOutlet weak var buttonRestaurant: UIButton!
-    @IBOutlet weak var imageViewNoAddressFound: UIImageView!
-    @IBOutlet weak var buttonAddNewAddress: UIButton!
+    @IBOutlet weak var imageViewNoRecordFound: UIImageView!
+    @IBOutlet weak var labelNoRecordFound: UILabel!
+
     @IBOutlet weak var viewTitle: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var buttonBack: UIButton!
@@ -24,23 +28,36 @@ class MyFavouritesViewController: UIViewController {
 
     var selectedIndex: Int? = 0 {
         didSet {
-            tableView.reloadData()
+
         }
     }
     var modelGetFavouriteByUserResponse: ModelGetFavouriteByUserResponse? {
         didSet {
             if modelGetFavouriteByUserResponse?.halalRestuarantResponseData?.count ?? 0 > 0 {
-                tableView.reloadData()
             }
-            
-            if tableView.visibleCells.count == 0 {
-                viewNoDataFoundBackGround.isHidden = false
-                tableView.isHidden = true
+            tableViewReload()
+        }
+    }
+    
+    func tableViewReload() {
+        tableView.reloadData()
+        if tableView.visibleCells.count == 0 {
+            viewNoDataFoundBackGround.isHidden = false
+            tableView.isHidden = true
+            if buttonRestaurant.tag == 1 {
+                imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
+                imageViewNoRecordFound.tintColor = .clrUnselectedImage
+                labelNoRecordFound.text = "No Restaurant Found"
             }
             else {
-                viewNoDataFoundBackGround.isHidden = true
-                tableView.isHidden = false
+                imageViewNoRecordFound.image = UIImage(named: "placeholderMosque")
+                imageViewNoRecordFound.tintColor = .clrUnselectedImage
+                labelNoRecordFound.text = "No Prayer Space Found"
             }
+        }
+        else {
+            viewNoDataFoundBackGround.isHidden = true
+            tableView.isHidden = false
         }
     }
     
@@ -48,7 +65,7 @@ class MyFavouritesViewController: UIViewController {
         didSet {
             print(modelPostFavouriteDeleteResponse as Any)
             if modelPostFavouriteDeleteResponse?.success ?? false {
-                tableView.reloadData()
+                self.getFavouriteByUser()
             }
             else {
                 self.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteDeleteResponse?.message ?? "", iconName: .iconError)
@@ -61,10 +78,17 @@ class MyFavouritesViewController: UIViewController {
         viewNoDataFoundBackGround.isHidden = true
         MyFavouriteCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
+        stackViewButtonTabBackGround.setShadow(radius: 6)
         getFavouriteByUser()
-        imageViewNoAddressFound.isHidden = false
+        imageViewNoRecordFound.isHidden = false
         viewBottomLinePrayerPlaces.isHidden = true
         buttonRestaurant.tag = 1
+        tableView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 20, right: 0)
+        
+        imageViewRestaurant.image = imageViewRestaurant.image?.withRenderingMode(.alwaysTemplate)
+        imageViewMosque.image = imageViewMosque.image?.withRenderingMode(.alwaysTemplate)
+        imageViewRestaurant.tintColor = .colorApp
+        imageViewMosque.tintColor = .clrUnselectedImage
     }
 
     @IBOutlet weak var viewBottomLineRestaurants: UIView!
@@ -73,24 +97,23 @@ class MyFavouritesViewController: UIViewController {
         viewBottomLinePrayerPlaces.isHidden = true
         viewBottomLineRestaurants.isHidden = false
         buttonRestaurant.tag = 1
-        tableView.reloadData()
+        imageViewRestaurant.tintColor = .colorApp
+        imageViewMosque.tintColor = .clrUnselectedImage
+        tableViewReload()
     }
     
     @IBAction func buttonPrayerPlaces(_ sender: Any) {
         viewBottomLinePrayerPlaces.isHidden = false
         viewBottomLineRestaurants.isHidden = true
         buttonRestaurant.tag = 0
-        tableView.reloadData()
+        imageViewRestaurant.tintColor = .clrUnselectedImage
+        imageViewMosque.tintColor = .colorApp
+        tableViewReload()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
         popViewController(animated: true)
     }
-    
-    @IBAction func buttonAddNewAddress(_ sender: Any) {
-        navigateToAddAddressViewController()
-    }
-    
     
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
@@ -145,15 +168,15 @@ class MyFavouritesViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func buttonDeleteAddress(index: Int) {
-        showAlertCustomPopup(title: "Delete Favourite!", message: "Are you sure you want to delte favourite item?", iconName: .iconError, buttonNames: [
+        showAlertCustomPopup(title: "Delete Favourite!", message: "Are you sure you want to delete favourite item?", iconName: .iconError, buttonNames: [
             [
                 "buttonName": "Delete",
-                "buttonBackGroundColor": UIColor.white,
-                "buttonTextColor": UIColor.colorRed] as [String : Any],
+                "buttonBackGroundColor": UIColor.colorRed,
+                "buttonTextColor": UIColor.white],
             [
                 "buttonName": "Cancel",
-                "buttonBackGroundColor": UIColor.colorRed,
-                "buttonTextColor": UIColor.white]
+                "buttonBackGroundColor": UIColor.white,
+                "buttonTextColor": UIColor.colorRed] as [String : Any]
         ] as? [[String: AnyObject]]) {buttonName in
             if buttonName == "Cancel" {
                 
@@ -214,12 +237,12 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
-        if buttonRestaurant.tag == 0 {
-            let recordModel = modelGetFavouriteByUserResponse?.halalRestuarantResponseData?[indexPath.row]
-        }
-        else {
-            let recordModel = modelGetFavouriteByUserResponse?.prayerSpacesResponseData?[indexPath.row]
-        }
+//        if buttonRestaurant.tag == 0 {
+//            let recordModel = modelGetFavouriteByUserResponse?.halalRestuarantResponseData?[indexPath.row]
+//        }
+//        else {
+//            let recordModel = modelGetFavouriteByUserResponse?.prayerSpacesResponseData?[indexPath.row]
+//        }
         
         
         selectedIndex = indexPath.row

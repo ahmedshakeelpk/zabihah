@@ -16,19 +16,19 @@ class HomeFilterViewController: UIViewController {
     
     @IBOutlet weak var labelStarRating: UILabel!
     @IBOutlet weak var viewBackGround: UIView!
-    @IBOutlet weak var rangeSlider: RangeSlider! {
-        didSet {
-//            labelRangeStart.text = "\(Int(rangeSlider.lowerValue))"
-            labelRangeEnd.text = "\(Int(sliderRange?.maximumValue ?? 0))"
-            rangeSlider.maximumValue = 20
-            labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))ml"
-            
-            if kModelUserConfigurationResponse != nil {
-                rangeSlider.maximumValue = Double(kModelUserConfigurationResponse.distanceValue ?? 0)
-                labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
-            }
-        }
-    }
+//    @IBOutlet weak var rangeSlider: RangeSlider! {
+//        didSet {
+////            labelRangeStart.text = "\(Int(rangeSlider.lowerValue))"
+//            labelRangeEnd.text = "\(Int(sliderRange?.maximumValue ?? 0))"
+//            rangeSlider.maximumValue = 20
+//            labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))ml"
+//            
+//            if kModelUserConfigurationResponse != nil {
+//                rangeSlider.maximumValue = Double(kModelUserConfigurationResponse.distanceValue ?? 0)
+//                labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+//            }
+//        }
+//    }
     @IBOutlet weak var labelRangeStart: UILabel!
     @IBOutlet weak var labelRangeEnd: UILabel!
     @IBOutlet weak var buttonFilter: UIButton!
@@ -64,9 +64,9 @@ class HomeFilterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        rangeSlider.addTarget(self, action: #selector(self.rangeSliderValueChanged(_:)), for: .valueChanged)
         viewBackGround.roundCorners(corners: [.topRight, .topLeft], radius: 20)
         getStarRating()
+        setSliderRange()
         if filterParametersHome != nil {
             if let radius = filterParametersHome["radius"] as? String {
                 labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
@@ -90,6 +90,18 @@ class HomeFilterViewController: UIViewController {
         }
         else {
             stackViewHalalAlCohal.isHidden = false
+        }
+    }
+    var sliderDefaultValue = Float(20)
+    func setSliderRange() {
+        sliderRange.maximumValue = sliderDefaultValue //Default
+        sliderRange.value = sliderRange.maximumValue //Default
+        labelRangeEnd.text = "\(Int(sliderRange?.value ?? 0))" //Default
+        
+        if kModelUserConfigurationResponse != nil {
+            sliderRange.maximumValue = Float(Double(kModelUserConfigurationResponse.distanceValue ?? 0))
+            sliderRange.value = sliderRange.maximumValue
+            labelRangeEnd.text = "\(Int(sliderRange.value))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
         }
     }
     
@@ -123,12 +135,7 @@ class HomeFilterViewController: UIViewController {
     }
     @IBAction func switchHideAlcoholPlaces(_ sender: Any) {
     }
-    
-    @objc func rangeSliderValueChanged(_ rangeSlider: RangeSlider) {
-      print("Range slider value changed: (\(rangeSlider.lowerValue) , \(rangeSlider.upperValue))")
-        labelRangeStart.text = "\(Int(rangeSlider.lowerValue))"
-        labelRangeEnd.text = "\(Int(rangeSlider.upperValue))"
-    }
+   
 }
 
 

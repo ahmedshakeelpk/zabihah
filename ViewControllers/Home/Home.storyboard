@@ -1526,7 +1526,6 @@
                         <outlet property="labelRangeEnd" destination="ycZ-gy-zQi" id="kqE-D4-Cuw"/>
                         <outlet property="labelRangeStart" destination="Kx3-am-5jh" id="Yoh-86-daS"/>
                         <outlet property="labelStarRating" destination="OLM-I4-CBu" id="7hk-mC-r1o"/>
-                        <outlet property="rangeSlider" destination="QSR-W0-lIF" id="bH9-I1-UfL"/>
                         <outlet property="sliderRange" destination="Ig4-vj-xy0" id="VGq-mE-QcW"/>
                         <outlet property="stackViewHalalAlCohal" destination="XJL-Zz-OlJ" id="Y5n-JU-cqS"/>
                         <outlet property="starRatingView" destination="edo-j2-r28" id="pPE-WZ-5wW"/>
