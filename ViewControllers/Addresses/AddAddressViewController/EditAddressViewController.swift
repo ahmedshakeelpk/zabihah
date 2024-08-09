@@ -40,6 +40,7 @@ class EditAddressViewController: UIViewController {
     @IBOutlet weak var labelAddress: UILabel!
     @IBOutlet weak var buttonShowSavedAddresses: UIButton!
     
+    var isFromAddressList = false
     var addressFromPreviousScreen = ""
     var disableTimerCount: Double? = 1.5
     var isDisableUpdateLocation: Bool? = false {
@@ -127,6 +128,7 @@ class EditAddressViewController: UIViewController {
         viewButtonSaveAsNewBackGround.radius(color: .clrLightGray, borderWidth: 1)
         //        setZoom()
         //        setAddress()
+        
         if modelUserAddressesResponseData != nil {
             self.setAddress(addressTitle: modelUserAddressesResponseData?.title, formattedAddress: modelUserAddressesResponseData?.address)
             self.setZoom(latitude: modelUserAddressesResponseData?.latitude, longitude: modelUserAddressesResponseData?.longitude)
@@ -137,8 +139,18 @@ class EditAddressViewController: UIViewController {
             //            viewButtonContinueBackGround.backgroundColor = .lightGray
         }
         else {
+            if isFromAddressList {
+                buttonContinue.isUserInteractionEnabled = false
+                viewButtonContinueBackGround.backgroundColor = .lightGray
+                viewButtonEditBackGround.isHidden = false
+                if kUserCurrentLocation != nil {
+                    location = CLLocationCoordinate2D(latitude: kUserCurrentLocation.coordinate.latitude, longitude: kUserCurrentLocation.coordinate.longitude)
+                }
+            }
             self.setAddress(formattedAddress: addressFromPreviousScreen)
-            self.setZoom(latitude: location?.latitude, longitude: location?.longitude)
+            if location != nil {
+                self.setZoom(latitude: location?.latitude, longitude: location?.longitude)
+            }
         }
         locationConfiguration()
     }

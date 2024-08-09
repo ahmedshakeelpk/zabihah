@@ -588,7 +588,27 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <point key="canvasLocation" x="34" y="21"/>
+            <connections>
+                <outlet property="buttonFavourite" destination="3TR-CW-XmJ" id="3wW-rM-HUq"/>
+                <outlet property="collectionView" destination="DgO-lU-9Zj" id="jB2-AB-R0E"/>
+                <outlet property="imageViewFavourite" destination="Mpf-I6-NDl" id="NIo-Iw-joJ"/>
+                <outlet property="imageViewItem" destination="h34-xO-wB0" id="NQO-rc-3F8"/>
+                <outlet property="imageViewRestaurant" destination="PZO-lA-t5r" id="tyf-9O-ff9"/>
+                <outlet property="labelComments" destination="I4l-Rb-Lkh" id="GNz-VF-Z9L"/>
+                <outlet property="labelDistance" destination="Pqn-Cq-yGh" id="aYF-wq-qIE"/>
+                <outlet property="labelItemType" destination="VQb-8h-OZl" id="dsD-AO-aqc"/>
+                <outlet property="labelPictures" destination="QoG-7E-SS5" id="AGh-9s-RzP"/>
+                <outlet property="labelRating" destination="3Id-Mb-CaU" id="nV0-wQ-ygu"/>
+                <outlet property="labelRestaurantAddress" destination="bq0-kA-td1" id="xzh-wU-aSg"/>
+                <outlet property="labelRestaurantName" destination="Btq-9t-X96" id="DY0-Ju-jkL"/>
+                <outlet property="labelReuse" destination="Hcx-9Q-sYX" id="AUK-Ux-8fr"/>
+                <outlet property="stackViewBackGround" destination="COV-Co-aep" id="T9M-aY-ihS"/>
+                <outlet property="stackViewRatingBackGround" destination="JsF-Qu-cbC" id="osg-mM-f8q"/>
+                <outlet property="viewCallBackGround" destination="xbs-ot-xGU" id="SEG-Ys-AA3"/>
+                <outlet property="viewItemTypeBackGround" destination="Ykd-ce-tih" id="sLc-YE-EZR"/>
+                <outlet property="viewRatingBackGround" destination="aI8-Qj-aqo" id="nMi-nq-c62"/>
+            </connections>
+            <point key="canvasLocation" x="33.587786259541986" y="20.422535211267608"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -12,9 +12,9 @@ protocol HomeRestaurantSubCellDelegate: AnyObject {
 }
 
 class HomeRestaurantSubCell: UICollectionViewCell {
+    @IBOutlet weak var viewBackGroundDelivery: UIView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
-    @IBOutlet weak var viewBackGroundNewRestaurant: UIView!
     @IBOutlet weak var labelRestaurantName: UILabel!
     @IBOutlet weak var labelRestaurantAddress: UILabel!
     @IBOutlet weak var labelRating: UILabel!
@@ -97,24 +97,24 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
         imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-        
-        viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.status == ""
-        labelItemType.text = modelFeaturedRestuarantResponseData?.status
-        if modelFeaturedRestuarantResponseData?.status?.lowercased() == "closed" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorRed
-        }
-        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorGreen
-        }
-        else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorOrange
-        }
+        viewBackGroundDelivery.isHidden = modelFeaturedRestuarantResponseData?.isDelivery ?? false
         if var tags = modelFeaturedRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
             if tags.last == "" || tags.last == " "{
                 tags.removeLast()
             }
             arrayNames = tags
             collectionView.reloadData()
+        }
+        viewItemTypeBackGround.isHidden = modelFeaturedRestuarantResponseData?.status == ""
+        labelItemType.text = modelFeaturedRestuarantResponseData?.status
+        if modelFeaturedRestuarantResponseData?.status?.lowercased() == "closed" {
+            viewItemTypeBackGround.backgroundColor = .colorRed
+        }
+        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" {
+            viewItemTypeBackGround.backgroundColor = .colorGreen
+        }
+        else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {
+            viewItemTypeBackGround.backgroundColor = .colorOrange
         }
     }
     

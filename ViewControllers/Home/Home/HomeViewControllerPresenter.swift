@@ -42,6 +42,7 @@ extension HomeViewController {
         vc.buttonFilterHandler = { parameters in
             print(parameters)
             self.filterParametersHome = parameters
+            self.mapView.clear()
             if self.selectedMenuCell == 0 {
                 self.getFeaturedRestaurants()
             }
@@ -170,13 +171,13 @@ extension HomeViewController {
     
     func getPrayerPlaces(pageSize: Int) {
         var parameters = [
-            "lat": userLocation?.coordinate.latitude as Any,
-            "long": userLocation?.coordinate.longitude as Any,
+            "lat": userLocation?.coordinate.latitude ?? 0,
+            "long": userLocation?.coordinate.longitude ?? 0,
             "radius": 20,
             "rating": 0,
             "page": Int(pageSize),
             "pageSize": 0,
-        ]
+        ] as [String : Any]
         
         if filterParametersHome != nil {
             let radius = filterParametersHome["radius"] as? String
@@ -196,6 +197,21 @@ extension HomeViewController {
             let model: AddressesListViewController.ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserAddressResponse = model
         }
+    }
+    
+    func userConfiguration() {
+        print(getCurrentTimeZone())
+        let parameters: Parameters = [
+            "timeZoneId": getCurrentTimeZone()
+        ]
+        APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
+            let model: ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelUserConfigurationResponse = model
+        }
+    }
+    
+    func getCurrentTimeZone() -> String {
+        TimeZone.current.identifier
     }
 }
 
@@ -339,6 +355,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         filterParametersHome = nil
         selectedCuisine = ""
+        mapView.clear()
         selectedMenuCell = indexPath.item
     }
 }

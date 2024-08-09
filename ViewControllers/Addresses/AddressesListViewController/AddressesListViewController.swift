@@ -79,11 +79,16 @@ class AddressesListViewController: UIViewController {
     }
     
     @IBAction func buttonAddNewAddress(_ sender: Any) {
-        navigateToAddAddressViewController()
+//        navigateToAddAddressViewController()
+        navigateToEditAddressViewController()
     }
     
     func navigateToEditAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
+        vc.isFromAddressList = true
+        vc.buttonContinueHandler = { (_, _) in
+            self.getUserAddress()
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -189,6 +194,12 @@ extension AddressesListViewController: UITableViewDelegate, UITableViewDataSourc
         cell.buttonDeleteHandler = buttonDeleteAddress
         cell.buttonCheckHandler = buttonCheckHandler
         
+        if modelGetUserAddressResponse?.userAddressesResponseData?.count ?? 0 == 1 {
+            cell.viewButtonDeleteBackGround.isHidden = true
+        }
+        else {
+            cell.viewButtonDeleteBackGround.isHidden = false
+        }
         return cell
     }
     

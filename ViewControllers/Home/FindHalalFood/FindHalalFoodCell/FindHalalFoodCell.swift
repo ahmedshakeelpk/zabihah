@@ -22,7 +22,7 @@ class FindHalalFoodCell: HomeBaseCell {
         let token: String?
     }
     
-    @IBOutlet weak var viewBackGroundNewRestaurant: UIView!
+    @IBOutlet weak var viewBackGroundDelivery: UIView!
     @IBOutlet weak var labelRestaurantName: UILabel!
     @IBOutlet weak var labelRestaurantAddress: UILabel!
     @IBOutlet weak var labelRating: UILabel!
@@ -49,17 +49,17 @@ class FindHalalFoodCell: HomeBaseCell {
     var dataRecord: HomeBaseCell.HomeListItem!
     var delegate: FindHalalFoodCellDelegate!
     
-    var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
+    var modelPostFavouriteDeleteResponse: ModelPostFavouriteDeleteResponse? {
         didSet {
-            print(modelPostFavouriteRestaurantsResponse as Any)
-            if modelPostFavouriteRestaurantsResponse?.success ?? false {
+            print(modelPostFavouriteDeleteResponse as Any)
+            if modelPostFavouriteDeleteResponse?.success ?? false {
                 if let isFavourite = self.halalRestuarantResponseData?.isFavorites {
                     delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: FindHalalFoodCell())
 //                    halalRestuarantResponseData?.isFavorites = !(isFavourite)
                 }
             }
             else {
-                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
+                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteDeleteResponse?.message ?? "", iconName: .iconError)
             }
         }
     }
@@ -76,16 +76,17 @@ class FindHalalFoodCell: HomeBaseCell {
             self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
             self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
             
-            self.viewBackGroundNewRestaurant.isHidden = self.halalRestuarantResponseData?.status == ""
+            viewBackGroundDelivery.isHidden = halalRestuarantResponseData?.isDelivery ?? false
+            self.viewItemTypeBackGround.isHidden = self.halalRestuarantResponseData?.status == ""
             self.labelItemType.text = self.halalRestuarantResponseData?.status
             if self.halalRestuarantResponseData?.status?.lowercased() == "closed" {
-                self.viewBackGroundNewRestaurant.backgroundColor = .colorRed
+                self.viewItemTypeBackGround.backgroundColor = .colorRed
             }
             else if self.halalRestuarantResponseData?.status?.lowercased() == "new" {
-                self.viewBackGroundNewRestaurant.backgroundColor = .colorGreen
+                self.viewItemTypeBackGround.backgroundColor = .colorGreen
             }
             else if self.halalRestuarantResponseData?.status?.lowercased() != "" {
-                self.viewBackGroundNewRestaurant.backgroundColor = .colorOrange
+                self.viewItemTypeBackGround.backgroundColor = .colorOrange
             }
             if var tags = halalRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
                 if tags.last == "" || tags.last == " "{
@@ -167,9 +168,15 @@ class FindHalalFoodCell: HomeBaseCell {
         ] as [String : Any]
        
         APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in
-            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteRestaurantsResponse = model
+            let model: ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelPostFavouriteDeleteResponse = model
         }
+    }
+    
+    struct ModelPostFavouriteDeleteResponse: Codable {
+        let recordFound, success: Bool?
+        let message, innerExceptionMessage: String?
+        let token: String?
     }
 }
 

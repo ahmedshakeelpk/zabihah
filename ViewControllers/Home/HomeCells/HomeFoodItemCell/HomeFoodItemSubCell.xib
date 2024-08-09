@@ -47,16 +47,16 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="218" height="38"/>
                                                                                 <subviews>
                                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q7l-be-6EC">
-                                                                                        <rect key="frame" x="0.0" y="10" width="42.666666666666664" height="18"/>
+                                                                                        <rect key="frame" x="0.0" y="10" width="80.666666666666671" height="18"/>
                                                                                         <subviews>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yn-Xt-kbY">
-                                                                                                <rect key="frame" x="8.0000000000000018" y="0.0" width="26.666666666666671" height="18"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order Now" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yn-Xt-kbY">
+                                                                                                <rect key="frame" x="8" y="0.0" width="64.666666666666671" height="18"/>
                                                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                         </subviews>
-                                                                                        <color key="backgroundColor" red="0.070588235294117646" green="0.71764705882352942" blue="0.41568627450980389" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                        <color key="backgroundColor" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="bottom" secondItem="0yn-Xt-kbY" secondAttribute="bottom" id="6SB-YI-E2z"/>
                                                                                             <constraint firstAttribute="trailing" secondItem="0yn-Xt-kbY" secondAttribute="trailing" constant="8" id="X4w-co-XEM"/>
@@ -585,6 +585,7 @@
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="7DT-hD-b85" secondAttribute="bottom" id="8mZ-dQ-l9c"/>
                 <constraint firstItem="7DT-hD-b85" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="AaP-JB-4H2"/>
@@ -606,7 +607,7 @@
                 <outlet property="labelRestaurantName" destination="ywd-aY-nYp" id="99Z-xj-PB7"/>
                 <outlet property="labelReuse" destination="RaT-Pi-cik" id="Yif-VO-dwE"/>
                 <outlet property="stackViewBackGround" destination="9zK-3c-89f" id="fa4-uR-2KV"/>
-                <outlet property="viewBackGroundNewRestaurant" destination="q7l-be-6EC" id="Up8-oo-U02"/>
+                <outlet property="viewBackGroundDelivery" destination="5UB-13-XdE" id="SWp-DY-FqP"/>
                 <outlet property="viewBikeBackGround" destination="Eew-U1-asG" id="oXi-0S-Pca"/>
                 <outlet property="viewCallBackGround" destination="KHF-uR-UAB" id="3Qx-5e-E8V"/>
                 <outlet property="viewItemTypeBackGround" destination="q7l-be-6EC" id="HHl-Xd-RmE"/>

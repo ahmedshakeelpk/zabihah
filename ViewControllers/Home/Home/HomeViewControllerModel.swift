@@ -111,4 +111,11 @@ extension HomeViewController {
         let address: String?
         let gallaryCount: Int?
     }
+    // MARK: - MosqueResponseDatum
+    struct ModelUserConfigurationResponse: Codable {
+        let token: String?
+        
+    }
+    
+    
 }

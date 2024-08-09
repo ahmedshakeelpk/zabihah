@@ -24,7 +24,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
-    @IBOutlet weak var viewBackGroundNewRestaurant: UIView!
+    @IBOutlet weak var viewItemTypeBackGround: UIView!
     @IBOutlet weak var labelRestaurantName: UILabel!
     @IBOutlet weak var labelRestaurantAddress: UILabel!
     @IBOutlet weak var labelRating: UILabel!
@@ -32,10 +32,8 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     @IBOutlet weak var labelReuse: UILabel!
     @IBOutlet weak var labelPictures: UILabel!
     @IBOutlet weak var labelDistance: UILabel!
-    @IBOutlet weak var viewItemTypeBackGround: UIView!
     @IBOutlet weak var labelItemType: UILabel!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
-    @IBOutlet weak var viewBikeBackGround: UIView!
     @IBOutlet weak var viewCallBackGround: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewRatingBackGround: UIView!
@@ -72,7 +70,6 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         super.awakeFromNib()
         // Initialization code
         stackViewBackGround.radius(radius: 12)
-        viewBikeBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
         viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
@@ -99,16 +96,16 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         imageViewItem.setImage(urlString: modelMosqueResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
         imageViewFavourite.image = UIImage(named: modelMosqueResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
         
-        viewBackGroundNewRestaurant.isHidden = modelMosqueResponseData?.status == ""
+        viewItemTypeBackGround.isHidden = modelMosqueResponseData?.status == ""
         labelItemType.text = modelMosqueResponseData?.status
         if modelMosqueResponseData?.status?.lowercased() == "closed" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorRed
+            viewItemTypeBackGround.backgroundColor = .colorRed
         }
         else if modelMosqueResponseData?.status?.lowercased() == "new" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorGreen
+            viewItemTypeBackGround.backgroundColor = .colorGreen
         }
         else if modelMosqueResponseData?.status?.lowercased() != "" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorOrange
+            viewItemTypeBackGround.backgroundColor = .colorOrange
         }
         if var tags = modelMosqueResponseData?.tags?.split(separator: ",").map({ String($0)}) {
             if tags.last == "" || tags.last == " "{

@@ -21,7 +21,6 @@ extension HomeFoodItemSubCell {
 class HomeFoodItemSubCell: UICollectionViewCell {
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
-    @IBOutlet weak var viewBackGroundNewRestaurant: UIView!
     @IBOutlet weak var labelRestaurantName: UILabel!
     @IBOutlet weak var labelRestaurantAddress: UILabel!
     @IBOutlet weak var labelRating: UILabel!
@@ -39,6 +38,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     @IBOutlet weak var imageViewItem: UIImageView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
     
+    @IBOutlet weak var viewBackGroundDelivery: UIView!
     var delegate: HomeFoodItemSubCellDelegate!
     var buttonFavouriteHandler: (() -> ())!
     var viewController = UIViewController()
@@ -101,17 +101,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
         imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
         
-        viewBackGroundNewRestaurant.isHidden = modelFeaturedRestuarantResponseData?.status == ""
-        labelItemType.text = modelFeaturedRestuarantResponseData?.status
-        if modelFeaturedRestuarantResponseData?.status?.lowercased() == "close" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorRed
-        }
-        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" || modelFeaturedRestuarantResponseData?.status?.lowercased() == "open"{
-            viewBackGroundNewRestaurant.backgroundColor = .colorGreen
-        }
-        else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorOrange
-        }
+        
         if var tags = modelFeaturedRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
             if tags.last == "" || tags.last == " "{
                 tags.removeLast()
@@ -119,6 +109,27 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             arrayNames = tags
             collectionView.reloadData()
         }
+        viewBackGroundDelivery.isHidden = modelFeaturedRestuarantResponseData?.isDelivery ?? false
+        
+        if indexPath?.section == 0 {
+            viewItemTypeBackGround.isHidden = false
+            labelItemType.text = "Order Now"
+            viewItemTypeBackGround.backgroundColor = .colorRed
+        }
+        else {
+            viewItemTypeBackGround.isHidden = modelFeaturedRestuarantResponseData?.status == ""
+            labelItemType.text = modelFeaturedRestuarantResponseData?.status
+            if modelFeaturedRestuarantResponseData?.status?.lowercased() == "close" {
+                viewItemTypeBackGround.backgroundColor = .colorRed
+            }
+            else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" || modelFeaturedRestuarantResponseData?.status?.lowercased() == "open"{
+                viewItemTypeBackGround.backgroundColor = .colorGreen
+            }
+            else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {
+                viewItemTypeBackGround.backgroundColor = .colorOrange
+            }
+        }
+        
     }
     func postFavouriteRestaurants() {
         let parameters = [

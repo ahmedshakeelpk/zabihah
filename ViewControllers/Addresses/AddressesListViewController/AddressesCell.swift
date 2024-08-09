@@ -12,6 +12,7 @@ class AddressesCell: UITableViewCell {
     @IBOutlet weak var buttonEdit: UIButton!
     @IBOutlet weak var buttonDelete: UIButton!
     @IBOutlet weak var labelTitle: UILabel!
+    @IBOutlet weak var viewButtonDeleteBackGround: UIView!
     @IBOutlet weak var labelAddress: UILabel!
     
     @IBOutlet weak var viewBackGroundForRadius: UIView!

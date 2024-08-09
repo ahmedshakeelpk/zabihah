@@ -47,15 +47,17 @@ class LoginViewController: UIViewController {
         viewBackGroundPhone.radius(radius: 8, color: .colorBorder, borderWidth: 1)
         viewBackGroundFaceBook.radius(radius: 8, color: .colorBorder, borderWidth: 1)
         viewBackGroundApple.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        
+        userConfiguration()
     }
     
     @IBAction func buttonEmailLogin(_ sender: Any) {
         navigateToLoginWithEmailOrPhoneViewController(isFromEmail: true)
     }
     @IBAction func buttonPhoneLogin(_ sender: Any) {
-        navigateToHomeViewController()
+//        navigateToHomeViewController()
 //        navigateToDeliveryDetails3ViewController()
-//        navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
+        navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
     }
@@ -116,5 +118,36 @@ class LoginViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         self.navigationController?.pushViewController(vc, animated: true)
     }
+
+    func userConfiguration() {
+        print(getCurrentTimeZone())
+        let parameters: Parameters = [
+            "timeZoneId": getCurrentTimeZone()
+        ]
+        APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
+            let model: ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelUserConfigurationResponse = model
+        }
+    }
     
+    func getCurrentTimeZone() -> String {
+        TimeZone.current.identifier
+    }
+
+    var modelUserConfigurationResponse: ModelUserConfigurationResponse? {
+        didSet {
+            kModelUserConfigurationResponse = modelUserConfigurationResponse
+        }
+    }
+    
+    // MARK: - ModelGetConfigurationResponse
+    struct ModelUserConfigurationResponse: Codable {
+        let distanceValue: Int?
+        let success: Bool?
+        let message, innerExceptionMessage: String?
+        let token: String?
+        let distanceUnit: String?
+        let recordFound: Bool?
+    }
+
 }

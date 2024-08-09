@@ -33,6 +33,11 @@ struct APIsName {
         case postfavouriterestaurants = "api/Favorite/postfavouriterestaurants"
         case getfavouritebyuser = "api/Favorite/getfavouritebyuser"
         
+        //MARK:- Config
+        case userConfiguration = "api/Config/userConfiguration"
+
+        
+        
         //MARK:- V1
         case usersignup = "v1/User/usersignup"
         case getuser = "v1/User/getuser"

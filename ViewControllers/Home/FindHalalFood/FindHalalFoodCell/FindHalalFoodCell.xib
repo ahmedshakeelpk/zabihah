@@ -571,6 +571,7 @@
                         </subviews>
                     </stackView>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="bJ2-vo-poJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="398-XM-aqc"/>
                     <constraint firstItem="bJ2-vo-poJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="7vc-C8-zfg"/>
@@ -579,6 +580,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="buttonFavourite" destination="1dX-Kl-j63" id="FQh-Xh-oDz"/>
                 <outlet property="collectionView" destination="Sht-wP-k7f" id="epG-BV-YTs"/>
@@ -595,7 +597,7 @@
                 <outlet property="labelReuse" destination="YHt-kL-s9h" id="PDD-Ek-qN0"/>
                 <outlet property="stackViewBackGround" destination="bJ2-vo-poJ" id="Nh0-jG-17Y"/>
                 <outlet property="stackViewRatingBackGround" destination="hjx-n4-6Zn" id="rBo-o9-3ig"/>
-                <outlet property="viewBackGroundNewRestaurant" destination="E2w-hf-Lny" id="eGX-5Y-Oqz"/>
+                <outlet property="viewBackGroundDelivery" destination="AhE-fL-zSQ" id="AlB-eT-Ate"/>
                 <outlet property="viewBikeBackGround" destination="1xG-4S-U7A" id="2Ji-7r-NPn"/>
                 <outlet property="viewCallBackGround" destination="ojZ-jF-O3n" id="DC8-OD-c41"/>
                 <outlet property="viewItemTypeBackGround" destination="E2w-hf-Lny" id="TOE-9Q-eHn"/>

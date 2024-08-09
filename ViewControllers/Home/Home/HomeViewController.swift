@@ -45,38 +45,22 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func handleMenuTap() {
-        mapView.clear()
-        if selectedMenuCell == 0 {
-            viewMapViewBackground.isHidden = true
-            //MARK: - Add Items In tableView
-            listItems = [
-                addFeaturedCell().0,
-                addCuisineCell().0,
-                addRestuarantCell().0,
-                addPrayerPlacesCell().0
-            ]
-            getFeaturedRestaurants()
+    var modelUserConfigurationResponse: ModelUserConfigurationResponse? {
+        didSet {
+            //Location Services
+            locationManager.delegate = self
+    //        if CLLocationManager.locationServicesEnabled() {
+    //             switch CLLocationManager.authorizationStatus() {
+    //                case .notDetermined, .restricted, .denied:
+    //                    print("No access")
+    //                case .authorizedAlways, .authorizedWhenInUse:
+    //                    print("Access")
+    //
+    //             }
+    //        }
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
         }
-        else if selectedMenuCell == 1 {
-            listItems = [
-                addCuisineCell().0,
-                addFindHalalFoodCell().0,
-            ]
-            pageNumberForApi = 1
-        }
-        else if selectedMenuCell == 2 {
-            listItems = nil
-        }
-        else if selectedMenuCell == 3 {
-            listItems = [
-                HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-                HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
-            ]
-            pageNumberForApi = 1
-        }
-        tableView.reloadData()
-        collectionView.reloadData()
     }
     
     var filterParametersHome: [String: Any]!
@@ -198,6 +182,10 @@ class HomeViewController: UIViewController {
     
     var modelGetHalalRestaurantResponse: ModelGetHalalRestaurantResponse? {
         didSet {
+            if modelGetHalalRestaurantResponse == nil {
+                self.tableView.reloadData()
+                return
+            }
             if dontTriggerModelGetHalalRestaurantResponseObservers {
                 dontTriggerModelGetHalalRestaurantResponseObservers = false
                 return
@@ -272,19 +260,8 @@ class HomeViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
         
-        //Location Services
-        locationManager.delegate = self
-//        if CLLocationManager.locationServicesEnabled() {
-//             switch CLLocationManager.authorizationStatus() {
-//                case .notDetermined, .restricted, .denied:
-//                    print("No access")
-//                case .authorizedAlways, .authorizedWhenInUse:
-//                    print("Access")
-//                 
-//             }
-//        }
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+        
+        userConfiguration()
         
 //        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
     }
@@ -385,7 +362,40 @@ class HomeViewController: UIViewController {
         else if selectedMenuCell == 3 {
             
         }
-        
+    }
+    
+    func handleMenuTap() {
+        mapView.clear()
+        if selectedMenuCell == 0 {
+            viewMapViewBackground.isHidden = true
+            //MARK: - Add Items In tableView
+            listItems = [
+                addFeaturedCell().0,
+                addCuisineCell().0,
+                addRestuarantCell().0,
+                addPrayerPlacesCell().0
+            ]
+            getFeaturedRestaurants()
+        }
+        else if selectedMenuCell == 1 {
+            listItems = [
+                addCuisineCell().0,
+                addFindHalalFoodCell().0,
+            ]
+            pageNumberForApi = 1
+        }
+        else if selectedMenuCell == 2 {
+            listItems = nil
+        }
+        else if selectedMenuCell == 3 {
+            listItems = [
+                HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+                HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
+            ]
+            pageNumberForApi = 1
+        }
+        tableView.reloadData()
+        collectionView.reloadData()
     }
 }
 
@@ -397,6 +407,8 @@ extension HomeViewController: HomeCuisinesCellDelegate {
     func didSelectRow(indexPath: IndexPath, cusisineName: String) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
             print(indexOf)
+            mapView.clear()
+            modelGetHalalRestaurantResponse = nil
             selectedCuisine = cusisineName
             if selectedMenuCell != 1 {
                 selectedMenuCell = indexOf
