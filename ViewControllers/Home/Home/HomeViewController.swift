@@ -205,8 +205,8 @@ class HomeViewController: UIViewController {
     
     var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
         didSet {
-            modelGetUserProfileResponse = modelGetUserResponseLocal
             sideMenuSetup()
+            modelGetUserProfileResponse = modelGetUserResponseLocal
         }
     }
 

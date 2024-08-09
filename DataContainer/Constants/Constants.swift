@@ -25,6 +25,6 @@ var sasToken = ""
 
 var modelGetUserProfileResponse: HomeViewController.ModelGetUserProfileResponse? {
     didSet {
-        
+        NotificationCenter.default.post(name: Notification.Name("kUserProfileUpdate"), object: nil)
     }
 }
