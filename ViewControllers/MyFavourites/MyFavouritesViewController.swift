@@ -171,7 +171,7 @@ class MyFavouritesViewController: UIViewController {
         actionSheetLogout(index: index)
     }
     
-    //Mark:- Choose Image Method
+    //Mark:- Choose Action Sheet
     func actionSheetLogout(index: Int) {
         var myActionSheet = UIAlertController(title: "Delete Favourite!", message: "Are you sure you want to delete favourite item?", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black

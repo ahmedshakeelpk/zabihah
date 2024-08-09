@@ -36,7 +36,10 @@ class MarkerInfoView: UIView {
                     imageViewItem.image = UIImage(named: "placeHolderRestaurant")
                 }
                 else {
-                    imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+                    imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant") {
+                        image in
+                        self.imageViewItem.image = UIImage(named: "placeHolderRestaurant")
+                    }
                 }
             }
             if let coverImage = modelFeaturedRestuarantResponseData?.coverImage {
@@ -44,7 +47,10 @@ class MarkerInfoView: UIView {
                     imageViewItem.image = UIImage(named: "placeHolderFoodItem")
                 }
                 else {
-                    imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+                    imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem") {
+                        image in
+                        self.imageViewItem.image = UIImage(named: "placeHolderFoodItem")
+                    }
                 }
             }
         }
