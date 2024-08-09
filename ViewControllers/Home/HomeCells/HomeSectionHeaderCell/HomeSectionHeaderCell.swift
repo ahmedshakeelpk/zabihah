@@ -72,6 +72,15 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                     
                 }
             }
+            else if selectedMenuCell == 3 {
+                if section == 0 {
+                    if sectionName != "" {
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.isHidden = false
+                    }
+                }
+            }
+            
         }
     }
     

@@ -17,18 +17,18 @@ class HomeCuisinesSubCell: UICollectionViewCell {
     var modelCuisine: HomeViewController.ModelCuisine? {
         didSet {
             labelName.text = modelCuisine?.name
-            imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: "placeHolderCuisine")
+            imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: "placeHolderSubCuisine")
         }
     }
     var selectedCuisine: String? = "" {
         didSet {
             if selectedCuisine == modelCuisine?.name {
                 labelName.textColor = .colorApp
-                viewImageViewTitleBackGround.backgroundColor = .colorApp
+                viewImageViewTitleBackGround.radius(radius: 8, color: .colorApp, borderWidth: 1)
             }
             else {
                 labelName.textColor = .colorLabel
-                viewImageViewTitleBackGround.backgroundColor = .white
+                viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 1)
             }
         }
     }

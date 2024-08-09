@@ -30,18 +30,28 @@
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cla-Mp-6YC">
                                                 <rect key="frame" x="10" y="0.0" width="75" height="75"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyCuisine" translatesAutoresizingMaskIntoConstraints="NO" id="B7n-FT-G7h">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TmH-hV-gxe">
                                                         <rect key="frame" x="1" y="1" width="73" height="73"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </imageView>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderSubCuisine" translatesAutoresizingMaskIntoConstraints="NO" id="B7n-FT-G7h">
+                                                        <rect key="frame" x="20" y="20" width="35" height="35"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="35" id="msW-Vg-M6F"/>
+                                                            <constraint firstAttribute="height" constant="35" id="sc7-wq-iML"/>
+                                                        </constraints>
                                                     </imageView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="B7n-FT-G7h" firstAttribute="leading" secondItem="cla-Mp-6YC" secondAttribute="leading" constant="1" id="5JA-rJ-CMz"/>
+                                                    <constraint firstItem="B7n-FT-G7h" firstAttribute="centerY" secondItem="cla-Mp-6YC" secondAttribute="centerY" id="4Be-ZP-33H"/>
+                                                    <constraint firstItem="TmH-hV-gxe" firstAttribute="leading" secondItem="cla-Mp-6YC" secondAttribute="leading" constant="1" id="4Hc-bG-ZJi"/>
                                                     <constraint firstAttribute="height" constant="75" id="8dx-OF-753"/>
-                                                    <constraint firstAttribute="trailing" secondItem="B7n-FT-G7h" secondAttribute="trailing" constant="1" id="VIa-Vs-HOG"/>
+                                                    <constraint firstItem="B7n-FT-G7h" firstAttribute="centerX" secondItem="cla-Mp-6YC" secondAttribute="centerX" id="QQq-k8-UId"/>
                                                     <constraint firstAttribute="width" constant="75" id="WYc-gl-IfX"/>
-                                                    <constraint firstAttribute="bottom" secondItem="B7n-FT-G7h" secondAttribute="bottom" constant="1" id="gem-8z-lpb"/>
-                                                    <constraint firstItem="B7n-FT-G7h" firstAttribute="top" secondItem="cla-Mp-6YC" secondAttribute="top" constant="1" id="zmX-cY-kJr"/>
+                                                    <constraint firstItem="TmH-hV-gxe" firstAttribute="top" secondItem="cla-Mp-6YC" secondAttribute="top" constant="1" id="cbZ-De-Z30"/>
+                                                    <constraint firstAttribute="trailing" secondItem="TmH-hV-gxe" secondAttribute="trailing" constant="1" id="fpf-W7-PcK"/>
+                                                    <constraint firstAttribute="bottom" secondItem="TmH-hV-gxe" secondAttribute="bottom" constant="1" id="lBU-zN-8GR"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -125,7 +135,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="dummyCuisine" width="69" height="69"/>
+        <image name="placeHolderSubCuisine" width="32" height="32"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

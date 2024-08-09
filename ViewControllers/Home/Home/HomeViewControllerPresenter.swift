@@ -308,12 +308,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     
                 }
                 else if selectedMenuCell == 3 {
-                    cuisineCount = "\(modelGetHalalRestaurantResponse?.totalPrayerSpaces ?? 0)"
+                    cuisineCount = "\(modelGetPrayerPlacesResponse?.totalMosque ?? 0)"
                 }
                 myHeader.cuisineCount = cuisineCount
                 myHeader.selectedMenuCell = selectedMenuCell
                 myHeader.sectionName = "\((listItems[section]).sectionName ?? "")"
-                
                 myHeader.modelGetHomeRestaurantsResponse = modelGetHomeRestaurantsResponse
                 myHeader.modelGetHalalRestaurantResponse = modelGetHalalRestaurantResponse
                 myHeader.buttonViewAllHandler = buttonViewAllHandler
@@ -378,9 +377,10 @@ extension HomeViewController {
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 240, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-            HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
+            HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
-        noRecordFound()
+        tableViewReload()
     }
     
     func addFeaturedCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
@@ -440,15 +440,15 @@ extension HomeViewController {
     
     func addHomePrayerPlacesTabCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomePrayerPlacesTabCell.nibName()) {
-            var mosqueResponseData = [ModelRestuarantResponseData]()
-            mosqueResponseData = modelGetHomeRestaurantsResponse?.mosqueResponseData ?? []
+            var mosqueResponseData = [ModelGetPrayerPlacesResponseData]()
+            mosqueResponseData = modelGetPrayerPlacesResponse?.mosqueResponseData ?? []
             print(indexOf)
             let recordCount = mosqueResponseData.count
             if recordCount > 0 {
                 let data = mosqueResponseData as Any
-                let rowHeight = 240
+                let rowHeight = 256
                 let identifier = HomePrayerPlacesTabCell.nibName()
-                let sectionName = "Prayer Spaces near you"
+                let sectionName = ""
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }
@@ -477,14 +477,20 @@ extension HomeViewController {
     }
     func addCuisineCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
+            var sectionName = ""
             var cuisine = [ModelCuisine]()
             if selectedMenuCell == 0 {
                 cuisine = modelGetHomeRestaurantsResponse?.cuisine ?? []
+                sectionName = "Restaurants near you"
             }
             else if selectedMenuCell == 1 {
                 cuisine = modelGetHalalRestaurantResponse?.cuisine ?? []
+                sectionName = "Restaurants near you"
             }
-            
+            else if selectedMenuCell == 3 {
+                cuisine = modelGetPrayerPlacesResponse?.mosqueTypes ?? []
+                sectionName = "Prayer spaces near you"
+            }
             print(indexOf)
             let recordCount = cuisine.count
             if recordCount > 0 {
@@ -495,7 +501,6 @@ extension HomeViewController {
                 
                 let rowHeight = 120
                 let identifier = HomeCuisinesCell.nibName()
-                let sectionName = "Restaurants near you"
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }

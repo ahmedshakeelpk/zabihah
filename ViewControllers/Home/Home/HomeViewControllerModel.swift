@@ -87,6 +87,7 @@ extension HomeViewController {
         let message, innerExceptionMessage: String?
         let token: String?
         var mosqueResponseData: [ModelGetPrayerPlacesResponseData]?
+        var mosqueTypes: [ModelCuisine]?
         let totalPage: Int?
         let recordFound: Bool?
     }
@@ -116,6 +117,4 @@ extension HomeViewController {
         let token: String?
         
     }
-    
-    
 }

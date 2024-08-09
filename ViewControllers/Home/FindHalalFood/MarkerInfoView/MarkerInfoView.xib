@@ -71,19 +71,19 @@
                                                                             </constraints>
                                                                         </view>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nOG-Hb-yjF">
-                                                                            <rect key="frame" x="33" y="0.0" width="137" height="30"/>
+                                                                            <rect key="frame" x="33" y="0.0" width="109" height="30"/>
                                                                             <subviews>
                                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pLa-NC-44l">
-                                                                                    <rect key="frame" x="0.0" y="5.3333333333333286" width="137" height="19.333333333333332"/>
+                                                                                    <rect key="frame" x="0.0" y="5.3333333333333286" width="109" height="19.333333333333332"/>
                                                                                     <subviews>
                                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Burger King" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUu-os-6pU">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="137" height="9.6666666666666661"/>
+                                                                                            <rect key="frame" x="0.0" y="0.0" width="109" height="9.6666666666666661"/>
                                                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="8"/>
                                                                                             <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                             <nil key="highlightedColor"/>
                                                                                         </label>
                                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewN-FH-kRK">
-                                                                                            <rect key="frame" x="0.0" y="9.6666666666666714" width="137" height="9.6666666666666643"/>
+                                                                                            <rect key="frame" x="0.0" y="9.6666666666666714" width="109" height="9.6666666666666643"/>
                                                                                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                                                             <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                             <nil key="highlightedColor"/>
@@ -96,6 +96,24 @@
                                                                                 <constraint firstItem="pLa-NC-44l" firstAttribute="leading" secondItem="nOG-Hb-yjF" secondAttribute="leading" id="SKg-64-ynX"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="pLa-NC-44l" secondAttribute="trailing" id="kds-q6-bdZ"/>
                                                                                 <constraint firstItem="pLa-NC-44l" firstAttribute="centerY" secondItem="nOG-Hb-yjF" secondAttribute="centerY" id="yA1-Ao-2yw"/>
+                                                                            </constraints>
+                                                                        </view>
+                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z2f-Nq-2B2">
+                                                                            <rect key="frame" x="142" y="0.0" width="28" height="30"/>
+                                                                            <subviews>
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callMisc" translatesAutoresizingMaskIntoConstraints="NO" id="exP-BT-v8V">
+                                                                                    <rect key="frame" x="0.0" y="5" width="20" height="20"/>
+                                                                                    <constraints>
+                                                                                        <constraint firstAttribute="width" constant="20" id="aCA-CI-EpF"/>
+                                                                                        <constraint firstAttribute="height" constant="20" id="k3r-OW-KOh"/>
+                                                                                    </constraints>
+                                                                                </imageView>
+                                                                            </subviews>
+                                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="trailing" secondItem="exP-BT-v8V" secondAttribute="trailing" constant="8" id="HeV-CO-dnl"/>
+                                                                                <constraint firstItem="exP-BT-v8V" firstAttribute="leading" secondItem="z2f-Nq-2B2" secondAttribute="leading" id="ec5-3k-Jmc"/>
+                                                                                <constraint firstItem="exP-BT-v8V" firstAttribute="centerY" secondItem="z2f-Nq-2B2" secondAttribute="centerY" id="yQA-ZW-2v6"/>
                                                                             </constraints>
                                                                         </view>
                                                                     </subviews>
@@ -304,6 +322,7 @@
         </view>
     </objects>
     <resources>
+        <image name="callMisc" width="16" height="16"/>
         <image name="dummyBurgerKing" width="28" height="28"/>
         <image name="dummyFood2" width="226" height="124"/>
         <image name="galleryGrayHome" width="12" height="12"/>

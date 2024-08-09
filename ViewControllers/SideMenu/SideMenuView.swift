@@ -120,6 +120,7 @@ class SideMenuView: UIView {
         myActionSheet.addAction(cancelAction)
         viewController.present(myActionSheet, animated: true, completion: nil)
     }
+    
     func navigateToRootLoginViewController() {
         let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.login.rawValue, bundle:nil)
         if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationLoginViewController") as? UINavigationController {

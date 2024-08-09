@@ -168,26 +168,31 @@ class MyFavouritesViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func buttonDeleteAddress(index: Int) {
-        showAlertCustomPopup(title: "Delete Favourite!", message: "Are you sure you want to delete favourite item?", iconName: .iconError, buttonNames: [
-            [
-                "buttonName": "Delete",
-                "buttonBackGroundColor": UIColor.colorRed,
-                "buttonTextColor": UIColor.white],
-            [
-                "buttonName": "Cancel",
-                "buttonBackGroundColor": UIColor.white,
-                "buttonTextColor": UIColor.colorRed] as [String : Any]
-        ] as? [[String: AnyObject]]) {buttonName in
-            if buttonName == "Cancel" {
-                
-            }
-            else if buttonName == "Delete" {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    self.deleteUserAddress(index: index)
-                }
-            }
-        }
+        actionSheetLogout(index: index)
     }
+    
+    //Mark:- Choose Image Method
+    func actionSheetLogout(index: Int) {
+        var myActionSheet = UIAlertController(title: "Delete Favourite!", message: "Are you sure you want to delete favourite item?", preferredStyle: UIAlertController.Style.actionSheet)
+        myActionSheet.view.tintColor = UIColor.black
+        let galleryAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.deleteUserAddress(index: index)
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        if IPAD {
+            //In iPad Change Rect to position Popover
+            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
+        }
+        myActionSheet.addAction(galleryAction)
+        myActionSheet.addAction(cancelAction)
+        self.present(myActionSheet, animated: true, completion: nil)
+    }
+    
     func buttonCheckHandler(index: Int) {
 
     }

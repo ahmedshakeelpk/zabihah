@@ -269,7 +269,7 @@
                                                                                                                 </constraints>
                                                                                                             </imageView>
                                                                                                         </subviews>
-                                                                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                                                        <color key="backgroundColor" red="0.99607843137254903" green="0.95294117647058818" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <constraints>
                                                                                                             <constraint firstAttribute="height" constant="25" id="7BI-IG-mfa"/>
                                                                                                             <constraint firstAttribute="width" constant="25" id="cvG-I2-6K2"/>

@@ -128,7 +128,7 @@ class HomeViewController: UIViewController {
                 else {
                     print("No default address found.")
                 }
-                tableView.reloadData()
+                tableViewReload()
             }
             else {
                 print("User have No address in list.")
@@ -155,8 +155,7 @@ class HomeViewController: UIViewController {
             let recordPrayerPlacesCell = addPrayerPlacesCell()
             listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
             
-            noRecordFound()
-            tableView.reloadData()
+            tableViewReload()
         }
     }
     
@@ -171,19 +170,18 @@ class HomeViewController: UIViewController {
             }
             
             let recordCuisineCell = addCuisineCell()
-            listItems[recordCuisineCell.1] = recordCuisineCell.0
+            listItems[0] = recordCuisineCell.0
             let recordPrayerPlacesTabCell = addHomePrayerPlacesTabCell()
-            listItems[recordPrayerPlacesTabCell.1] = recordPrayerPlacesTabCell.0
+            listItems[1] = recordPrayerPlacesTabCell.0
             
-            noRecordFound()
-            tableView.reloadData()
+            tableViewReload()
         }
     }
     
     var modelGetHalalRestaurantResponse: ModelGetHalalRestaurantResponse? {
         didSet {
             if modelGetHalalRestaurantResponse == nil {
-                self.tableView.reloadData()
+                self.tableViewReload()
                 return
             }
             if dontTriggerModelGetHalalRestaurantResponseObservers {
@@ -197,9 +195,7 @@ class HomeViewController: UIViewController {
             listItems[0] = recordCuisineCell.0
             let recordFindHalalFoodCell = addFindHalalFoodCell()
             listItems[1] = recordFindHalalFoodCell.0
-            
-            noRecordFound()
-            self.tableView.reloadData()
+            tableViewReload()
         }
     }
     
@@ -311,11 +307,20 @@ class HomeViewController: UIViewController {
     }
     
     
-    func noRecordFound() {
+    func tableViewReload() {
+        tableView.reloadData()
         return()
-        tableView.isHidden = false
-        mapView.isHidden = true
-        viewNoDataFound.isHidden = true
+        if tableView.visibleCells.count == 0 {
+            viewNoDataFound.isHidden = false
+            tableView.isHidden = true
+            imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
+            labelNoRecordFound.text = "No Restaurant Found"
+        }
+        else {
+            viewNoDataFound.isHidden = true
+            tableView.isHidden = true
+        }
+        return()
         if selectedMenuCell == 0 {
             if modelGetHalalRestaurantResponse?.totalPages == nil {
                 viewNoDataFound.isHidden = false
@@ -389,12 +394,12 @@ class HomeViewController: UIViewController {
         }
         else if selectedMenuCell == 3 {
             listItems = [
-                HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "52 cuisines near you", rowHeight: 100, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
-                HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 260, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
+                addCuisineCell().0,
+                addHomePrayerPlacesTabCell().0
             ]
             pageNumberForApi = 1
         }
-        tableView.reloadData()
+        tableViewReload()
         collectionView.reloadData()
     }
 }

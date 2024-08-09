@@ -236,7 +236,7 @@
                                                                                                         </constraints>
                                                                                                     </imageView>
                                                                                                 </subviews>
-                                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                                                <color key="backgroundColor" red="0.99607843139999996" green="0.95294117649999999" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                 <constraints>
                                                                                                     <constraint firstAttribute="width" constant="25" id="Iz6-8y-PRd"/>
                                                                                                     <constraint firstAttribute="height" constant="25" id="PjM-Ej-0FZ"/>
@@ -266,7 +266,7 @@
                                                                                                         </constraints>
                                                                                                     </imageView>
                                                                                                 </subviews>
-                                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                                                <color key="backgroundColor" red="0.99607843139999996" green="0.95294117649999999" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                 <constraints>
                                                                                                     <constraint firstItem="U6F-sR-Ufd" firstAttribute="centerX" secondItem="ojZ-jF-O3n" secondAttribute="centerX" id="JSD-ed-EtC"/>
                                                                                                     <constraint firstAttribute="width" constant="25" id="V3p-g9-dsT"/>

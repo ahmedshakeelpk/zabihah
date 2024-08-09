@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import GoogleMaps
+import GooglePlaces
 
 extension HomePrayerPlacesTabCell {
     struct ModelPostFavouriteRestaurantsResponse: Codable {
@@ -19,7 +21,7 @@ protocol HomePrayerPlacesTabCellDelegate: AnyObject {
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UITableViewCell)
 }
 
-class HomePrayerPlacesTabCell: HomeBaseCell {
+class HomePrayerPlacesTabCell: HomeBaseCell, GMSMapViewDelegate {
     
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
@@ -41,6 +43,8 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     @IBOutlet weak var stackViewBackGround: UIStackView!
     
     var delegate: HomePrayerPlacesTabCellDelegate!
+    var dataRecord: HomeBaseCell.HomeListItem!
+
     var buttonFavouriteHandler: (() -> ())!
    
     var arrayNames = [String]()
@@ -79,6 +83,23 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         collectionView.dataSource = self
     }
     
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
+    }
+    
+    override func updateCell(data: Any?, indexPath: IndexPath, viewController: UIViewController) {
+        super.updateCell(data: data, indexPath: indexPath, viewController: viewController)
+        // Configure the view for the selected state
+        dataRecord = data as? HomeBaseCell.HomeListItem
+        if let modelData = dataRecord.data as? [HomeViewController.ModelGetPrayerPlacesResponseData] {
+            modelMosqueResponseData = modelData[indexPath.row]
+        }
+        collectionView.reloadData()
+        drawMarkerOnMap()
+    }
+    
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomePrayerPlacesTabCellDelegate
         postFavouriteRestaurants()
@@ -115,7 +136,30 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
             collectionView.reloadData()
         }
     }
+    func drawMarkerOnMap() {
+        /// Marker - Google Place marker
+        let marker: GMSMarker = GMSMarker() // Allocating Marker
+        marker.title = modelMosqueResponseData?.name // Setting title
+        marker.snippet = modelMosqueResponseData?.address // Setting sub title
+        marker.icon = UIImage(named: "markerHome") // Marker icon
+        marker.appearAnimation = .pop // Appearing animation. default
+        marker.userData = modelMosqueResponseData
+        
+        let location = CLLocationCoordinate2D(latitude: modelMosqueResponseData?.lat ?? 0, longitude: modelMosqueResponseData?.long ?? 0)
+        marker.position = location
+        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
+        setZoom(location: location)
+    }
     
+    func setZoom(location: CLLocationCoordinate2D) {
+        let lat = location.latitude
+        let long = location.longitude
+        
+        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 14)
+        (viewController as? HomeViewController)?.mapView.camera = camera
+//        mapView.isMyLocationEnabled = true
+        (viewController as? HomeViewController)?.mapView.delegate = self
+    }
     func postFavouriteRestaurants() {
         let parameters = [
             "Id": modelMosqueResponseData?.id ?? "",
