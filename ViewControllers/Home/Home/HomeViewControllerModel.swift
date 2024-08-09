@@ -20,9 +20,9 @@ extension HomeViewController {
     // MARK: - UserResponseData
     struct ModelGetUserResponseData: Codable {
         var phone: String?
-        let isNewsLetterSubcription: Bool?
+        var isNewsLetterSubcription: Bool?
         var firstname, email: String?
-        let isUpdateSubcription: Bool?
+        var isUpdateSubcription: Bool?
         let photo: String?
         var lastName: String?
     }

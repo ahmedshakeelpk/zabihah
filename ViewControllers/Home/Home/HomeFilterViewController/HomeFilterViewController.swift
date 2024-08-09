@@ -22,6 +22,11 @@ class HomeFilterViewController: UIViewController {
             labelRangeEnd.text = "\(Int(sliderRange?.maximumValue ?? 0))"
             rangeSlider.maximumValue = 20
             labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))ml"
+            
+            if kModelUserConfigurationResponse != nil {
+                rangeSlider.maximumValue = Double(kModelUserConfigurationResponse.distanceValue ?? 0)
+                labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+            }
         }
     }
     @IBOutlet weak var labelRangeStart: UILabel!
@@ -64,7 +69,8 @@ class HomeFilterViewController: UIViewController {
         getStarRating()
         if filterParametersHome != nil {
             if let radius = filterParametersHome["radius"] as? String {
-                labelRangeEnd.text = "\(radius)ml"
+                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+                
                 sliderRange.value = Float(radius) ?? 0
             }
             if let rating = filterParametersHome["rating"] as? String {
@@ -93,7 +99,7 @@ class HomeFilterViewController: UIViewController {
         }
     }
     @IBAction func sliderRange(_ sender: UISlider) {
-        labelRangeEnd.text = "\(Int(sender.value))ml"
+        labelRangeEnd.text = "\(Int(sender.value))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
     }
     @IBAction func buttonFilter(_ sender: Any) {
         self.dismiss(animated: true) {

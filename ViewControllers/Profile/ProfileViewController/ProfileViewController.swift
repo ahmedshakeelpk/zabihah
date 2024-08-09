@@ -67,10 +67,16 @@ class ProfileViewController: UIViewController {
             print(modelGetBlobContainer?.token as Any)
         }
     }
-    
+    var isUserImageUpdateCall: Bool? = false
     var modelEditProfileResponse: EditNameViewController.ModelEditProfileResponse? {
         didSet {
-            getuser()
+            modelGetUserResponseLocal?.userResponseData?.isNewsLetterSubcription = switchEvents.isOn
+            modelGetUserResponseLocal?.userResponseData?.isUpdateSubcription = switchOffers.isOn
+            
+            if isUserImageUpdateCall ?? false {
+                isUserImageUpdateCall = false
+                getuser()
+            }
         }
     }
     
@@ -90,7 +96,7 @@ class ProfileViewController: UIViewController {
     var modelGetUserResponseLocal: HomeViewController.ModelGetUserProfileResponse? {
         didSet {
             modelGetUserProfileResponse = modelGetUserResponseLocal
-            setData()
+//            setData()
         }
     }
     
@@ -128,13 +134,11 @@ class ProfileViewController: UIViewController {
     @IBAction func switchOffers(_ sender: Any) {
         let parameters: Parameters = [
             "isUpdateSubcription": switchOffers.isOn,
-            "isNewsLetterSubcription": switchEvents.isOn
         ]
         editprofile(parameters: parameters)
     }
     @IBAction func switchEvents(_ sender: Any) {
         let parameters: Parameters = [
-            "isUpdateSubcription": switchOffers.isOn,
             "isNewsLetterSubcription": switchEvents.isOn
         ]
         editprofile(parameters: parameters)
@@ -287,9 +291,9 @@ class ProfileViewController: UIViewController {
         print("Action Sheet call")
         self.present(myActionSheet, animated: true, completion: nil)
     }
-            
-    func editprofile(parameters: Parameters) {
-        
+         
+    func editprofile(parameters: Parameters, isUserImageUpdateCall: Bool? = false) {
+        self.isUserImageUpdateCall = isUserImageUpdateCall
         APIs.postAPI(apiName: .editprofile, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
             let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelEditProfileResponse = model
@@ -330,7 +334,7 @@ extension ProfileViewController {
                         let parameters: Parameters = [
                             "photo": "\(imageURL)"
                         ]
-                        self.editprofile(parameters: parameters)
+                        self.editprofile(parameters: parameters, isUserImageUpdateCall: true)
                     }
                 } else {
                     print("Failed to construct image URL")
