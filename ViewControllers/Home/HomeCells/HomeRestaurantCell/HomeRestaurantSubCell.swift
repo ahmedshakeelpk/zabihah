@@ -31,7 +31,8 @@ class HomeRestaurantSubCell: UICollectionViewCell {
     @IBOutlet weak var viewRatingBackGround: UIView!
     @IBOutlet weak var imageViewItem: UIImageView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
-    
+    @IBOutlet weak var buttonCall: UIButton!
+
     var delegate: HomeRestaurantSubCellDelegate!
     var buttonFavouriteHandler: (() -> ())!
     var viewController = UIViewController()
@@ -78,6 +79,9 @@ class HomeRestaurantSubCell: UICollectionViewCell {
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeRestaurantSubCellDelegate
         postFavouriteRestaurants()
+    }
+    @IBAction func buttonCall(_ sender: Any) {
+        self.viewController.dialNumber(number: modelFeaturedRestuarantResponseData?.phone ?? "")
     }
     
     struct ModelPostFavouriteRestaurantsResponse: Codable {

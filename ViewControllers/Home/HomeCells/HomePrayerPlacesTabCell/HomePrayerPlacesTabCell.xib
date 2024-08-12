@@ -268,11 +268,22 @@
                                                                                                                     <constraint firstAttribute="width" constant="16" id="xdL-jV-dc7"/>
                                                                                                                 </constraints>
                                                                                                             </imageView>
+                                                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOc-rY-boh">
+                                                                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                                                                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                                                                <connections>
+                                                                                                                    <action selector="buttonCall:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="M6g-b4-pz9"/>
+                                                                                                                </connections>
+                                                                                                            </button>
                                                                                                         </subviews>
                                                                                                         <color key="backgroundColor" red="0.99607843139999996" green="0.95294117649999999" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <constraints>
+                                                                                                            <constraint firstAttribute="trailing" secondItem="lOc-rY-boh" secondAttribute="trailing" id="1eT-rT-84v"/>
+                                                                                                            <constraint firstItem="lOc-rY-boh" firstAttribute="top" secondItem="xbs-ot-xGU" secondAttribute="top" id="D2E-Ig-dwj"/>
                                                                                                             <constraint firstItem="X4M-tj-O15" firstAttribute="centerX" secondItem="xbs-ot-xGU" secondAttribute="centerX" id="IRa-Ao-Da2"/>
+                                                                                                            <constraint firstItem="lOc-rY-boh" firstAttribute="leading" secondItem="xbs-ot-xGU" secondAttribute="leading" id="K7Q-kW-sC1"/>
                                                                                                             <constraint firstAttribute="height" constant="25" id="gaN-lH-OTu"/>
+                                                                                                            <constraint firstAttribute="bottom" secondItem="lOc-rY-boh" secondAttribute="bottom" id="wFw-WF-66c"/>
                                                                                                             <constraint firstAttribute="width" constant="25" id="ymk-Pg-FIb"/>
                                                                                                             <constraint firstItem="X4M-tj-O15" firstAttribute="centerY" secondItem="xbs-ot-xGU" secondAttribute="centerY" id="yr7-Yd-GMx"/>
                                                                                                         </constraints>
@@ -594,6 +605,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="buttonCall" destination="lOc-rY-boh" id="lG9-ml-p7p"/>
                 <outlet property="buttonFavourite" destination="3TR-CW-XmJ" id="3wW-rM-HUq"/>
                 <outlet property="collectionView" destination="DgO-lU-9Zj" id="jB2-AB-R0E"/>
                 <outlet property="imageViewFavourite" destination="Mpf-I6-NDl" id="NIo-Iw-joJ"/>

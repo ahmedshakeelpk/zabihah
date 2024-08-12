@@ -268,12 +268,23 @@
                                                                                                                     <constraint firstAttribute="height" constant="16" id="ddp-NH-McP"/>
                                                                                                                 </constraints>
                                                                                                             </imageView>
+                                                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LSG-Mn-ugU">
+                                                                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                                                                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                                                                <connections>
+                                                                                                                    <action selector="buttonCall:" destination="IhX-PP-ERe" eventType="touchUpInside" id="8rV-6S-gIF"/>
+                                                                                                                </connections>
+                                                                                                            </button>
                                                                                                         </subviews>
                                                                                                         <color key="backgroundColor" red="0.99607843137254903" green="0.95294117647058818" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <constraints>
                                                                                                             <constraint firstAttribute="height" constant="25" id="7BI-IG-mfa"/>
+                                                                                                            <constraint firstItem="LSG-Mn-ugU" firstAttribute="top" secondItem="09f-ZB-IwC" secondAttribute="top" id="cee-30-aGM"/>
                                                                                                             <constraint firstAttribute="width" constant="25" id="cvG-I2-6K2"/>
+                                                                                                            <constraint firstAttribute="bottom" secondItem="LSG-Mn-ugU" secondAttribute="bottom" id="gjh-lm-6KH"/>
+                                                                                                            <constraint firstAttribute="trailing" secondItem="LSG-Mn-ugU" secondAttribute="trailing" id="hFQ-UK-1bA"/>
                                                                                                             <constraint firstItem="4JZ-Be-1mc" firstAttribute="centerY" secondItem="09f-ZB-IwC" secondAttribute="centerY" id="kVB-cE-aUA"/>
+                                                                                                            <constraint firstItem="LSG-Mn-ugU" firstAttribute="leading" secondItem="09f-ZB-IwC" secondAttribute="leading" id="rh5-9f-3cY"/>
                                                                                                             <constraint firstItem="4JZ-Be-1mc" firstAttribute="centerX" secondItem="09f-ZB-IwC" secondAttribute="centerX" id="sjo-lN-P3P"/>
                                                                                                         </constraints>
                                                                                                     </view>
@@ -592,6 +603,7 @@
                 <constraint firstItem="yCs-6X-GSr" firstAttribute="leading" secondItem="IhX-PP-ERe" secondAttribute="leading" id="z3z-2D-NeC"/>
             </constraints>
             <connections>
+                <outlet property="buttonCall" destination="LSG-Mn-ugU" id="2iG-xR-8TF"/>
                 <outlet property="buttonFavourite" destination="cDq-3C-p3m" id="dui-kn-hTt"/>
                 <outlet property="collectionView" destination="8Aj-X7-eHy" id="2oR-Bo-zC6"/>
                 <outlet property="imageViewFavourite" destination="aCj-WI-WIM" id="kya-YC-qmn"/>

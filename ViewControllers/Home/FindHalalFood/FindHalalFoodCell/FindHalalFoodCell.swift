@@ -9,13 +9,13 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 
-
 protocol FindHalalFoodCellDelegate: AnyObject {
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UITableViewCell)
 }
 
 class FindHalalFoodCell: HomeBaseCell {
     
+    @IBOutlet weak var buttonCall: UIButton!
     struct ModelPostFavouriteRestaurantsResponse: Codable {
         let recordFound, success: Bool?
         let message, innerExceptionMessage: String?
@@ -111,6 +111,7 @@ class FindHalalFoodCell: HomeBaseCell {
         collectionView.delegate = self
         collectionView.dataSource = self
         imageViewRestaurant.circle()
+
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -130,23 +131,26 @@ class FindHalalFoodCell: HomeBaseCell {
         drawMarkerOnMap()
     }
     
+    @IBAction func buttonCall(_ sender: Any) {
+        self.viewController.dialNumber(number: halalRestuarantResponseData?.phone ?? "")
+    }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any FindHalalFoodCellDelegate
         postFavouriteRestaurants()
     }
     
     func drawMarkerOnMap() {
-        /// Marker - Google Place marker
-        let marker: GMSMarker = GMSMarker() // Allocating Marker
-        marker.title = halalRestuarantResponseData?.name // Setting title
-        marker.snippet = halalRestuarantResponseData?.address // Setting sub title
-        marker.icon = UIImage(named: "markerHome") // Marker icon
-        marker.appearAnimation = .pop // Appearing animation. default
-        marker.userData = halalRestuarantResponseData
-        
+//        /// Marker - Google Place marker
+//        let marker: GMSMarker = GMSMarker() // Allocating Marker
+//        marker.title = halalRestuarantResponseData?.name // Setting title
+//        marker.snippet = halalRestuarantResponseData?.address // Setting sub title
+//        marker.icon = UIImage(named: "markerHome") // Marker icon
+//        marker.appearAnimation = .pop // Appearing animation. default
+//        marker.userData = halalRestuarantResponseData
+//        
         let location = CLLocationCoordinate2D(latitude: halalRestuarantResponseData?.lat ?? 0, longitude: halalRestuarantResponseData?.long ?? 0)
-        marker.position = location
-        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
+//        marker.position = location
+//        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
         setZoom(location: location)
     }
     
@@ -156,7 +160,6 @@ class FindHalalFoodCell: HomeBaseCell {
         
         let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 14)
         (viewController as? HomeViewController)?.mapView.camera = camera
-//        mapView.isMyLocationEnabled = true
         (viewController as? HomeViewController)?.mapView.delegate = self
     }
     
@@ -228,11 +231,23 @@ extension FindHalalFoodCell: GMSMapViewDelegate {
     
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
+        if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
+            self.viewController.dialNumber(number: userData.phone ?? "")
+        }
     }
     
     @objc func tapOnMapInfoView() {
         print("tapOnMapInfoView")
         print("when click on info View")
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        marker.icon = UIImage(named: "markerHomeSelected")
+        return false // return false to display info window
+    }
+
+    func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
+        marker.icon = UIImage(named: "markerHome")
     }
 }
 

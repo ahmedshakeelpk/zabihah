@@ -8,16 +8,17 @@
 import UIKit
 import Alamofire
 import GoogleMaps
+import GooglePlaces
 import CoreLocation
 
-
-extension HomeViewController: GMSMapViewDelegate{
-    
-}
 class HomeViewController: UIViewController {
+    
+    @IBOutlet weak var viewItemCountOnMapViewBackGround: UIView!
+    @IBOutlet weak var labelItemCountOnMapView: UILabel!
     @IBOutlet weak var imageViewNoRecordFound: UIImageView!
     @IBOutlet weak var labelNoRecordFound: UILabel!
     @IBOutlet weak var viewNoDataFound: UIView!
+    @IBOutlet weak var viewMapViewBackGround: UIView!
     @IBOutlet weak var buttonFilters: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var imageViewListViewMapView: UIImageView!
@@ -35,7 +36,11 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var textFieldFilterResult: UITextField!
     @IBOutlet weak var textFieldSearchLocation: UITextField!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var viewZoomInBackGround: UIView!
     @IBOutlet weak var buttonSearchLocation: UIButton!
+    @IBOutlet weak var buttonZoomIn: UIButton!
+    @IBOutlet weak var viewZoomOutBackGround: UIView!
+    @IBOutlet weak var buttonZoomOut: UIButton!
     @IBOutlet weak var labelMapViewListView: UILabel!
     
     var locationManager = CLLocationManager()
@@ -92,7 +97,7 @@ class HomeViewController: UIViewController {
                     return
                 }
                 if pageNumberForApi > 1 {
-                    if pageNumberForApi > modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                    if pageNumberForApi > modelGetPrayerPlacesResponse?.totalPage ?? 0 {
                         return()
                     }
                 }
@@ -154,7 +159,6 @@ class HomeViewController: UIViewController {
             listItems[recordRestuarantCell.1] = recordRestuarantCell.0
             let recordPrayerPlacesCell = addPrayerPlacesCell()
             listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
-            
             tableViewReload()
         }
     }
@@ -175,6 +179,12 @@ class HomeViewController: UIViewController {
             listItems[1] = recordPrayerPlacesTabCell.0
             
             tableViewReload()
+            mapView.clear()
+            if let modelData = modelGetPrayerPlacesResponse?.mosqueResponseData {
+                for model in modelData {
+                    drawMarkerOnMap(modelGetPrayerPlacesResponseData: model)
+                }
+            }
         }
     }
     
@@ -196,8 +206,15 @@ class HomeViewController: UIViewController {
             let recordFindHalalFoodCell = addFindHalalFoodCell()
             listItems[1] = recordFindHalalFoodCell.0
             tableViewReload()
+            mapView.clear()
+            if let modelData = modelGetHalalRestaurantResponse?.halalRestuarantResponseData {
+                for model in modelData {
+                    drawMarkerOnMap(modelRestuarantResponseData: model)
+                }
+            }
         }
     }
+    
     
     var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
         didSet {
@@ -224,6 +241,9 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         sideMenuSetup()
+        viewZoomInBackGround.circle()
+        viewZoomOutBackGround.circle()
+        viewItemCountOnMapViewBackGround.circle()
         viewMapViewBackground.circle()
         stackViewFilterResultBackGround.radius(radius: 8)
         stackViewSearchNearLocationBackGround.radius(radius: 8)
@@ -258,7 +278,7 @@ class HomeViewController: UIViewController {
         
         
         userConfiguration()
-        
+        setZoomButtons()
 //        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
     }
     
@@ -306,6 +326,24 @@ class HomeViewController: UIViewController {
         sideMenu.toggleMenu()
     }
     
+    func setZoomButtons() {
+        // Add Zoom Out button
+        buttonZoomOut.addTarget(self, action: #selector(zoomOut), for: .touchUpInside)
+        
+        // Add Zoom In button
+        buttonZoomIn.addTarget(self, action: #selector(zoomIn), for: .touchUpInside)
+    }
+    
+    @objc func zoomIn() {
+            let zoom = mapView.camera.zoom + 1
+            mapView.animate(toZoom: zoom)
+        }
+
+        @objc func zoomOut() {
+            let zoom = mapView.camera.zoom - 1
+            mapView.animate(toZoom: zoom)
+            pageNumberForApi += 1
+        }
     
     func tableViewReload() {
         tableView.reloadData()
@@ -415,8 +453,14 @@ extension HomeViewController: HomeCuisinesCellDelegate {
             mapView.clear()
             modelGetHalalRestaurantResponse = nil
             selectedCuisine = cusisineName
-            if selectedMenuCell != 1 {
+            if selectedMenuCell == 0 {
                 selectedMenuCell = indexOf
+            }
+            else if selectedMenuCell == 1 || selectedMenuCell == 3 {
+                pageNumberForApi = 1
+            }
+            else if selectedMenuCell == 2 {
+                
             }
             else {
                 pageNumberForApi = 1
@@ -469,3 +513,5 @@ extension HomeViewController : CLLocationManagerDelegate {
         }
     }
 }
+
+

@@ -21,7 +21,7 @@ protocol HomePrayerPlacesTabCellDelegate: AnyObject {
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UITableViewCell)
 }
 
-class HomePrayerPlacesTabCell: HomeBaseCell, GMSMapViewDelegate {
+class HomePrayerPlacesTabCell: HomeBaseCell {
     
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
@@ -41,7 +41,8 @@ class HomePrayerPlacesTabCell: HomeBaseCell, GMSMapViewDelegate {
     @IBOutlet weak var viewRatingBackGround: UIView!
     @IBOutlet weak var imageViewItem: UIImageView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
-    
+    @IBOutlet weak var buttonCall: UIButton!
+
     var delegate: HomePrayerPlacesTabCellDelegate!
     var dataRecord: HomeBaseCell.HomeListItem!
 
@@ -100,6 +101,10 @@ class HomePrayerPlacesTabCell: HomeBaseCell, GMSMapViewDelegate {
         drawMarkerOnMap()
     }
     
+    @IBAction func buttonCall(_ sender: Any) {
+        self.viewController.dialNumber(number: modelMosqueResponseData?.phone ?? "")
+    }
+    
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomePrayerPlacesTabCellDelegate
         postFavouriteRestaurants()
@@ -138,16 +143,16 @@ class HomePrayerPlacesTabCell: HomeBaseCell, GMSMapViewDelegate {
     }
     func drawMarkerOnMap() {
         /// Marker - Google Place marker
-        let marker: GMSMarker = GMSMarker() // Allocating Marker
-        marker.title = modelMosqueResponseData?.name // Setting title
-        marker.snippet = modelMosqueResponseData?.address // Setting sub title
-        marker.icon = UIImage(named: "markerHome") // Marker icon
-        marker.appearAnimation = .pop // Appearing animation. default
-        marker.userData = modelMosqueResponseData
+//        let marker: GMSMarker = GMSMarker() // Allocating Marker
+//        marker.title = modelMosqueResponseData?.name // Setting title
+//        marker.snippet = modelMosqueResponseData?.address // Setting sub title
+//        marker.icon = UIImage(named: "markerPrayerPlaces") // Marker icon
+//        marker.appearAnimation = .pop // Appearing animation. default
+//        marker.userData = modelMosqueResponseData
         
         let location = CLLocationCoordinate2D(latitude: modelMosqueResponseData?.lat ?? 0, longitude: modelMosqueResponseData?.long ?? 0)
-        marker.position = location
-        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
+//        marker.position = location
+//        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
         setZoom(location: location)
     }
     
@@ -157,14 +162,13 @@ class HomePrayerPlacesTabCell: HomeBaseCell, GMSMapViewDelegate {
         
         let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 14)
         (viewController as? HomeViewController)?.mapView.camera = camera
-//        mapView.isMyLocationEnabled = true
         (viewController as? HomeViewController)?.mapView.delegate = self
     }
     func postFavouriteRestaurants() {
         let parameters = [
             "Id": modelMosqueResponseData?.id ?? "",
             "isMark": !(modelMosqueResponseData?.isFavorites ?? false),
-            "type" : "rest"
+            "type" : "prayer"
             
         ] as [String : Any]
        
@@ -207,5 +211,40 @@ extension HomePrayerPlacesTabCell: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        selectedCell = indexPath.item
         collectionView.reloadData()
+    }
+}
+
+extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
+    func mapView(_ mapView: GMSMapView, markerInfoContents marker: GMSMarker) -> UIView? {
+        
+        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 170, height: 135))
+        let infoView = Bundle.loadView(fromNib: "MarkerInfoView", withType: MarkerInfoView.self)
+        view.addSubview(infoView)
+        if let modelData = marker.userData as? HomeViewController.ModelGetPrayerPlacesResponseData {
+            infoView.modelGetPrayerPlacesResponseData = modelData
+        }
+        marker.icon = UIImage(named: "markerPrayerPlacesSelected")
+        return view
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
+        print("when click on info View")
+        if let userData = marker.userData as? HomeViewController.ModelGetPrayerPlacesResponseData {
+            self.viewController.dialNumber(number: userData.phone ?? "")
+        }
+    }
+    
+    @objc func tapOnMapInfoView() {
+        print("tapOnMapInfoView")
+        print("when click on info View")
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        marker.icon = UIImage(named: "markerPrayerPlacesSelected")
+        return false // return false to display info window
+    }
+
+    func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker) {
+        marker.icon = UIImage(named: "markerPrayerPlaces")
     }
 }

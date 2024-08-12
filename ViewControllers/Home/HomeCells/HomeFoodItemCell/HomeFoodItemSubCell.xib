@@ -268,6 +268,13 @@
                                                                                                                     <constraint firstAttribute="width" constant="16" id="fuF-Pb-tCt"/>
                                                                                                                 </constraints>
                                                                                                             </imageView>
+                                                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QU2-mk-DBg">
+                                                                                                                <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                                                                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                                                                <connections>
+                                                                                                                    <action selector="buttonCall:" destination="gTV-IL-0wX" eventType="touchUpInside" id="V2h-lH-Dde"/>
+                                                                                                                </connections>
+                                                                                                            </button>
                                                                                                         </subviews>
                                                                                                         <color key="backgroundColor" red="0.99607843139999996" green="0.95294117649999999" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <constraints>
@@ -275,6 +282,10 @@
                                                                                                             <constraint firstAttribute="width" constant="25" id="N1y-99-sgO"/>
                                                                                                             <constraint firstItem="K5B-EI-FBr" firstAttribute="centerX" secondItem="KHF-uR-UAB" secondAttribute="centerX" id="TTX-KE-ibe"/>
                                                                                                             <constraint firstItem="K5B-EI-FBr" firstAttribute="centerY" secondItem="KHF-uR-UAB" secondAttribute="centerY" id="cFk-ik-E6Q"/>
+                                                                                                            <constraint firstAttribute="bottom" secondItem="QU2-mk-DBg" secondAttribute="bottom" id="e5a-gC-aiH"/>
+                                                                                                            <constraint firstAttribute="trailing" secondItem="QU2-mk-DBg" secondAttribute="trailing" id="eao-dL-fam"/>
+                                                                                                            <constraint firstItem="QU2-mk-DBg" firstAttribute="top" secondItem="KHF-uR-UAB" secondAttribute="top" id="heQ-Q2-Gma"/>
+                                                                                                            <constraint firstItem="QU2-mk-DBg" firstAttribute="leading" secondItem="KHF-uR-UAB" secondAttribute="leading" id="uq7-45-QgH"/>
                                                                                                         </constraints>
                                                                                                     </view>
                                                                                                 </subviews>
@@ -593,6 +604,7 @@
                 <constraint firstItem="7DT-hD-b85" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="tuY-w2-52c"/>
             </constraints>
             <connections>
+                <outlet property="buttonCall" destination="QU2-mk-DBg" id="uI6-6V-7XW"/>
                 <outlet property="buttonFavourite" destination="Edx-yq-vsg" id="0MN-qZ-4fG"/>
                 <outlet property="collectionView" destination="hhk-tI-2tW" id="nGE-OL-7lS"/>
                 <outlet property="imageViewFavourite" destination="6Jl-Yz-MOv" id="HbP-1b-dP5"/>

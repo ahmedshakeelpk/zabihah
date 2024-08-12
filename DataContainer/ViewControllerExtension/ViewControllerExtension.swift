@@ -190,3 +190,49 @@ extension UIViewController {
 //        }
 //    }
 }
+
+extension UIViewController {
+    func dialNumber(number : String) {
+        actionSheetForCall(number: number)
+    }
+    func callNow(number : String) {
+        if let url = URL(string: "tel://\(number)"),
+           UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler:nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        } else {
+            // add error message here
+            self.showToast(message: "Invalid Number")
+        }
+    }
+    //Mark:- Choose Action Sheet
+    func actionSheetForCall(number : String) {
+        var myActionSheet = UIAlertController(title: "Call!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
+        myActionSheet.view.tintColor = UIColor.black
+        let callAction = UIAlertAction(title: "Call", style: .destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.callNow(number: number)
+        })
+        let viewDetailsAction = UIAlertAction(title: "View Details", style: .destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        if IPAD {
+            //In iPad Change Rect to position Popover
+            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
+        }
+        myActionSheet.addAction(callAction)
+        myActionSheet.addAction(viewDetailsAction)
+        myActionSheet.addAction(cancelAction)
+        self.present(myActionSheet, animated: true, completion: nil)
+    }
+}

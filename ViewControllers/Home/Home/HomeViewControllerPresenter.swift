@@ -64,13 +64,13 @@ extension HomeViewController {
     
     func setMapList() {
         if buttonMapViewListView.tag == 1 {
-            mapView.isHidden = false
+            viewMapViewBackGround.isHidden = false
             tableView.isHidden = true
             imageViewListViewMapView.image = UIImage(named: "listViewHome")
             labelMapViewListView.text = "List View"
         }
         else {
-            mapView.isHidden = true
+            viewMapViewBackGround.isHidden = true
             tableView.isHidden = false
             buttonMapViewListView.tag = 0
             imageViewListViewMapView.image = UIImage(named: "mapViewHome")
@@ -177,6 +177,7 @@ extension HomeViewController {
             "rating": 0,
             "page": Int(pageSize),
             "pageSize": 0,
+            "type": selectedCuisine
         ] as [String : Any]
         
         if filterParametersHome != nil {
@@ -310,6 +311,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 else if selectedMenuCell == 3 {
                     cuisineCount = "\(modelGetPrayerPlacesResponse?.totalMosque ?? 0)"
                 }
+                myHeader.viewController = self
                 myHeader.cuisineCount = cuisineCount
                 myHeader.selectedMenuCell = selectedMenuCell
                 myHeader.sectionName = "\((listItems[section]).sectionName ?? "")"
@@ -369,7 +371,7 @@ extension HomeViewController {
     
     func addCellInList() {
         viewMapViewBackground.isHidden = false
-        mapView.isHidden = true
+        viewMapViewBackGround.isHidden = true
         buttonMapViewListView.tag = 0
         setMapList()
         listItems = [

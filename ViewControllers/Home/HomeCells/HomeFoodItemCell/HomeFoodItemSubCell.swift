@@ -19,6 +19,8 @@ extension HomeFoodItemSubCell {
     }
 }
 class HomeFoodItemSubCell: UICollectionViewCell {
+    @IBOutlet weak var buttonCall: UIView!
+    
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
     @IBOutlet weak var labelRestaurantName: UILabel!
@@ -81,6 +83,9 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         imageViewRestaurant.circle()
         
         setData()
+    }
+    @IBAction func buttonCall(_ sender: Any) {
+        self.viewController.dialNumber(number: modelFeaturedRestuarantResponseData?.phone ?? "")
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeFoodItemSubCellDelegate

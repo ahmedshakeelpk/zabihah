@@ -55,13 +55,20 @@ class LoginViewController: UIViewController {
         navigateToLoginWithEmailOrPhoneViewController(isFromEmail: true)
     }
     @IBAction func buttonPhoneLogin(_ sender: Any) {
-//        navigateToHomeViewController()
-//        navigateToDeliveryDetails3ViewController()
-        navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
+//        navigateTogalleryStoryBoard()
+        //        navigateToHomeViewController()
+        //        navigateToDeliveryDetails3ViewController()
+                navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
     }
     @IBAction func buttonAppleLogin(_ sender: Any) {
+    }
+    
+    
+    func navigateTogalleryStoryBoard() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func navigateToLoginWithEmailOrPhoneViewController(isFromEmail: Bool) {

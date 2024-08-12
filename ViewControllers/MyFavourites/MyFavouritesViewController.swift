@@ -79,7 +79,6 @@ class MyFavouritesViewController: UIViewController {
         MyFavouriteCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
         stackViewButtonTabBackGround.setShadow(radius: 6)
-        getFavouriteByUser()
         imageViewNoRecordFound.isHidden = false
         viewBottomLinePrayerPlaces.isHidden = true
         buttonRestaurant.tag = 1
@@ -89,6 +88,8 @@ class MyFavouritesViewController: UIViewController {
         imageViewMosque.image = imageViewMosque.image?.withRenderingMode(.alwaysTemplate)
         imageViewRestaurant.tintColor = .colorApp
         imageViewMosque.tintColor = .clrUnselectedImage
+        buttonRestaurant.tag = 1
+        getFavouriteByUser()
     }
 
     @IBOutlet weak var viewBottomLineRestaurants: UIView!
@@ -99,7 +100,8 @@ class MyFavouritesViewController: UIViewController {
         buttonRestaurant.tag = 1
         imageViewRestaurant.tintColor = .colorApp
         imageViewMosque.tintColor = .clrUnselectedImage
-        tableViewReload()
+//        tableViewReload()
+        getFavouriteByUser()
     }
     
     @IBAction func buttonPrayerPlaces(_ sender: Any) {
@@ -108,7 +110,8 @@ class MyFavouritesViewController: UIViewController {
         buttonRestaurant.tag = 0
         imageViewRestaurant.tintColor = .clrUnselectedImage
         imageViewMosque.tintColor = .colorApp
-        tableViewReload()
+//        tableViewReload()
+        getFavouriteByUser()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -126,7 +129,7 @@ class MyFavouritesViewController: UIViewController {
     func getFavouriteByUser() {
         let parameters: Parameters = [
             "page": favouritePageNumber,
-            "type": "rest"
+            "type": buttonRestaurant.tag == 1 ? "rest" : "prayer"
         ]
         APIs.postAPI(apiName: .getfavouritebyuser, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetFavouriteByUserResponse? = APIs.decodeDataToObject(data: responseData)

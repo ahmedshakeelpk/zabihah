@@ -94,9 +94,11 @@ class SideMenuView: UIView {
     
     func removeCacheData() {
         kAccessToken = ""
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: "myKey")
-        defaults.synchronize()
+        let dictionary = kDefaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            kDefaults.removeObject(forKey: key)
+        }
+        kDefaults.synchronize()
     }
     //Mark:- Choose Image Method
     func actionSheetLogout() {

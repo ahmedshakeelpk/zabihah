@@ -20,7 +20,8 @@ protocol HomePrayerSpacesSubCellDelegate: AnyObject {
 }
 
 class HomePrayerSpacesSubCell: UICollectionViewCell {
-    
+    @IBOutlet weak var buttonCall: UIButton!
+
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
@@ -82,7 +83,9 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         collectionView.delegate = self
         collectionView.dataSource = self
     }
-    
+    @IBAction func buttonCall(_ sender: Any) {
+        self.viewController.dialNumber(number: modelMosqueResponseData?.phone ?? "")
+    }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeFoodItemSubCellDelegate
         postFavouriteRestaurants()

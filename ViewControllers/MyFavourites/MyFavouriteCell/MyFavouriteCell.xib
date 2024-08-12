@@ -52,16 +52,16 @@
                                                         <rect key="frame" x="59" y="0.0" width="184" height="94"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Fee-NG-Iux">
-                                                                <rect key="frame" x="0.0" y="28.999999999999996" width="178" height="33.666666666666657"/>
+                                                                <rect key="frame" x="0.0" y="29" width="178" height="40"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mHV-Mh-QWn">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="178" height="19.333333333333332"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mHV-Mh-QWn">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="178" height="25.666666666666668"/>
                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                                         <color key="textColor" red="0.32156862745098036" green="0.32156862745098036" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ts8-7G-6it">
-                                                                        <rect key="frame" x="0.0" y="19.333333333333336" width="178" height="14.333333333333336"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ts8-7G-6it">
+                                                                        <rect key="frame" x="0.0" y="25.666666666666661" width="178" height="14.333333333333332"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                         <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -73,7 +73,7 @@
                                                         <constraints>
                                                             <constraint firstItem="Fee-NG-Iux" firstAttribute="leading" secondItem="zy0-3Q-kDd" secondAttribute="leading" id="Rbl-hZ-j8v"/>
                                                             <constraint firstItem="Fee-NG-Iux" firstAttribute="top" secondItem="zy0-3Q-kDd" secondAttribute="top" constant="29" id="mYf-Jo-VJo"/>
-                                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Fee-NG-Iux" secondAttribute="bottom" constant="25" id="qUT-T9-J7V"/>
+                                                            <constraint firstAttribute="bottom" secondItem="Fee-NG-Iux" secondAttribute="bottom" constant="25" id="qUT-T9-J7V"/>
                                                             <constraint firstAttribute="trailing" secondItem="Fee-NG-Iux" secondAttribute="trailing" constant="6" id="rHo-yi-twX"/>
                                                         </constraints>
                                                     </view>

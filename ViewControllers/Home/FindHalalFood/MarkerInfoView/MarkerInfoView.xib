@@ -317,6 +317,7 @@
                 <outlet property="labelRestaurantAddress" destination="ewN-FH-kRK" id="dus-Jc-66b"/>
                 <outlet property="labelRestaurantName" destination="aUu-os-6pU" id="j47-DJ-pC4"/>
                 <outlet property="viewRatingBackGround" destination="7st-VS-xIr" id="qtk-d9-chq"/>
+                <outlet property="viewRestaurantBackGround" destination="ZbO-qE-Jgm" id="VYD-aS-58X"/>
             </connections>
             <point key="canvasLocation" x="-93.129770992366403" y="-116.54929577464789"/>
         </view>

@@ -14,6 +14,7 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelViewAll: UILabel!
     
+    var viewController: UIViewController!
     var selectedMenuCell: Int!
     var section: Int!
     var buttonViewAllHandler: ((_ section: Int) -> ())!
@@ -26,7 +27,7 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
         didSet {
             labelTitle.isHidden = true
             viewButtonViewAllBackGround.isHidden = true
-            
+//            (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = true
             
             if selectedMenuCell == 0 {
                 if section == 0 {
@@ -43,6 +44,8 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                         viewButtonViewAllBackGround.isHidden = false
                         labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
                         labelTitle.isHidden = false
+                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                     }
                 }
                 else if section == 2 {
@@ -55,6 +58,8 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                         viewButtonViewAllBackGround.isHidden = false
                         labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
                         labelTitle.isHidden = false
+                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                     }
                 }
                 else {
@@ -66,6 +71,8 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                     if sectionName != "" {
                         labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
                         labelTitle.isHidden = false
+                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                     }
                 }
                 else {
@@ -77,6 +84,9 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                     if sectionName != "" {
                         labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
                         labelTitle.isHidden = false
+                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
+                        (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                     }
                 }
             }
