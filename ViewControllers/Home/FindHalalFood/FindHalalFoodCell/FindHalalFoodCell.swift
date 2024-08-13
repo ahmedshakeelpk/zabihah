@@ -24,6 +24,7 @@ class FindHalalFoodCell: HomeBaseCell {
     
     @IBOutlet weak var viewBackGroundDelivery: UIView!
     @IBOutlet weak var labelRestaurantName: UILabel!
+    @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var labelRestaurantAddress: UILabel!
     @IBOutlet weak var labelRating: UILabel!
     @IBOutlet weak var labelComments: UILabel!
@@ -79,6 +80,7 @@ class FindHalalFoodCell: HomeBaseCell {
             viewBackGroundDelivery.isHidden = halalRestuarantResponseData?.isDelivery ?? false
             self.viewItemTypeBackGround.isHidden = self.halalRestuarantResponseData?.status == ""
             self.labelItemType.text = self.halalRestuarantResponseData?.status
+            self.viewCallMainBackGround.isHidden = halalRestuarantResponseData?.phone ?? "" == ""
             if self.halalRestuarantResponseData?.status?.lowercased() == "closed" {
                 self.viewItemTypeBackGround.backgroundColor = .colorRed
             }
@@ -232,7 +234,11 @@ extension FindHalalFoodCell: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            self.viewController.dialNumber(number: userData.phone ?? "")
+            self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
+                if actionType == "viewdetails" {
+                    print("View Details")
+                }
+            }
         }
     }
     

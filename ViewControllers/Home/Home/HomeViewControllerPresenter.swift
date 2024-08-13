@@ -480,25 +480,31 @@ extension HomeViewController {
     func addCuisineCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
             var sectionName = ""
+            var selectedPlaceHolderIcon = ""
             var cuisine = [ModelCuisine]()
+            
             if selectedMenuCell == 0 {
                 cuisine = modelGetHomeRestaurantsResponse?.cuisine ?? []
                 sectionName = "Restaurants near you"
+                selectedPlaceHolderIcon = "placeHolderSubCuisine"
             }
             else if selectedMenuCell == 1 {
                 cuisine = modelGetHalalRestaurantResponse?.cuisine ?? []
                 sectionName = "Restaurants near you"
+                selectedPlaceHolderIcon = "placeholderHalalFood"
             }
             else if selectedMenuCell == 3 {
                 cuisine = modelGetPrayerPlacesResponse?.mosqueTypes ?? []
                 sectionName = "Prayer spaces near you"
+                selectedPlaceHolderIcon = "markerPrayerPlacesSelected"
             }
             print(indexOf)
             let recordCount = cuisine.count
             if recordCount > 0 {
                 let data =  [
                     "data": cuisine as Any,
-                    "selectedCuisine": selectedCuisine
+                    "selectedCuisine": selectedCuisine,
+                    "selectedPlaceHolderIcon": selectedPlaceHolderIcon
                 ]
                 
                 let rowHeight = 120

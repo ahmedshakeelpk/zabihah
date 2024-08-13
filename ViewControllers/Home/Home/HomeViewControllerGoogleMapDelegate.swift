@@ -24,7 +24,11 @@ extension HomeViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            self.dialNumber(number: userData.phone ?? "")
+            self.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
+                if actionType == "viewdetails" {
+                    print("View Details")
+                }
+            }
         }
     }
     

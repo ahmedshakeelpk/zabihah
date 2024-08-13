@@ -621,6 +621,7 @@
                 <outlet property="viewBackGroundDelivery" destination="5UB-13-XdE" id="s3p-gL-hfg"/>
                 <outlet property="viewBikeBackGround" destination="Eew-U1-asG" id="oXi-0S-Pca"/>
                 <outlet property="viewCallBackGround" destination="KHF-uR-UAB" id="3Qx-5e-E8V"/>
+                <outlet property="viewCallMainBackGround" destination="bKI-A8-bLv" id="n71-ZS-7R4"/>
                 <outlet property="viewItemTypeBackGround" destination="q7l-be-6EC" id="cAB-V7-Y6c"/>
                 <outlet property="viewRatingBackGround" destination="T21-eg-6hC" id="h8u-sU-fCK"/>
             </connections>

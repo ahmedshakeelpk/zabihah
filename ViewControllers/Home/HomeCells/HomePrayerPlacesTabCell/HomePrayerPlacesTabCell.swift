@@ -40,6 +40,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewRatingBackGround: UIView!
     @IBOutlet weak var imageViewItem: UIImageView!
+    @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
     @IBOutlet weak var buttonCall: UIButton!
 
@@ -121,7 +122,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         imageViewRestaurant.setImage(urlString: modelMosqueResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: modelMosqueResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
         imageViewFavourite.image = UIImage(named: modelMosqueResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-        
+        viewCallMainBackGround.isHidden = modelMosqueResponseData?.phone ?? "" == ""
         viewItemTypeBackGround.isHidden = modelMosqueResponseData?.status == ""
         labelItemType.text = modelMosqueResponseData?.status
         if modelMosqueResponseData?.status?.lowercased() == "closed" {
@@ -230,7 +231,11 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelGetPrayerPlacesResponseData {
-            self.viewController.dialNumber(number: userData.phone ?? "")
+            self.viewController.dialNumber(number: userData.phone ?? "") { actionType in
+                if actionType == "viewdetails" {
+                    print("View Details")
+                }
+            }
         }
     }
     

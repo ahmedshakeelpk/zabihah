@@ -17,6 +17,7 @@ class HomeCuisinesCell: HomeBaseCell {
     var delegate: HomeCuisinesCellDelegate!
     var dataRecord: HomeBaseCell.HomeListItem!
     var selectedCuisine: String!
+    var selectedPlaceHolderIcon: String!
     var modelCuisineResponse: [HomeViewController.ModelCuisine]? {
         didSet {
 
@@ -37,6 +38,7 @@ class HomeCuisinesCell: HomeBaseCell {
         dataRecord = data as? HomeBaseCell.HomeListItem
         modelCuisineResponse = (dataRecord.data as? [String : Any])?["data"] as? [HomeViewController.ModelCuisine]
         selectedCuisine =  (dataRecord.data as? [String : Any])?["selectedCuisine"] as? String
+        selectedPlaceHolderIcon =  (dataRecord.data as? [String : Any])?["selectedPlaceHolderIcon"] as? String
         delegate = viewController as? any HomeCuisinesCellDelegate
         collectionView.reloadData()
     }
@@ -63,6 +65,7 @@ extension HomeCuisinesCell: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCuisinesSubCell.nibName(), for: indexPath) as! HomeCuisinesSubCell
+        cell.selectedPlaceHolderIcon = selectedPlaceHolderIcon
         cell.modelCuisine = modelCuisineResponse?[indexPath.item]
         cell.selectedCuisine = selectedCuisine
         return cell

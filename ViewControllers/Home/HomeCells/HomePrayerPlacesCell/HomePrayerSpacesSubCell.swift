@@ -41,7 +41,10 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewRatingBackGround: UIView!
     @IBOutlet weak var imageViewItem: UIImageView!
+    @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
+    
+    
     
     var delegate: HomeFoodItemSubCellDelegate!
     var buttonFavouriteHandler: (() -> ())!
@@ -102,7 +105,7 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         imageViewRestaurant.setImage(urlString: modelMosqueResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: modelMosqueResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
         imageViewFavourite.image = UIImage(named: modelMosqueResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-        
+        viewCallMainBackGround.isHidden = modelMosqueResponseData?.phone ?? "" == ""
         viewBackGroundNewRestaurant.isHidden = modelMosqueResponseData?.status == ""
         labelItemType.text = modelMosqueResponseData?.status
         if modelMosqueResponseData?.status?.lowercased() == "closed" {

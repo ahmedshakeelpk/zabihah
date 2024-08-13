@@ -13,14 +13,20 @@ class HomeCuisinesSubCell: UICollectionViewCell {
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var imageViewTitle: UIImageView!
     @IBOutlet weak var viewImageViewTitleBackGround: UIView!
-
+    @IBOutlet weak var imageViewPlaceHolder: UIImageView!
+    var selectedPlaceHolderIcon: String!
     var modelCuisine: HomeViewController.ModelCuisine? {
         didSet {
             labelName.text = modelCuisine?.name
-            imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: "placeHolderSubCuisine") {
+            imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: selectedPlaceHolderIcon) {
                 image in
                 if image == nil {
                     self.imageViewTitle.isHidden = true
+                    self.imageViewPlaceHolder.image = UIImage(named: self.selectedPlaceHolderIcon)
+                }
+                else {
+                    self.imageViewTitle.isHidden = false
+                    self.imageViewPlaceHolder.isHidden = true
                 }
             }
         }
@@ -29,11 +35,11 @@ class HomeCuisinesSubCell: UICollectionViewCell {
         didSet {
             if selectedCuisine == modelCuisine?.name {
                 labelName.textColor = .colorApp
-                viewImageViewTitleBackGround.radius(radius: 8, color: .colorApp, borderWidth: 1)
+                viewImageViewTitleBackGround.radius(radius: 8, color: .colorApp, borderWidth: 2)
             }
             else {
                 labelName.textColor = .colorLabel
-                viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 1)
+                viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 2)
             }
         }
     }

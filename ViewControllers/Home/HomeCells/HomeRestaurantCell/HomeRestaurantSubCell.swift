@@ -12,6 +12,7 @@ protocol HomeRestaurantSubCellDelegate: AnyObject {
 }
 
 class HomeRestaurantSubCell: UICollectionViewCell {
+    @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var viewBackGroundDelivery: UIView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
@@ -73,7 +74,6 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         collectionView.dataSource = self
         
         imageViewRestaurant.circle()
-        
         setData()
     }
     @IBAction func buttonFavourite(_ sender: Any) {
@@ -102,6 +102,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
         imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
         viewBackGroundDelivery.isHidden = modelFeaturedRestuarantResponseData?.isDelivery ?? false
+        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
         if var tags = modelFeaturedRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
             if tags.last == "" || tags.last == " "{
                 tags.removeLast()

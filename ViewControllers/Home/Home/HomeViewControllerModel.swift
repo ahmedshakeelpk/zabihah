@@ -114,7 +114,11 @@ extension HomeViewController {
     }
     // MARK: - MosqueResponseDatum
     struct ModelUserConfigurationResponse: Codable {
-        let token: String?
-        
+        let distanceValue: Int?
+            let success: Bool?
+            let message, innerExceptionMessage: String?
+            let token: String?
+            let distanceUnit: String?
+            let recordFound: Bool?
     }
 }

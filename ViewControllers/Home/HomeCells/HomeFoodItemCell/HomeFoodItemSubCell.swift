@@ -33,6 +33,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     @IBOutlet weak var viewItemTypeBackGround: UIView!
     @IBOutlet weak var labelItemType: UILabel!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
+    @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var viewBikeBackGround: UIView!
     @IBOutlet weak var viewCallBackGround: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -105,7 +106,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
         imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-        
+        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
         
         if var tags = modelFeaturedRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
             if tags.last == "" || tags.last == " "{

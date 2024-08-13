@@ -192,12 +192,22 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func dialNumber(number : String) {
-        actionSheetForCall(number: number)
+    
+    func dialNumber(number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
+        if isActionSheet ?? false {
+            actionSheetForCall(number: number)
+        }
+        else {
+            self.callNow(number: number) {actionType in
+                completion?(actionType)
+            }
+        }
     }
-    func callNow(number : String) {
-        if let url = URL(string: "tel://\(number)"),
+    func callNow(number : String, completion: ((String?) -> Void)? = nil) {
+        let updatedPhone = number.filter{$0.isNumber}
+        if let url = URL(string: "tel://\(updatedPhone)"),
            UIApplication.shared.canOpenURL(url) {
+            completion?("callnow")
             if #available(iOS 10, *) {
                 UIApplication.shared.open(url, options: [:], completionHandler:nil)
             } else {
@@ -209,7 +219,7 @@ extension UIViewController {
         }
     }
     //Mark:- Choose Action Sheet
-    func actionSheetForCall(number : String) {
+    func actionSheetForCall(number : String, completion: ((String?) -> Void)? = nil) {
         var myActionSheet = UIAlertController(title: "Call!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
         let callAction = UIAlertAction(title: "Call", style: .destructive, handler: {
@@ -218,8 +228,7 @@ extension UIViewController {
         })
         let viewDetailsAction = UIAlertAction(title: "View Details", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
-            
-            
+            completion?("viewdetails")
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {

@@ -622,6 +622,7 @@
                 <outlet property="stackViewBackGround" destination="COV-Co-aep" id="T9M-aY-ihS"/>
                 <outlet property="stackViewRatingBackGround" destination="JsF-Qu-cbC" id="osg-mM-f8q"/>
                 <outlet property="viewCallBackGround" destination="xbs-ot-xGU" id="SEG-Ys-AA3"/>
+                <outlet property="viewCallMainBackGround" destination="cP5-bu-7S1" id="hzn-yJ-N83"/>
                 <outlet property="viewItemTypeBackGround" destination="Ykd-ce-tih" id="sLc-YE-EZR"/>
                 <outlet property="viewRatingBackGround" destination="aI8-Qj-aqo" id="nMi-nq-c62"/>
             </connections>
