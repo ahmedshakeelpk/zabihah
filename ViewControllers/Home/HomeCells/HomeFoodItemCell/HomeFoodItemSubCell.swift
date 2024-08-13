@@ -91,9 +91,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeFoodItemSubCellDelegate
         postFavouriteRestaurants()
-    }
-    
-    
+    }    
     
     func setData() {
         labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
