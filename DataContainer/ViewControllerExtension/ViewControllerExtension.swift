@@ -192,10 +192,14 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    
     func dialNumber(number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
         if isActionSheet ?? false {
-            actionSheetForCall(number: number)
+            if number == "" {
+                completion?("viewdetails")
+            }
+            else {
+                actionSheetForCall(number: number)
+            }
         }
         else {
             self.callNow(number: number) {actionType in
@@ -220,7 +224,7 @@ extension UIViewController {
     }
     //Mark:- Choose Action Sheet
     func actionSheetForCall(number : String, completion: ((String?) -> Void)? = nil) {
-        var myActionSheet = UIAlertController(title: "Call!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
+        var myActionSheet = UIAlertController(title: "Details!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
         let callAction = UIAlertAction(title: "Call", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
@@ -230,7 +234,7 @@ extension UIViewController {
             (alert: UIAlertAction!) -> Void in
             completion?("viewdetails")
         })
-
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
         })
