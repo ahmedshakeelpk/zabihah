@@ -124,7 +124,6 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Uqq-hU-oI4" firstAttribute="top" secondItem="lXY-RL-Soq" secondAttribute="top" id="H3B-2X-Fy2"/>
-                            <constraint firstAttribute="height" constant="94" id="O4r-8J-aLr"/>
                             <constraint firstItem="Uqq-hU-oI4" firstAttribute="leading" secondItem="lXY-RL-Soq" secondAttribute="leading" constant="16" id="akw-cw-kcP"/>
                             <constraint firstAttribute="bottom" secondItem="Uqq-hU-oI4" secondAttribute="bottom" id="qWl-jV-5JR"/>
                             <constraint firstAttribute="trailing" secondItem="Uqq-hU-oI4" secondAttribute="trailing" constant="16" id="y3b-qj-blc"/>

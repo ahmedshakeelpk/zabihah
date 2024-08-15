@@ -96,10 +96,10 @@ extension HomeViewController {
     struct ModelGetPrayerPlacesResponseData: Codable {
         let iconImage: String?
         let status: String?
-        let tags, createdOn, visits: String?
+        let tags, createdOn: String?
         var isFavorites: Bool?
         let name: String?
-        let reviews: Int?
+        let reviews, visits: Int?
         let long: Double?
         let id: String?
         let coverImage: String?

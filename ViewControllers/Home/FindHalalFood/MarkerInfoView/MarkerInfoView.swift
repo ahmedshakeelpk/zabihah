@@ -9,6 +9,7 @@ import UIKit
 
 class MarkerInfoView: UIView {
 
+    @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var buttonTapOnView: UIButton!
     @IBOutlet weak var viewRatingBackGround: UIView!
     @IBOutlet weak var imageViewItem: UIImageView!
@@ -41,6 +42,7 @@ class MarkerInfoView: UIView {
         labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
         labelImages.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
         labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"
+        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
         
         if let iconImage = modelFeaturedRestuarantResponseData?.iconImage {
             if iconImage == "" {
@@ -73,7 +75,7 @@ class MarkerInfoView: UIView {
         labelRating.text = "\(modelGetPrayerPlacesResponseData?.rating ?? 0)"
         labelImages.text = "\(modelGetPrayerPlacesResponseData?.gallaryCount ?? 0)"
         labelDistance.text = "\(modelGetPrayerPlacesResponseData?.distance ?? 0)\(modelGetPrayerPlacesResponseData?.distanceUnit ?? "")"
-        
+        viewCallMainBackGround.isHidden = modelGetPrayerPlacesResponseData?.phone ?? "" == ""
         if let iconImage = modelGetPrayerPlacesResponseData?.iconImage {
             if iconImage == "" {
                 imageViewItem.image = UIImage(named: "placeHolderRestaurant")

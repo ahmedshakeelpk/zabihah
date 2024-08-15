@@ -130,7 +130,7 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         let parameters = [
             "Id": modelMosqueResponseData?.id ?? "",
             "isMark": !(modelMosqueResponseData?.isFavorites ?? false),
-            "type" : "rest"
+            "type" : "prayer"
             
         ] as [String : Any]
        

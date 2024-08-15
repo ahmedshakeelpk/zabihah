@@ -27,7 +27,7 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
         didSet {
             labelTitle.isHidden = true
             viewButtonViewAllBackGround.isHidden = true
-//            (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = true
+            (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = Int(cuisineCount ?? "0") == 0
             
             if selectedMenuCell == 0 {
                 if section == 0 {
