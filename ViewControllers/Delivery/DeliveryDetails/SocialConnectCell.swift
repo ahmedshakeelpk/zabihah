@@ -9,6 +9,9 @@ import UIKit
 
 class SocialConnectCell: UICollectionViewCell {
 
+    @IBOutlet weak var imageViewIcon: UIImageView!
+    @IBOutlet weak var labelName: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

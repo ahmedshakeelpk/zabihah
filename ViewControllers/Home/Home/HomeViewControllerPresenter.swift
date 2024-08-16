@@ -326,6 +326,26 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
+        tableView.deselectRow(at: indexPath, animated: true)
+        if selectedMenuCell == 1 {
+            navigateToDeliveryDetailsViewController(indexPath: indexPath)
+        }
+        else if selectedMenuCell == 3 {
+            
+        }
+    }
+    
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+        if let halalRestuarantResponseData =   modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.row] {
+            let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+            vc.delegate = self
+            vc.indexPath = indexPath
+            vc.selectedMenuCell = selectedMenuCell
+            vc.halalRestuarantResponseData = halalRestuarantResponseData
+            vc.userLocation = userLocation
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
     }
 }
 
@@ -519,7 +539,23 @@ extension HomeViewController {
 
 
 
-extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDelegate, HomeRestaurantSubCellDelegate, HomePrayerSpacesSubCellDelegate {
+extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDelegate, HomeRestaurantSubCellDelegate, HomePrayerSpacesSubCellDelegate, DeliveryDetailsViewController3Delegate {
+  
+    func changeFavouriteStatusFromDetails(isFavourite: Bool, indexPath: IndexPath) {
+        if selectedMenuCell == 0 {
+            
+        }
+        else if selectedMenuCell == 1 {
+            modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.row].isFavorites = isFavourite
+        }
+        else if selectedMenuCell == 2 {
+            
+        }
+        else if selectedMenuCell == 3 {
+            modelGetPrayerPlacesResponse?.mosqueResponseData?[indexPath.row].isFavorites = isFavourite
+        }
+    }
+    
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UICollectionViewCell) {
 //        dontTriggerModelGetHomeRestaurantsResponseObservers = true
         if cellType is HomeFoodItemSubCell {

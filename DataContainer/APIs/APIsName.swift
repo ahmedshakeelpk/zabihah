@@ -22,6 +22,7 @@ struct APIsName {
         //MARK:- Restaurant
         case gethomerestaurants = "api/Restaurant/gethomerestaurants"
         case gethalalrestaurants = "api/Restaurant/gethalalrestaurants"
+        case getrestaurantdetail = "api/Restaurant/getrestaurantdetail"
         
         
         //MARK:- Mosque

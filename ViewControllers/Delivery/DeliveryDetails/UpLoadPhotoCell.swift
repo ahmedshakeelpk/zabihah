@@ -1,16 +1,15 @@
 //
-//  RecentPhotoCell.swift
+//  UpLoadPhotoCell.swift
 //  zabihah
 //
-//  Created by Shakeel Ahmed on 29/07/2024.
+//  Created by Shakeel Ahmed on 17/08/2024.
 //
 
 import UIKit
 
-class RecentPhotoCell: UICollectionViewCell {
-
+class UpLoadPhotoCell: UICollectionViewCell {
     @IBOutlet weak var stackViewBackGround: UIStackView!
-    @IBOutlet weak var imageViewPhoto: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

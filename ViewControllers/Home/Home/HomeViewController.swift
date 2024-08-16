@@ -237,9 +237,11 @@ class HomeViewController: UIViewController {
     }
     
     func setConfiguration() {
+        
         mapView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
+        
         sideMenuSetup()
         viewZoomInBackGround.circle()
         viewZoomOutBackGround.circle()
@@ -440,6 +442,9 @@ class HomeViewController: UIViewController {
         tableViewReload()
         collectionView.reloadData()
     }
+    
+    
+    
 }
 
 

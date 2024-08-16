@@ -30,7 +30,7 @@
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifD-8y-CXe">
                                                 <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyCuisine" translatesAutoresizingMaskIntoConstraints="NO" id="1tD-Og-qgE">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyFood" translatesAutoresizingMaskIntoConstraints="NO" id="1tD-Og-qgE">
                                                         <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                                     </imageView>
                                                 </subviews>
@@ -74,11 +74,15 @@
                 <constraint firstAttribute="bottom" secondItem="TXa-0R-qiI" secondAttribute="bottom" id="vkd-oc-G7B"/>
             </constraints>
             <size key="customSize" width="134" height="107"/>
+            <connections>
+                <outlet property="imageViewPhoto" destination="1tD-Og-qgE" id="PbQ-8L-Gxc"/>
+                <outlet property="stackViewBackGround" destination="k41-cH-6XR" id="BJL-nt-dlI"/>
+            </connections>
             <point key="canvasLocation" x="202.29007633587784" y="18.30985915492958"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="dummyCuisine" width="69" height="69"/>
+        <image name="dummyFood" width="226" height="124"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
