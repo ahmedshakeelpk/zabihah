@@ -56,7 +56,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <connections>
-                                                        <action selector="buttonAbout:" destination="-1" eventType="touchUpInside" id="wdl-uL-04e"/>
+                                                        <action selector="buttonAbout:" destination="HKa-4I-X20" eventType="touchUpInside" id="iOb-nf-I96"/>
                                                     </connections>
                                                 </button>
                                             </subviews>

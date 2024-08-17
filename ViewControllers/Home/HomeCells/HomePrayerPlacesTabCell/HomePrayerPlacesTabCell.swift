@@ -51,7 +51,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
    
     var arrayNames = [String]()
 
-    var modelMosqueResponseData: HomeViewController.ModelGetPrayerPlacesResponseData! {
+    var modelMosqueResponseData: HomeViewController.ModelRestuarantResponseData! {
         didSet {
             setData()
         }
@@ -95,7 +95,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         super.updateCell(data: data, indexPath: indexPath, viewController: viewController)
         // Configure the view for the selected state
         dataRecord = data as? HomeBaseCell.HomeListItem
-        if let modelData = dataRecord.data as? [HomeViewController.ModelGetPrayerPlacesResponseData] {
+        if let modelData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData] {
             modelMosqueResponseData = modelData[indexPath.row]
         }
         collectionView.reloadData()
@@ -221,7 +221,7 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 170, height: 135))
         let infoView = Bundle.loadView(fromNib: "MarkerInfoView", withType: MarkerInfoView.self)
         view.addSubview(infoView)
-        if let modelData = marker.userData as? HomeViewController.ModelGetPrayerPlacesResponseData {
+        if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
             infoView.modelGetPrayerPlacesResponseData = modelData
         }
         marker.icon = UIImage(named: "markerPrayerPlacesSelected")
@@ -230,7 +230,7 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
     
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
-        if let userData = marker.userData as? HomeViewController.ModelGetPrayerPlacesResponseData {
+        if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
             self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
                 if actionType == "viewdetails" {
                     print("View Details")

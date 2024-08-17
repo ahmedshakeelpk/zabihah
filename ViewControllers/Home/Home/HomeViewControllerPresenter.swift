@@ -327,25 +327,29 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
         tableView.deselectRow(at: indexPath, animated: true)
-        if selectedMenuCell == 1 {
+        if selectedMenuCell == 1 || selectedMenuCell == 3 {
             navigateToDeliveryDetailsViewController(indexPath: indexPath)
-        }
-        else if selectedMenuCell == 3 {
-            
         }
     }
     
     func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
-        if let halalRestuarantResponseData =   modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.row] {
-            let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
-            vc.delegate = self
-            vc.indexPath = indexPath
-            vc.selectedMenuCell = selectedMenuCell
-            vc.halalRestuarantResponseData = halalRestuarantResponseData
-            vc.userLocation = userLocation
-            self.navigationController?.pushViewController(vc, animated: true)
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+        vc.delegate = self
+        vc.indexPath = indexPath
+        vc.selectedMenuCell = selectedMenuCell
+        vc.userLocation = userLocation
+        if selectedMenuCell == 1 {
+            if let halalRestuarantResponseData =   modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.row] {
+                vc.modelRestuarantResponseData = halalRestuarantResponseData
+            }
         }
-        
+        else if selectedMenuCell == 3 {
+            vc.isPrayerPlace = true
+            if let mosqueResponseData =   modelGetPrayerPlacesResponse?.mosqueResponseData?[indexPath.row] {
+                vc.modelRestuarantResponseData = mosqueResponseData
+            }
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -462,7 +466,7 @@ extension HomeViewController {
     
     func addHomePrayerPlacesTabCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomePrayerPlacesTabCell.nibName()) {
-            var mosqueResponseData = [ModelGetPrayerPlacesResponseData]()
+            var mosqueResponseData = [ModelRestuarantResponseData]()
             mosqueResponseData = modelGetPrayerPlacesResponse?.mosqueResponseData ?? []
             print(indexOf)
             let recordCount = mosqueResponseData.count
@@ -570,7 +574,11 @@ extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDele
     }
     
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UITableViewCell) {
-//        dontTriggerModelGetHalalRestaurantResponseObservers = true
-        modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.item].isFavorites = isFavourite
+        if selectedMenuCell == 1 {
+            modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.item].isFavorites = isFavourite
+        }
+        else if selectedMenuCell == 3 {
+            modelGetPrayerPlacesResponse?.mosqueResponseData?[indexPath.item].isFavorites = isFavourite
+        }
     }
 }

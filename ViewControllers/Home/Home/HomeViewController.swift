@@ -227,6 +227,20 @@ class HomeViewController: UIViewController {
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
     var listItems: [HomeBaseCell.HomeListItem]!
     
+    var pullControl = UIRefreshControl()
+
+    override func viewDidAppear(_ animated: Bool) {
+        pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+           pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
+           tableView.addSubview(pullControl) // not
+        tableView.refreshControl?.tintColor = .clear
+    }
+    @objc func pulledRefreshControl() {
+        selectedMenuCell = itself(selectedMenuCell)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.pullControl.endRefreshing()
+        }
+    }
     override func viewWillAppear(_ animated: Bool) {
         getuser()
     }

@@ -64,7 +64,7 @@ extension HomeViewController {
         self.mapView.delegate = self
     }
     
-    func drawMarkerOnMap(modelGetPrayerPlacesResponseData: ModelGetPrayerPlacesResponseData) {
+    func drawMarkerOnMap(modelGetPrayerPlacesResponseData: ModelRestuarantResponseData) {
         /// Marker - Google Place marker
         let marker: GMSMarker = GMSMarker() // Allocating Marker
         marker.title = modelGetPrayerPlacesResponseData.name // Setting title

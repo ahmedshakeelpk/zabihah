@@ -49,6 +49,11 @@ struct APIsName {
         case edituseraddress = "v1/User/edituseraddress"
         case deleteuseraddress = "v1/User/deleteuseraddress"
         
+        //MARK:- Faq
+        case getfaq = "api/Faq/getfaq"
+
+        
+        
     }
 }
 

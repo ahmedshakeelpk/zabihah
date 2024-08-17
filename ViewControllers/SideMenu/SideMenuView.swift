@@ -123,6 +123,10 @@ class SideMenuView: UIView {
         viewController.present(myActionSheet, animated: true, completion: nil)
     }
     
+    
+    
+    
+    
     func navigateToRootLoginViewController() {
         let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.login.rawValue, bundle:nil)
         if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationLoginViewController") as? UINavigationController {
@@ -135,6 +139,10 @@ class SideMenuView: UIView {
     }
     func navigateToAddressesListViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToFAQsViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "FAQsViewController") as! FAQsViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     func navigateToMyFavouritesViewController() {
@@ -178,6 +186,17 @@ class SideMenuView: UIView {
             self.tableView.reloadData()
         }
     }
+    
+    func buttonAboutHandler() {
+        navigateToFAQsViewController()
+    }
+    func buttonPrivacyPolicyHandler() {
+        navigateToFAQsViewController()
+    }
+    func buttonFrequentlyAskQuestionHandler() {
+        navigateToFAQsViewController()
+    }
+    
 }
 
 
@@ -227,14 +246,13 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
         return UIView()
     }
     
-    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 0 {
             return UIView()
         }
         else {
             if let myFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SideMenuViewFooterViewCell") as? SideMenuViewFooterViewCell {
-                
+                myFooter.buttonAboutHandler = buttonAboutHandler
                 return myFooter
             }
         }

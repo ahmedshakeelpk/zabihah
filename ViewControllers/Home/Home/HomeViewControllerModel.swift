@@ -86,32 +86,32 @@ extension HomeViewController {
         let success: Bool?
         let message, innerExceptionMessage: String?
         let token: String?
-        var mosqueResponseData: [ModelGetPrayerPlacesResponseData]?
+        var mosqueResponseData: [ModelRestuarantResponseData]?
         var mosqueTypes: [ModelCuisine]?
         let totalPage: Int?
         let recordFound: Bool?
     }
 
-    // MARK: - MosqueResponseDatum
-    struct ModelGetPrayerPlacesResponseData: Codable {
-        let iconImage: String?
-        let status: String?
-        let tags, createdOn: String?
-        var isFavorites: Bool?
-        let name: String?
-        let reviews, visits: Int?
-        let long: Double?
-        let id: String?
-        let coverImage: String?
-        let titleImage: String?
-        let phone: String?
-        let distance: Double?
-        let isDelivery: Bool??
-        let distanceUnit: String?
-        let lat, rating: Double?
-        let address: String?
-        let gallaryCount: Int?
-    }
+//    // MARK: - MosqueResponseDatum
+//    struct ModelGetPrayerPlacesResponseData: Codable {
+//        let iconImage: String?
+//        let status: String?
+//        let tags, createdOn: String?
+//        var isFavorites: Bool?
+//        let name: String?
+//        let reviews, visits: Int?
+//        let long: Double?
+//        let id: String?
+//        let coverImage: String?
+//        let titleImage: String?
+//        let phone: String?
+//        let distance: Double?
+//        let isDelivery: Bool??
+//        let distanceUnit: String?
+//        let lat, rating: Double?
+//        let address: String?
+//        let gallaryCount: Int?
+//    }
     // MARK: - MosqueResponseDatum
     struct ModelUserConfigurationResponse: Codable {
         let distanceValue: Int?

@@ -75,6 +75,14 @@
 		6AB93BE82C622EDD0045C195 /* MyFavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB93BE62C622EDD0045C195 /* MyFavouriteCell.swift */; };
 		6AB93BE92C622EDD0045C195 /* MyFavouriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB93BE72C622EDD0045C195 /* MyFavouriteCell.xib */; };
 		6AB93BEB2C622F700045C195 /* MyFavouritesViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB93BEA2C622F700045C195 /* MyFavouritesViewControllerModel.swift */; };
+		6AC092A72C705CA5003AB07D /* DeliveryBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC092A62C705CA5003AB07D /* DeliveryBottomSheet.swift */; };
+		6AC092AA2C7084FD003AB07D /* DeliveryAmenitiesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AC092A92C7084FD003AB07D /* DeliveryAmenitiesCell.xib */; };
+		6AC092AB2C7084FD003AB07D /* DeliveryAmenitiesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC092A82C7084FD003AB07D /* DeliveryAmenitiesCell.swift */; };
+		6AC092AE2C708C27003AB07D /* DeliveryTimingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AC092AD2C708C27003AB07D /* DeliveryTimingCell.xib */; };
+		6AC092AF2C708C27003AB07D /* DeliveryTimingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC092AC2C708C27003AB07D /* DeliveryTimingCell.swift */; };
+		6AC092B22C709981003AB07D /* FAQsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC092B12C709981003AB07D /* FAQsViewController.swift */; };
+		6AC092B52C709E65003AB07D /* FAQsViewControllerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AC092B42C709E65003AB07D /* FAQsViewControllerCell.xib */; };
+		6AC092B62C709E65003AB07D /* FAQsViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC092B32C709E65003AB07D /* FAQsViewControllerCell.swift */; };
 		6ACA061F2C50BF8400EE8F43 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA061E2C50BF8400EE8F43 /* RangeSlider.swift */; };
 		6ACA065A2C5665AC00EE8F43 /* Delivery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ACA06592C5665AC00EE8F43 /* Delivery.storyboard */; };
 		6ACA065D2C56697000EE8F43 /* DeliveryDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA065C2C56697000EE8F43 /* DeliveryDetailsViewController.swift */; };
@@ -204,6 +212,14 @@
 		6AB93BE62C622EDD0045C195 /* MyFavouriteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFavouriteCell.swift; sourceTree = "<group>"; };
 		6AB93BE72C622EDD0045C195 /* MyFavouriteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyFavouriteCell.xib; sourceTree = "<group>"; };
 		6AB93BEA2C622F700045C195 /* MyFavouritesViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFavouritesViewControllerModel.swift; sourceTree = "<group>"; };
+		6AC092A62C705CA5003AB07D /* DeliveryBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryBottomSheet.swift; sourceTree = "<group>"; };
+		6AC092A82C7084FD003AB07D /* DeliveryAmenitiesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryAmenitiesCell.swift; sourceTree = "<group>"; };
+		6AC092A92C7084FD003AB07D /* DeliveryAmenitiesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliveryAmenitiesCell.xib; sourceTree = "<group>"; };
+		6AC092AC2C708C27003AB07D /* DeliveryTimingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTimingCell.swift; sourceTree = "<group>"; };
+		6AC092AD2C708C27003AB07D /* DeliveryTimingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeliveryTimingCell.xib; sourceTree = "<group>"; };
+		6AC092B12C709981003AB07D /* FAQsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQsViewController.swift; sourceTree = "<group>"; };
+		6AC092B32C709E65003AB07D /* FAQsViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQsViewControllerCell.swift; sourceTree = "<group>"; };
+		6AC092B42C709E65003AB07D /* FAQsViewControllerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FAQsViewControllerCell.xib; sourceTree = "<group>"; };
 		6ACA061E2C50BF8400EE8F43 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		6ACA06592C5665AC00EE8F43 /* Delivery.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Delivery.storyboard; sourceTree = "<group>"; };
 		6ACA065C2C56697000EE8F43 /* DeliveryDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryDetailsViewController.swift; sourceTree = "<group>"; };
@@ -337,6 +353,7 @@
 		6A16DFFC2C366EEA00E1383B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6AC092B02C709963003AB07D /* FAQs */,
 				6AD563492C6A274A004C7552 /* GalleryViewController */,
 				6AD477842C622979004AAABE /* MyFavourites */,
 				6ACA06582C5665A200EE8F43 /* Delivery */,
@@ -708,6 +725,16 @@
 			path = MyFavouriteCell;
 			sourceTree = "<group>";
 		};
+		6AC092B02C709963003AB07D /* FAQs */ = {
+			isa = PBXGroup;
+			children = (
+				6AC092B12C709981003AB07D /* FAQsViewController.swift */,
+				6AC092B32C709E65003AB07D /* FAQsViewControllerCell.swift */,
+				6AC092B42C709E65003AB07D /* FAQsViewControllerCell.xib */,
+			);
+			path = FAQs;
+			sourceTree = "<group>";
+		};
 		6ACA061D2C50BF7A00EE8F43 /* RangeSlider */ = {
 			isa = PBXGroup;
 			children = (
@@ -740,6 +767,11 @@
 				6A06C7942C6FE839006B5563 /* UpLoadPhotoCell.xib */,
 				6ACA066A2C57B9AB00EE8F43 /* SocialConnectCell.swift */,
 				6ACA066B2C57B9AB00EE8F43 /* SocialConnectCell.xib */,
+				6AC092A62C705CA5003AB07D /* DeliveryBottomSheet.swift */,
+				6AC092A82C7084FD003AB07D /* DeliveryAmenitiesCell.swift */,
+				6AC092A92C7084FD003AB07D /* DeliveryAmenitiesCell.xib */,
+				6AC092AC2C708C27003AB07D /* DeliveryTimingCell.swift */,
+				6AC092AD2C708C27003AB07D /* DeliveryTimingCell.xib */,
 			);
 			path = DeliveryDetails;
 			sourceTree = "<group>";
@@ -990,6 +1022,9 @@
 				6ACA06602C56A47300EE8F43 /* FoodItemCollectionViewCell.xib in Resources */,
 				6A00FF022C4CAC890006E324 /* FindHalalFoodCell.xib in Resources */,
 				6A3AB57C2C3966E00030F016 /* SideMenuView.xib in Resources */,
+				6AC092AA2C7084FD003AB07D /* DeliveryAmenitiesCell.xib in Resources */,
+				6AC092B52C709E65003AB07D /* FAQsViewControllerCell.xib in Resources */,
+				6AC092AE2C708C27003AB07D /* DeliveryTimingCell.xib in Resources */,
 				6AB93BE92C622EDD0045C195 /* MyFavouriteCell.xib in Resources */,
 				6A3AB5862C39703B0030F016 /* SideMenuViewCell.xib in Resources */,
 				6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */,
@@ -1098,6 +1133,7 @@
 				6A9BD3DC2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift in Sources */,
 				6A3AB5732C3956DB0030F016 /* HomeViewController.swift in Sources */,
 				6A6269332C3D3EDD00DA844F /* HomeFoodItemSubCell.swift in Sources */,
+				6AC092A72C705CA5003AB07D /* DeliveryBottomSheet.swift in Sources */,
 				6A3AB5802C3967820030F016 /* SideMenuView.swift in Sources */,
 				6A16E0062C367A1B00E1383B /* StoryBoard.swift in Sources */,
 				6A3AB5832C396E020030F016 /* TableViewExtension.swift in Sources */,
@@ -1112,6 +1148,7 @@
 				6A28D8572C37DEEC00F5A95F /* EditNameViewController.swift in Sources */,
 				6ACA06652C579A5400EE8F43 /* DeliveryDetailsViewController3.swift in Sources */,
 				6A16E0092C36818B00E1383B /* OtpLoginViewController.swift in Sources */,
+				6AC092B62C709E65003AB07D /* FAQsViewControllerCell.swift in Sources */,
 				6A6FC4002C3572000050B6B2 /* LoginViewController.swift in Sources */,
 				6A3AB59E2C3A80470030F016 /* AddressesCell.swift in Sources */,
 				6A6FC4112C357D490050B6B2 /* AppColorsExtension.swift in Sources */,
@@ -1142,8 +1179,10 @@
 				6AD4776A2C5F4757004AAABE /* MarkerInfoView.swift in Sources */,
 				6AD0C0162C3BE43D0051D99A /* APIsName.swift in Sources */,
 				6AD477312C5B60B3004AAABE /* CommonAPIs.swift in Sources */,
+				6AC092B22C709981003AB07D /* FAQsViewController.swift in Sources */,
 				6AD0C0112C3BC55C0051D99A /* AddAddressFieldsCell.swift in Sources */,
 				6AD0C00D2C3BA61F0051D99A /* AddAddressViewController.swift in Sources */,
+				6AC092AF2C708C27003AB07D /* DeliveryTimingCell.swift in Sources */,
 				6AD563502C6A27B5004C7552 /* GalleryViewControllerCell.swift in Sources */,
 				6AD477862C622990004AAABE /* MyFavouritesViewController.swift in Sources */,
 				6AD477832C61DB08004AAABE /* HomeRestaurantSubCuisineCell.swift in Sources */,
@@ -1174,6 +1213,7 @@
 				6AD0C0182C3BE7690051D99A /* CustomActivityIndicator.swift in Sources */,
 				6AD0C0292C3BF5A20051D99A /* BlurBackGroundViewExtension.swift in Sources */,
 				6AD0C0142C3BE3E80051D99A /* APIs.swift in Sources */,
+				6AC092AB2C7084FD003AB07D /* DeliveryAmenitiesCell.swift in Sources */,
 				6ACA061F2C50BF8400EE8F43 /* RangeSlider.swift in Sources */,
 				6AD39E942C3EAC5200BDAC05 /* Constants.swift in Sources */,
 				6A3AB5682C390A830030F016 /* EditEmailPhoneViewController.swift in Sources */,
@@ -1331,7 +1371,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1368,7 +1408,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

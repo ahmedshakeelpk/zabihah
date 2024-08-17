@@ -31,7 +31,8 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var labelHalalSummaryDetails: UILabel!
     @IBOutlet weak var viewShareBackGround: UIView!
     @IBOutlet weak var viewCallBackGround: UIView!
-    
+    @IBOutlet weak var buttonTiming: UIButton!
+
     @IBOutlet weak var imageViewHalalSummaryDropDown: UIImageView!
     @IBOutlet weak var labelFullHalalMenu: UILabel!
     @IBOutlet weak var labelAlcohol: UILabel!
@@ -55,7 +56,7 @@ class DeliveryDetailsViewController3: UIViewController {
     var isPrayerPlace: Bool = false
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces", "Pickup & delivery", "Prayer spaces"]
     var userLocation: CLLocation!
-    var halalRestuarantResponseData: HomeViewController.ModelRestuarantResponseData!
+    var modelRestuarantResponseData: HomeViewController.ModelRestuarantResponseData!
     var selectedMenuCell: Int!
     var indexPath: IndexPath!
     
@@ -109,6 +110,7 @@ class DeliveryDetailsViewController3: UIViewController {
         setConfiguration()
         getFeaturedRestaurants()
     }
+    
     @IBAction func buttonFavourite(_ sender: Any) {
         postFavouriteRestaurants()
     }
@@ -123,9 +125,18 @@ class DeliveryDetailsViewController3: UIViewController {
             activityViewController.popoverPresentationController?.sourceView = self.view
             self.present(activityViewController, animated: true, completion: nil)
     }
-    
+    @IBAction func buttonTiming(_ sender: Any) {
+        navigateToDeliveryBottomSheet()
+    }
     @IBAction func buttonAmenities(_ sender: Any) {
-        
+        navigateToDeliveryBottomSheet(isAmenities: true)
+    }
+    func navigateToDeliveryBottomSheet(isAmenities: Bool? = false) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryBottomSheet") as! DeliveryBottomSheet
+        vc.timingOpenClose = timingOpenClose
+        vc.amenitiesData = amenitiesData
+        vc.isAmenities = isAmenities
+        self.present(vc, animated: true)
     }
     @IBAction func buttonBack(_ sender: Any) {
         self.popViewController(animated: true)
@@ -194,7 +205,7 @@ class DeliveryDetailsViewController3: UIViewController {
         let parameters = [
             "lat": userLocation?.coordinate.latitude as Any,
             "long": userLocation?.coordinate.longitude as Any,
-            "id": halalRestuarantResponseData.id ?? "",
+            "id": modelRestuarantResponseData.id ?? "",
             "type": isPrayerPlace ? "prayer" : "rest"
         ]
         APIs.postAPI(apiName: .getrestaurantdetail, parameters: parameters, viewController: self) { responseData, success, errorMsg in
@@ -340,7 +351,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             placeHolder = "instagramGray"
         }
         else if titleName.lowercased() == "twitter" {
-            placeHolder = "tiktokGray"
+            placeHolder = "twitterGray"
         }
         else if titleName.lowercased() == "tiktok" {
             placeHolder = "tiktokGray"

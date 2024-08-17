@@ -24,7 +24,7 @@ class MarkerInfoView: UIView {
     
     var buttonTapOnViewHandler: (() -> ())!
 
-    var modelGetPrayerPlacesResponseData: HomeViewController.ModelGetPrayerPlacesResponseData? {
+    var modelGetPrayerPlacesResponseData: HomeViewController.ModelRestuarantResponseData? {
         didSet {
             setDataPrayerPlacesResponseData()
         }
