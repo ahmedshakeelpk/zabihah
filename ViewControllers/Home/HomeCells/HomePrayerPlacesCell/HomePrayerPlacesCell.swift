@@ -41,12 +41,22 @@ class HomePrayerPlacesCell: HomeBaseCell {
         collectionView.reloadData()
     }
     
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+        vc.delegate = viewController as? any DeliveryDetailsViewController3Delegate
+        vc.isPrayerPlace = true
+        vc.indexPath = indexPath
+        vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
+        vc.userLocation = (viewController as? HomeViewController)?.userLocation
+        vc.modelRestuarantResponseData = modelMosqueResponseData[indexPath.row]
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 extension HomePrayerPlacesCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            return UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 12)
+        return UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 12)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -69,14 +79,14 @@ extension HomePrayerPlacesCell: UICollectionViewDataSource, UICollectionViewDele
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//            DispatchQueue.main.async {
-//                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
-//            }
+        //            DispatchQueue.main.async {
+        //                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
+        //            }
         
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        selectedCell = indexPath.item
-        collectionView.reloadData()
+        let indexPathUpdated = IndexPath(row: indexPath.item, section: self.indexPath.section)
+        navigateToDeliveryDetailsViewController(indexPath: indexPathUpdated)
     }
 }

@@ -543,11 +543,19 @@ extension HomeViewController {
 
 
 
-extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDelegate, HomeRestaurantSubCellDelegate, HomePrayerSpacesSubCellDelegate, DeliveryDetailsViewController3Delegate {
+extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDelegate, HomeRestaurantSubCellDelegate, HomePrayerSpacesSubCellDelegate, DeliveryDetailsViewController3Delegate, HomePrayerPlacesTabCellDelegate {
   
     func changeFavouriteStatusFromDetails(isFavourite: Bool, indexPath: IndexPath) {
         if selectedMenuCell == 0 {
-            
+            if indexPath.section == 0 {
+                modelGetHomeRestaurantsResponse?.featuredRestuarantResponseData?[indexPath.row].isFavorites = isFavourite
+            }
+            else if indexPath.section == 2 {
+                modelGetHomeRestaurantsResponse?.restuarantResponseData?[indexPath.row].isFavorites = isFavourite
+            }
+            else if indexPath.section == 3 {
+                modelGetHomeRestaurantsResponse?.mosqueResponseData?[indexPath.row].isFavorites = isFavourite
+            }
         }
         else if selectedMenuCell == 1 {
             modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.row].isFavorites = isFavourite

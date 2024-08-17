@@ -76,6 +76,17 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        selectedCell = indexPath.item
-        collectionView.reloadData()
+//        collectionView.reloadData()
+        navigateToDeliveryDetailsViewController(indexPath: indexPath)
+    }
+    
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+        vc.delegate = viewController as? any DeliveryDetailsViewController3Delegate
+        vc.indexPath = indexPath
+        vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
+        vc.userLocation = (viewController as? HomeViewController)?.userLocation
+        vc.modelRestuarantResponseData = modelFeaturedRestuarantResponseData[indexPath.row]
+        viewController.navigationController?.pushViewController(vc, animated: true)
     }
 }

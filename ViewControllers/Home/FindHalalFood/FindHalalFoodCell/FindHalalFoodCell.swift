@@ -215,7 +215,7 @@ extension FindHalalFoodCell: UICollectionViewDataSource, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        selectedCell = indexPath.item
-        collectionView.reloadData()
+//        collectionView.reloadData()
     }
 }
 

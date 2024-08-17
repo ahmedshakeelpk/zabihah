@@ -252,7 +252,7 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
         }
         else {
             if let myFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SideMenuViewFooterViewCell") as? SideMenuViewFooterViewCell {
-                myFooter.buttonAboutHandler = buttonAboutHandler
+                myFooter.buttonFrequentlyAskQuestionHandler = buttonFrequentlyAskQuestionHandler
                 return myFooter
             }
         }
