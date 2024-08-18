@@ -34,7 +34,7 @@ extension HomeViewController {
     
     func presentToHomeFilterViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeFilterViewController") as! HomeFilterViewController
-        if userLocation?.coordinate.latitude == nil && userLocation?.coordinate.longitude == nil {
+        if userLocation == nil {
             return()
         }
         vc.selectedMenuCell = selectedMenuCell

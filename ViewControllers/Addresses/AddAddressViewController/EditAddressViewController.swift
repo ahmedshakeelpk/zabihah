@@ -319,6 +319,11 @@ class EditAddressViewController: UIViewController {
     }
     
     func drawCircleForRadiusForGoogleMap() {
+        if kUserCurrentLocation == nil {
+            kUserCurrentLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
+            location
+            return()
+        }
         let circleRadius = 0.250 * 1000 // 20 Km in meters
         let circleCenter : CLLocationCoordinate2D  = CLLocationCoordinate2DMake(kUserCurrentLocation.coordinate.latitude, kUserCurrentLocation.coordinate.longitude);
         let circ = GMSCircle(position: circleCenter, radius: circleRadius)

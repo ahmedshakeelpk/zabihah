@@ -44,7 +44,8 @@ class HomeFilterViewController: UIViewController {
     }
     
     @IBOutlet weak var buttonCross: UIButton!
-    
+    @IBOutlet weak var stackViewHalalAlCohal: UIStackView!
+
     var filterParametersHome: [String: Any]!
     var buttonFilterHandler: (([String: Any]) -> ())!
     var location: CLLocationCoordinate2D? {
@@ -53,7 +54,6 @@ class HomeFilterViewController: UIViewController {
             
         }
     }
-    @IBOutlet weak var stackViewHalalAlCohal: UIStackView!
     
     var selectedMenuCell = 0 {
         didSet {
@@ -84,7 +84,6 @@ class HomeFilterViewController: UIViewController {
                 switchHideHalalPlaces.isOn = isHalal
             }
         }
-        
         if selectedMenuCell == 3 {
             stackViewHalalAlCohal.isHidden = true
         }
@@ -135,7 +134,6 @@ class HomeFilterViewController: UIViewController {
     }
     @IBAction func switchHideAlcoholPlaces(_ sender: Any) {
     }
-   
 }
 
 

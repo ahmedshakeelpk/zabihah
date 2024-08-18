@@ -54,17 +54,7 @@ class HomeViewController: UIViewController {
         didSet {
             //Location Services
             locationManager.delegate = self
-    //        if CLLocationManager.locationServicesEnabled() {
-    //             switch CLLocationManager.authorizationStatus() {
-    //                case .notDetermined, .restricted, .denied:
-    //                    print("No access")
-    //                case .authorizedAlways, .authorizedWhenInUse:
-    //                    print("Access")
-    //
-    //             }
-    //        }
-            locationManager.requestWhenInUseAuthorization()
-            locationManager.startUpdatingLocation()
+            checkLocationServices()
         }
     }
     
@@ -457,8 +447,32 @@ class HomeViewController: UIViewController {
         collectionView.reloadData()
     }
     
-    
-    
+    func checkLocationServices() {
+        let status = locationManager.authorizationStatus
+        switch status {
+        case .notDetermined:
+            locationManager.requestAlwaysAuthorization()
+            break
+        case .authorizedWhenInUse:
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+            break
+        case .authorizedAlways:
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+            break
+        case .restricted:
+            // restricted by e.g. parental controls. User can't enable Location Services
+            self.getUserAddress()
+            break
+        case .denied:
+            // user denied your app access to Location Services, but can grant access from Settings.app
+            self.getUserAddress()
+            break
+        default:
+            break
+        }
+    }
 }
 
 
@@ -493,6 +507,7 @@ extension HomeViewController : CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
          print("error:: \(error.localizedDescription)")
+        locationManager.authorizationStatus
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

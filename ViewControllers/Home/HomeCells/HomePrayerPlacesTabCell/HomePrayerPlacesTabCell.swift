@@ -169,8 +169,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         let parameters = [
             "Id": modelMosqueResponseData?.id ?? "",
             "isMark": !(modelMosqueResponseData?.isFavorites ?? false),
-            "type" : "prayer"
-            
+            "type" : "\((viewController as? HomeViewController)?.selectedCuisine.lowercased() == "restaurants" ? "rest" : "prayer")"
         ] as [String : Any]
        
         APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in
