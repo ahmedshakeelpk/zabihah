@@ -8,7 +8,8 @@
 import UIKit
 
 class GalleryViewControllerCell: UICollectionViewCell {
-
+    @IBOutlet weak var imageViewGalleryImage: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

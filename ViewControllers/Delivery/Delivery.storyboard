@@ -1513,11 +1513,11 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="opK-bE-XIo">
-                                                <rect key="frame" x="134.5" y="0.0" width="71.5" height="50"/>
+                                                <rect key="frame" x="134.5" y="0.0" width="121.5" height="50"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y9g-fK-NmW">
-                                                <rect key="frame" x="206" y="0.0" width="50" height="50"/>
+                                                <rect key="frame" x="256" y="0.0" width="50" height="50"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heartMehroon" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-sc-82B">
                                                         <rect key="frame" x="15" y="15" width="20" height="20"/>
@@ -1546,7 +1546,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uwI-D3-4Nb">
-                                                <rect key="frame" x="256" y="0.0" width="50" height="50"/>
+                                                <rect key="frame" x="306" y="0.0" width="50" height="50"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shareMehroon" translatesAutoresizingMaskIntoConstraints="NO" id="wL3-bp-SIx">
                                                         <rect key="frame" x="15" y="15" width="20" height="20"/>
@@ -1574,8 +1574,8 @@
                                                     <constraint firstItem="kpg-yE-sRq" firstAttribute="top" secondItem="uwI-D3-4Nb" secondAttribute="top" id="yP0-Og-twY"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9SC-en-Wyd">
-                                                <rect key="frame" x="306" y="0.0" width="50" height="50"/>
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9SC-en-Wyd">
+                                                <rect key="frame" x="356" y="0.0" width="50" height="50"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cartMehroon" translatesAutoresizingMaskIntoConstraints="NO" id="bdL-5P-NMX">
                                                         <rect key="frame" x="15" y="15" width="20" height="20"/>
@@ -2671,8 +2671,13 @@
                         <outlet property="labelRestaurantName" destination="RWh-5b-H8H" id="Zoy-Ze-YI4"/>
                         <outlet property="labelReturning" destination="NdD-eJ-Nba" id="glj-uy-EoR"/>
                         <outlet property="labelReviews" destination="0uN-8b-Fsi" id="9ie-uv-MSj"/>
+                        <outlet property="stackViewConnectBackGround" destination="xTB-D0-b1Y" id="ggr-3Q-4lr"/>
                         <outlet property="viewAddressDevider" destination="c2a-ZC-s7c" id="95d-fb-9bU"/>
+                        <outlet property="viewAmenitiesBackGround" destination="NIa-Mj-tug" id="uR3-PZ-gPe"/>
                         <outlet property="viewCallBackGround" destination="PJ6-TC-aby" id="sfr-FY-hFk"/>
+                        <outlet property="viewFavouriteBackGround" destination="y9g-fK-NmW" id="Ja1-Tf-yT3"/>
+                        <outlet property="viewHalalMenuBackGround" destination="YJt-II-Gc0" id="CCC-Tu-iaE"/>
+                        <outlet property="viewHalalSummaryBackGround" destination="uQF-8G-htT" id="MXF-By-dTw"/>
                         <outlet property="viewHalalSummaryDetailsBackGround" destination="ZE8-2a-ocT" id="W4h-vy-RM6"/>
                         <outlet property="viewShareBackGround" destination="uwI-D3-4Nb" id="RM0-4F-1a9"/>
                     </connections>
@@ -2691,9 +2696,22 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Rb-ga-qDP">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tcp-GH-JEg">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <action selector="buttonDismiss:" destination="HIh-Z8-gmC" eventType="touchUpInside" id="gLV-su-Juw"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="Tcp-GH-JEg" firstAttribute="leading" secondItem="7Rb-ga-qDP" secondAttribute="leading" id="Zip-z5-MKs"/>
+                                    <constraint firstAttribute="trailing" secondItem="Tcp-GH-JEg" secondAttribute="trailing" id="aLU-iE-z4x"/>
+                                    <constraint firstItem="Tcp-GH-JEg" firstAttribute="top" secondItem="7Rb-ga-qDP" secondAttribute="top" id="lqc-zi-uXo"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="qYI-e7-Kj3"/>
+                                    <constraint firstAttribute="bottom" secondItem="Tcp-GH-JEg" secondAttribute="bottom" id="vqD-yM-HLn"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lak-b4-WQq">
@@ -2711,7 +2729,7 @@
                                                         <color key="textColor" red="0.16078431369999999" green="0.16078431369999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eRL-G1-bJ2">
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eRL-G1-bJ2">
                                                         <rect key="frame" x="312" y="8" width="50" height="50"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="crossMisc" translatesAutoresizingMaskIntoConstraints="NO" id="cSA-5n-zVG">
@@ -2798,6 +2816,9 @@
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TY9-MA-7ec">
                                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="48"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <connections>
+                                                                    <action selector="buttonContinue:" destination="HIh-Z8-gmC" eventType="touchUpInside" id="MSg-u2-IDj"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.21176470589999999" green="0.25490196079999999" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -2855,6 +2876,8 @@
                     </view>
                     <connections>
                         <outlet property="buttonCancel" destination="nyB-cP-VRJ" id="Lzu-S8-AMn"/>
+                        <outlet property="buttonContinue" destination="TY9-MA-7ec" id="413-su-ApI"/>
+                        <outlet property="buttonDismiss" destination="Tcp-GH-JEg" id="B9u-Ms-407"/>
                         <outlet property="labelTitle" destination="9bJ-8K-QKP" id="2hy-ry-1Vv"/>
                         <outlet property="tableView" destination="hsL-3J-ZOU" id="cdy-zo-D78"/>
                         <outlet property="viewBackGround" destination="lak-b4-WQq" id="VBm-Qg-KAt"/>

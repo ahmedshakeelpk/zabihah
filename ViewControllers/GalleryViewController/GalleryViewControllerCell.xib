@@ -30,6 +30,9 @@
                 <constraint firstAttribute="bottom" secondItem="pYo-FZ-p4I" secondAttribute="bottom" id="fZq-Z8-QuV"/>
             </constraints>
             <size key="customSize" width="281" height="283"/>
+            <connections>
+                <outlet property="imageViewGalleryImage" destination="pYo-FZ-p4I" id="4F5-Gh-114"/>
+            </connections>
             <point key="canvasLocation" x="248.09160305343511" y="101.7605633802817"/>
         </collectionViewCell>
     </objects>

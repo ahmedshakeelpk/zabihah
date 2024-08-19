@@ -198,7 +198,11 @@ extension UIViewController {
                 completion?("viewdetails")
             }
             else {
-                actionSheetForCall(number: number)
+                actionSheetForCall(number: number) {clickOn in
+                    if clickOn == "viewdetails" {
+                        completion?(clickOn)
+                    }
+                }
             }
         }
         else {

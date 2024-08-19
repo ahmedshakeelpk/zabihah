@@ -281,8 +281,7 @@ print(str)
 //        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("*/*", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.timeoutInterval = 50 // 50 secs
-        request.timeoutInterval = 50 // 50 secs
+        request.timeoutInterval = 30 // 50 secs
 
 //        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
@@ -548,82 +547,143 @@ print(str)
         }
     }
     
-    /*
-    static func uploadFile<T: Codable>(apiName: APIs.name, fileData:Data, fileName:String, parameters: [String: AnyObject], viewController: UIViewController? = nil, modelType: T.Type, completion: @escaping(_ T: Codable?, Bool, _ errorMsg: String) -> Void) {
-        // params to send additional data, for eg. AccessToken or userUserId
-        let completeUrl = APIPath.baseUrl + apiName.rawValue
-        let parameterJsonString = parameters.toJSONString()
-        
-        let baseClass = BaseClassVC()
-        let result = (baseClass.splitString(stringToSplit: baseClass.base64EncodedString(params: parameters)))
-        
-        let paramstemp = [
-            "apiAttribute1":result.apiAttribute1,
-            "apiAttribute2":result.apiAttribute2,
-            "channelId":"\(DataManager.instance.channelID)"
-        ]
-        let stringParamters = APIs.json(from: paramstemp)
-        
-        let params = ["data": stringParamters]
-        print(params)
-        
-        //let postData = stringParamters!.data(using: .utf8)
-        let url = URL(string: completeUrl)!
-//        let jsonData = stringParamters!.data(using: .utf8, allowLossyConversion: false)!
-
-        var request = URLRequest(url: url)
-        request.httpMethod = HTTPMethod.post.rawValue
-//        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.setValue("multipart/form-data", forHTTPHeaderField: "Content-Type")
-                
-        var token = DataManager.instance.accessToken ?? ""
-        request.addValue(token, forHTTPHeaderField: "Authorization")
-        
-        let headers: HTTPHeaders = [
-                    "Authorization": "\(token)", // in case you need authorization header
-                    "Content-type": "multipart/form-data"
-                ]
-        
-        print("Url: \(completeUrl)")
-        print("Parameters: \(parameters)")
-        print("Headers: \(token)")
-        
-//        request.httpBody = jsonData
-        //print("\(APIs.json(from: parameters)))")
-        if let vc = viewController {
-            vc.showActivityIndicator2()
-        }
-        
-        AF.upload(multipartFormData: { multiPart in
-            multiPart.append(fileData,
-                             withName: "file",
-                             fileName: "\(fileName)",
-                             mimeType: "image/jpeg/jpg/png")
-            
-            for (key,keyValue) in params{
-                if let keyData = keyValue!.data(using: .utf8){
-                    multiPart.append(keyData, withName: key)
-                }
-            }
-        }, to: completeUrl, method: .post, headers: headers).responseDecodable(of: T.self) { apiResponse in
-            //       .responseJSON { apiResponse in
-            if let vc = viewController {
-                vc.hideActivityIndicator2()
-            }
-            
-            switch apiResponse.result{
-            case .success(_):
-                let apiDictionary = apiResponse.value as? [String:Any]
-                print("apiResponse --- \(apiDictionary)")
-                print("apiResponse --- \(apiResponse)")
-                completion(apiResponse.value, true, "")
-            case .failure(_):
-                print("got an error")
-                completion(apiResponse.value, false, "error in model")
-            }
-        }
+    static func generateCurrentTimeStamp() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy_MM_dd_hh_mm_ss"
+        return (formatter.string(from: Date()) as NSString) as String
     }
-     */
+    static func uploadImage(apiName: APIsName.name, image: UIImage, parameter: [String: Any], completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+        let completeUrl = APIPath.baseUrl + apiName.rawValue
+        guard let url = URL(string: completeUrl) else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let authToken = "bearer \(kAccessToken)"
+        request.addValue(authToken, forHTTPHeaderField: "Authorization")
+        
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        // Convert the image to Data
+        guard let imageData = image.jpegData(compressionQuality: 1) else { return }
+        
+        // Create the multipart body
+        var body = Data()
+        
+        // Add image data to the body
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"UploadImage\"; filename=\"image\(APIs.generateCurrentTimeStamp()).jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n".data(using: .utf8)!)
+        
+        
+        
+        
+        // Add any additional fields (optional)
+        let parameters = parameter
+        for (key, value) in parameters {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
+        
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        request.httpBody = body
+        
+        // Send the request
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                completion(nil, false, error.localizedDescription)
+                return
+            }
+            
+            if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+                print("Upload successful")
+                if let jsonResponse = String(data: data!, encoding: String.Encoding.utf8) {
+                    print("JSON String: \(jsonResponse)")
+                }
+                
+                completion(data, false, "")
+                
+            } else {
+                print("Upload failed")
+            }
+        }
+        
+        task.resume()
+    }
+//    static func uploadFile<T: Codable>(apiName: APIsName.name, fileData:Data, fileName:String, parameters: [String: AnyObject], viewController: UIViewController? = nil, modelType: T.Type, completion: @escaping(_ T: Codable?, Bool, _ errorMsg: String) -> Void) {
+//        //        params to send additional data, for eg. AccessToken or userUserId
+//        let completeUrl = APIPath.baseUrl + apiName.rawValue
+//        let parameterJsonString = parameters.toJSONString()
+//        
+//       
+//        let stringParamters = APIs.json(from: paramstemp)
+//        
+//        let params = ["data": stringParamters]
+//        print(params)
+//        
+//        let postData = stringParamters!.data(using: .utf8)
+//        let url = URL(string: completeUrl)!
+//        let jsonData = stringParamters!.data(using: .utf8, allowLossyConversion: false)!
+//        
+//        var request = URLRequest(url: url)
+//        request.httpMethod = HTTPMethod.post.rawValue
+//        request.setValue("application/json", forHTTPHeaderField: "Accept")
+//        request.setValue("multipart/form-data", forHTTPHeaderField: "Content-Type")
+//        
+//        var token = DataManager.instance.accessToken ?? ""
+//        request.addValue(token, forHTTPHeaderField: "Authorization")
+//        
+//        let headers: HTTPHeaders = [
+//            "Authorization": "\(token)", // in case you need authorization header
+//            "Content-type": "multipart/form-data"
+//        ]
+//        
+//        print("Url: \(completeUrl)")
+//        print("Parameters: \(parameters)")
+//        print("Headers: \(token)")
+//        
+//        request.httpBody = jsonData
+//        print("\(APIs.json(from: parameters)))")
+//        if let vc = viewController {
+//            vc.showActivityIndicator2()
+//        }
+//        
+//        AF.upload(multipartFormData: { multiPart in
+//            multiPart.append(fileData,
+//                             withName: "file",
+//                             fileName: "\(fileName)",
+//                             mimeType: "image/jpeg/jpg/png")
+//            
+//            for (key,keyValue) in params{
+//                if let keyData = keyValue!.data(using: .utf8){
+//                    multiPart.append(keyData, withName: key)
+//                }
+//            }
+//        }, to: completeUrl, method: .post, headers: headers).responseDecodable(of: T.self) { apiResponse in
+//                .responseData { apiResponse in
+//                    if let vc = viewController {
+//                        vc.hideActivityIndicator2()
+//                    }
+//                    
+//                    switch apiResponse.result{
+//                    case .success(_):
+//                        let apiDictionary = apiResponse.value as? [String:Any]
+//                        print("apiResponse --- \(apiDictionary)")
+//                        print("apiResponse --- \(apiResponse)")
+//                        completion(apiResponse.value, true, "")
+//                    case .failure(_):
+//                        print("got an error")
+//                        completion(apiResponse.value, false, "error in model")
+//                    }
+//                }
+//        }
+//    }
+     
     
     static func dataToJsonString(data: Data) -> [String : Any]? {
         do {

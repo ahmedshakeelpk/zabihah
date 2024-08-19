@@ -183,7 +183,7 @@ class EditAddressViewController: UIViewController {
                 if controller.isKind(of: HomeViewController.self) {
                     if controller is HomeViewController {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.buttonContinueHandler?(self.labelAddress.text!, self.location!)
+                            self.buttonContinueHandler?(self.labelAddressTitle.text!, self.location!)
                         }
                         self.navigationController!.popToViewController(controller, animated: true)
                     }

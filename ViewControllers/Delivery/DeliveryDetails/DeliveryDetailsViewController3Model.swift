@@ -54,4 +54,12 @@ extension DeliveryDetailsViewController3 {
     struct Timing: Codable {
         let day, openTime, closeTime: String?
     }
+    
+    // MARK: - ModelAddImageUrlsToPhoto
+    struct ModelAddImageUrlsToPhoto: Codable {
+        let recordFound, success: Bool?
+        let message, innerExceptionMessage: String?
+        let token, refreshToken, imageData: String?
+        let imageUrls: [String]?
+    }
 }

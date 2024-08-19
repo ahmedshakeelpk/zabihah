@@ -27,6 +27,8 @@ extension HomeViewController: GMSMapViewDelegate {
             self.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
                 if actionType == "viewdetails" {
                     print("View Details")
+                    let indexPath = IndexPath(row: Int(marker.zIndex), section: 1)
+                    self.navigateToDeliveryDetailsViewController(indexPath: indexPath)
                 }
             }
         }
@@ -48,7 +50,7 @@ extension HomeViewController: GMSMapViewDelegate {
 }
 
 extension HomeViewController {
-    func drawMarkerOnMap(modelRestuarantResponseData: ModelRestuarantResponseData) {
+    func drawMarkerOnMap(modelRestuarantResponseData: ModelRestuarantResponseData, index: Int) {
         /// Marker - Google Place marker
         let marker: GMSMarker = GMSMarker() // Allocating Marker
         marker.title = modelRestuarantResponseData.name // Setting title
@@ -56,6 +58,7 @@ extension HomeViewController {
         marker.icon = UIImage(named: "markerHome") // Marker icon
         marker.appearAnimation = .pop // Appearing animation. default
         marker.userData = modelRestuarantResponseData
+        marker.zIndex = Int32(index)
         
         let location = CLLocationCoordinate2D(latitude: modelRestuarantResponseData.lat ?? 0, longitude: modelRestuarantResponseData.long ?? 0)
         marker.position = location

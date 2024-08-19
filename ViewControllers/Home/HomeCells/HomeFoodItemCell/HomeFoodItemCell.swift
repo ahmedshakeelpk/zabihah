@@ -87,6 +87,7 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
         vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
         vc.userLocation = (viewController as? HomeViewController)?.userLocation
         vc.modelRestuarantResponseData = modelFeaturedRestuarantResponseData[indexPath.row]
+        vc.isFeaturedCell = true
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
 }

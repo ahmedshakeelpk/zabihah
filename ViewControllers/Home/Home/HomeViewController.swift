@@ -142,13 +142,13 @@ class HomeViewController: UIViewController {
                 return()
             }
             let recordFeatureCell = addFeaturedCell()
-            listItems[recordFeatureCell.1] = recordFeatureCell.0
+            listItems[0] = recordFeatureCell.0
             let recordCuisineCell = addCuisineCell()
-            listItems[recordCuisineCell.1] = recordCuisineCell.0
+            listItems[1] = recordCuisineCell.0
             let recordRestuarantCell = addRestuarantCell()
-            listItems[recordRestuarantCell.1] = recordRestuarantCell.0
+            listItems[2] = recordRestuarantCell.0
             let recordPrayerPlacesCell = addPrayerPlacesCell()
-            listItems[recordPrayerPlacesCell.1] = recordPrayerPlacesCell.0
+            listItems[3] = recordPrayerPlacesCell.0
             tableViewReload()
         }
     }
@@ -171,8 +171,8 @@ class HomeViewController: UIViewController {
             tableViewReload()
             mapView.clear()
             if let modelData = modelGetPrayerPlacesResponse?.mosqueResponseData {
-                for model in modelData {
-                    drawMarkerOnMap(modelGetPrayerPlacesResponseData: model)
+                for (index, model) in modelData.enumerated() {
+                    drawMarkerOnMap(modelRestuarantResponseData: model, index: index)
                 }
             }
         }
@@ -198,8 +198,8 @@ class HomeViewController: UIViewController {
             tableViewReload()
             mapView.clear()
             if let modelData = modelGetHalalRestaurantResponse?.halalRestuarantResponseData {
-                for model in modelData {
-                    drawMarkerOnMap(modelRestuarantResponseData: model)
+                for (index, model) in modelData.enumerated() {
+                    drawMarkerOnMap(modelRestuarantResponseData: model, index: index)
                 }
             }
         }
@@ -474,10 +474,6 @@ class HomeViewController: UIViewController {
         }
     }
 }
-
-
-
-
 
 extension HomeViewController: HomeCuisinesCellDelegate {
     func didSelectRow(indexPath: IndexPath, cusisineName: String) {

@@ -233,9 +233,22 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
             self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
                 if actionType == "viewdetails" {
                     print("View Details")
+                    self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath)
                 }
             }
         }
+    }
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+        vc.delegate = viewController as? any DeliveryDetailsViewController3Delegate
+        vc.indexPath = indexPath
+        vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
+        vc.userLocation = (viewController as? HomeViewController)?.userLocation
+        
+        if let modelMosqueResponseData =   modelMosqueResponseData {
+            vc.modelRestuarantResponseData = modelMosqueResponseData
+        }
+        viewController.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func tapOnMapInfoView() {

@@ -13,6 +13,13 @@ protocol DeliveryDetailsViewController3Delegate: AnyObject {
 }
 
 class DeliveryDetailsViewController3: UIViewController {
+    
+    @IBOutlet weak var viewHalalSummaryBackGround: UIView!
+    @IBOutlet weak var viewHalalMenuBackGround: UIView!
+    @IBOutlet weak var viewAmenitiesBackGround: UIView!
+    @IBOutlet weak var stackViewConnectBackGround: UIStackView!
+    @IBOutlet weak var viewFavouriteBackGround: UIView!
+
     @IBOutlet weak var viewAddressDevider: UIView!
     @IBOutlet weak var imageViewRestaurantIcon: UIImageView!
     @IBOutlet weak var labelRestaurantName: UILabel!
@@ -47,10 +54,24 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var imageViewFavourite: UIImageView!
 
     
+    var modelAddImageUrlsToPhoto: ModelAddImageUrlsToPhoto? {
+        didSet {
+            if modelAddImageUrlsToPhoto?.success ?? false {
+                if galleryRecentPhotos == nil {
+                    galleryRecentPhotos = [String]()
+                }
+                galleryRecentPhotos?.append(modelAddImageUrlsToPhoto?.imageUrls?.first ?? "")
+                galleryRecentPhotos = galleryRecentPhotos?.reversed()
+            }
+        }
+    }
+    
     var delegate: DeliveryDetailsViewController3Delegate!
     var arrayLocalGallery: [UIImage]? {
         didSet {
-            collectionViewRecentPhoto.reloadData()
+            DispatchQueue.main.async {
+                self.collectionViewRecentPhoto.reloadData()
+            }
         }
     }
     var isPrayerPlace: Bool = false
@@ -59,6 +80,7 @@ class DeliveryDetailsViewController3: UIViewController {
     var modelRestuarantResponseData: HomeViewController.ModelRestuarantResponseData!
     var selectedMenuCell: Int!
     var indexPath: IndexPath!
+    var isFeaturedCell: Bool! = false
     
     var modelGetRestaurantDetailResponse: ModelGetRestaurantDetailResponse? {
         didSet {
@@ -68,7 +90,9 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     var galleryRecentPhotos: [String]? {
         didSet {
-            collectionViewRecentPhoto.reloadData()
+            DispatchQueue.main.async {
+                self.collectionViewRecentPhoto.reloadData()
+            }
         }
     }
     var connectSocial: [Social]? {
@@ -104,7 +128,6 @@ class DeliveryDetailsViewController3: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         // Do any additional setup after loading the view.
         setConfiguration()
@@ -155,6 +178,7 @@ class DeliveryDetailsViewController3: UIViewController {
         UpLoadPhotoCell.register(collectionView: collectionViewRecentPhoto)
         SocialConnectCell.register(collectionView: collectionViewConnect)
 
+        viewFavouriteBackGround.isHidden = isFeaturedCell
         collectionViewCountry.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
         collectionViewRecentPhoto.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
         collectionViewConnect.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
@@ -169,11 +193,13 @@ class DeliveryDetailsViewController3: UIViewController {
             
             labelRestaurantDetails.text = restuarantResponseData.description
             labelHalalSummaryDetails.text = restuarantResponseData.halalDescription
+            viewHalalSummaryBackGround.isHidden = restuarantResponseData.halalDescription ?? "" == ""
+            viewHalalMenuBackGround.isHidden = isPrayerPlace
             
             labelFullHalalMenu.text = restuarantResponseData.isFullHalal ?? false ? "Full halal menu" : "NO"
             labelAlcohol.text = restuarantResponseData.isalcohhol ?? false ? "YES" : "NO alcohol"
             if modelGetRestaurantDetailResponse?.timing?.count ?? 0 > 0 {
-                labelCloseOpen.text = "Closes at \(modelGetRestaurantDetailResponse?.timing?.last?.closeTime ?? "")"
+                labelCloseOpen.text = "Closes at \(is12HourFormat ? "\(modelGetRestaurantDetailResponse?.timing?.last?.closeTime ?? "")".time12String : "\(modelGetRestaurantDetailResponse?.timing?.last?.closeTime ?? "")".time24String)"
             }
             imageViewFavourite.image = UIImage(named: restuarantResponseData.isFavorites ?? false ? "heartFavourite" : "heartMehroon")
             labelReviews.text = "\(restuarantResponseData.reviews ?? 0) reviews"
@@ -187,15 +213,23 @@ class DeliveryDetailsViewController3: UIViewController {
             }
             if let amenities = modelGetRestaurantDetailResponse?.amenities, amenities.count > 0 {
                 amenitiesData = amenities
+                viewAmenitiesBackGround.isHidden = false
+            }
+            else {
+                viewAmenitiesBackGround.isHidden = true
             }
             if let gallery = restuarantResponseData.gallery, gallery.count > 0 {
-                galleryRecentPhotos = gallery
+                galleryRecentPhotos = gallery.reversed()
             }
             else {
                 collectionViewRecentPhoto.reloadData()
             }
             if let connect = modelGetRestaurantDetailResponse?.social, connect.count > 0 {
                 connectSocial = connect
+                stackViewConnectBackGround.isHidden = false
+            }
+            else {
+                stackViewConnectBackGround.isHidden = true
             }
         }
     }
@@ -239,12 +273,12 @@ class DeliveryDetailsViewController3: UIViewController {
 
 extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0, left: collectionViewFoodItem == collectionView ? 0 : 8, bottom: 0, right: collectionViewFoodItem == collectionView ? 0 : 12 )
-//    }
+    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    //        return UIEdgeInsets(top: 0, left: collectionViewFoodItem == collectionView ? 0 : 8, bottom: 0, right: collectionViewFoodItem == collectionView ? 0 : 12 )
+    //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         if (collectionViewCountry == collectionView) {
             let width = arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]).width + 22
             return CGSize(width: width, height: (collectionViewCountry == collectionView) ? 22 : 28)
@@ -334,7 +368,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         }
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FoodItemCollectionViewCell", for: indexPath) as! FoodItemCollectionViewCell
-
+            
             return cell
         }
     }
@@ -367,7 +401,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
                 print("Upload a photo cell click")
             }
             else {
-               
+                
             }
         }
     }
@@ -378,7 +412,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
                 openGallary()
             }
             else {
-                
+                navigateToAddAddressViewController()
             }
         }
         else if collectionView == collectionViewConnect {
@@ -395,6 +429,25 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             }
         }
     }
+    
+    func navigateToAddAddressViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
+        vc.galleryRecentPhotos = galleryRecentPhotos
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func uploadImage(image: UIImage) {
+        let parameter = ["Id": modelRestuarantResponseData.id ?? "",
+                         "type": isPrayerPlace ? "prayer" : "rest"] as [String : Any]
+        APIs.uploadImage(apiName: .AddImageUrlsToPhoto, image: image, parameter: parameter) { responseData, success, errorMsg in
+                    let model: ModelAddImageUrlsToPhoto? = APIs.decodeDataToObject(data: responseData)
+                    self.modelAddImageUrlsToPhoto = model
+            
+        }
+    }
+    
+    
+
 }
 
 extension DeliveryDetailsViewController3: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
@@ -407,7 +460,8 @@ extension DeliveryDetailsViewController3: UIDocumentPickerDelegate, UINavigation
                 if arrayLocalGallery == nil {
                     arrayLocalGallery = [UIImage]()
                 }
-                arrayLocalGallery?.append(image)
+//                arrayLocalGallery?.append(image)
+                uploadImage(image: image)
             }
             if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
                 //                let fileName = imageUrl.lastPathComponent

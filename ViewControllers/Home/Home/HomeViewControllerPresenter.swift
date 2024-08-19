@@ -44,11 +44,20 @@ extension HomeViewController {
             self.filterParametersHome = parameters
             self.mapView.clear()
             if self.selectedMenuCell == 0 {
-                self.getFeaturedRestaurants()
+//                self.getFeaturedRestaurants()
+                self.selectedMenuCell = self.itself(self.selectedMenuCell)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    self.selectedMenuCell = self.itself(self.selectedMenuCell)
+                }
             }
             else if self.selectedMenuCell == 1 {
                 self.selectedCuisine = ""
                 self.pageNumberForApi = 1
+            }
+            else if self.selectedMenuCell == 3 {
+                self.selectedCuisine = ""
+                self.selectedMenuCell = self.itself(self.selectedMenuCell)
+                
             }
         }
         vc.filterParametersHome = filterParametersHome
@@ -126,6 +135,7 @@ extension HomeViewController {
         
         APIs.postAPI(apiName: .gethomerestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetHomeRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetHomeRestaurantsResponse = nil
             self.modelGetHomeRestaurantsResponse = model
         }
     }
@@ -227,6 +237,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 pageNumberForApi += 1
             }
         }
+        cell.layoutSubviews()
+        cell.layoutIfNeeded()
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -398,6 +410,7 @@ extension HomeViewController {
         viewMapViewBackGround.isHidden = true
         buttonMapViewListView.tag = 0
         setMapList()
+        listItems = []
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),

@@ -51,6 +51,9 @@ struct APIsName {
         
         //MARK:- Faq
         case getfaq = "api/Faq/getfaq"
+        
+        //MARK:- Blob
+        case AddImageUrlsToPhoto = "api/Blob/AddImageUrlsToPhoto"
 
         
         

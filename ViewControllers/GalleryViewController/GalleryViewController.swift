@@ -8,20 +8,49 @@
 import UIKit
 
 class GalleryViewController: UIViewController {
+    @IBOutlet weak var buttonBack: UIButton!
+    @IBOutlet weak var viewLeftArrowBackGround: UIView!
+    @IBOutlet weak var viewRightArrowBackGround: UIView!
+    @IBOutlet weak var buttonRight: UIButton!
     
+    @IBOutlet weak var viewCountBackGround: UIView!
     @IBOutlet weak var labelImageCount: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var buttonLeft: UIButton!
     
+    var galleryRecentPhotos: [String]!
     var totalImages = 10
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        totalImages = galleryRecentPhotos.count
         // Do any additional setup after loading the view.
         GalleryViewControllerCell.register(collectionView: collectionView)
         
         labelImageCount.text = "\(1)/\(totalImages)"
+        viewCountBackGround.circle()
+        viewLeftArrowBackGround.circle()
+        viewRightArrowBackGround.circle()
+    }
+    @IBAction func buttonBack(_ sender: Any) {
+        popViewController(animated: true)
     }
     
+    @IBAction func buttonLeft(_ sender: Any) {
+        let visibleItems: NSArray = self.collectionView.indexPathsForVisibleItems as NSArray
+            let currentItem: IndexPath = visibleItems.object(at: 0) as! IndexPath
+            let nextItem: IndexPath = IndexPath(item: currentItem.item - 1, section: 0)
+            if nextItem.row < galleryRecentPhotos.count && nextItem.row >= 0{
+                self.collectionView.scrollToItem(at: nextItem, at: .right, animated: true)
+            }
+    }
+    @IBAction func buttonRight(_ sender: Any) {
+        let visibleItems: NSArray = self.collectionView.indexPathsForVisibleItems as NSArray
+            let currentItem: IndexPath = visibleItems.object(at: 0) as! IndexPath
+            let nextItem: IndexPath = IndexPath(item: currentItem.item + 1, section: 0)
+                   if nextItem.row < galleryRecentPhotos.count {
+                self.collectionView.scrollToItem(at: nextItem, at: .left, animated: true)
+            }
+    }
     
 }
 
@@ -36,11 +65,12 @@ extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return totalImages
+        return galleryRecentPhotos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GalleryViewControllerCell", for: indexPath) as! GalleryViewControllerCell
+        cell.imageViewGalleryImage.setImage(urlString: galleryRecentPhotos[indexPath.row], placeHolderIcon: "placeHolderFoodItem")
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
