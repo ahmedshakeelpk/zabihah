@@ -552,7 +552,7 @@ print(str)
         formatter.dateFormat = "yyyy_MM_dd_hh_mm_ss"
         return (formatter.string(from: Date()) as NSString) as String
     }
-    static func uploadImage(apiName: APIsName.name, image: UIImage, parameter: [String: Any], completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    static func uploadImage(apiName: APIsName.name, image: UIImage, parameter: [String: Any], viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         let completeUrl = APIPath.baseUrl + apiName.rawValue
         guard let url = URL(string: completeUrl) else { return }
         var request = URLRequest(url: url)
@@ -577,9 +577,6 @@ print(str)
         body.append(imageData)
         body.append("\r\n".data(using: .utf8)!)
         
-        
-        
-        
         // Add any additional fields (optional)
         let parameters = parameter
         for (key, value) in parameters {
@@ -592,8 +589,14 @@ print(str)
         
         request.httpBody = body
         
+        if let vc = viewController {
+            vc.showActivityIndicator2()
+        }
         // Send the request
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let vc = viewController {
+                vc.hideActivityIndicator2()
+            }
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 completion(nil, false, error.localizedDescription)

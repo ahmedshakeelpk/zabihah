@@ -440,14 +440,10 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         let parameter = ["Id": modelRestuarantResponseData.id ?? "",
                          "type": isPrayerPlace ? "prayer" : "rest"] as [String : Any]
         APIs.uploadImage(apiName: .AddImageUrlsToPhoto, image: image, parameter: parameter) { responseData, success, errorMsg in
-                    let model: ModelAddImageUrlsToPhoto? = APIs.decodeDataToObject(data: responseData)
-                    self.modelAddImageUrlsToPhoto = model
-            
+            let model: ModelAddImageUrlsToPhoto? = APIs.decodeDataToObject(data: responseData)
+            self.modelAddImageUrlsToPhoto = model
         }
     }
-    
-    
-
 }
 
 extension DeliveryDetailsViewController3: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
