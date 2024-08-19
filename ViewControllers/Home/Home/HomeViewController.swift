@@ -127,7 +127,9 @@ class HomeViewController: UIViewController {
             }
             else {
                 print("User have No address in list.")
-                navigateToAddAddressViewController()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.navigateToAddAddressViewController()
+                }
             }
         }
     }

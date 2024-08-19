@@ -83,6 +83,7 @@ class ProfileViewController: UIViewController {
     var modelGetDeleteUserResponse: ModelGetDeleteUserResponse? {
         didSet {
             if modelGetDeleteUserResponse?.success ?? false {
+                self.removeCacheData()
                 self.navigateToRootViewController()
 //                self.showAlertCustomPopup(title: "Success", message: self.modelGetDeleteUserResponse?.message ?? "", iconName: .iconSuccess) { _ in
 //                    self.navigateToRootViewController()
@@ -93,6 +94,7 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+
     var modelGetUserResponseLocal: HomeViewController.ModelGetUserProfileResponse? {
         didSet {
             modelGetUserProfileResponse = modelGetUserResponseLocal
@@ -188,6 +190,15 @@ class ProfileViewController: UIViewController {
         imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "", placeHolderIcon: "placeHolderUser")
         switchOffers.isOn = modelGetUserProfileResponse?.userResponseData?.isUpdateSubcription ?? false
         switchEvents.isOn = modelGetUserProfileResponse?.userResponseData?.isNewsLetterSubcription ?? false
+    }
+    
+    func removeCacheData() {
+        kAccessToken = ""
+        let dictionary = kDefaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            kDefaults.removeObject(forKey: key)
+        }
+        kDefaults.synchronize()
     }
     
     func navigateToProfileDeleteViewController() {
@@ -303,10 +314,10 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController {
     struct ModelGetDeleteUserResponse: Codable {
-        let success: Bool
-        let message: String
-        let recordFound: Bool
-        let innerExceptionMessage: String
+        let success: Bool?
+        let message: String?
+        let recordFound: Bool?
+        let innerExceptionMessage: String?
     }
 }
 

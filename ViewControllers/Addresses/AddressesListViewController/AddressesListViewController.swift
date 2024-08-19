@@ -86,6 +86,7 @@ class AddressesListViewController: UIViewController {
     func navigateToEditAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
         vc.isFromAddressList = true
+        vc.isFromAddressListAddNewButton = true
         vc.buttonContinueHandler = { (_, _) in
             self.getUserAddress()
         }

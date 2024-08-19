@@ -41,6 +41,7 @@ class EditAddressViewController: UIViewController {
     @IBOutlet weak var buttonShowSavedAddresses: UIButton!
     
     var isFromAddressList = false
+    var isFromAddressListAddNewButton = false
     var addressFromPreviousScreen = ""
     var disableTimerCount: Double? = 1.5
     var isDisableUpdateLocation: Bool? = false {
@@ -61,7 +62,7 @@ class EditAddressViewController: UIViewController {
     var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
 //            disableTimerCount = 3
-            if isDisableUpdateLocation != true {
+            if isDisableUpdateLocation != true && isFromAddressListAddNewButton != true {
                 isDisableUpdateLocation = true
             }
             if userLocationFromEditModel == nil {

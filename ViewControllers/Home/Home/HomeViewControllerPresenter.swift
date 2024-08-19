@@ -198,7 +198,14 @@ extension HomeViewController {
         }
         
         APIs.postAPI(apiName: .getprayerplaces, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg in
-            let model: ModelGetPrayerPlacesResponse? = APIs.decodeDataToObject(data: responseData)
+            var model: ModelGetPrayerPlacesResponse? = APIs.decodeDataToObject(data: responseData)
+            if self.pageNumberForApi > 1 {
+                if let record = self.modelGetPrayerPlacesResponse?.mosqueResponseData {
+                    var oldModel = record
+                    oldModel.append(contentsOf: model?.mosqueResponseData ?? [])
+                    model?.mosqueResponseData = oldModel
+                }
+            }
             self.modelGetPrayerPlacesResponse = model
         }
     }

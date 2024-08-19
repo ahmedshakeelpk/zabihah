@@ -43,6 +43,7 @@
 		6A3AB59E2C3A80470030F016 /* AddressesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3AB59B2C3A80470030F016 /* AddressesCell.swift */; };
 		6A3AB5A22C3A97C80030F016 /* EditAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3AB5A12C3A97C80030F016 /* EditAddressViewController.swift */; };
 		6A3DD1C52C365BEC003F1F44 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3DD1C42C365BEC003F1F44 /* ViewControllerExtension.swift */; };
+		6A4747ED2C73A523005483B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A4747EC2C73A523005483B2 /* GoogleService-Info.plist */; };
 		6A5601C62C6FBFA400A761B6 /* DeliveryDetailsViewController3Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5601C52C6FBFA400A761B6 /* DeliveryDetailsViewController3Model.swift */; };
 		6A62691E2C3D0F6400DA844F /* TextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A62691D2C3D0F6400DA844F /* TextFieldExtension.swift */; };
 		6A6269212C3D154C00DA844F /* HomeMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A62691F2C3D154C00DA844F /* HomeMenuCell.swift */; };
@@ -178,6 +179,7 @@
 		6A3AB59C2C3A80470030F016 /* AddressesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressesCell.xib; sourceTree = "<group>"; };
 		6A3AB5A12C3A97C80030F016 /* EditAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAddressViewController.swift; sourceTree = "<group>"; };
 		6A3DD1C42C365BEC003F1F44 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
+		6A4747EC2C73A523005483B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6A5601C52C6FBFA400A761B6 /* DeliveryDetailsViewController3Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryDetailsViewController3Model.swift; sourceTree = "<group>"; };
 		6A62691D2C3D0F6400DA844F /* TextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldExtension.swift; sourceTree = "<group>"; };
 		6A62691F2C3D154C00DA844F /* HomeMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMenuCell.swift; sourceTree = "<group>"; };
@@ -621,6 +623,7 @@
 			children = (
 				6A9BD3BF2C412A66008BBDF5 /* FingerPrintHardCodedData */,
 				6A6FC3FB2C3572000050B6B2 /* AppDelegate.swift */,
+				6A4747EC2C73A523005483B2 /* GoogleService-Info.plist */,
 				6A6FC3FD2C3572000050B6B2 /* SceneDelegate.swift */,
 				6A6FC4042C3572020050B6B2 /* Assets.xcassets */,
 				6A6FC4062C3572020050B6B2 /* LaunchScreen.storyboard */,
@@ -1036,6 +1039,7 @@
 				6AD5634D2C6A2786004C7552 /* GalleryStoryBoard.storyboard in Resources */,
 				6A6269382C3D3EF500DA844F /* HomeCuisinesSubCell.xib in Resources */,
 				6A6FC4082C3572020050B6B2 /* Base in Resources */,
+				6A4747ED2C73A523005483B2 /* GoogleService-Info.plist in Resources */,
 				6ACA065A2C5665AC00EE8F43 /* Delivery.storyboard in Resources */,
 				6AD39E5A2C3D7EA200BDAC05 /* HomeFoodItemCell.xib in Resources */,
 				6A706E7E2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib in Resources */,

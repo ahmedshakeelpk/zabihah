@@ -183,6 +183,9 @@ class RegisterationViewController: UIViewController {
             if let token = self.modelGetBlobContainer?.token {
                 self.uploadOnBlob(token: token)
             }
+            else {
+                self.userSignup()
+            }
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
