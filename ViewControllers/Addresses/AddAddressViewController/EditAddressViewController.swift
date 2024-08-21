@@ -133,7 +133,7 @@ class EditAddressViewController: UIViewController {
         if modelUserAddressesResponseData != nil {
             self.setAddress(addressTitle: modelUserAddressesResponseData?.title, formattedAddress: modelUserAddressesResponseData?.address)
             self.setZoom(latitude: modelUserAddressesResponseData?.latitude, longitude: modelUserAddressesResponseData?.longitude)
-            self.location = CLLocationCoordinate2D(latitude: modelUserAddressesResponseData?.latitude ?? 0, longitude: modelUserAddressesResponseData?.latitude ?? 0)
+            self.location = CLLocationCoordinate2D(latitude: modelUserAddressesResponseData?.latitude ?? 0, longitude: modelUserAddressesResponseData?.longitude ?? 0)
             //            labelButtonSaveAsNew.textColor = .lightGray
             //            buttonSaveAsNew.isUserInteractionEnabled = false
             //            buttonContinue.isUserInteractionEnabled = false
@@ -237,14 +237,13 @@ class EditAddressViewController: UIViewController {
     
     func navigateToAddAddressViewControllerFromEditButton() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        
+        vc.location = self.location
         if modelUserAddressesResponseData == nil {
             vc.newAddress = labelAddress.text!
             vc.location = self.location
         }
         vc.isEditAddress = true
         vc.modelUserAddressesResponseData = modelUserAddressesResponseData
-        
         vc.addressEditHandler = { location in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.popViewController(animated: false)

@@ -97,6 +97,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
         labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
         labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
+        labelReuse.text = "\(modelFeaturedRestuarantResponseData?.visits ?? 0)"
         labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
         labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
         labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"

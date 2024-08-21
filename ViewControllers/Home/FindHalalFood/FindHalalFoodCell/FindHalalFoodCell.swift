@@ -70,6 +70,7 @@ class FindHalalFoodCell: HomeBaseCell {
             self.labelRestaurantName.text = self.halalRestuarantResponseData?.name
             self.labelRestaurantAddress.text = self.halalRestuarantResponseData?.address
             self.labelRating.text = "\(self.halalRestuarantResponseData?.rating ?? 0)"
+            self.labelReuse.text = "\(self.halalRestuarantResponseData?.visits ?? 0)"
             self.labelComments.text = "\(self.halalRestuarantResponseData?.reviews ?? 0)"
             self.labelPictures.text = "\(self.halalRestuarantResponseData?.gallaryCount ?? 0)"
             self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)"

@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import MessageUI
 
 protocol DeliveryDetailsViewController3Delegate: AnyObject {
     func changeFavouriteStatusFromDetails(isFavourite: Bool, indexPath: IndexPath)
@@ -19,7 +20,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var viewAmenitiesBackGround: UIView!
     @IBOutlet weak var stackViewConnectBackGround: UIStackView!
     @IBOutlet weak var viewFavouriteBackGround: UIView!
-
+    
     @IBOutlet weak var viewAddressDevider: UIView!
     @IBOutlet weak var imageViewRestaurantIcon: UIImageView!
     @IBOutlet weak var labelRestaurantName: UILabel!
@@ -31,6 +32,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var collectionViewCountry: UICollectionView!
     @IBOutlet weak var collectionViewType: UICollectionView!
     @IBOutlet weak var collectionViewFoodItem: UICollectionView!
+    @IBOutlet weak var buttonRating: UIButton!
     
     @IBOutlet weak var labelRestaurantDetails: UILabel!
     @IBOutlet weak var buttonAmenities: UIButton!
@@ -39,7 +41,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var viewShareBackGround: UIView!
     @IBOutlet weak var viewCallBackGround: UIView!
     @IBOutlet weak var buttonTiming: UIButton!
-
+    
     @IBOutlet weak var imageViewHalalSummaryDropDown: UIImageView!
     @IBOutlet weak var labelFullHalalMenu: UILabel!
     @IBOutlet weak var labelAlcohol: UILabel!
@@ -52,7 +54,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var buttonFavourite: UIButton!
     @IBOutlet weak var buttonCall: UIButton!
     @IBOutlet weak var imageViewFavourite: UIImageView!
-
+    
     
     var modelAddImageUrlsToPhoto: ModelAddImageUrlsToPhoto? {
         didSet {
@@ -131,7 +133,7 @@ class DeliveryDetailsViewController3: UIViewController {
         
         // Do any additional setup after loading the view.
         setConfiguration()
-        getFeaturedRestaurants()
+        getRestaurantDetail()
     }
     
     @IBAction func buttonFavourite(_ sender: Any) {
@@ -143,10 +145,14 @@ class DeliveryDetailsViewController3: UIViewController {
     
     @IBAction func buttonShare(_ sender: Any) {
         let text = modelGetRestaurantDetailResponse?.restuarantResponseData?.shareLink ?? ""
-            let textShare = [ text ]
-            let activityViewController = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view
-            self.present(activityViewController, animated: true, completion: nil)
+        let textShare = [ text ]
+        let activityViewController = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    @IBAction func buttonRating(_ sender: Any) {
+        navigateToRatingViewController()
     }
     @IBAction func buttonTiming(_ sender: Any) {
         navigateToDeliveryBottomSheet()
@@ -154,13 +160,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBAction func buttonAmenities(_ sender: Any) {
         navigateToDeliveryBottomSheet(isAmenities: true)
     }
-    func navigateToDeliveryBottomSheet(isAmenities: Bool? = false) {
-        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryBottomSheet") as! DeliveryBottomSheet
-        vc.timingOpenClose = timingOpenClose
-        vc.amenitiesData = amenitiesData
-        vc.isAmenities = isAmenities
-        self.present(vc, animated: true)
-    }
+    
     @IBAction func buttonBack(_ sender: Any) {
         self.popViewController(animated: true)
     }
@@ -177,7 +177,7 @@ class DeliveryDetailsViewController3: UIViewController {
         RecentPhotoCell.register(collectionView: collectionViewRecentPhoto)
         UpLoadPhotoCell.register(collectionView: collectionViewRecentPhoto)
         SocialConnectCell.register(collectionView: collectionViewConnect)
-
+        
         viewFavouriteBackGround.isHidden = isFeaturedCell
         collectionViewCountry.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
         collectionViewRecentPhoto.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
@@ -234,8 +234,20 @@ class DeliveryDetailsViewController3: UIViewController {
         }
     }
     
-    
-    func getFeaturedRestaurants() {
+    func navigateToDeliveryBottomSheet(isAmenities: Bool? = false) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryBottomSheet") as! DeliveryBottomSheet
+        vc.timingOpenClose = timingOpenClose
+        vc.amenitiesData = amenitiesData
+        vc.isAmenities = isAmenities
+        self.present(vc, animated: true)
+    }
+    func navigateToRatingViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
+        vc.galleryRecentPhotos = self.galleryRecentPhotos
+        vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func getRestaurantDetail() {
         let parameters = [
             "lat": userLocation?.coordinate.latitude as Any,
             "long": userLocation?.coordinate.longitude as Any,
@@ -262,11 +274,26 @@ class DeliveryDetailsViewController3: UIViewController {
             "isMark": !(modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites ?? false),
             "type" : isPrayerPlace ? "prayer" : "rest"
         ] as [String : Any]
-       
+        
         APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: FindHalalFoodCell.ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelPostFavouriteDeleteResponse = model
         }
+    }
+    
+    func configuredMailComposeViewController(email: String) -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
+        
+        mailComposerVC.setToRecipients([email])
+        mailComposerVC.setSubject("")
+        mailComposerVC.setMessageBody("", isHTML: false)
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        self.showAlertCustomPopup(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", iconName: .iconError)
     }
 }
 
@@ -361,8 +388,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         else if (collectionViewConnect == collectionView) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SocialConnectCell", for: indexPath) as! SocialConnectCell
             cell.labelName.text = connectSocial?[indexPath.item].title ?? ""
-            
-            cell.imageViewIcon.setImage(urlString: connectSocial?[indexPath.item].url ?? "", placeHolderIcon: getSocialIcon(titleName: connectSocial?[indexPath.item].title ?? ""))
+            cell.imageViewIcon.setImage(urlString: connectSocial?[indexPath.item].url ?? "", placeHolderIcon: getSocialIcon(titleName: connectSocial?[indexPath.item].title ?? "", urlString: "").0)
             
             return cell
         }
@@ -373,27 +399,35 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         }
     }
     
-    func getSocialIcon(titleName: String) -> String {
+    func getSocialIcon(titleName: String, urlString: String? = "") -> (String, String) {
         var placeHolder = ""
+        var urlStringLocal = ""
         if titleName.lowercased() == "website" {
             placeHolder = "websiteGray"
+            urlStringLocal = urlString ?? ""
         }
         else if titleName.lowercased() == "facebook" {
             placeHolder = "facebookGray"
+            urlStringLocal = "https://www.facebook.com/\(urlString ?? "")"
         }
         else if titleName.lowercased() == "instagram" {
             placeHolder = "instagramGray"
+            urlStringLocal = "https://www.instagram.com/\(urlString ?? "")"
         }
         else if titleName.lowercased() == "twitter" {
             placeHolder = "twitterGray"
+            urlStringLocal = "http://twitter.com/\(urlString ?? "")"
         }
         else if titleName.lowercased() == "tiktok" {
-            placeHolder = "tiktokGray"
+            placeHolder = "https://www.tiktok.com/tiktokGray\(urlString ?? "")"
+        }
+        else if titleName.lowercased() == "youtube" {
+            placeHolder = "\(urlString ?? "")"
         }
         else if titleName.lowercased() == "email" {
             placeHolder = "emailGray"
         }
-        return placeHolder
+        return (placeHolder, urlStringLocal)
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if (collectionViewRecentPhoto == collectionView) {
@@ -417,18 +451,31 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         }
         else if collectionView == collectionViewConnect {
             if let socialUrl = connectSocial?[indexPath.item].url {
-                if let url = URL(string: socialUrl), UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url)
+                if (connectSocial?[indexPath.item].title ?? "").lowercased() == "email" {
+                    let mailComposeViewController = configuredMailComposeViewController(email: connectSocial?[indexPath.item].url ?? "")
+                    if MFMailComposeViewController.canSendMail() {
+                        self.present(mailComposeViewController, animated: true, completion: nil)
+                    } else {
+                        self.showSendMailErrorAlert()
+                    }
                 }
                 else {
-                    showToast(message: "invalid social link please update in your profile")
+                    let socialData = getSocialIcon(titleName: connectSocial?[indexPath.item].title ?? "", urlString: socialUrl)
+                    
+                    let urlString = socialData.1
+                    if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
+                    else {
+                        showToast(message: "invalid social link please update in your profile")
+                    }
                 }
+            }
             }
             else {
                 showToast(message: "there is no social link please update your profile")
             }
         }
-    }
     
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
@@ -439,7 +486,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
     func uploadImage(image: UIImage) {
         let parameter = ["Id": modelRestuarantResponseData.id ?? "",
                          "type": isPrayerPlace ? "prayer" : "rest"] as [String : Any]
-        APIs.uploadImage(apiName: .AddImageUrlsToPhoto, image: image, parameter: parameter) { responseData, success, errorMsg in
+        APIs.uploadImage(apiName: .AddImageUrlsToPhoto, imagesArray: [image], imageParameter: "UploadImage", parameter: parameter) { responseData, success, errorMsg in
             let model: ModelAddImageUrlsToPhoto? = APIs.decodeDataToObject(data: responseData)
             self.modelAddImageUrlsToPhoto = model
         }
@@ -468,5 +515,12 @@ extension DeliveryDetailsViewController3: UIDocumentPickerDelegate, UINavigation
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension DeliveryDetailsViewController3: MFMailComposeViewControllerDelegate {
+    // MARK: MFMailComposeViewControllerDelegate
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: (any Error)?) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

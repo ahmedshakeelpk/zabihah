@@ -98,6 +98,7 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         labelRestaurantName.text = modelMosqueResponseData?.name ?? ""
         labelRestaurantAddress.text = modelMosqueResponseData?.address ?? ""
         labelRating.text = "\(modelMosqueResponseData?.rating ?? 0)"
+        labelReuse.text = "\(modelMosqueResponseData?.visits ?? 0)"
         labelComments.text = "\(modelMosqueResponseData?.reviews ?? 0)"
         labelPictures.text = "\(modelMosqueResponseData?.gallaryCount ?? 0)"
         labelDistance.text = "\(modelMosqueResponseData?.distance ?? 0)\(modelMosqueResponseData?.distanceUnit ?? "")"

@@ -281,6 +281,7 @@ print(str)
 //        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("*/*", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.timeoutInterval = 30 // 50 secs
 
 //        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -408,7 +409,9 @@ print(str)
 //
             print("Response: \(response)")
             if let vc = viewController {
-                vc.hideActivityIndicator2()
+                DispatchQueue.main.async {
+                    vc.hideActivityIndicator2()
+                }
             }
    
             var responseMessage = ""
@@ -552,7 +555,8 @@ print(str)
         formatter.dateFormat = "yyyy_MM_dd_hh_mm_ss"
         return (formatter.string(from: Date()) as NSString) as String
     }
-    static func uploadImage(apiName: APIsName.name, image: UIImage, parameter: [String: Any], viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    
+    static func uploadImage(apiName: APIsName.name, imagesArray: [UIImage], imageParameter: String, parameter: [String: Any], viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         let completeUrl = APIPath.baseUrl + apiName.rawValue
         guard let url = URL(string: completeUrl) else { return }
         var request = URLRequest(url: url)
@@ -565,26 +569,40 @@ print(str)
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         // Convert the image to Data
-        guard let imageData = image.jpegData(compressionQuality: 1) else { return }
+//        guard let imageData = image.jpegData(compressionQuality: 1) else { return }
         
         // Create the multipart body
         var body = Data()
         
         // Add image data to the body
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"UploadImage\"; filename=\"image\(APIs.generateCurrentTimeStamp()).jpg\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(imageData)
-        body.append("\r\n".data(using: .utf8)!)
-        
+//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//        body.append("Content-Disposition: form-data; name=\"UploadImage\"; filename=\"image\(APIs.generateCurrentTimeStamp()).jpg\"\r\n".data(using: .utf8)!)
+//        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+//        body.append(imageData)
+//        body.append("\r\n".data(using: .utf8)!)
         // Add any additional fields (optional)
         let parameters = parameter
+        // Append parameters
         for (key, value) in parameters {
             body.append("--\(boundary)\r\n".data(using: .utf8)!)
             body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
             body.append("\(value)\r\n".data(using: .utf8)!)
         }
+
+        // Append images
+        for (index, image) in imagesArray.enumerated() {
+            let imageData = image.jpegData(compressionQuality: 0.7)!
+            let filename = "\(APIs.generateCurrentTimeStamp()).jpg"
+            let mimeType = "image/jpeg"
+            
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(imageParameter)\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
         
+        // Close boundary
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
         
         request.httpBody = body
@@ -595,14 +613,16 @@ print(str)
         // Send the request
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let vc = viewController {
-                vc.hideActivityIndicator2()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    vc.hideActivityIndicator2()
+                }
             }
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 completion(nil, false, error.localizedDescription)
                 return
             }
-            
+
             if let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 print("Upload successful")
                 if let jsonResponse = String(data: data!, encoding: String.Encoding.utf8) {

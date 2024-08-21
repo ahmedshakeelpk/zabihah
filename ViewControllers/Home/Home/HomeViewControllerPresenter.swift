@@ -244,6 +244,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 pageNumberForApi += 1
             }
         }
+        else if selectedMenuCell == 3 {
+            if indexPath.row == ((modelGetPrayerPlacesResponse?.mosqueResponseData?.count ?? 0) - 1) {
+                print("came to last row")
+                pageNumberForApi += 1
+            }
+        }
         cell.layoutSubviews()
         cell.layoutIfNeeded()
     }

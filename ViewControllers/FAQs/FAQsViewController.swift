@@ -38,17 +38,7 @@ class FAQsViewController: UIViewController {
     var modelGetFAQsResponse: ModelGetFAQsResponse? {
         didSet {
             if modelGetFAQsResponse?.faqResponseModel?.count ?? 0 > 0 {
-                tableView.reloadData()
-            }
-            
-            if tableView.visibleCells.count == 0 {
                 imageViewNoAddressFound.isHidden = false
-                // tableView is empty. You can set a backgroundView for it.
-                // tableView is empty. You can set a backgroundView for it.
-//                let imageView = UIImageView(image: UIImage(named: "noAddressList"))
-//                tableView.backgroundView = imageView
-//                imageView.contentMode = .scaleAspectFit
-//                imageView.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
             }
             else {
                 imageViewNoAddressFound.isHidden = true

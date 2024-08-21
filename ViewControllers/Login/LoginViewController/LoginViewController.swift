@@ -57,8 +57,8 @@ class LoginViewController: UIViewController {
     @IBAction func buttonPhoneLogin(_ sender: Any) {
 //        navigateTogalleryStoryBoard()
         //        navigateToHomeViewController()
-        //        navigateToDeliveryDetails3ViewController()
-                navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
+        navigateToRatingViewController()
+//                navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
     }
@@ -68,6 +68,10 @@ class LoginViewController: UIViewController {
     
     func navigateTogalleryStoryBoard() {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToRatingViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

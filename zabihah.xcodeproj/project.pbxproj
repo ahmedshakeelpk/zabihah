@@ -44,6 +44,10 @@
 		6A3AB5A22C3A97C80030F016 /* EditAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3AB5A12C3A97C80030F016 /* EditAddressViewController.swift */; };
 		6A3DD1C52C365BEC003F1F44 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3DD1C42C365BEC003F1F44 /* ViewControllerExtension.swift */; };
 		6A4747ED2C73A523005483B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A4747EC2C73A523005483B2 /* GoogleService-Info.plist */; };
+		6A4748292C74EFDB005483B2 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4748282C74EFDB005483B2 /* RatingViewController.swift */; };
+		6A47482C2C74F47B005483B2 /* RatingViewControllerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A47482B2C74F47B005483B2 /* RatingViewControllerCell.xib */; };
+		6A47482D2C74F47B005483B2 /* RatingViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A47482A2C74F47B005483B2 /* RatingViewControllerCell.swift */; };
+		6A47485E2C75CD5F005483B2 /* WriteReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A47485D2C75CD5F005483B2 /* WriteReviewViewController.swift */; };
 		6A5601C62C6FBFA400A761B6 /* DeliveryDetailsViewController3Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5601C52C6FBFA400A761B6 /* DeliveryDetailsViewController3Model.swift */; };
 		6A62691E2C3D0F6400DA844F /* TextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A62691D2C3D0F6400DA844F /* TextFieldExtension.swift */; };
 		6A6269212C3D154C00DA844F /* HomeMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A62691F2C3D154C00DA844F /* HomeMenuCell.swift */; };
@@ -180,6 +184,10 @@
 		6A3AB5A12C3A97C80030F016 /* EditAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAddressViewController.swift; sourceTree = "<group>"; };
 		6A3DD1C42C365BEC003F1F44 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		6A4747EC2C73A523005483B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6A4748282C74EFDB005483B2 /* RatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
+		6A47482A2C74F47B005483B2 /* RatingViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingViewControllerCell.swift; sourceTree = "<group>"; };
+		6A47482B2C74F47B005483B2 /* RatingViewControllerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatingViewControllerCell.xib; sourceTree = "<group>"; };
+		6A47485D2C75CD5F005483B2 /* WriteReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteReviewViewController.swift; sourceTree = "<group>"; };
 		6A5601C52C6FBFA400A761B6 /* DeliveryDetailsViewController3Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryDetailsViewController3Model.swift; sourceTree = "<group>"; };
 		6A62691D2C3D0F6400DA844F /* TextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldExtension.swift; sourceTree = "<group>"; };
 		6A62691F2C3D154C00DA844F /* HomeMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMenuCell.swift; sourceTree = "<group>"; };
@@ -567,6 +575,24 @@
 			path = AppColorsExtension;
 			sourceTree = "<group>";
 		};
+		6A4748272C74EFB5005483B2 /* RatingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6A4748282C74EFDB005483B2 /* RatingViewController.swift */,
+				6A47482A2C74F47B005483B2 /* RatingViewControllerCell.swift */,
+				6A47482B2C74F47B005483B2 /* RatingViewControllerCell.xib */,
+			);
+			path = RatingViewController;
+			sourceTree = "<group>";
+		};
+		6A47485C2C75CD49005483B2 /* WriteReviewViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6A47485D2C75CD5F005483B2 /* WriteReviewViewController.swift */,
+			);
+			path = WriteReviewViewController;
+			sourceTree = "<group>";
+		};
 		6A62691C2C3D0F5100DA844F /* TextFieldExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -749,7 +775,9 @@
 		6ACA06582C5665A200EE8F43 /* Delivery */ = {
 			isa = PBXGroup;
 			children = (
+				6A47485C2C75CD49005483B2 /* WriteReviewViewController */,
 				6ACA06592C5665AC00EE8F43 /* Delivery.storyboard */,
+				6A4748272C74EFB5005483B2 /* RatingViewController */,
 				6ACA065B2C56696000EE8F43 /* DeliveryDetails */,
 			);
 			path = Delivery;
@@ -1058,6 +1086,7 @@
 				6AD4777C2C61DA47004AAABE /* HomeRestaurantSubCell.xib in Resources */,
 				6AD477822C61DB08004AAABE /* HomeRestaurantSubCuisineCell.xib in Resources */,
 				6A3AB5912C39EE7F0030F016 /* SideMenuViewHeaderViewCell.xib in Resources */,
+				6A47482C2C74F47B005483B2 /* RatingViewControllerCell.xib in Resources */,
 				6A62693C2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.xib in Resources */,
 				6AD39E832C3E469000BDAC05 /* HomeCuisinesCell.xib in Resources */,
 				6AD0C01E2C3BF3F00051D99A /* AlertPopup.storyboard in Resources */,
@@ -1131,6 +1160,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A47485E2C75CD5F005483B2 /* WriteReviewViewController.swift in Sources */,
 				6AD477762C61D459004AAABE /* HomeViewControllerPresenter.swift in Sources */,
 				6A6269252C3D163000DA844F /* LabelExtension.swift in Sources */,
 				6AD39E592C3D7EA200BDAC05 /* HomeFoodItemCell.swift in Sources */,
@@ -1158,6 +1188,7 @@
 				6A6FC4112C357D490050B6B2 /* AppColorsExtension.swift in Sources */,
 				6A3AB58F2C39E2DC0030F016 /* SideMenuViewHeaderViewCell.swift in Sources */,
 				6A3AB56F2C3956A40030F016 /* SideTownModel.swift in Sources */,
+				6A4748292C74EFDB005483B2 /* RatingViewController.swift in Sources */,
 				6A706E7D2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift in Sources */,
 				6A9BD3CE2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift in Sources */,
 				6A6FC3FC2C3572000050B6B2 /* AppDelegate.swift in Sources */,
@@ -1211,6 +1242,7 @@
 				6AB93BE82C622EDD0045C195 /* MyFavouriteCell.swift in Sources */,
 				6ACA06612C56A47300EE8F43 /* FoodItemCollectionViewCell.swift in Sources */,
 				6A9BD3EB2C48FB04008BBDF5 /* FPNTextFieldExtension.swift in Sources */,
+				6A47482D2C74F47B005483B2 /* RatingViewControllerCell.swift in Sources */,
 				6A62691E2C3D0F6400DA844F /* TextFieldExtension.swift in Sources */,
 				6A9BD3CA2C439937008BBDF5 /* UISettingDesign.swift in Sources */,
 				6A6FC3FE2C3572000050B6B2 /* SceneDelegate.swift in Sources */,
@@ -1375,7 +1407,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1412,7 +1444,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

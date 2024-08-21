@@ -221,7 +221,7 @@ class AddAddressViewController: UIViewController {
             "longitude": location?.longitude ?? 0,
             "deliveryInstructions": textFieldDeliveryInstruction.text!,
             "locationInstruction": textFieldLocationInstructionOptional.text!,
-            "isDefault": true
+            "isDefault": switchDefaultAddress.isOn
         ]
         APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg in
             let model: ModelEditUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
