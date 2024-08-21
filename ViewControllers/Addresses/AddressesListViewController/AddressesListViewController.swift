@@ -33,10 +33,10 @@ class AddressesListViewController: UIViewController {
                 else {
                     print("No default address found.")
                 }
-                imageViewNoAddressFound.isHidden = false
+                imageViewNoAddressFound.isHidden = true
             }
             else {
-                imageViewNoAddressFound.isHidden = true
+                imageViewNoAddressFound.isHidden = false
             }
             
 //            if tableView.visibleCells.count == 0 {

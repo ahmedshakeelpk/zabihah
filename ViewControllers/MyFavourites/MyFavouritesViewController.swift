@@ -41,23 +41,19 @@ class MyFavouritesViewController: UIViewController {
     
     func tableViewReload() {
         tableView.reloadData()
-        if tableView.visibleCells.count == 0 {
-            viewNoDataFoundBackGround.isHidden = false
-            tableView.isHidden = true
-            if buttonRestaurant.tag == 1 {
-                imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
-                imageViewNoRecordFound.tintColor = .clrUnselectedImage
-                labelNoRecordFound.text = "No Restaurant Found"
-            }
-            else {
-                imageViewNoRecordFound.image = UIImage(named: "placeholderMosque")
-                imageViewNoRecordFound.tintColor = .clrUnselectedImage
-                labelNoRecordFound.text = "No Prayer Space Found"
+        viewNoDataFoundBackGround.isHidden = false
+        tableView.isHidden = true
+        if buttonRestaurant.tag == 1 {
+            if modelGetFavouriteByUserResponse?.halalRestuarantResponseData?.count ?? 0 > 0 {
+                tableView.isHidden = false
+                viewNoDataFoundBackGround.isHidden = true
             }
         }
         else {
-            viewNoDataFoundBackGround.isHidden = true
-            tableView.isHidden = false
+            if modelGetFavouriteByUserResponse?.prayerSpacesResponseData?.count ?? 0 > 0 {
+                tableView.isHidden = false
+                viewNoDataFoundBackGround.isHidden = true
+            }
         }
     }
     

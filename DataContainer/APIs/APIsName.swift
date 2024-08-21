@@ -60,6 +60,7 @@ struct APIsName {
         //MARK:- Review
         case postreview = "api/Review/postreview"
         case getbytype = "api/Review/getbytype"
+        case getbyuser = "api/Review/getbyuser'"
         
 
         
