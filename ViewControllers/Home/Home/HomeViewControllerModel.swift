@@ -50,6 +50,7 @@ extension HomeViewController {
         let iconImage: String?
         let status, tags: String?
         let createdOn: String?
+        let type: String?
         let visits: Int?
         var isFavorites: Bool?
         let name: String?
