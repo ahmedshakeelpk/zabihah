@@ -21,10 +21,14 @@ class WriteReviewViewController: UIViewController {
     @IBOutlet weak var buttonSubmitYourReview: UIButton!
     
     var modelGetRestaurantDetailResponse:  DeliveryDetailsViewController3.ModelGetRestaurantDetailResponse?
+    var reviewDatum: ReviewsViewController.ReviewDatum!
+    
     var isPrayerPlace: Bool = false
-
+    
+    var isFromEditReview: Bool = false
     let placeholderText = "Write..."
     var galleryRecentPhotos: [String]!
+    var arrayDeletePhotos: [String]!
     var arrayLocalGallery: [UIImage]? {
         didSet {
             DispatchQueue.main.async {
@@ -44,13 +48,17 @@ class WriteReviewViewController: UIViewController {
             }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         RecentPhotoCell.register(collectionView: collectionView)
         UpLoadPhotoCell.register(collectionView: collectionView)
         textViewReview.radius(radius: 12, color: .lightGray, borderWidth: 1)
         collectionView.reloadData()
+        
+        if isFromEditReview {
+            setData()
+        }
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -67,7 +75,28 @@ class WriteReviewViewController: UIViewController {
         buttonRadioYes.tag = 0
     }
     @IBAction func buttonSubmitYourReview(_ sender: Any) {
-        postReview()
+        if isFromEditReview {
+            editReview()
+        }
+        else {
+            postReview()
+        }
+    }
+    
+    func setData() {
+        viewStarCasmo.rating = reviewDatum.rating ?? 0
+        textViewReview.text = reviewDatum.description
+        if reviewDatum.returning ?? false {
+            imageViewYes.image = UIImage(named: "radioCheck")
+            imageViewNo.image = UIImage(named: "radioUnCheck")
+            buttonRadioYes.tag = 1
+        }
+        else {
+            imageViewYes.image = UIImage(named: "radioUnCheck")
+            imageViewNo.image = UIImage(named: "radioCheck")
+            buttonRadioYes.tag = 0
+        }
+        galleryRecentPhotos = reviewDatum.images
     }
     
     func navigateToAddAddressViewController() {
@@ -83,10 +112,30 @@ class WriteReviewViewController: UIViewController {
             "Rating": viewStarCasmo.rating,
             "IsReturning": buttonRadioYes.tag == 1,
             "Description": textViewReview.text!
-//            "Images": isPrayerPlace ? "prayer" : "rest"
+            //            "Images": isPrayerPlace ? "prayer" : "rest"
         ] as [String : Any]
         
         APIs.uploadImage(apiName: .postreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "Images", parameter: parameters, viewController: self) { responseData, success, errorMsg in
+            let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData)
+            DispatchQueue.main.async {
+                self.modelPostReview = model
+            }
+        }
+    }
+    
+    func editReview() {
+        let parameters = [
+            "id": reviewDatum.id ?? "",
+            "ItemId": reviewDatum.itemId ?? "",
+            "DeleteImages": arrayDeletePhotos ?? [],
+            //            "newImages": arrayLocalGallery,
+            "Type": isPrayerPlace ? "prayer" : "rest",
+            "Rating": viewStarCasmo.rating,
+            "IsReturning": buttonRadioYes.tag == 1,
+            "Description": textViewReview.text!
+        ] as [String : Any]
+        
+        APIs.uploadImage(apiName: .editreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "newImages", parameter: parameters, requestType: "PUT", viewController: self) { responseData, success, errorMsg in
             let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData)
             DispatchQueue.main.async {
                 self.modelPostReview = model
@@ -103,7 +152,7 @@ extension WriteReviewViewController: UITextViewDelegate {
         }
         return true
     }
-
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = placeholderText
@@ -185,7 +234,7 @@ extension WriteReviewViewController: UIDocumentPickerDelegate, UINavigationContr
                     arrayLocalGallery = [UIImage]()
                 }
                 arrayLocalGallery?.append(image)
-//                uploadImage(image: image)
+                //                uploadImage(image: image)
             }
             if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
                 //                let fileName = imageUrl.lastPathComponent
@@ -215,6 +264,6 @@ extension WriteReviewViewController {
         let token: String?
         let totalCounts, totalPages: Int?
         let images: [String]?
-//        let reviewDataObj: JSONNull?
+        //        let reviewDataObj: JSONNull?
     }
 }

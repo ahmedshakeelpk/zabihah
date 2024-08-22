@@ -1,59 +1,83 @@
 //
-//  RatingViewControllerCell.swift
+//  ReviewsViewControllerCell.swift
 //  zabihah
 //
-//  Created by Shakeel Ahmed on 20/08/2024.
+//  Created by Shakeel Ahmed on 22/08/2024.
 //
 
 import UIKit
-import Cosmos
 
-class RatingViewControllerCell: UITableViewCell {
-    @IBOutlet weak var viewBackGroundImages: UIView!
-    
-    @IBOutlet weak var collectionView: UICollectionView!
+class ReviewsViewControllerCell: UITableViewCell {
+    @IBOutlet weak var buttonCheck: UIButton!
+    @IBOutlet weak var buttonEdit: UIButton!
+    @IBOutlet weak var buttonDelete: UIButton!
     @IBOutlet weak var labelTitle: UILabel!
-    @IBOutlet weak var labelComments: UILabel!
-    @IBOutlet weak var labelTime: UILabel!
-    @IBOutlet weak var viewStarCosmo: CosmosView!
-    @IBOutlet weak var viewBackGround: UIView!
+    @IBOutlet weak var viewButtonDeleteBackGround: UIView!
+    @IBOutlet weak var labelAddress: UILabel!
     
+    @IBOutlet weak var viewBackGroundForRadius: UIView!
+    @IBOutlet weak var stackViewBackGround: UIStackView!
+    @IBOutlet weak var imageViewRestaurant: UIImageView!
+    @IBOutlet weak var viewGalleryBackGround: UIView!
+    
+    var index: Int!
+    var buttonDeleteHandler: ((Int) -> ())!
+    var buttonEditHandler: ((Int) -> ())!
+    var buttonCheckHandler: ((Int) -> ())!
     var didSelectItemHandler: ((Int) -> ())!
+
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     var galleryRecentPhotos: [String]! {
         didSet {
-            viewBackGroundImages.isHidden = !(galleryRecentPhotos.count > 0)
+            viewGalleryBackGround.isHidden = !(galleryRecentPhotos.count > 0)
             collectionView.reloadData()
         }
     }
-
-    var reviewDatum: RatingViewController.ReviewDatum!
+    
+    var reviewDatum: ReviewsViewController.ReviewDatum? {
+        didSet {
+            labelTitle.text = reviewDatum?.name ?? ""
+            labelAddress.text = reviewDatum?.address ?? ""
+            imageViewRestaurant.setImage(urlString: reviewDatum?.iconImage ?? "", placeHolderIcon: "placeholderRestaurantSubIcon")
+            galleryRecentPhotos = reviewDatum?.images ?? []
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
         
+        viewBackGroundForRadius.setShadow()
+        stackViewBackGround.radius(radius: 12)
+        RecentPhotoCell.register(collectionView: collectionView)
+        imageViewRestaurant.circle()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        viewBackGround.radius(radius: 12)
-        RecentPhotoCell.register(collectionView: collectionView)
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
-        
-        labelTitle.text = reviewDatum.userName ?? ""
-        labelComments.text = reviewDatum.description ?? ""
-        labelTime.text = reviewDatum.period ?? ""
-        viewStarCosmo.rating = Double(reviewDatum.rating ?? 0)
         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.reloadData()
     }
+    @IBAction func buttonDelete(_ sender: UIButton) {
+        buttonDeleteHandler?(index)
+    }
+    @IBAction func buttonEdit(_ sender: UIButton) {
+        buttonEditHandler?(index)
+    }
+    @IBAction func buttonCheck(_ sender: Any) {
+        buttonCheckHandler?(index)
+    }
     
 }
 
-extension RatingViewControllerCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension ReviewsViewControllerCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     //        return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 12 )

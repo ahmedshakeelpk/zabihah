@@ -80,6 +80,7 @@ class SideMenuView: UIView {
             switch indexPath.row {
             case 0:
                 print("case 1")
+                navigateToReviewsViewController()
             case 1:
                 print("case 2")
                 navigateToMyFavouritesViewController()
@@ -139,6 +140,10 @@ class SideMenuView: UIView {
     }
     func navigateToAddressesListViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToReviewsViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ReviewsViewController") as! ReviewsViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     func navigateToFAQsViewController() {

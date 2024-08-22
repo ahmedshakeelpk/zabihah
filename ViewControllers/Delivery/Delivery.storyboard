@@ -4202,7 +4202,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEN-D8-6eZ">
                                                 <rect key="frame" x="0.0" y="0.0" width="263" height="64"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your favorite places" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Frc-VW-TEJ">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Reviews" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Frc-VW-TEJ">
                                                         <rect key="frame" x="20" y="0.0" width="243" height="64"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="64" id="I5Q-Je-LIc"/>
@@ -4458,7 +4458,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="Lcu-E7-0wf">
                                 <rect key="frame" x="0.0" y="238" width="414" height="624"/>
                                 <subviews>
-                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="NAu-Ym-Yfv">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="NAu-Ym-Yfv">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="624"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
@@ -4531,6 +4531,7 @@
                         <outlet property="imageViewHalalFood" destination="PDC-WH-hCr" id="1Yy-ds-Xcm"/>
                         <outlet property="imageViewMosque" destination="OSK-3M-49n" id="g5R-Dz-iMx"/>
                         <outlet property="imageViewNoDataFound" destination="S2r-NW-ZCc" id="KSt-ik-B43"/>
+                        <outlet property="stackViewButtonTabBackGround" destination="A8z-N7-qrE" id="v6j-cR-A8w"/>
                         <outlet property="tableView" destination="NAu-Ym-Yfv" id="c1K-wo-3JR"/>
                         <outlet property="viewBottomLineHalalFood" destination="twn-nO-4u4" id="3jO-Mx-dyK"/>
                         <outlet property="viewBottomLinePrayerSpaces" destination="708-C2-it6" id="EZk-hs-OiB"/>

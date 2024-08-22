@@ -78,6 +78,8 @@
 		6A9BD3DC2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3DB2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift */; };
 		6A9BD3EB2C48FB04008BBDF5 /* FPNTextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9BD3EA2C48FB04008BBDF5 /* FPNTextFieldExtension.swift */; };
 		6AA28E812C58A29100F8192F /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA28E802C58A29100F8192F /* ImageViewExtension.swift */; };
+		6AB201D82C76F81300697002 /* ReviewsViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB201D62C76F81300697002 /* ReviewsViewControllerCell.swift */; };
+		6AB201D92C76F81300697002 /* ReviewsViewControllerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB201D72C76F81300697002 /* ReviewsViewControllerCell.xib */; };
 		6AB93BE82C622EDD0045C195 /* MyFavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB93BE62C622EDD0045C195 /* MyFavouriteCell.swift */; };
 		6AB93BE92C622EDD0045C195 /* MyFavouriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB93BE72C622EDD0045C195 /* MyFavouriteCell.xib */; };
 		6AB93BEB2C622F700045C195 /* MyFavouritesViewControllerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB93BEA2C622F700045C195 /* MyFavouritesViewControllerModel.swift */; };
@@ -221,6 +223,8 @@
 		6A9BD3DB2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressViewControllerModel.swift; sourceTree = "<group>"; };
 		6A9BD3EA2C48FB04008BBDF5 /* FPNTextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPNTextFieldExtension.swift; sourceTree = "<group>"; };
 		6AA28E802C58A29100F8192F /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
+		6AB201D62C76F81300697002 /* ReviewsViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewControllerCell.swift; sourceTree = "<group>"; };
+		6AB201D72C76F81300697002 /* ReviewsViewControllerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewsViewControllerCell.xib; sourceTree = "<group>"; };
 		6AB93BE62C622EDD0045C195 /* MyFavouriteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFavouriteCell.swift; sourceTree = "<group>"; };
 		6AB93BE72C622EDD0045C195 /* MyFavouriteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyFavouriteCell.xib; sourceTree = "<group>"; };
 		6AB93BEA2C622F700045C195 /* MyFavouritesViewControllerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFavouritesViewControllerModel.swift; sourceTree = "<group>"; };
@@ -599,6 +603,8 @@
 			isa = PBXGroup;
 			children = (
 				6A4748602C766FCD005483B2 /* ReviewsViewController.swift */,
+				6AB201D62C76F81300697002 /* ReviewsViewControllerCell.swift */,
+				6AB201D72C76F81300697002 /* ReviewsViewControllerCell.xib */,
 			);
 			path = ReviewsViewController;
 			sourceTree = "<group>";
@@ -1075,6 +1081,7 @@
 				6AD39E912C3E904600BDAC05 /* HomePrayerPlacesCell.xib in Resources */,
 				6ACA06692C57B00700EE8F43 /* RecentPhotoCell.xib in Resources */,
 				6A06C7952C6FE839006B5563 /* UpLoadPhotoCell.xib in Resources */,
+				6AB201D92C76F81300697002 /* ReviewsViewControllerCell.xib in Resources */,
 				6AD5634D2C6A2786004C7552 /* GalleryStoryBoard.storyboard in Resources */,
 				6A6269382C3D3EF500DA844F /* HomeCuisinesSubCell.xib in Resources */,
 				6A6FC4082C3572020050B6B2 /* Base in Resources */,
@@ -1213,6 +1220,7 @@
 				6AB93BEB2C622F700045C195 /* MyFavouritesViewControllerModel.swift in Sources */,
 				6AD0C01A2C3BF3B80051D99A /* IconNames.swift in Sources */,
 				6A9BD3CC2C439AA1008BBDF5 /* AddressesViewControllerModel.swift in Sources */,
+				6AB201D82C76F81300697002 /* ReviewsViewControllerCell.swift in Sources */,
 				6ACA065D2C56697000EE8F43 /* DeliveryDetailsViewController.swift in Sources */,
 				6A6269372C3D3EF500DA844F /* HomeCuisinesSubCell.swift in Sources */,
 				6A16E00D2C3687F500E1383B /* OTPTextField.swift in Sources */,
@@ -1419,7 +1427,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1456,7 +1464,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

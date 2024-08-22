@@ -10,7 +10,7 @@ import Cosmos
 import Alamofire
 
 class RatingViewController: UIViewController {
-
+    
     @IBOutlet weak var viewButtonReviewBackGround: ViewButtonSetting!
     @IBOutlet weak var labelRating: UILabel!
     @IBOutlet weak var labelReview: UILabel!
@@ -72,7 +72,7 @@ class RatingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         RatingViewControllerCell.register(tableView: tableView)
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 30, right: 0)
         getbytype()
@@ -120,6 +120,7 @@ class RatingViewController: UIViewController {
     }
     func navigateToWriteReviewViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
+        vc.isPrayerPlace = isPrayerPlace
         vc.galleryRecentPhotos = galleryRecentPhotos
         vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
         vc.reviewPostedHandler = {
@@ -154,14 +155,13 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
         cell.reviewDatum = modelGetByType?.reviewDataObj?.reviewData?[indexPath.row]
         cell.galleryRecentPhotos = modelGetByType?.reviewDataObj?.reviewData?[indexPath.row]?.images ?? []
         cell.didSelectItemHandler = didSelectItemHandler
-
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
         
-       
     }
 }
 
@@ -181,7 +181,7 @@ extension RatingViewController {
         let token: String?
         let recordFound: Bool?
     }
-
+    
     // MARK: - ReviewDataObj
     struct ReviewDataObj: Codable {
         let top1, top5, top2: Int?
@@ -190,7 +190,7 @@ extension RatingViewController {
         let avgRating: Double?
         let top4: Int?
     }
-
+    
     // MARK: - ReviewDatum
     struct ReviewDatum: Codable {
         let id: String

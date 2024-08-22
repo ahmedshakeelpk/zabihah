@@ -556,11 +556,11 @@ print(str)
         return (formatter.string(from: Date()) as NSString) as String
     }
     
-    static func uploadImage(apiName: APIsName.name, imagesArray: [UIImage], imageParameter: String, parameter: [String: Any], viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    static func uploadImage(apiName: APIsName.name, imagesArray: [UIImage], imageParameter: String, parameter: [String: Any], requestType: String? = "POST", viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         let completeUrl = APIPath.baseUrl + apiName.rawValue
         guard let url = URL(string: completeUrl) else { return }
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = requestType
         
         let authToken = "bearer \(kAccessToken)"
         request.addValue(authToken, forHTTPHeaderField: "Authorization")

@@ -245,6 +245,7 @@ class DeliveryDetailsViewController3: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
         vc.galleryRecentPhotos = self.galleryRecentPhotos
         vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
+        vc.isPrayerPlace = isPrayerPlace
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func getRestaurantDetail() {
