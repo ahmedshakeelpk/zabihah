@@ -21,7 +21,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var buttonAppleLogin: UIButton!
     @IBOutlet weak var buttonFaceBookLogin: UIButton!
     
-
+    var modelUserConfigurationResponse: HomeViewController.ModelUserConfigurationResponse? {
+        didSet {
+            kModelUserConfigurationResponse = modelUserConfigurationResponse
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         if kAccessToken != "" {
             navigateToRootHomeViewController()
@@ -129,36 +133,19 @@ class LoginViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         self.navigationController?.pushViewController(vc, animated: true)
     }
-
+    
     func userConfiguration() {
         print(getCurrentTimeZone())
         let parameters: Parameters = [
             "timeZoneId": getCurrentTimeZone()
         ]
         APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
-            let model: ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
+            let model: HomeViewController.ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelUserConfigurationResponse = model
         }
     }
     
     func getCurrentTimeZone() -> String {
         TimeZone.current.identifier
-    }
-
-    var modelUserConfigurationResponse: ModelUserConfigurationResponse? {
-        didSet {
-            kModelUserConfigurationResponse = modelUserConfigurationResponse
-        }
-    }
-    
-    // MARK: - ModelGetConfigurationResponse
-    struct ModelUserConfigurationResponse: Codable {
-        let distanceValue: Int?
-        let success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
-        let distanceUnit: String?
-        let recordFound: Bool?
-    }
-
+    }    
 }

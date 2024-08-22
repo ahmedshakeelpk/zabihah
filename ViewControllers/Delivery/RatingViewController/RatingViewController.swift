@@ -59,7 +59,6 @@ class RatingViewController: UIViewController {
                 labelProgressThree.text = "\(reviewDataObj.top3 ?? 0)%"
                 labelProgressFour.text = "\(reviewDataObj.top4 ?? 0)%"
                 labelProgressFive.text = "\(reviewDataObj.top5 ?? 0)%"
-                
                 progressBarOne.progress = Float(modelGetByType?.reviewDataObj?.top1 ?? 0)
                 progressBarTwo.progress = Float(modelGetByType?.reviewDataObj?.top2 ?? 0)
                 progressBarThree.progress = Float(modelGetByType?.reviewDataObj?.top3 ?? 0)

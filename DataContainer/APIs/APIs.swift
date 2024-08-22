@@ -574,12 +574,6 @@ print(str)
         // Create the multipart body
         var body = Data()
         
-        // Add image data to the body
-//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-//        body.append("Content-Disposition: form-data; name=\"UploadImage\"; filename=\"image\(APIs.generateCurrentTimeStamp()).jpg\"\r\n".data(using: .utf8)!)
-//        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-//        body.append(imageData)
-//        body.append("\r\n".data(using: .utf8)!)
         // Add any additional fields (optional)
         let parameters = parameter
         // Append parameters
@@ -588,7 +582,13 @@ print(str)
             body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
             body.append("\(value)\r\n".data(using: .utf8)!)
         }
-
+        
+        for value in (parameters["DeleteImages"] as? [String] ?? []) {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\("DeleteImages")\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
+        
         // Append images
         for (index, image) in imagesArray.enumerated() {
             let imageData = image.jpegData(compressionQuality: 0.7)!

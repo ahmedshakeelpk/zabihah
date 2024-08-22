@@ -75,6 +75,9 @@ class WriteReviewViewController: UIViewController {
         buttonRadioYes.tag = 0
     }
     @IBAction func buttonSubmitYourReview(_ sender: Any) {
+        if textViewReview.text == "" {
+            return
+        }
         if isFromEditReview {
             editReview()
         }
@@ -128,19 +131,37 @@ class WriteReviewViewController: UIViewController {
             "id": reviewDatum.id ?? "",
             "ItemId": reviewDatum.itemId ?? "",
             "DeleteImages": arrayDeletePhotos ?? [],
-            //            "newImages": arrayLocalGallery,
             "Type": isPrayerPlace ? "prayer" : "rest",
             "Rating": viewStarCasmo.rating,
             "IsReturning": buttonRadioYes.tag == 1,
             "Description": textViewReview.text!
+            //            "newImages": arrayLocalGallery,
         ] as [String : Any]
         
         APIs.uploadImage(apiName: .editreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "newImages", parameter: parameters, requestType: "PUT", viewController: self) { responseData, success, errorMsg in
-            let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData)
-            DispatchQueue.main.async {
-                self.modelPostReview = model
+            if let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData) {
+                DispatchQueue.main.async {
+                    self.modelPostReview = model
+                }
             }
         }
+    }
+    
+    func removeImageHandler(indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            //New Photos
+            arrayLocalGallery?.remove(at: indexPath.item)
+            collectionView.reloadData()
+        }
+        else if indexPath.section == 2 {
+            //Old Photos
+            if arrayDeletePhotos == nil {
+                arrayDeletePhotos = [String]()
+            }
+            arrayDeletePhotos.append(galleryRecentPhotos[indexPath.item])
+            galleryRecentPhotos.remove(at: indexPath.item)
+        }
+        collectionView.reloadData()
     }
 }
 
@@ -196,12 +217,18 @@ extension WriteReviewViewController: UICollectionViewDataSource, UICollectionVie
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentPhotoCell", for: indexPath) as! RecentPhotoCell
             cell.imageViewPhoto.image = arrayLocalGallery?[indexPath.item]
             cell.stackViewBackGround.radius(radius: 12, color: .lightGray, borderWidth: 1)
+            cell.isCancelButtonShow = isFromEditReview
+            cell.removeImageHandler = removeImageHandler
+            cell.indexPath = indexPath
             return cell
         }
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentPhotoCell", for: indexPath) as! RecentPhotoCell
             cell.stackViewBackGround.radius(radius: 12, color: .lightGray, borderWidth: 1)
             cell.imageViewPhoto.setImage(urlString: galleryRecentPhotos?[indexPath.item] ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque" : "placeholderRestaurantSubIcon")
+            cell.isCancelButtonShow = isFromEditReview
+            cell.removeImageHandler = removeImageHandler
+            cell.indexPath = indexPath
             return cell
         }
         

@@ -245,7 +245,7 @@ class DeliveryDetailsViewController3: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
         vc.galleryRecentPhotos = self.galleryRecentPhotos
         vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
-        vc.isPrayerPlace = isPrayerPlace
+        vc.isPrayerPlace = modelRestuarantResponseData.type ?? "" != "rest"
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func getRestaurantDetail() {
@@ -253,7 +253,7 @@ class DeliveryDetailsViewController3: UIViewController {
             "lat": userLocation?.coordinate.latitude as Any,
             "long": userLocation?.coordinate.longitude as Any,
             "id": modelRestuarantResponseData.id ?? "",
-            "type": isPrayerPlace ? "prayer" : "rest"
+            "type": modelRestuarantResponseData.type ?? ""
         ]
         APIs.postAPI(apiName: .getrestaurantdetail, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetRestaurantDetailResponse? = APIs.decodeDataToObject(data: responseData)
@@ -273,7 +273,7 @@ class DeliveryDetailsViewController3: UIViewController {
         let parameters = [
             "Id": modelGetRestaurantDetailResponse?.restuarantResponseData?.id ?? "",
             "isMark": !(modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites ?? false),
-            "type" : isPrayerPlace ? "prayer" : "rest"
+            "type" : modelRestuarantResponseData.type ?? ""
         ] as [String : Any]
         
         APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in

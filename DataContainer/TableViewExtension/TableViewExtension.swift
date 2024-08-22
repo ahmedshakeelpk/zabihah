@@ -41,6 +41,10 @@ extension UITableView {
 }
 
 extension UITableViewCell {
+    func itself<T>(_ value: T) -> T {
+        return value
+    }
+    
     static func nibName() -> String {
         return String(describing: self.self)
     }

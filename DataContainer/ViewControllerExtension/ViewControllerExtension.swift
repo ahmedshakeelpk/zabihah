@@ -192,6 +192,10 @@ extension UIViewController {
 }
 
 extension UIViewController {
+    func itself<T>(_ value: T) -> T {
+        return value
+    }
+    
     func dialNumber(number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
         if isActionSheet ?? false {
             if number == "" {

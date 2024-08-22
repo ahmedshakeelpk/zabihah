@@ -53,6 +53,7 @@ class HomeViewController: UIViewController {
     var modelUserConfigurationResponse: ModelUserConfigurationResponse? {
         didSet {
             //Location Services
+            kModelUserConfigurationResponse = modelUserConfigurationResponse
             locationManager.delegate = self
             checkLocationServices()
         }
@@ -95,9 +96,7 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    func itself<T>(_ value: T) -> T {
-        return value
-    }
+    
     var userLocation: CLLocation! {
         didSet {
             filterParametersHome = nil
