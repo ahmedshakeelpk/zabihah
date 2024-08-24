@@ -201,9 +201,6 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-
-
-
 extension RatingViewController {
     // MARK: - ModelGetByType
     // MARK: - ModelGetByType
