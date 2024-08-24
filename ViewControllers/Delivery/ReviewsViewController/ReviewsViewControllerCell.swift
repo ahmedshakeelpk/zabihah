@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import Cosmos
 
 class ReviewsViewControllerCell: UITableViewCell {
+    @IBOutlet weak var viewStarRating: CosmosView!
+    @IBOutlet weak var labelTimeAgo: UILabel!
     @IBOutlet weak var buttonCheck: UIButton!
     @IBOutlet weak var buttonEdit: UIButton!
     @IBOutlet weak var buttonDelete: UIButton!
@@ -18,6 +21,7 @@ class ReviewsViewControllerCell: UITableViewCell {
     @IBOutlet weak var viewBackGroundForRadius: UIView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
+    @IBOutlet weak var labelComment: UILabel!
     @IBOutlet weak var viewGalleryBackGround: UIView!
     
     var index: Int!
@@ -37,8 +41,12 @@ class ReviewsViewControllerCell: UITableViewCell {
     
     var reviewDatum: ReviewsViewController.ReviewDatum? {
         didSet {
-            labelTitle.text = reviewDatum?.name ?? ""
+            labelTitle.text = reviewDatum?.userName ?? ""
             labelAddress.text = reviewDatum?.address ?? ""
+            labelComment.text = reviewDatum?.description ?? ""
+            labelTimeAgo.text = reviewDatum?.period ?? ""
+
+            viewStarRating.rating = reviewDatum?.rating ?? 0
             imageViewRestaurant.setImage(urlString: reviewDatum?.iconImage ?? "", placeHolderIcon: "placeholderRestaurantSubIcon")
             galleryRecentPhotos = reviewDatum?.images ?? []
         }
@@ -106,6 +114,6 @@ extension ReviewsViewControllerCell: UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        didSelectItemHandler?(indexPath.row)
+        didSelectItemHandler?(index)
     }
 }

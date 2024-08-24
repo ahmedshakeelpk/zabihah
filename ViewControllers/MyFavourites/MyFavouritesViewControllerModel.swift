@@ -48,7 +48,7 @@ extension MyFavouritesViewController {
     
     // MARK: - ModelGetFavouriteByUserResponse
     struct ModelGetFavouriteByUserResponse: Codable {
-        let halalRestuarantResponseData, prayerSpacesResponseData: [ModelGetFavouriteByUserResponseData]?
+        let halalRestuarantResponseData, prayerSpacesResponseData: [HomeViewController.ModelRestuarantResponseData]?
         let totalPages: Int?
         let success: Bool?
         let message, innerExceptionMessage: String?
@@ -57,25 +57,25 @@ extension MyFavouritesViewController {
         let recordFound: Bool?
     }
 
-    // MARK: - ResponseDatum
-    struct ModelGetFavouriteByUserResponseData: Codable {
-        let iconImage: String?
-        let status, tags: String?
-        let createdOn: String?
-        let visits: Int?
-        let isFavorites: Bool?
-        let name: String?
-        let reviews: Int?
-        let long: Double?
-        let id: String?
-        let coverImage: String?
-        let titleImage: String?
-        let phone: String?
-        let distance: Int?
-        let isDelivery: Bool?
-        let distanceUnit: String?
-        let lat, rating: Double?
-        let address: String?
-        let gallaryCount: Int?
-    }
+//    // MARK: - ResponseDatum
+//    struct ModelGetFavouriteByUserResponseData: Codable {
+//        let iconImage: String?
+//        let status, tags: String?
+//        let createdOn: String?
+//        let visits: Int?
+//        let isFavorites: Bool?
+//        let name: String?
+//        let reviews: Int?
+//        let long: Double?
+//        let id: String?
+//        let coverImage: String?
+//        let titleImage: String?
+//        let phone: String?
+//        let distance: Int?
+//        let isDelivery: Bool?
+//        let distanceUnit: String?
+//        let lat, rating: Double?
+//        let address: String?
+//        let gallaryCount: Int?
+//    }
 }

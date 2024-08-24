@@ -10,6 +10,7 @@ import Alamofire
 import GooglePlaces
 
 class MyFavouritesViewController: UIViewController {
+    @IBOutlet weak var viewButtonTabBackGround: UIView!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
     @IBOutlet weak var imageViewMosque: UIImageView!
     @IBOutlet weak var stackViewButtonTabBackGround: UIStackView!
@@ -74,7 +75,11 @@ class MyFavouritesViewController: UIViewController {
         viewNoDataFoundBackGround.isHidden = true
         MyFavouriteCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
-        stackViewButtonTabBackGround.setShadow(radius: 6)
+//        stackViewButtonTabBackGround.setShadow(radius: 6)
+        stackViewButtonTabBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 6)
+        viewButtonTabBackGround.backgroundColor = .clear
+        viewButtonTabBackGround.setShadow(radius: 0)
+        
         imageViewNoRecordFound.isHidden = false
         viewBottomLinePrayerPlaces.isHidden = true
         buttonRestaurant.tag = 1
@@ -222,7 +227,7 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyFavouriteCell") as! MyFavouriteCell
         
-        let recordModel: ModelGetFavouriteByUserResponseData!
+        let recordModel: HomeViewController.ModelRestuarantResponseData!
         if buttonRestaurant.tag == 1 {
             recordModel = modelGetFavouriteByUserResponse?.halalRestuarantResponseData?[indexPath.row]
         }
@@ -262,5 +267,20 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
 //                break
 //            }
 //        }
+        navigateToDeliveryDetailsViewController(indexPath: indexPath)
+    }
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+//        vc.delegate = self
+        
+        vc.selectedMenuCell = 0
+        vc.userLocation = kUserCurrentLocation
+        if buttonRestaurant.tag == 1 {
+            vc.modelRestuarantResponseData = modelGetFavouriteByUserResponse?.halalRestuarantResponseData?[indexPath.row]
+        }
+        else {
+            vc.modelRestuarantResponseData = modelGetFavouriteByUserResponse?.prayerSpacesResponseData?[indexPath.row]
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

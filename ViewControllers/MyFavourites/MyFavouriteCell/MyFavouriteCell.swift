@@ -27,7 +27,7 @@ class MyFavouriteCell: UITableViewCell {
             
         }
     }
-    var halalRestuarantResponseData: MyFavouritesViewController.ModelGetFavouriteByUserResponseData? {
+    var halalRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
         didSet {
             if halalRestuarantResponseData != nil {
                 labelTitle.text = halalRestuarantResponseData?.name ?? ""

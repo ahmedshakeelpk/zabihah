@@ -38,10 +38,10 @@ class FAQsViewController: UIViewController {
     var modelGetFAQsResponse: ModelGetFAQsResponse? {
         didSet {
             if modelGetFAQsResponse?.faqResponseModel?.count ?? 0 > 0 {
-                imageViewNoAddressFound.isHidden = false
+                imageViewNoAddressFound.isHidden = true
             }
             else {
-                imageViewNoAddressFound.isHidden = true
+                imageViewNoAddressFound.isHidden = false
             }
             tableView.reloadData()
         }

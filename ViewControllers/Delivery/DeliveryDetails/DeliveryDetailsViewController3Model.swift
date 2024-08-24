@@ -37,6 +37,7 @@ extension DeliveryDetailsViewController3 {
         var isFavorites: Bool?
         let name: String?
         let type: String?
+        let tags: String?
     }
 
     // MARK: - Social

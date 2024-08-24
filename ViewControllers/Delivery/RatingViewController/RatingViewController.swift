@@ -38,12 +38,18 @@ class RatingViewController: UIViewController {
     @IBOutlet weak var buttonYelp: UIButton!
     @IBOutlet weak var buttonFromGoogle: UIButton!
     
+    var reviewPostedHandler: (() -> ())!
     var modelGetRestaurantDetailResponse:  DeliveryDetailsViewController3.ModelGetRestaurantDetailResponse?
     var galleryRecentPhotos: [String]!
     var isPrayerPlace: Bool = false
     var pageNumberForApi: Int! = 1 {
         didSet {
-            
+            if pageNumberForApi > 1 {
+                if pageNumberForApi > modelGetByType?.reviewDataObj?.totalReviews ?? 0 {
+                    return()
+                }
+                getbytype()
+            }
         }
     }
     var modelGetByType: ModelGetByType? {
@@ -90,6 +96,8 @@ class RatingViewController: UIViewController {
         buttonZabiha.tag = 1
         buttonYelp.tag = 0
         buttonFromGoogle.tag = 0
+        pageNumberForApi = 1
+        getbytype()
     }
     @IBAction func buttonYelp(_ sender: Any) {
         viewLineZabiha.isHidden = true
@@ -98,6 +106,8 @@ class RatingViewController: UIViewController {
         buttonZabiha.tag = 0
         buttonYelp.tag = 1
         buttonFromGoogle.tag = 0
+        pageNumberForApi = 1
+        getbytype()
     }
     @IBAction func buttonFromGoogle(_ sender: Any) {
         viewLineZabiha.isHidden = true
@@ -106,16 +116,18 @@ class RatingViewController: UIViewController {
         buttonZabiha.tag = 0
         buttonYelp.tag = 0
         buttonFromGoogle.tag = 1
+        pageNumberForApi = 1
+        getbytype()
     }
     
-    func navigateToAddAddressViewController() {
+    func navigateToAddAddressViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
-        vc.galleryRecentPhotos = galleryRecentPhotos
+        vc.galleryRecentPhotos = modelGetByType?.reviewDataObj?.reviewData?[index]?.images ?? []
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func didSelectItemHandler(index: Int) {
-        navigateToAddAddressViewController()
+        navigateToAddAddressViewController(index: index)
     }
     func navigateToWriteReviewViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
@@ -123,6 +135,7 @@ class RatingViewController: UIViewController {
         vc.galleryRecentPhotos = galleryRecentPhotos
         vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
         vc.reviewPostedHandler = {
+            self.reviewPostedHandler?()
             self.getbytype()
         }
         self.navigationController?.pushViewController(vc, animated: true)
@@ -137,7 +150,15 @@ class RatingViewController: UIViewController {
         ] as [String : Any]
         
         APIs.postAPI(apiName: .getbytype, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: ModelGetByType? = APIs.decodeDataToObject(data: responseData)
+            var model: ModelGetByType? = APIs.decodeDataToObject(data: responseData)
+           
+            if self.pageNumberForApi > 1 {
+                if let record = self.modelGetByType?.reviewDataObj?.reviewData {
+                    var oldModel = record
+                    oldModel.append(contentsOf: model?.reviewDataObj?.reviewData ?? [])
+                    model?.reviewDataObj?.reviewData = oldModel
+                }
+            }
             self.modelGetByType = model
         }
     }
@@ -151,6 +172,7 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RatingViewControllerCell") as! RatingViewControllerCell
+        cell.index = indexPath.row
         cell.reviewDatum = modelGetByType?.reviewDataObj?.reviewData?[indexPath.row]
         cell.galleryRecentPhotos = modelGetByType?.reviewDataObj?.reviewData?[indexPath.row]?.images ?? []
         cell.didSelectItemHandler = didSelectItemHandler
@@ -161,6 +183,16 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
         
+    }
+    
+    //Show Last Cell (for Table View)
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == ((modelGetByType?.reviewDataObj?.reviewData?.count ?? 0) - 1) {
+            print("came to last row")
+            pageNumberForApi += 1
+        }
+        cell.layoutSubviews()
+        cell.layoutIfNeeded()
     }
 }
 
@@ -173,7 +205,7 @@ extension RatingViewController {
     struct ModelGetByType: Codable {
         let totalCounts: Int?
         let images: [String]?
-        let reviewDataObj: ReviewDataObj?
+        var reviewDataObj: ReviewDataObj?
         let totalPages: Int?
         let success: Bool?
         let message, innerExceptionMessage: String?
@@ -184,7 +216,7 @@ extension RatingViewController {
     // MARK: - ReviewDataObj
     struct ReviewDataObj: Codable {
         let top1, top5, top2: Int?
-        let reviewData: [ReviewDatum?]?
+        var reviewData: [ReviewDatum?]?
         let totalReviews, top3: Int?
         let avgRating: Double?
         let top4: Int?

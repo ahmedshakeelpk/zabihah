@@ -22,7 +22,7 @@ class GalleryViewController: UIViewController {
     var totalImages = 10
     override func viewDidLoad() {
         super.viewDidLoad()
-        totalImages = galleryRecentPhotos.count
+        totalImages = galleryRecentPhotos?.count ?? 0
         // Do any additional setup after loading the view.
         GalleryViewControllerCell.register(collectionView: collectionView)
         

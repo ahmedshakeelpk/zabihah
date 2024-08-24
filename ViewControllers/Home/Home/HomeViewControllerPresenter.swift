@@ -234,8 +234,6 @@ extension HomeViewController {
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-
-    
     //Show Last Cell (for Table View)
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if selectedMenuCell == 1 {
@@ -567,8 +565,6 @@ extension HomeViewController {
     }
 }
 
-
-
 extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDelegate, HomeRestaurantSubCellDelegate, HomePrayerSpacesSubCellDelegate, DeliveryDetailsViewController3Delegate, HomePrayerPlacesTabCellDelegate {
   
     func changeFavouriteStatusFromDetails(isFavourite: Bool, indexPath: IndexPath) {
@@ -581,6 +577,9 @@ extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDele
             }
             else if indexPath.section == 3 {
                 modelGetHomeRestaurantsResponse?.mosqueResponseData?[indexPath.row].isFavorites = isFavourite
+            }
+            else {
+                selectedMenuCell = itself(selectedMenuCell)
             }
         }
         else if selectedMenuCell == 1 {

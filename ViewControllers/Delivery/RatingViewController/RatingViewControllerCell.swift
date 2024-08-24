@@ -8,49 +8,59 @@
 import UIKit
 import Cosmos
 
+
+
 class RatingViewControllerCell: UITableViewCell {
-    @IBOutlet weak var viewBackGroundImages: UIView!
-    
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var viewStarRating: CosmosView!
+    @IBOutlet weak var labelTimeAgo: UILabel!
     @IBOutlet weak var labelTitle: UILabel!
-    @IBOutlet weak var labelComments: UILabel!
-    @IBOutlet weak var labelTime: UILabel!
-    @IBOutlet weak var viewStarCosmo: CosmosView!
-    @IBOutlet weak var viewBackGround: UIView!
+    @IBOutlet weak var viewButtonDeleteBackGround: UIView!
     
+    @IBOutlet weak var viewBackGroundForRadius: UIView!
+    @IBOutlet weak var stackViewBackGround: UIStackView!
+    @IBOutlet weak var labelComment: UILabel!
+    @IBOutlet weak var viewGalleryBackGround: UIView!
+    
+    var index: Int!
     var didSelectItemHandler: ((Int) -> ())!
+
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     var galleryRecentPhotos: [String]! {
         didSet {
-            viewBackGroundImages.isHidden = !(galleryRecentPhotos.count > 0)
+            viewGalleryBackGround.isHidden = !(galleryRecentPhotos.count > 0)
             collectionView.reloadData()
         }
     }
-
-    var reviewDatum: RatingViewController.ReviewDatum!
+    
+    var reviewDatum: RatingViewController.ReviewDatum? {
+        didSet {
+            labelTitle.text = reviewDatum?.userName ?? ""
+            labelComment.text = reviewDatum?.description ?? ""
+            labelTimeAgo.text = reviewDatum?.period ?? ""
+            viewStarRating.rating = reviewDatum?.rating ?? 0
+            galleryRecentPhotos = reviewDatum?.images ?? []
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
+        viewBackGroundForRadius.setShadow()
+        stackViewBackGround.radius(radius: 12)
+        RecentPhotoCell.register(collectionView: collectionView)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        viewBackGround.radius(radius: 12)
-        RecentPhotoCell.register(collectionView: collectionView)
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
-        
-        labelTitle.text = reviewDatum.userName ?? ""
-        labelComments.text = reviewDatum.description ?? ""
-        labelTime.text = reviewDatum.period ?? ""
-        viewStarCosmo.rating = Double(reviewDatum.rating ?? 0)
         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.reloadData()
     }
-    
 }
 
 extension RatingViewControllerCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -82,6 +92,6 @@ extension RatingViewControllerCell: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        didSelectItemHandler?(indexPath.row)
+        didSelectItemHandler?(index)
     }
 }

@@ -9,6 +9,7 @@ import UIKit
 import Alamofire
 
 class ReviewsViewController: UIViewController {
+    @IBOutlet weak var viewButtonTabBackGround: UIView!
     @IBOutlet weak var imageViewNoDataFound: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var buttonBack: UIButton!
@@ -70,7 +71,11 @@ class ReviewsViewController: UIViewController {
         ReviewsViewControllerCell.register(tableView: tableView)
         
         viewBottomLinePrayerSpaces.isHidden = true
-        stackViewButtonTabBackGround.setShadow(radius: 6)
+//        stackViewButtonTabBackGround.setShadow(radius: 6)
+        stackViewButtonTabBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 6)
+        viewButtonTabBackGround.backgroundColor = .clear
+        viewButtonTabBackGround.setShadow(radius: 0)
+        
         tableView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 20, right: 0)
         imageViewHalalFood.image = imageViewHalalFood.image?.withRenderingMode(.alwaysTemplate)
         imageViewMosque.image = imageViewMosque.image?.withRenderingMode(.alwaysTemplate)

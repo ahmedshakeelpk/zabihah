@@ -592,7 +592,7 @@ print(str)
         // Append images
         for (index, image) in imagesArray.enumerated() {
             let imageData = image.jpegData(compressionQuality: 0.7)!
-            let filename = "\(APIs.generateCurrentTimeStamp()).jpg"
+            let filename = "\(APIs.generateCurrentTimeStamp())\(index)." + "jpg"
             let mimeType = "image/jpeg"
             
             body.append("--\(boundary)\r\n".data(using: .utf8)!)

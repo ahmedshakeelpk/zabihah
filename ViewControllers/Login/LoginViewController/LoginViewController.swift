@@ -61,8 +61,8 @@ class LoginViewController: UIViewController {
     @IBAction func buttonPhoneLogin(_ sender: Any) {
 //        navigateTogalleryStoryBoard()
         //        navigateToHomeViewController()
-        navigateToRatingViewController()
-//                navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
+//        navigateToRatingViewController()
+                navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
     }
