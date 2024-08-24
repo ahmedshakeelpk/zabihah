@@ -10,15 +10,21 @@ import UIKit
 
 extension UIColor {
     // Ma Colors
-    static let clrApp = UIColor(hexString: "990001")
-    static let clrBorder = UIColor(hexString: "D0D5DD")
+    static let colorApp = UIColor(hexString: "990001")
+    static let colorBorder = UIColor(hexString: "D0D5DD")
+    static let colorRed = UIColor(hexString: "990001")
+
+    
+    static let colorLabel = UIColor(hexString: "525252")
+    
+    
     
     
     static let clrLightBlue = UIColor(hexString: "364152")
     static let clrUnselected = UIColor(hexString: "F8FAFC")
 
     static let clrDarkBlue = UIColor(hexString: "101828")
-    static let clrDarkBlueWithOccupacy05 = UIColor(hexString: "CDD5DF", alpha: 0.5)
+    static let clrDisableButton = UIColor(hexString: "CDD5DF")
 
     //StatusBar Colors
     static let clrMehroonStatusBar = UIColor(hexString: "8C1B11")
@@ -26,17 +32,18 @@ extension UIColor {
     
 
     
-    static let clrOrange = UIColor(hexString: "F19434")
+    static let colorOrange = UIColor(hexString: "F19434")
     static let clrLightRed = UIColor(hexString: "EE6266")
     static let clrLightGray = UIColor(hexString: "E5E5E5")
     static let clrBlack = UIColor(hexString: "202734")
-    static let clrGreen = UIColor(hexString: "00CC96")
+    static let colorGreen = UIColor(hexString: "00CC96")
     static let clrGreen2nd = UIColor(hexString: "ABEFC6")
     static let clrLightGreen = UIColor(hexString: "ECFDF3")
 //    static let clrLightGreen = UIColor(hexString: "70d478")
     static let clrDarkGreen = UIColor(hexString: "5cc99a")
     static let clrTextNormal = UIColor(hexString: "202734")
     static let clrGray = UIColor(hexString: "555555")
+    static let clrUnselectedImage = UIColor(hexString: "4B5565")
 
 
     static let clrOrangeWithOccupacy10 = UIColor(hexString: "F19434", alpha: 0.10)

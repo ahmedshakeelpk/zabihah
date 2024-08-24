@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBYCqhDSX_AHN_hpO_HXiskwtYLKLcrQr0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>244191834839</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.halalfire.zabihahlite</string>
+	<key>PROJECT_ID</key>
+	<string>zabihah-428810</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zabihah-428810.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:244191834839:ios:d26737e74e9c0740317692</string>
+</dict>
+</plist>

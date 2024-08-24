@@ -46,7 +46,7 @@ extension UIViewController {
 extension UIViewController {
     func showAlertCustomPopup(title:String? = "", message: String? = "", iconName: IconNames.iconNameError = .iconError, buttonNames: [[String: AnyObject]]? = [[
         "buttonName": "OKAY",
-        "buttonBackGroundColor": UIColor.clrOrange,
+        "buttonBackGroundColor": UIColor.colorOrange,
         "buttonTextColor": UIColor.white] as [String : Any]] as? [[String: AnyObject]]
 //    ) {
                               , completion: ((String?) -> Void)? = nil) {
@@ -85,13 +85,26 @@ extension UIViewController {
     }
 
     
-    func dismissToViewController<T>(viewController: T) {
-        for controller in self.navigationController!.viewControllers as Array {
+    func popToViewController<T>(viewController: T) -> UIViewController? {
+        for controller in (self.navigationController?.viewControllers ?? []) as Array {
             if controller.isKind(of: viewController.self as! AnyClass) {
-                self.navigationController!.popToViewController(controller, animated: true)
+                DispatchQueue.main.async {
+                    self.navigationController!.popToViewController(controller, animated: true)
+                }
+                return controller
                 break
             }
         }
+        return nil
+        //        for controller in self.navigationController!.viewControllers as Array {
+        //                        if controller.isKind(of: ProfileViewController.self) {
+        //                            if let targetViewController = controller as? ProfileViewController {
+        //                                targetViewController.getuser()
+        //                                self.navigationController!.popToViewController(controller, animated: true)
+        //                            }
+        //                            break
+        //                        }
+        //                    }
     }
     
 }
@@ -119,5 +132,124 @@ extension UIViewController {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
             let delegate = windowScene.delegate as? SceneDelegate else { return nil }
          return delegate
+    }
+}
+
+extension UIViewController {
+    func showToast(message: String) {
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 150, y: 150, width: 300, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10
+        toastLabel.clipsToBounds = true
+        self.view.addSubview(toastLabel)
+        
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+//    func showToast(message: String, duration: TimeInterval = 2.0) {
+//        let toastLabel = UILabel()
+//        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+//        toastLabel.textColor = UIColor.white
+//        toastLabel.textAlignment = .center
+//        toastLabel.font = UIFont.systemFont(ofSize: 14.0)
+//        toastLabel.text = message
+//        toastLabel.numberOfLines = 0
+//        toastLabel.translatesAutoresizingMaskIntoConstraints = false
+//        toastLabel.alpha = 0.0
+//        
+//        self.view.addSubview(toastLabel)
+//        
+//        let horizontalPadding: CGFloat = 20.0
+//        let verticalPadding: CGFloat = 40.0
+//        
+//        NSLayoutConstraint.activate([
+//            toastLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: horizontalPadding),
+//            toastLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -horizontalPadding),
+//            toastLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100.0)
+//        ])
+//        
+//        
+//        // Layout toastLabel to get its height dynamically
+////        toastLabel.layoutIfNeeded()
+//        
+//        UIView.animate(withDuration: 0.5, animations: {
+//            toastLabel.alpha = 1.0
+//        }) { _ in
+//            UIView.animate(withDuration: 0.5, delay: duration, options: .curveEaseOut, animations: {
+//                toastLabel.alpha = 0.0
+//            }) { _ in
+//                toastLabel.removeFromSuperview()
+//            }
+//        }
+//    }
+}
+
+extension UIViewController {
+    func dialNumber(number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
+        if isActionSheet ?? false {
+            if number == "" {
+                completion?("viewdetails")
+            }
+            else {
+                actionSheetForCall(number: number) {clickOn in
+                    if clickOn == "viewdetails" {
+                        completion?(clickOn)
+                    }
+                }
+            }
+        }
+        else {
+            self.callNow(number: number) {actionType in
+                completion?(actionType)
+            }
+        }
+    }
+    func callNow(number : String, completion: ((String?) -> Void)? = nil) {
+        let updatedPhone = number.filter{$0.isNumber}
+        if let url = URL(string: "tel://\(updatedPhone)"),
+           UIApplication.shared.canOpenURL(url) {
+            completion?("callnow")
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler:nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        } else {
+            // add error message here
+            self.showToast(message: "Invalid Number")
+        }
+    }
+    //Mark:- Choose Action Sheet
+    func actionSheetForCall(number : String, completion: ((String?) -> Void)? = nil) {
+        var myActionSheet = UIAlertController(title: "Details!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
+        myActionSheet.view.tintColor = UIColor.black
+        let callAction = UIAlertAction(title: "Call", style: .destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.callNow(number: number)
+        })
+        let viewDetailsAction = UIAlertAction(title: "View Details", style: .destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            completion?("viewdetails")
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        if IPAD {
+            //In iPad Change Rect to position Popover
+            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
+        }
+        myActionSheet.addAction(callAction)
+        myActionSheet.addAction(viewDetailsAction)
+        myActionSheet.addAction(cancelAction)
+        self.present(myActionSheet, animated: true, completion: nil)
     }
 }

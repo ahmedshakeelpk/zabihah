@@ -147,15 +147,15 @@ class AlertPopupMessage: UIViewController {
                     "buttonBackGroundColor"] as? UIColor
             }
         }
-        viewButtonOneInner.radius(color: .clrOrange, borderWidth: 1)
+        viewButtonOneInner.radius(color: .colorOrange, borderWidth: 1)
         viewButtonOneInner.circle()
-        viewButtonTwoInner.radius(color: .clrOrange, borderWidth: 1)
+        viewButtonTwoInner.radius(color: .colorOrange, borderWidth: 1)
         viewButtonTwoInner.circle()
-        viewButtonThreeInner.radius(color: .clrOrange, borderWidth: 1)
+        viewButtonThreeInner.radius(color: .colorOrange, borderWidth: 1)
         viewButtonThreeInner.circle()
-        viewButtonFourInner.radius(color: .clrOrange, borderWidth: 1)
+        viewButtonFourInner.radius(color: .colorOrange, borderWidth: 1)
         viewButtonFourInner.circle()
-        viewButtonFiveInner.radius(color: .clrOrange, borderWidth: 1)
+        viewButtonFiveInner.radius(color: .colorOrange, borderWidth: 1)
         viewButtonFiveInner.circle()
         
 

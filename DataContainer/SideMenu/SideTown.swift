@@ -84,6 +84,7 @@ public extension SideMenu {
                 self?.backgroundColor = self?.menuBackgroundColor
             }
         }
+        NotificationCenter.default.post(name: Notification.Name("kUserProfileUpdate"), object: nil)
     }
     
     func closeMenu() {

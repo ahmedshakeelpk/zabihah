@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import AZSClient
+import Alamofire
+
 
 class LoginViewController: UIViewController {
 
@@ -13,8 +16,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var viewBackGroundPhone: UIView!
     @IBOutlet weak var viewBackGroundFaceBook: UIView!
     @IBOutlet weak var viewBackGroundApple: UIView!
-    
-    
     @IBOutlet weak var buttonEmailLogin: UIButton!
     @IBOutlet weak var buttonPhoneLogin: UIButton!
     @IBOutlet weak var buttonAppleLogin: UIButton!
@@ -22,7 +23,9 @@ class LoginViewController: UIViewController {
     
 
     override func viewDidAppear(_ animated: Bool) {
-
+        if kAccessToken != "" {
+            navigateToRootHomeViewController()
+        }
     }
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if #available(iOS 13.0, *) {
@@ -38,27 +41,34 @@ class LoginViewController: UIViewController {
         
         self.title = "zabihah"
         
-
         self.view.backgroundColor = .white
-        
         setStatusBarTopColor(color: .clrWhiteStatusBar)
-
-        viewBackGroundEmail.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundPhone.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundFaceBook.radius(radius: 8, color: .clrBorder, borderWidth: 1)
-        viewBackGroundApple.radius(radius: 8, color: .clrBorder, borderWidth: 1)
+        viewBackGroundEmail.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        viewBackGroundPhone.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        viewBackGroundFaceBook.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        viewBackGroundApple.radius(radius: 8, color: .colorBorder, borderWidth: 1)
+        
+        userConfiguration()
     }
     
     @IBAction func buttonEmailLogin(_ sender: Any) {
         navigateToLoginWithEmailOrPhoneViewController(isFromEmail: true)
     }
     @IBAction func buttonPhoneLogin(_ sender: Any) {
-        navigateToHomeViewController()
-//        navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
+//        navigateTogalleryStoryBoard()
+        //        navigateToHomeViewController()
+        //        navigateToDeliveryDetails3ViewController()
+                navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
     }
     @IBAction func buttonAppleLogin(_ sender: Any) {
+    }
+    
+    
+    func navigateTogalleryStoryBoard() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func navigateToLoginWithEmailOrPhoneViewController(isFromEmail: Bool) {
@@ -78,16 +88,73 @@ class LoginViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func navigateToAddressesViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesViewController") as! AddressesViewController
+    func navigateToRootHomeViewController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
+        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
+            self.sceneDelegate?.window?.rootViewController = navigationController
+        }
+    }
+    func navigateToAddressesListViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func navigateToAddAddressesViewController() {
+    func navigateToEditAddressesViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func navigateToAddAddressFieldsViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressFieldsViewController") as! AddAddressFieldsViewController
+    func navigateToProfileDeleteViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
+        vc.buttonDeleteHandler = {
+            print("delete button press")
+        }
+        self.present(vc, animated: true)
+    }
+    func navigateToDeliveryDetailsViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController") as! DeliveryDetailsViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    func navigateToDeliveryDetails2ViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController2") as! DeliveryDetailsViewController2
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToDeliveryDetails3ViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func userConfiguration() {
+        print(getCurrentTimeZone())
+        let parameters: Parameters = [
+            "timeZoneId": getCurrentTimeZone()
+        ]
+        APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
+            let model: ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelUserConfigurationResponse = model
+        }
+    }
+    
+    func getCurrentTimeZone() -> String {
+        TimeZone.current.identifier
+    }
+
+    var modelUserConfigurationResponse: ModelUserConfigurationResponse? {
+        didSet {
+            kModelUserConfigurationResponse = modelUserConfigurationResponse
+        }
+    }
+    
+    // MARK: - ModelGetConfigurationResponse
+    struct ModelUserConfigurationResponse: Codable {
+        let distanceValue: Int?
+        let success: Bool?
+        let message, innerExceptionMessage: String?
+        let token: String?
+        let distanceUnit: String?
+        let recordFound: Bool?
+    }
+
 }
