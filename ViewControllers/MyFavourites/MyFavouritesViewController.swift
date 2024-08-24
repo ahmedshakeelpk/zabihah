@@ -69,14 +69,15 @@ class MyFavouritesViewController: UIViewController {
             }
         }
     }
-
+    override func viewDidAppear(_ animated: Bool) {
+        stackViewButtonTabBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 6)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         viewNoDataFoundBackGround.isHidden = true
         MyFavouriteCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
 //        stackViewButtonTabBackGround.setShadow(radius: 6)
-        stackViewButtonTabBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 6)
         viewButtonTabBackGround.backgroundColor = .clear
         viewButtonTabBackGround.setShadow(radius: 0)
         
@@ -171,12 +172,12 @@ class MyFavouritesViewController: UIViewController {
 //        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[index]
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func buttonDeleteAddress(index: Int) {
-        actionSheetLogout(index: index)
+    func buttonDeleteFavourite(index: Int) {
+        actionSheetFavouriteDelete(index: index)
     }
     
     //Mark:- Choose Action Sheet
-    func actionSheetLogout(index: Int) {
+    func actionSheetFavouriteDelete(index: Int) {
         var myActionSheet = UIAlertController(title: "Delete Favourite!", message: "Are you sure you want to delete favourite item?", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
         let galleryAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
@@ -238,7 +239,7 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
         cell.halalRestuarantResponseData = recordModel
         cell.index = indexPath.row
         cell.selectedAddressIndex = selectedIndex
-        cell.buttonDeleteHandler = buttonDeleteAddress
+        cell.buttonDeleteHandler = buttonDeleteFavourite
         cell.buttonCheckHandler = buttonCheckHandler
         
         return cell

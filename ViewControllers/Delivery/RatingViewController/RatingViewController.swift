@@ -126,6 +126,9 @@ class RatingViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    func tapOnViewMoreHandler(index: Int) {
+        tableView.reloadRows(at: [IndexPath(row: index, section: 1)], with: .bottom)
+    }
     func didSelectItemHandler(index: Int) {
         navigateToAddAddressViewController(index: index)
     }
@@ -176,6 +179,7 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
         cell.reviewDatum = modelGetByType?.reviewDataObj?.reviewData?[indexPath.row]
         cell.galleryRecentPhotos = modelGetByType?.reviewDataObj?.reviewData?[indexPath.row]?.images ?? []
         cell.didSelectItemHandler = didSelectItemHandler
+        cell.tapOnViewMoreHandler = tapOnViewMoreHandler
         
         return cell
     }
@@ -187,6 +191,7 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
     
     //Show Last Cell (for Table View)
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
         if indexPath.row == ((modelGetByType?.reviewDataObj?.reviewData?.count ?? 0) - 1) {
             print("came to last row")
             pageNumberForApi += 1

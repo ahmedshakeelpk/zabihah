@@ -56,7 +56,7 @@ class ReviewsViewControllerCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
 
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 30)
         
         viewBackGroundForRadius.setShadow()
         stackViewBackGround.radius(radius: 12)

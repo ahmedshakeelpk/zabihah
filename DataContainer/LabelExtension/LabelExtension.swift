@@ -27,3 +27,13 @@ extension UILabel {
         self.attributedText = attributedString1
     }
 }
+
+extension UILabel {
+    func linesCount() -> Int {
+        let textSize = CGSize(width: self.frame.size.width, height: CGFloat(Float.infinity))
+        let rHeight = lroundf(Float(self.sizeThatFits(textSize).height))
+        let charSize = lroundf(Float(self.font.lineHeight))
+        let lineCount = rHeight/charSize
+        return lineCount
+    }
+}

@@ -59,6 +59,9 @@ class ReviewsViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        stackViewButtonTabBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 6)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfiguration()
@@ -72,7 +75,7 @@ class ReviewsViewController: UIViewController {
         
         viewBottomLinePrayerSpaces.isHidden = true
 //        stackViewButtonTabBackGround.setShadow(radius: 6)
-        stackViewButtonTabBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 6)
+        
         viewButtonTabBackGround.backgroundColor = .clear
         viewButtonTabBackGround.setShadow(radius: 0)
         
@@ -118,8 +121,11 @@ class ReviewsViewController: UIViewController {
             self.modelGetByUser = model
         }
     }
+    func buttonDeleteReview(index: Int) {
+        actionSheetDeleteReview(index: index)
+    }
     
-    func buttonDeleteAddress(index: Int) {
+    func deleteReview(index: Int) {
         if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[index] {
             let id = reviewData.id ?? ""
             let url = "\(APIsName.name.deletereview.rawValue)"
@@ -160,6 +166,30 @@ class ReviewsViewController: UIViewController {
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    //Mark:- Choose Action Sheet
+    func actionSheetDeleteReview(index: Int) {
+        if let userName = modelGetByUser?.reviewDataObj?.reviewData?[index]?.userName {
+            var myActionSheet = UIAlertController(title: "Delete Review!", message: "Are you sure you want to delete \(userName)?", preferredStyle: UIAlertController.Style.actionSheet)
+            myActionSheet.view.tintColor = UIColor.black
+            let galleryAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                self.deleteReview(index: index)
+            })
+
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+            })
+            
+            if IPAD {
+                //In iPad Change Rect to position Popover
+                myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
+            }
+            myActionSheet.addAction(galleryAction)
+            myActionSheet.addAction(cancelAction)
+            self.present(myActionSheet, animated: true, completion: nil)
+        }
+    }
 }
 
 extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -175,7 +205,7 @@ extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.index = indexPath.row
         cell.buttonEditHandler = buttonEditAddress
-        cell.buttonDeleteHandler = buttonDeleteAddress
+        cell.buttonDeleteHandler = buttonDeleteReview
         cell.didSelectItemHandler = didSelectItemHandler
         return cell
     }
