@@ -9,6 +9,7 @@ import UIKit
 import Alamofire
 
 class ReviewsViewController: UIViewController {
+    @IBOutlet weak var viewBackGroundNoDataFound: UIView!
     @IBOutlet weak var viewButtonTabBackGround: UIView!
     @IBOutlet weak var imageViewNoDataFound: UIImageView!
     @IBOutlet weak var tableView: UITableView!
@@ -49,10 +50,10 @@ class ReviewsViewController: UIViewController {
     
     func tableViewReloadData() {
         if modelGetByUser?.reviewDataObj?.reviewData?.count ?? 0 > 0 {
-            imageViewNoDataFound.isHidden = true
+            viewBackGroundNoDataFound.isHidden = true
         }
         else {
-            imageViewNoDataFound.isHidden = false
+            viewBackGroundNoDataFound.isHidden = false
         }
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -70,7 +71,7 @@ class ReviewsViewController: UIViewController {
     
     func setConfiguration() {
         viewTitle.radius(radius: 12)
-        imageViewNoDataFound.isHidden = true
+        viewBackGroundNoDataFound.isHidden = true
         ReviewsViewControllerCell.register(tableView: tableView)
         
         viewBottomLinePrayerSpaces.isHidden = true
@@ -189,6 +190,10 @@ class ReviewsViewController: UIViewController {
             myActionSheet.addAction(cancelAction)
             self.present(myActionSheet, animated: true, completion: nil)
         }
+    }
+    
+    func tapOnViewMoreHandler(index: Int) {
+        tableView.reloadRows(at: [IndexPath(row: index, section: 1)], with: .bottom)
     }
 }
 

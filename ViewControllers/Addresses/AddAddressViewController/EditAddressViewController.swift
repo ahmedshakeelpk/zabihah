@@ -11,6 +11,8 @@ import GooglePlaces
 import Alamofire
 
 class EditAddressViewController: UIViewController {
+    @IBOutlet weak var buttonGps: UIButton!
+    @IBOutlet weak var viewButtonGpsBackGround: UIView!
     
     @IBOutlet weak var labelButtonSaveAsNew: UILabel!
     @IBOutlet weak var viewAddressMainBackGround: UIView!
@@ -24,7 +26,7 @@ class EditAddressViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView! {
         didSet {
             mapView.isMyLocationEnabled = true
-            mapView.settings.myLocationButton = true
+//            mapView.settings.myLocationButton = true
             mapView.delegate = self
         }
     }
@@ -121,7 +123,7 @@ class EditAddressViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        viewButtonGpsBackGround.circle()
         viewButtonBackBackGround.radius(radius: 8)
         viewAddressSubBackGround.radius(radius: 8)
         stackViewSearchBackGround.radius(radius: 8)
@@ -156,6 +158,15 @@ class EditAddressViewController: UIViewController {
         locationConfiguration()
     }
     
+    @IBAction func buttonGps(_ sender: Any) {
+        gpsButtonTapped()
+    }
+    
+    @objc func gpsButtonTapped() {
+        guard let location = mapView.myLocation else { return }
+        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 15.0)
+        mapView.animate(to: camera)
+    }
     func locationConfiguration() {
         locationManager = CLLocationManager()
         locationManager.delegate = self

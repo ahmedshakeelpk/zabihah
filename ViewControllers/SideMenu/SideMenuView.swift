@@ -161,6 +161,7 @@ class SideMenuView: UIView {
         imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "", placeHolderIcon: "placeHolderUser")
     }
     
+    @IBOutlet weak var viewProfileImageBackGround: UIView!
     func sideMenuIntiliziation() {
         if tableView == nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -173,7 +174,9 @@ class SideMenuView: UIView {
         SideMenuViewHeaderViewCell.register(tableView: tableView)
         SideMenuViewFooterViewCell.register(tableView: tableView)
         viewButtonEditBackGround.radius(radius: 8, color: .lightGray, borderWidth: 1)
-        imageViewProfile.circle()
+        
+        imageViewProfile.radius(radius: imageViewProfile.frame.height / 2, color: .white, borderWidth: 4)
+        viewProfileImageBackGround.setShadow(radius: viewProfileImageBackGround.frame.height / 2)
 
         if #available(iOS 15.0, *) {
             self.tableView.sectionHeaderTopPadding = 0
@@ -269,7 +272,7 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
             return 0;
         }
         else {
-            return 50
+            return 0
         }
     }
     

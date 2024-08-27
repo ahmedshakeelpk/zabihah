@@ -49,7 +49,7 @@ extension HomeRestaurantCell: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/1.3
+        let width = collectionView.frame.width/1.5
         return CGSize(width: width, height: 230)
     }
     

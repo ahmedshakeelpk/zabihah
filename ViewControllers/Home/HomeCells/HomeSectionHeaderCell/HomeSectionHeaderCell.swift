@@ -108,6 +108,7 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        labelViewAll.underline()
     }
     @IBAction func buttonViewAll(_ sender: Any) {
         print(section)

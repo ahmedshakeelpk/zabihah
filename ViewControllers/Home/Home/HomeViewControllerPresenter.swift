@@ -380,7 +380,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        let width = arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)]).width + 10
+        var width = arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)]).width + 10
+        if collectionView == self.collectionView {
+            width = collectionView.frame.width / 4
+        }
         return CGSize(width: width, height: 60)
     }
     
@@ -425,8 +428,8 @@ extension HomeViewController {
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
-            HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 240, data: nil),
-            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 240, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+            HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 224, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 224, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
             HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
@@ -442,7 +445,7 @@ extension HomeViewController {
             let recordCount = featuredRestuarantResponseData.count
             if recordCount > 0 {
                 let data = featuredRestuarantResponseData as Any
-                let rowHeight = 240
+                let rowHeight = 224
                 let identifier = HomeFoodItemCell.nibName()
                 let sectionName = "Featured near you"
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
@@ -460,7 +463,7 @@ extension HomeViewController {
             let recordCount = restuarantResponseData.count
             if recordCount > 0 {
                 let data = restuarantResponseData as Any
-                let rowHeight = 240
+                let rowHeight = 224
                 let identifier = HomeRestaurantCell.nibName()
                 let sectionName = ""
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
@@ -478,7 +481,7 @@ extension HomeViewController {
             let recordCount = mosqueResponseData.count
             if recordCount > 0 {
                 let data = mosqueResponseData as Any
-                let rowHeight = 240
+                let rowHeight = 224
                 let identifier = HomePrayerPlacesCell.nibName()
                 let sectionName = "Prayer Spaces near you"
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)

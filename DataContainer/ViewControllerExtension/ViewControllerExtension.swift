@@ -257,3 +257,10 @@ extension UIViewController {
         self.present(myActionSheet, animated: true, completion: nil)
     }
 }
+
+extension UIViewController {
+    func enableSwipeToPop() {
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+    }
+}

@@ -9,22 +9,45 @@ import UIKit
 
 class ProfileDeleteViewController: UIViewController {
 
+    @IBOutlet weak var labelTitle: UILabel!
+    @IBOutlet weak var labelSubTitle: UILabel!
+    @IBOutlet weak var labelDescription: UILabel!
+    @IBOutlet weak var labelButtonDelete: UILabel!
+    
     @IBOutlet weak var buttonDeleteMyAccount: UIButton!
     @IBOutlet weak var viewButtonDeleteMyAccountBackGround: UIView!
     @IBOutlet weak var viewButtonCancelBackGround: UIView!
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var buttonCancel: UIButton!
+    @IBOutlet weak var labelButtonCancel: UILabel!
     
     var buttonDeleteHandler: (() -> ())!
+    var stringTitle: String? = ""
+    var stringSubTitle: String? = ""
+    var stringDescription: String? = ""
+    var stringButtonDelete: String? = ""
+    var stringButtonCancel: String? = ""
+    
+    override func viewDidAppear(_ animated: Bool) {
+        viewButtonDeleteMyAccountBackGround.radius(radius: 8)
+        viewButtonCancelBackGround.radius(color: .clrLightGray, borderWidth: 1)
+        viewBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        viewBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
-        viewButtonDeleteMyAccountBackGround.radius(radius: 8)
-        viewButtonCancelBackGround.radius(color: .clrLightGray, borderWidth: 1)
+        setData()
+    }
+    
+    func setData() {
+        labelTitle.text = stringTitle
+        labelSubTitle.text = stringSubTitle
+        labelDescription.text = stringDescription
+        labelButtonDelete.text = stringButtonDelete
+        labelButtonCancel.text = stringButtonCancel
     }
     @IBAction func buttonDeleteMyAccount(_ sender: Any) {
         self.dismiss(animated: true) {

@@ -21,16 +21,16 @@ class SideMenuViewCell: UITableViewCell {
 
             if indexPath.section == 0 {
                 if indexPath.row == 2 {
-                    viewSeperator.isHidden = false
+//                    viewSeperator.isHidden = false
                 }
             }
             else {
                 if indexPath.row == 2 {
-                    viewSeperator.isHidden = false
+//                    viewSeperator.isHidden = false
                 }
                 else if indexPath.row == 3 {
                     //Using for Logout Seperator
-                    viewSeperatorLogout.isHidden = false
+//                    viewSeperatorLogout.isHidden = false
                 }
             }
         }

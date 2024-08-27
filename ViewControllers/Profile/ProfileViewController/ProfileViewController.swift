@@ -21,6 +21,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var labelPhone: UILabel!
     @IBOutlet weak var textFieldPhone: UITextField!
     @IBOutlet weak var viewButtonEditBackGround: UIView!
+    @IBOutlet weak var viewProfileImageBackGround: UIView!
 
     
     @IBOutlet weak var viewBackGroundNameTitle: UIView!
@@ -104,7 +105,10 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageViewProfile.radius(color: .white, borderWidth: 4)
+        viewProfileImageBackGround.setShadow(radius: viewProfileImageBackGround.frame.height / 2)
 
+        
         stackViewSocialLogin.isHidden = true
         viewTextFieldNameMainBackGround.isHidden = true
         viewTextFieldEmailMainBackGround.isHidden = true
@@ -130,7 +134,16 @@ class ProfileViewController: UIViewController {
         if modelGetBlobContainer == nil {
             getblobcontainer()
         }
-        funcMyActionSheet()
+        
+        ImagePickerManager().pickImage(self){ image in
+                //here is the image
+            self.imageViewProfile.image = image
+            if let imageData = image.jpegData(compressionQuality: 0.75) {
+                //                let fileData = imageData
+                let token = self.modelGetBlobContainer?.token ?? ""
+                self.uploadImageToBlobStorage(token: token, image: image)
+            }
+        }
     }
     
     @IBAction func switchOffers(_ sender: Any) {
@@ -209,7 +222,7 @@ class ProfileViewController: UIViewController {
         }
         self.present(vc, animated: true)
     }
-  
+    
     func deleteuser() {
         APIs.postAPI(apiName: .deleteuser, methodType: .delete, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetDeleteUserResponse? = APIs.decodeDataToObject(data: responseData)
@@ -267,41 +280,41 @@ class ProfileViewController: UIViewController {
         //        self.present(documentPicker, animated: true, completion: nil)
     }
     
-    func openGallary() {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.allowsEditing = false //If you want edit option set "true"
-        imagePickerController.sourceType = .photoLibrary
-        imagePickerController.delegate = self
-        self.present(imagePickerController, animated: true, completion: nil)
-    }
+//    func openGallary() {
+//        let imagePickerController = UIImagePickerController()
+//        imagePickerController.allowsEditing = false //If you want edit option set "true"
+//        imagePickerController.sourceType = .photoLibrary
+//        imagePickerController.delegate = self
+//        self.present(imagePickerController, animated: true, completion: nil)
+//    }
     
-    //Mark:- Choose Image Method
-    func funcMyActionSheet() {
-        var myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        myActionSheet.view.tintColor = UIColor.black
-        let galleryAction = UIAlertAction(title: "Gallery", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            self.openGallary()
-        })
-        let documentAction = UIAlertAction(title: "Documents", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            self.openDocumentPicker()
-        })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        
-        if IPAD {
-            //In iPad Change Rect to position Popover
-            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
-        }
-        myActionSheet.addAction(galleryAction)
-//        myActionSheet.addAction(documentAction)
-        myActionSheet.addAction(cancelAction)
-        print("Action Sheet call")
-        self.present(myActionSheet, animated: true, completion: nil)
-    }
+//    //Mark:- Choose Image Method
+//    func funcMyActionSheet() {
+//        var myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+//        myActionSheet.view.tintColor = UIColor.black
+//        let galleryAction = UIAlertAction(title: "Gallery", style: .default, handler: {
+//            (alert: UIAlertAction!) -> Void in
+//            self.openGallary()
+//        })
+//        let documentAction = UIAlertAction(title: "Documents", style: .default, handler: {
+//            (alert: UIAlertAction!) -> Void in
+//            self.openDocumentPicker()
+//        })
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+//            (alert: UIAlertAction!) -> Void in
+//        })
+//        
+//        
+//        if IPAD {
+//            //In iPad Change Rect to position Popover
+//            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
+//        }
+//        myActionSheet.addAction(galleryAction)
+////        myActionSheet.addAction(documentAction)
+//        myActionSheet.addAction(cancelAction)
+//        print("Action Sheet call")
+//        self.present(myActionSheet, animated: true, completion: nil)
+//    }
          
     func editprofile(parameters: Parameters, isUserImageUpdateCall: Bool? = false) {
         self.isUserImageUpdateCall = isUserImageUpdateCall
@@ -358,46 +371,46 @@ extension ProfileViewController {
     }
 }
 
-extension ProfileViewController: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    //Document
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        if let filename = urls.first?.lastPathComponent {
-            do {
-                for url in urls {
-                    let fileData = try Data(contentsOf: url)
-                }
-            } catch {
-                print("no data")
-            }
-        }
-        
-        // display picked file in a view
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-    //Image Picker
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageViewProfile.image = image
-            if let imageData = image.jpegData(compressionQuality: 0.75) {
-                //                let fileData = imageData
-                let token = modelGetBlobContainer?.token ?? ""
-                uploadImageToBlobStorage(token: token, image: image)
-            }
-            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-                //                let fileName = imageUrl.lastPathComponent
-            }
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-}
+//extension ProfileViewController: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+//    //Document
+//    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+//        if let filename = urls.first?.lastPathComponent {
+//            do {
+//                for url in urls {
+//                    let fileData = try Data(contentsOf: url)
+//                }
+//            } catch {
+//                print("no data")
+//            }
+//        }
+//        
+//        // display picked file in a view
+//        controller.dismiss(animated: true, completion: nil)
+//    }
+//    
+//    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+//        controller.dismiss(animated: true, completion: nil)
+//    }
+//    //Image Picker
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+//            imageViewProfile.image = image
+//            if let imageData = image.jpegData(compressionQuality: 0.75) {
+//                //                let fileData = imageData
+//                let token = modelGetBlobContainer?.token ?? ""
+//                uploadImageToBlobStorage(token: token, image: image)
+//            }
+//            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+//                //                let fileName = imageUrl.lastPathComponent
+//            }
+//        }
+//        self.dismiss(animated: true, completion: nil)
+//    }
+//    
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        dismiss(animated: true, completion: nil)
+//    }
+//}
 
 struct AzureBlobStorage {
     let containerURL: String

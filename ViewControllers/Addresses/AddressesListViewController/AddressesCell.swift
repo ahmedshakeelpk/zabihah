@@ -8,6 +8,7 @@
 import UIKit
 
 class AddressesCell: UITableViewCell {
+    @IBOutlet weak var imageViewAddressType: UIImageView!
     @IBOutlet weak var buttonCheck: UIButton!
     @IBOutlet weak var buttonEdit: UIButton!
     @IBOutlet weak var buttonDelete: UIButton!
@@ -34,13 +35,26 @@ class AddressesCell: UITableViewCell {
             }
         }
     }
+    let arrayNamesIconMehroon = ["houseMehroon", "briefcaseMehroon", "userMehroon", "addCircleMehroon"]
+
     var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
             if modelUserAddressesResponseData != nil {
                 labelTitle.text = modelUserAddressesResponseData?.title ?? ""
                 labelAddress.text = modelUserAddressesResponseData?.address ?? ""
+                if "Home".lowercased() == (modelUserAddressesResponseData?.title ?? "").lowercased() {
+                    imageViewAddressType.image = UIImage(named: "houseMehroon")
+                }
+                else if "Office".lowercased() == (modelUserAddressesResponseData?.title ?? "").lowercased() {
+                    imageViewAddressType.image = UIImage(named: "briefcaseMehroon")
+                }
+                else if "Person".lowercased() == (modelUserAddressesResponseData?.title ?? "").lowercased() {
+                    imageViewAddressType.image = UIImage(named: "userMehroon")
+                }
+                else {
+                    imageViewAddressType.image = UIImage(named: "addCircleMehroon")
+                }
             }
-            
         }
     }
     
@@ -48,7 +62,7 @@ class AddressesCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        viewBackGroundForRadius.setShadow()
+        viewBackGroundForRadius.setShadow(radius: 12)
         stackViewBackGround.radius(radius: 12)
     }
 

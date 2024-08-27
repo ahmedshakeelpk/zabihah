@@ -49,7 +49,7 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/1.3
+        let width = collectionView.frame.width/1.5
         return CGSize(width: width, height: 230)
     }
     
@@ -72,7 +72,9 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
 //                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
 //            }
 //        (cell as! HomeFoodItemSubCell).setData()
+        
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        selectedCell = indexPath.item

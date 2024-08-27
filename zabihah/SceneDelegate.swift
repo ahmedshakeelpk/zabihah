@@ -27,6 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         IQKeyboardManager.shared().isEnabled = true
         GMSServices.provideAPIKey(GOOGLE_API_KEY)
         GMSPlacesClient.provideAPIKey(GOOGLE_API_KEY)
+        //Handle dark mode
+        UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .light
+
         if let token = kDefaults.value(forKey: "kAccessToken") as? String {
             kAccessToken = token
         }

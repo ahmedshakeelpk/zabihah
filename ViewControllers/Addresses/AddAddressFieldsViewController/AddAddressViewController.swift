@@ -161,7 +161,8 @@ class AddAddressViewController: UIViewController {
         AddAddressFieldsCell.register(collectionView: collectionView)
         self.setLocation()
         textFieldDeliveryInstruction.addTarget(self, action: #selector(textFieldDeliveryInstructionEditingChanged), for: .editingChanged)
-        
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 20)
+
         fieldVilidation()
     }
     @objc func fieldVilidation() {

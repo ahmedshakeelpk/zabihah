@@ -24,11 +24,14 @@ class ReviewsViewControllerCell: UITableViewCell {
     @IBOutlet weak var labelComment: UILabel!
     @IBOutlet weak var viewGalleryBackGround: UIView!
     
+    var isShowCompleteText = false
+
     var index: Int!
     var buttonDeleteHandler: ((Int) -> ())!
     var buttonEditHandler: ((Int) -> ())!
     var buttonCheckHandler: ((Int) -> ())!
     var didSelectItemHandler: ((Int) -> ())!
+    var tapOnViewMoreHandler: ((Int) -> ())!
 
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -43,9 +46,9 @@ class ReviewsViewControllerCell: UITableViewCell {
         didSet {
             labelTitle.text = reviewDatum?.userName ?? ""
             labelAddress.text = reviewDatum?.address ?? ""
-            labelComment.text = reviewDatum?.description ?? ""
             labelTimeAgo.text = reviewDatum?.period ?? ""
 
+            loadLabelCommentData()
             viewStarRating.rating = reviewDatum?.rating ?? 0
             imageViewRestaurant.setImage(urlString: reviewDatum?.iconImage ?? "", placeHolderIcon: "placeholderRestaurantSubIcon")
             galleryRecentPhotos = reviewDatum?.images ?? []
@@ -81,6 +84,80 @@ class ReviewsViewControllerCell: UITableViewCell {
     }
     @IBAction func buttonCheck(_ sender: Any) {
         buttonCheckHandler?(index)
+    }
+    
+    
+    
+    func loadLabelCommentData() {
+        labelComment.text = reviewDatum?.description ?? ""
+        if labelComment.linesCount() > 3 {
+            updateTextInLabel()
+        }
+    }
+    
+    func setLabelFontSize(completeText: String, changeText: String) {
+        let text = NSMutableAttributedString(
+            string: completeText
+        )
+        let range = text.mutableString.range(of: "View More")
+
+        if range.location != NSNotFound {
+            text.addAttribute(.font,
+                              value: UIFont.systemFont(ofSize: 14),
+                              range: range)
+        }
+    }
+    
+    private func updateTextInLabel() {
+        let fullText = labelComment.text!
+        let truncatedText = truncateTextToThreeLines(text: fullText)
+        
+        let viewMoreText =  isShowCompleteText ? " ... View Less" : "... View More"
+        
+        let fullString = NSMutableAttributedString(string: truncatedText)
+        let viewMoreAttributedString = NSAttributedString(
+            string: viewMoreText,
+            attributes: [
+                .foregroundColor: UIColor.colorApp,
+                .font: UIFont.systemFont(ofSize: 12, weight: .heavy)
+            ]
+        )
+        fullString.append(viewMoreAttributedString)
+        
+        let range = fullString.mutableString.range(of: "... View More")
+
+        if range.location != NSNotFound {
+            fullString.addAttribute(.font,
+                              value: UIFont.systemFont(ofSize: 12, weight: .heavy),
+                              range: range)
+        }
+        
+        labelComment.attributedText = fullString
+        labelComment.isUserInteractionEnabled = true
+        labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewMoreTapped)))
+    }
+    
+    @objc func viewMoreTapped() {
+        // Handle the "View More" tap, e.g., expand the label or navigate to a detailed view
+        print("View More tapped")
+        isShowCompleteText.toggle()
+        loadLabelCommentData()
+        tapOnViewMoreHandler?(index)
+    }
+    private func truncateTextToThreeLines(text: String) -> String {
+        let maxLines = isShowCompleteText ? 10 : 2.8
+        let font = labelComment.font
+        let lineHeight = font?.lineHeight
+        let maxHeight = (lineHeight ?? 11) * CGFloat(maxLines)
+        
+        let size = CGSize(width: bounds.width, height: CGFloat.greatestFiniteMagnitude)
+        var truncatedText = text
+        
+        while truncatedText.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: [.font: font as Any], context: nil).height > maxHeight && truncatedText.count > 0 {
+            truncatedText = String(truncatedText.dropLast())
+        }
+        
+        return truncatedText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
 }

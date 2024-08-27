@@ -81,7 +81,7 @@ class MyFavouritesViewController: UIViewController {
         viewButtonTabBackGround.backgroundColor = .clear
         viewButtonTabBackGround.setShadow(radius: 0)
         
-        imageViewNoRecordFound.isHidden = false
+        viewNoDataFoundBackGround.isHidden = false
         viewBottomLinePrayerPlaces.isHidden = true
         buttonRestaurant.tag = 1
         tableView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 20, right: 0)
@@ -139,7 +139,7 @@ class MyFavouritesViewController: UIViewController {
         }
     }
     
-    func deleteUserAddress(index: Int) {
+    func deleteFavouritePlaces(index: Int) {
         var deleteID = ""
         var type = ""
         if buttonRestaurant.tag == 1 {
@@ -173,7 +173,30 @@ class MyFavouritesViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func buttonDeleteFavourite(index: Int) {
-        actionSheetFavouriteDelete(index: index)
+        navigateToProfileDeleteViewController(index: index)
+    }
+    
+    func navigateToProfileDeleteViewController(index: Int) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
+        vc.stringTitle = "Delete Favourite!"
+        let recordModel: HomeViewController.ModelRestuarantResponseData!
+
+        if buttonRestaurant.tag == 1 {
+            recordModel = modelGetFavouriteByUserResponse?.halalRestuarantResponseData?[index]
+        }
+        else {
+            recordModel = modelGetFavouriteByUserResponse?.prayerSpacesResponseData?[index]
+        }
+        
+        vc.stringSubTitle = "Are you sure you want to delete \"\(recordModel?.name ?? "")\" from favourite places?         "
+        vc.stringDescription = ""
+        vc.stringButtonDelete = "Yes, Delete"
+        vc.stringButtonCancel = "Cancel"
+        vc.buttonDeleteHandler = {
+            print("delete button press")
+            self.deleteFavouritePlaces(index: index)
+        }
+        self.present(vc, animated: true)
     }
     
     //Mark:- Choose Action Sheet
@@ -182,7 +205,7 @@ class MyFavouritesViewController: UIViewController {
         myActionSheet.view.tintColor = UIColor.black
         let galleryAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
-            self.deleteUserAddress(index: index)
+            self.deleteFavouritePlaces(index: index)
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {

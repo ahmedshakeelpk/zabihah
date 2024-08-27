@@ -130,6 +130,7 @@ class DeliveryDetailsViewController3: UIViewController {
         }
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -137,8 +138,7 @@ class DeliveryDetailsViewController3: UIViewController {
         isPrayerPlace = modelRestuarantResponseData.type ?? "" != "rest"
         setConfiguration()
         getRestaurantDetail()
-        
-        
+        enableSwipeToPop()
     }
     
     @IBAction func buttonFavourite(_ sender: Any) {
@@ -266,11 +266,11 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     func getRestaurantDetail() {
         let parameters = [
-            "lat": userLocation?.coordinate.latitude as Any,
-            "long": userLocation?.coordinate.longitude as Any,
+            "lat": userLocation?.coordinate.latitude ?? 0,
+            "long": userLocation?.coordinate.longitude ?? 0,
             "id": modelRestuarantResponseData.id ?? "",
             "type": modelRestuarantResponseData.type ?? ""
-        ]
+        ] as [String : Any]
         APIs.postAPI(apiName: .getrestaurantdetail, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             let model: ModelGetRestaurantDetailResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetRestaurantDetailResponse = model
@@ -563,7 +563,7 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
             UIAlertAction in
             self.openCamera()
         }
-        let galleryAction = UIAlertAction(title: "Gallery", style: .default){
+        let galleryAction = UIAlertAction(title: "Select from gallery", style: .default){
             UIAlertAction in
             self.openGallery()
         }

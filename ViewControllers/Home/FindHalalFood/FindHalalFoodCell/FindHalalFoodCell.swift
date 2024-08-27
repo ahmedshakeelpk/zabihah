@@ -73,7 +73,7 @@ class FindHalalFoodCell: HomeBaseCell {
             self.labelReuse.text = "\(self.halalRestuarantResponseData?.visits ?? 0)"
             self.labelComments.text = "\(self.halalRestuarantResponseData?.reviews ?? 0)"
             self.labelPictures.text = "\(self.halalRestuarantResponseData?.gallaryCount ?? 0)"
-            self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)"
+            self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)\(self.halalRestuarantResponseData?.distanceUnit ?? "")"
             self.imageViewRestaurant.setImage(urlString: self.halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
             self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
             self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")

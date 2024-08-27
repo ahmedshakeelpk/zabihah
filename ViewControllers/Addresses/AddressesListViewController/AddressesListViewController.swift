@@ -140,19 +140,34 @@ class AddressesListViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func buttonDeleteAddress(index: Int) {
-        let refreshAlert = UIAlertController(title: "User Address", message: "Are you sure you want to delete Address?", preferredStyle: UIAlertController.Style.alert)
-
-        refreshAlert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action: UIAlertAction!) in
-          print("Handle Ok logic here")
-            self.deleteUserAddress(index: index)
-          }))
-
-        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-          print("Handle Cancel Logic here")
-          }))
-
-        present(refreshAlert, animated: true, completion: nil)
+        navigateToProfileDeleteViewController(index: index)
+//        let refreshAlert = UIAlertController(title: "User Address", message: "Are you sure you want to delete Address?", preferredStyle: UIAlertController.Style.alert)
+//
+//        refreshAlert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action: UIAlertAction!) in
+//          print("Handle Ok logic here")
+//            self.deleteUserAddress(index: index)
+//          }))
+//
+//        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+//          print("Handle Cancel Logic here")
+//          }))
+//
+//        present(refreshAlert, animated: true, completion: nil)
     }
+    func navigateToProfileDeleteViewController(index: Int) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
+        vc.stringTitle = "User Address"
+        vc.stringSubTitle = "Are you sure you want to delete \"\(modelGetUserAddressResponse?.userAddressesResponseData?[index].title ?? "")\" from addresses?         "
+        vc.stringDescription = ""
+        vc.stringButtonDelete = "Yes, Delete"
+        vc.stringButtonCancel = "Cancel"
+        vc.buttonDeleteHandler = {
+            print("delete button press")
+            self.deleteUserAddress(index: index)
+        }
+        self.present(vc, animated: true)
+    }
+    
     func buttonCheckHandler(index: Int) {
         editUserAddress(index: index)
     }

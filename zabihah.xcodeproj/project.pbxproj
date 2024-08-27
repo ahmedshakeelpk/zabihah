@@ -1427,11 +1427,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = zabihah/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Zabihah;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "your location";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "your location";
@@ -1464,11 +1465,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = G869PS3FG5;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = zabihah/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Zabihah;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "your location";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "your location";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "your location";

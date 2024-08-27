@@ -314,7 +314,7 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RBR-ap-694">
-                                <rect key="frame" x="76.666666666666686" y="409.33333333333331" width="240" height="148.33333333333331"/>
+                                <rect key="frame" x="76.666666666666686" y="406.33333333333331" width="240" height="154.33333333333331"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noDataFavouritePlace" translatesAutoresizingMaskIntoConstraints="NO" id="o3e-1d-h6d">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -323,9 +323,9 @@
                                             <constraint firstAttribute="width" constant="240" id="ymp-zg-Xe4"/>
                                         </constraints>
                                     </imageView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Favourite Address Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heb-hU-vZ1">
-                                        <rect key="frame" x="0.0" y="128.00000000000006" width="240" height="20.333333333333343"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have no favourite" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heb-hU-vZ1">
+                                        <rect key="frame" x="0.0" y="128.00000000000006" width="240" height="26.333333333333343"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -391,7 +391,7 @@
         <image name="chefHatMehroon" width="24" height="24"/>
         <image name="locationMehroonMisc" width="52" height="64"/>
         <image name="mosqueHome" width="15" height="15"/>
-        <image name="noDataFavouritePlace" width="205" height="112"/>
+        <image name="noDataFavouritePlace" width="84" height="84"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

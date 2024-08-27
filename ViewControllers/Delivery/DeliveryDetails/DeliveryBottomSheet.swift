@@ -9,6 +9,7 @@ import UIKit
 
 class DeliveryBottomSheet: UIViewController {
 
+    @IBOutlet weak var viewDummyButton: UIView!
     @IBOutlet weak var buttonContinue: UIButton!
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var tableView: TableViewContentSized!
@@ -31,6 +32,7 @@ class DeliveryBottomSheet: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewDummyButton.circle()
         if isAmenities {
             labelTitle.text = "Amenities"
         }
@@ -67,6 +69,8 @@ extension DeliveryBottomSheet: UITableViewDelegate, UITableViewDataSource {
         if isAmenities {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DeliveryAmenitiesCell") as! DeliveryAmenitiesCell
             cell.labelTitle.text = amenitiesData?[indexPath.row].title
+            cell.imageViewIcon.setImage(urlString: amenitiesData?[indexPath.row].image ?? "", placeHolderIcon: "amenitiesPlaceHolder")
+            
             return cell
         }
         else {

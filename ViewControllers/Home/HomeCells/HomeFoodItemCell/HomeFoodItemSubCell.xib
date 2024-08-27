@@ -433,7 +433,7 @@
                                                                                         </constraints>
                                                                                     </stackView>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tK9-QC-ph4">
-                                                                                        <rect key="frame" x="125" y="0.0" width="43" height="26"/>
+                                                                                        <rect key="frame" x="124.99999999999999" y="0.0" width="20.333333333333329" height="26"/>
                                                                                         <subviews>
                                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PbK-yY-rmD">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="14" height="26"/>
@@ -454,15 +454,19 @@
                                                                                                 </constraints>
                                                                                             </view>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ayL-VU-gF5">
-                                                                                                <rect key="frame" x="14" y="0.0" width="29" height="26"/>
+                                                                                                <rect key="frame" x="14.000000000000002" y="0.0" width="6.3333333333333339" height="26"/>
                                                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="9"/>
                                                                                                 <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                 <nil key="highlightedColor"/>
                                                                                             </label>
                                                                                         </subviews>
                                                                                     </stackView>
+                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xVj-kO-lCT">
+                                                                                        <rect key="frame" x="145.33333333333334" y="0.0" width="50" height="26"/>
+                                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                    </view>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCh-eu-GpF">
-                                                                                        <rect key="frame" x="168" y="0.0" width="42" height="26"/>
+                                                                                        <rect key="frame" x="195.33333333333334" y="0.0" width="14.666666666666657" height="26"/>
                                                                                         <subviews>
                                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZBd-oF-GY2">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="14" height="26"/>
@@ -482,8 +486,8 @@
                                                                                                     <constraint firstItem="npe-3l-37Q" firstAttribute="leading" secondItem="ZBd-oF-GY2" secondAttribute="leading" id="ww7-uw-0a3"/>
                                                                                                 </constraints>
                                                                                             </view>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="700m" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4bx-L2-2cI">
-                                                                                                <rect key="frame" x="14" y="0.0" width="28" height="26"/>
+                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="700m" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4bx-L2-2cI">
+                                                                                                <rect key="frame" x="14" y="0.0" width="0.66666666666666607" height="26"/>
                                                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="9"/>
                                                                                                 <color key="textColor" red="0.59999999999999998" green="0.0" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                 <nil key="highlightedColor"/>

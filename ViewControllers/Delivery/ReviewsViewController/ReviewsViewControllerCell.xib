@@ -140,7 +140,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H5p-tI-5zv">
                                                 <rect key="frame" x="0.0" y="69.666666666666671" width="264" height="20"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nd8-Ph-eTc" customClass="CosmosView" customModule="Cosmos">
+                                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nd8-Ph-eTc" customClass="CosmosView" customModule="Cosmos">
                                                         <rect key="frame" x="0.0" y="2.6666666666666572" width="80" height="15"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
@@ -182,9 +182,9 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ngT-G1-7iH">
                                                 <rect key="frame" x="0.0" y="127" width="264" height="45"/>
                                                 <subviews>
-                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="MBj-hO-D3n">
+                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="MBj-hO-D3n">
                                                         <rect key="frame" x="0.0" y="0.0" width="264" height="45"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gpP-OW-4aI">
                                                             <size key="itemSize" width="128" height="128"/>
                                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -193,16 +193,24 @@
                                                         </collectionViewFlowLayout>
                                                     </collectionView>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="MBj-hO-D3n" firstAttribute="top" secondItem="ngT-G1-7iH" secondAttribute="top" id="JWv-wV-kdi"/>
+                                                    <constraint firstAttribute="bottom" secondItem="MBj-hO-D3n" secondAttribute="bottom" id="3QO-an-Cxm"/>
+                                                    <constraint firstItem="MBj-hO-D3n" firstAttribute="top" secondItem="ngT-G1-7iH" secondAttribute="top" id="Cx9-rf-2x5"/>
+                                                    <constraint firstItem="MBj-hO-D3n" firstAttribute="leading" secondItem="ngT-G1-7iH" secondAttribute="leading" id="Jgc-iX-FTW"/>
+                                                    <constraint firstAttribute="trailing" secondItem="MBj-hO-D3n" secondAttribute="trailing" id="JoP-CY-g0M"/>
                                                     <constraint firstAttribute="height" constant="45" id="M37-PL-b7k"/>
-                                                    <constraint firstAttribute="bottom" secondItem="MBj-hO-D3n" secondAttribute="bottom" id="QK4-SJ-mgR"/>
-                                                    <constraint firstItem="MBj-hO-D3n" firstAttribute="leading" secondItem="ngT-G1-7iH" secondAttribute="leading" id="fQh-Yn-pL4"/>
-                                                    <constraint firstAttribute="trailing" secondItem="MBj-hO-D3n" secondAttribute="trailing" id="jXY-5J-sCa"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="ngT-G1-7iH" secondAttribute="trailing" id="7Gl-wg-v56"/>
+                                            <constraint firstItem="ngT-G1-7iH" firstAttribute="leading" secondItem="yyL-Fs-yyZ" secondAttribute="leading" id="80P-S3-GWe"/>
+                                            <constraint firstAttribute="trailing" secondItem="2WT-a4-C67" secondAttribute="trailing" id="FJq-Gl-roi"/>
+                                            <constraint firstItem="ngT-G1-7iH" firstAttribute="top" secondItem="2WT-a4-C67" secondAttribute="bottom" constant="12" id="JFa-JE-hjw"/>
+                                            <constraint firstItem="2WT-a4-C67" firstAttribute="top" secondItem="H5p-tI-5zv" secondAttribute="bottom" constant="12" id="hNR-CQ-zYV"/>
+                                            <constraint firstItem="2WT-a4-C67" firstAttribute="leading" secondItem="yyL-Fs-yyZ" secondAttribute="leading" id="vlN-hK-VtK"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>

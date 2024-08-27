@@ -25,10 +25,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="106" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ypz-PN-PkN">
-                                        <rect key="frame" x="0.0" y="0.0" width="106" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="106" height="30"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n2z-9o-aoI">
-                                                <rect key="frame" x="28" y="0.0" width="50" height="40"/>
+                                                <rect key="frame" x="28" y="0.0" width="50" height="30"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1bill" translatesAutoresizingMaskIntoConstraints="NO" id="Fov-bC-hbI">
                                                         <rect key="frame" x="13" y="8" width="20" height="20"/>
@@ -40,9 +40,9 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="Fov-bC-hbI" secondAttribute="bottom" constant="2" id="6hT-wo-xaR"/>
                                                     <constraint firstItem="Fov-bC-hbI" firstAttribute="centerX" secondItem="n2z-9o-aoI" secondAttribute="centerX" constant="-2" id="BT6-WJ-ywa"/>
                                                     <constraint firstAttribute="width" constant="50" id="qgh-J9-fOl"/>
-                                                    <constraint firstItem="Fov-bC-hbI" firstAttribute="centerY" secondItem="n2z-9o-aoI" secondAttribute="centerY" constant="-2" id="wgn-VB-T0F"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -51,22 +51,22 @@
                                             <constraint firstItem="n2z-9o-aoI" firstAttribute="centerX" secondItem="Ypz-PN-PkN" secondAttribute="centerX" id="0C3-AB-TiP"/>
                                             <constraint firstAttribute="bottom" secondItem="n2z-9o-aoI" secondAttribute="bottom" id="ZTv-Fn-npN"/>
                                             <constraint firstItem="n2z-9o-aoI" firstAttribute="centerY" secondItem="Ypz-PN-PkN" secondAttribute="centerY" id="hyN-h1-H0q"/>
-                                            <constraint firstAttribute="height" constant="40" id="tSU-G6-C0g"/>
+                                            <constraint firstAttribute="height" constant="30" id="tSU-G6-C0g"/>
                                             <constraint firstItem="n2z-9o-aoI" firstAttribute="top" secondItem="Ypz-PN-PkN" secondAttribute="top" id="wb0-yL-wI8"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9kO-3u-0Ph">
-                                        <rect key="frame" x="0.0" y="40" width="106" height="20"/>
+                                        <rect key="frame" x="0.0" y="30" width="106" height="30"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="aAA-mP-bS7">
-                                                <rect key="frame" x="0.0" y="0.0" width="106" height="20"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="106" height="30"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8HM-dy-cDX">
-                                                        <rect key="frame" x="0.0" y="0.0" width="106" height="20"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="106" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wip-CK-T90">
-                                                                <rect key="frame" x="0.0" y="0.0" width="106" height="20"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="106" height="26"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
                                                                 <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
@@ -74,13 +74,12 @@
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="wip-CK-T90" secondAttribute="trailing" id="2f1-hy-nk8"/>
-                                                            <constraint firstAttribute="bottom" secondItem="wip-CK-T90" secondAttribute="bottom" id="5XK-um-Lu0"/>
                                                             <constraint firstItem="wip-CK-T90" firstAttribute="top" secondItem="8HM-dy-cDX" secondAttribute="top" id="Jq2-Pg-7qe"/>
                                                             <constraint firstAttribute="trailing" secondItem="wip-CK-T90" secondAttribute="trailing" id="Kl0-qL-T5v"/>
                                                             <constraint firstItem="wip-CK-T90" firstAttribute="leading" secondItem="8HM-dy-cDX" secondAttribute="leading" id="VPh-xd-DW0"/>
-                                                            <constraint firstAttribute="bottom" secondItem="wip-CK-T90" secondAttribute="bottom" id="Xpl-T1-bB2"/>
                                                             <constraint firstItem="wip-CK-T90" firstAttribute="top" secondItem="8HM-dy-cDX" secondAttribute="top" id="YDR-m3-e8t"/>
                                                             <constraint firstItem="wip-CK-T90" firstAttribute="leading" secondItem="8HM-dy-cDX" secondAttribute="leading" id="a7W-X0-NII"/>
+                                                            <constraint firstAttribute="bottom" secondItem="wip-CK-T90" secondAttribute="bottom" constant="4" id="lEU-nP-EPL"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
@@ -97,9 +96,10 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xha-ue-Erd">
-                                <rect key="frame" x="8" y="58" width="90" height="2"/>
+                                <rect key="frame" x="0.0" y="58" width="106" height="2"/>
                                 <color key="backgroundColor" red="0.59999999999999998" green="0.0" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="106" id="0YW-Pc-FWr"/>
                                     <constraint firstAttribute="height" constant="2" id="BMe-dj-R5B"/>
                                 </constraints>
                             </view>
@@ -108,11 +108,11 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="YnW-rf-r7w" secondAttribute="trailing" id="Aa4-6R-VcN"/>
                             <constraint firstItem="YnW-rf-r7w" firstAttribute="leading" secondItem="j3y-Ad-52q" secondAttribute="leading" id="Klw-pp-Uoj"/>
-                            <constraint firstAttribute="trailing" secondItem="Xha-ue-Erd" secondAttribute="trailing" constant="8" id="RVp-0z-gvK"/>
+                            <constraint firstAttribute="trailing" secondItem="Xha-ue-Erd" secondAttribute="trailing" id="RVp-0z-gvK"/>
                             <constraint firstItem="YnW-rf-r7w" firstAttribute="top" secondItem="j3y-Ad-52q" secondAttribute="top" id="Tdz-eb-0ri"/>
                             <constraint firstAttribute="bottom" secondItem="YnW-rf-r7w" secondAttribute="bottom" id="WKe-OX-opl"/>
                             <constraint firstAttribute="bottom" secondItem="Xha-ue-Erd" secondAttribute="bottom" id="WsH-Lu-1I5"/>
-                            <constraint firstItem="Xha-ue-Erd" firstAttribute="leading" secondItem="j3y-Ad-52q" secondAttribute="leading" constant="8" id="b0C-h8-Wp0"/>
+                            <constraint firstItem="Xha-ue-Erd" firstAttribute="leading" secondItem="j3y-Ad-52q" secondAttribute="leading" id="b0C-h8-Wp0"/>
                         </constraints>
                     </view>
                 </subviews>

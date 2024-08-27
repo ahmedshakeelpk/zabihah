@@ -65,7 +65,7 @@ class WriteReviewViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        textViewCount = 0
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +80,7 @@ class WriteReviewViewController: UIViewController {
         if isFromEditReview {
             setData()
         }
+        textViewCount = 0
     }
     func getStarRating() {
         viewStarCasmo.didTouchCosmos = { [self] rating in

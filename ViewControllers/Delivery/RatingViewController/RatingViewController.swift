@@ -138,7 +138,7 @@ class RatingViewController: UIViewController {
         vc.galleryRecentPhotos = galleryRecentPhotos
         vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
         vc.reviewPostedHandler = {
-            self.reviewPostedHandler?()
+//            self.reviewPostedHandler?()
             self.getbytype()
         }
         self.navigationController?.pushViewController(vc, animated: true)
