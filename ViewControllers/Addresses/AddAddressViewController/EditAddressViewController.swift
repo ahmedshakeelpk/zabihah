@@ -119,7 +119,11 @@ class EditAddressViewController: UIViewController {
         viewButtonEditBackGround.isHidden = true
     }
     override func viewDidAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
+            self.locationConfiguration()
+        }
         drawCircleForRadiusForGoogleMap()
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,7 +159,6 @@ class EditAddressViewController: UIViewController {
                 self.setZoom(latitude: location?.latitude, longitude: location?.longitude)
             }
         }
-        locationConfiguration()
     }
     
     @IBAction func buttonGps(_ sender: Any) {
@@ -332,7 +335,7 @@ class EditAddressViewController: UIViewController {
     func drawCircleForRadiusForGoogleMap() {
         if kUserCurrentLocation == nil {
             kUserCurrentLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
-            location
+            
             return()
         }
         let circleRadius = 0.250 * 1000 // 20 Km in meters

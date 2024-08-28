@@ -123,7 +123,7 @@ class ReviewsViewController: UIViewController {
         }
     }
     func buttonDeleteReview(index: Int) {
-        actionSheetDeleteReview(index: index)
+        navigateToDeleteReviewViewController(index: index)
     }
     
     func deleteReview(index: Int) {
@@ -168,28 +168,21 @@ class ReviewsViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    //Mark:- Choose Action Sheet
-    func actionSheetDeleteReview(index: Int) {
-        if let userName = modelGetByUser?.reviewDataObj?.reviewData?[index]?.userName {
-            var myActionSheet = UIAlertController(title: "Delete Review!", message: "Are you sure you want to delete \(userName)?", preferredStyle: UIAlertController.Style.actionSheet)
-            myActionSheet.view.tintColor = UIColor.black
-            let galleryAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
-                (alert: UIAlertAction!) -> Void in
-                self.deleteReview(index: index)
-            })
-
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-                (alert: UIAlertAction!) -> Void in
-            })
-            
-            if IPAD {
-                //In iPad Change Rect to position Popover
-                myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
-            }
-            myActionSheet.addAction(galleryAction)
-            myActionSheet.addAction(cancelAction)
-            self.present(myActionSheet, animated: true, completion: nil)
+    
+    func navigateToDeleteReviewViewController(index: Int) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
+        vc.stringTitle = "User Address"
+        if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[index] {
+            vc.stringSubTitle = "Are you sure you want to delete \"\(reviewData.userName ?? "")\" your review?         "
         }
+        vc.stringDescription = ""
+        vc.stringButtonDelete = "Yes, Delete"
+        vc.stringButtonCancel = "Cancel"
+        vc.buttonDeleteHandler = {
+            print("delete button press")
+            self.deleteReview(index: index)
+        }
+        self.present(vc, animated: true)
     }
     
     func tapOnViewMoreHandler(index: Int) {

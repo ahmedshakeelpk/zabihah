@@ -29,7 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         GMSPlacesClient.provideAPIKey(GOOGLE_API_KEY)
         //Handle dark mode
         UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .light
-
         if let token = kDefaults.value(forKey: "kAccessToken") as? String {
             kAccessToken = token
         }

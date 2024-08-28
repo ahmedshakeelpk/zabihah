@@ -147,7 +147,7 @@ class SideMenuView: UIView {
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     func navigateToFAQsViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "FAQsViewController") as! FAQsViewController
+        let vc = UIStoryboard.init(name: StoryBoard.name.faqs.rawValue, bundle: nil).instantiateViewController(withIdentifier: "FAQsListViewController") as! FAQsListViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     func navigateToMyFavouritesViewController() {

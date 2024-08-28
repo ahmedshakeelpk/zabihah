@@ -127,7 +127,9 @@ class AddressesListViewController: UIViewController {
             print("button continue pressed \(String(describing: location))")
             self.getUserAddress()
         }
-        self.navigationController?.pushViewController(vc, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func navigateToAddAddressViewControllerFromEditButton(index: Int) {

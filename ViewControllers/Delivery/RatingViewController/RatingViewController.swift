@@ -45,7 +45,7 @@ class RatingViewController: UIViewController {
     var pageNumberForApi: Int! = 1 {
         didSet {
             if pageNumberForApi > 1 {
-                if pageNumberForApi > modelGetByType?.reviewDataObj?.totalReviews ?? 0 {
+                if pageNumberForApi > modelGetByType?.totalPages ?? 0 {
                     return()
                 }
                 getbytype()
@@ -65,16 +65,29 @@ class RatingViewController: UIViewController {
                 labelProgressThree.text = "\(reviewDataObj.top3 ?? 0)%"
                 labelProgressFour.text = "\(reviewDataObj.top4 ?? 0)%"
                 labelProgressFive.text = "\(reviewDataObj.top5 ?? 0)%"
-                progressBarOne.progress = Float(modelGetByType?.reviewDataObj?.top1 ?? 0)
-                progressBarTwo.progress = Float(modelGetByType?.reviewDataObj?.top2 ?? 0)
-                progressBarThree.progress = Float(modelGetByType?.reviewDataObj?.top3 ?? 0)
-                progressBarFour.progress = Float(modelGetByType?.reviewDataObj?.top4 ?? 0)
-                progressBarFive.progress = Float(modelGetByType?.reviewDataObj?.top5 ?? 0)
+                progressBarOne.progress = Float(modelGetByType?.reviewDataObj?.top1 ?? 0)/100
+                progressBarTwo.progress = Float(modelGetByType?.reviewDataObj?.top2 ?? 0)/100
+                progressBarThree.progress = Float(modelGetByType?.reviewDataObj?.top3 ?? 0)/100
+                progressBarFour.progress = Float(modelGetByType?.reviewDataObj?.top4 ?? 0)/100
+                let value = Float(modelGetByType?.reviewDataObj?.top5 ?? 0)/100
+                progressBarFive.progress = value
             }
         }
     }
-    
-    
+    var pullControl = UIRefreshControl()
+
+    override func viewDidAppear(_ animated: Bool) {
+        pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+           pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
+           tableView.addSubview(pullControl) // not
+        tableView.refreshControl?.tintColor = .clear
+    }
+    @objc func pulledRefreshControl() {
+        getbytype()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.pullControl.endRefreshing()
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -139,7 +152,9 @@ class RatingViewController: UIViewController {
         vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
         vc.reviewPostedHandler = {
 //            self.reviewPostedHandler?()
-            self.getbytype()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.getbytype()
+            }
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
