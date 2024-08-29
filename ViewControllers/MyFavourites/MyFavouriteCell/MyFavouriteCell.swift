@@ -43,7 +43,7 @@ class MyFavouriteCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        viewBackGroundForRadius.setShadow()
+        viewBackGroundForRadius.setShadow(radius: 12)
         stackViewBackGround.radius(radius: 12)
         imageViewRestaurant.circle()
     }

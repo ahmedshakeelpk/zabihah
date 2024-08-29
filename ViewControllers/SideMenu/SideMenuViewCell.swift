@@ -50,5 +50,14 @@ class SideMenuViewCell: UITableViewCell {
         self.indexPath = indexPath
         labelTitle.text = nameTitle
         imageViewTitle.image = UIImage(named: iconTitle)
+
+        imageViewTitle.image = imageViewTitle.image?.withRenderingMode(.alwaysTemplate)
+        imageViewTitle.tintColor = .colorApp
+        labelTitle.textColor = .clrBlack
+        if nameTitle.lowercased() == "Buy it again".lowercased() || nameTitle.lowercased() == "Your payment methods".lowercased() {
+            //Disable colors
+            imageViewTitle.tintColor = .lightGray
+            labelTitle.textColor = .lightGray
+        }
     }
 }

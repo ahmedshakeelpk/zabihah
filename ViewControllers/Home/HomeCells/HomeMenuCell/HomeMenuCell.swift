@@ -14,7 +14,8 @@ class HomeMenuCell: UICollectionViewCell {
     @IBOutlet weak var imageViewTitle: UIImageView!
     @IBOutlet weak var labelName: UILabel!
     
-    let arrayNamesIcon = ["homeGray", "chefHatHome", "bikeHome", "mosqueHome"]
+    let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
+    let arrayNamesIcon = ["homeGray", "chefHatHome", "bikeHome", "masjid"]
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,7 +28,9 @@ class HomeMenuCell: UICollectionViewCell {
         imageViewTitle.image = UIImage(named: arrayNamesIcon[indexPath.item])
         imageViewTitle.image = imageViewTitle.image?.withRenderingMode(.alwaysTemplate)
         imageViewTitle.image = imageViewTitle.image?.withRenderingMode(.alwaysTemplate)
+        labelName.textColor = .clrBlack
 
+        
         if indexPath.item == selectedMenuCell {
             viewSelectedMenuBackGround.backgroundColor = .colorApp
             imageViewTitle.tintColor = .colorApp
@@ -36,6 +39,9 @@ class HomeMenuCell: UICollectionViewCell {
             viewSelectedMenuBackGround.backgroundColor = .white
             imageViewTitle.tintColor = .clrUnselectedImage
         }
+        if arrayNames[indexPath.item].lowercased() == "Pickup & delivery".lowercased() {
+            labelName.textColor = .clrLightGray
+            imageViewTitle.tintColor = .clrLightGray
+        }
     }
-
 }

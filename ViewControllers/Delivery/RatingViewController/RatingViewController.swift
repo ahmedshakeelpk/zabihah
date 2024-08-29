@@ -17,7 +17,8 @@ class RatingViewController: UIViewController {
     @IBOutlet weak var tableView: TableViewContentSized!
     @IBOutlet weak var viewRatingCosmo: CosmosView!
     
-    @IBOutlet weak var labelTitle: UIView!
+    @IBOutlet weak var labelTitle: UILabel!
+    @IBOutlet weak var viewBackGroundTitle: UIView!
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var progressBarOne: UIProgressView!
     @IBOutlet weak var progressBarTwo: UIProgressView!
@@ -88,12 +89,15 @@ class RatingViewController: UIViewController {
             self.pullControl.endRefreshing()
         }
     }
+    var stringTitle = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         
         RatingViewControllerCell.register(tableView: tableView)
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 30, right: 0)
         getbytype()
+        
+        labelTitle.text = "Reviews of \(stringTitle)"
     }
     
     @IBAction func buttonBack(_ sender: Any) {

@@ -61,7 +61,7 @@ class ReviewsViewControllerCell: UITableViewCell {
 
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 30)
         
-        viewBackGroundForRadius.setShadow()
+        viewBackGroundForRadius.setShadow(radius: 12)
         stackViewBackGround.radius(radius: 12)
         RecentPhotoCell.register(collectionView: collectionView)
         imageViewRestaurant.circle()
@@ -169,7 +169,7 @@ extension ReviewsViewControllerCell: UICollectionViewDataSource, UICollectionVie
     //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (galleryRecentPhotos.count > 0) ? 45 : 0, height: (galleryRecentPhotos.count > 0) ? 45 : 0)
+        return CGSize(width: (galleryRecentPhotos.count > 0) ? 60 : 0, height: (galleryRecentPhotos.count > 0) ? 60 : 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

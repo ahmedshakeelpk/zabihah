@@ -79,7 +79,7 @@ class MyFavouritesViewController: UIViewController {
         viewTitle.radius(radius: 12)
 //        stackViewButtonTabBackGround.setShadow(radius: 6)
         viewButtonTabBackGround.backgroundColor = .clear
-        viewButtonTabBackGround.setShadow(radius: 0)
+        viewButtonTabBackGround.setShadow(radius: 6)
         
         viewNoDataFoundBackGround.isHidden = false
         viewBottomLinePrayerPlaces.isHidden = true
@@ -201,7 +201,7 @@ class MyFavouritesViewController: UIViewController {
     
     //Mark:- Choose Action Sheet
     func actionSheetFavouriteDelete(index: Int) {
-        var myActionSheet = UIAlertController(title: "Delete Favourite!", message: "Are you sure you want to delete favourite item?", preferredStyle: UIAlertController.Style.actionSheet)
+        var myActionSheet = UIAlertController(title: "Delete Favourite?", message: "Are you sure you want to delete favourite item?", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
         let galleryAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in

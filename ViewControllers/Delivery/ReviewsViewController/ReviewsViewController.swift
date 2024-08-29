@@ -171,9 +171,10 @@ class ReviewsViewController: UIViewController {
     
     func navigateToDeleteReviewViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
-        vc.stringTitle = "User Address"
+        vc.stringTitle = "Delete Reviews?"
         if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[index] {
-            vc.stringSubTitle = "Are you sure you want to delete \"\(reviewData.userName ?? "")\" your review?         "
+            vc.stringSubTitle = "Are you sure you want to delete your review?         "
+//            vc.stringSubTitle = "Are you sure you want to delete \"\(reviewData.userName ?? "")\" your review?         "
         }
         vc.stringDescription = ""
         vc.stringButtonDelete = "Yes, Delete"

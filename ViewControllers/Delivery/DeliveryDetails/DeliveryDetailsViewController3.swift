@@ -183,7 +183,7 @@ class DeliveryDetailsViewController3: UIViewController {
         UpLoadPhotoCell.register(collectionView: collectionViewRecentPhoto)
         SocialConnectCell.register(collectionView: collectionViewConnect)
         
-        viewFavouriteBackGround.isHidden = isFeaturedCell
+//        viewFavouriteBackGround.isHidden = isFeaturedCell
         collectionViewCountry.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
         collectionViewRecentPhoto.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
         collectionViewConnect.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
@@ -202,7 +202,7 @@ class DeliveryDetailsViewController3: UIViewController {
             viewHalalMenuBackGround.isHidden = isPrayerPlace
             
             labelFullHalalMenu.text = restuarantResponseData.isFullHalal ?? false ? "Full halal menu" : "NO"
-            labelAlcohol.text = restuarantResponseData.isalcohhol ?? false ? "YES" : "NO alcohol"
+            labelAlcohol.text = restuarantResponseData.isalcohhol ?? false ? "YES" : "No alcohol"
             if modelGetRestaurantDetailResponse?.timing?.count ?? 0 > 0 {
                 labelCloseOpen.text = "Closes at \(is12HourFormat ? "\(modelGetRestaurantDetailResponse?.timing?.last?.closeTime ?? "")".time12String : "\(modelGetRestaurantDetailResponse?.timing?.last?.closeTime ?? "")".time24String)"
             }
@@ -256,6 +256,7 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     func navigateToRatingViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
+        vc.stringTitle = labelRestaurantName.text!
 //        vc.galleryRecentPhotos = self.galleryRecentPhotos
         vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
         vc.isPrayerPlace = isPrayerPlace

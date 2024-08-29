@@ -69,6 +69,10 @@ class WriteReviewViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        textViewReview.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+
+        
         RecentPhotoCell.register(collectionView: collectionView)
         UpLoadPhotoCell.register(collectionView: collectionView)
         textViewReview.radius(radius: 12, color: .lightGray, borderWidth: 1)

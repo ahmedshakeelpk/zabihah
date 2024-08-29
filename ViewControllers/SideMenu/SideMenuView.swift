@@ -234,6 +234,19 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
+        var titleName = ""
+        if indexPath.section == 0 {
+            titleName = arrayTitle[indexPath.row]
+        }
+        else {
+            titleName = arrayOther[indexPath.row]
+        }
+        if titleName.lowercased() == "Buy it again".lowercased() || titleName.lowercased() == "Your payment methods".lowercased() {
+            return()
+        }
+        
+        
+        
         
         closeMenuHandler?(indexPath)
         navigateToViewController(indexPath: indexPath)

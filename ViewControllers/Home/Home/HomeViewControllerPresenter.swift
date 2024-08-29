@@ -404,6 +404,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if arrayNames[indexPath.item].lowercased() == "Pickup & delivery".lowercased() {
+            return()
+        }
         filterParametersHome = nil
         selectedCuisine = ""
         mapView.clear()
@@ -483,7 +486,7 @@ extension HomeViewController {
                 let data = mosqueResponseData as Any
                 let rowHeight = 224
                 let identifier = HomePrayerPlacesCell.nibName()
-                let sectionName = "Prayer Spaces near you"
+                let sectionName = "prayer spaces near you"
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }
@@ -536,17 +539,17 @@ extension HomeViewController {
             
             if selectedMenuCell == 0 {
                 cuisine = modelGetHomeRestaurantsResponse?.cuisine ?? []
-                sectionName = "Restaurants near you"
+                sectionName = "halal places near you"
                 selectedPlaceHolderIcon = "placeHolderSubCuisine"
             }
             else if selectedMenuCell == 1 {
                 cuisine = modelGetHalalRestaurantResponse?.cuisine ?? []
-                sectionName = "Restaurants near you"
+                sectionName = "halal places near you"
                 selectedPlaceHolderIcon = "placeholderHalalFood"
             }
             else if selectedMenuCell == 3 {
                 cuisine = modelGetPrayerPlacesResponse?.mosqueTypes ?? []
-                sectionName = "Prayer spaces near you"
+                sectionName = "prayer spaces near you"
                 selectedPlaceHolderIcon = "markerPrayerPlacesSelected"
             }
             print(indexOf)
