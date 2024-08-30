@@ -23,12 +23,6 @@ target 'zabihah' do
   #https://learn.microsoft.com/en-us/previous-versions/azure/storage/blobs/storage-ios-how-to-use-blob-storage#cocoapod
   pod 'AZSClient'
   
-  
-  
-  
-  
-  
-  
   post_install do |installer|
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|

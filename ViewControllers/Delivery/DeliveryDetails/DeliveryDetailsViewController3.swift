@@ -192,8 +192,7 @@ class DeliveryDetailsViewController3: UIViewController {
         if let restuarantResponseData = modelGetRestaurantDetailResponse?.restuarantResponseData {
             
             labelRestaurantName.text = restuarantResponseData.name ?? ""
-//            labelAddress.text = restuarantResponseData.address ?? ""
-            labelAddress.text = "restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData df asd fasdf asdf a asdf"
+            labelAddress.text = restuarantResponseData.address ?? ""
             labelDistanceAway.text = "\(restuarantResponseData.distance ?? 0)\(restuarantResponseData.distanceUnit ?? "")"
             imageViewRestaurantIcon.setImage(urlString: restuarantResponseData.iconImage ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque" : "placeholderRestaurantSubIcon")
             

@@ -64,7 +64,7 @@ class EditAddressViewController: UIViewController {
     var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
 //            disableTimerCount = 3
-            if isDisableUpdateLocation != true && isFromAddressListAddNewButton != true {
+            if isDisableUpdateLocation != true /*&& isFromAddressListAddNewButton != true*/ {
                 isDisableUpdateLocation = true
             }
             if userLocationFromEditModel == nil {
@@ -129,6 +129,7 @@ class EditAddressViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.delegate = self
         viewButtonGpsBackGround.circle()
         viewButtonBackBackGround.radius(radius: 8)
         viewAddressSubBackGround.radius(radius: 8)
@@ -296,7 +297,6 @@ class EditAddressViewController: UIViewController {
     func setAddress(addressTitle: String? = "", formattedAddress: String? = "") {
         //        labelAddressTitle.text = addressTitle
         labelAddress.text = formattedAddress
-        
         modelUserAddressesResponseData?.name = addressTitle
         modelUserAddressesResponseData?.address = formattedAddress
     }
@@ -458,14 +458,6 @@ extension EditAddressViewController: GMSAutocompleteViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    // Turn the network activity indicator on and off again.
-    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-    }
 }
 
 // Handle the user's selection.
