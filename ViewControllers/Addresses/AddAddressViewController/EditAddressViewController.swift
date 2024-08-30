@@ -64,7 +64,7 @@ class EditAddressViewController: UIViewController {
     var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
 //            disableTimerCount = 3
-            if isDisableUpdateLocation != true /*&& isFromAddressListAddNewButton != true*/ {
+            if isDisableUpdateLocation != true && isFromAddressListAddNewButton != true {
                 isDisableUpdateLocation = true
             }
             if userLocationFromEditModel == nil {
@@ -76,14 +76,12 @@ class EditAddressViewController: UIViewController {
     var isEditAddress: Bool! = false
     var location: CLLocationCoordinate2D? {
         didSet {
-            if let _ = modelUserAddressesResponseData {
-                if modelUserAddressesResponseData != nil {
-                    modelUserAddressesResponseData?.latitude = location?.latitude
-                    modelUserAddressesResponseData?.longitude = location?.longitude
-                }
-                DispatchQueue.main.async {
-                    self.calculateNewAndOldLatititudeLongitude()
-                }
+            if modelUserAddressesResponseData != nil {
+                modelUserAddressesResponseData?.latitude = location?.latitude
+                modelUserAddressesResponseData?.longitude = location?.longitude
+            }
+            DispatchQueue.main.async {
+                self.calculateNewAndOldLatititudeLongitude()
             }
         }
     }
