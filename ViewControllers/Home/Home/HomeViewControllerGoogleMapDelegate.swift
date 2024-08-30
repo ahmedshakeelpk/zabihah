@@ -25,11 +25,9 @@ extension HomeViewController: GMSMapViewDelegate {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
             self.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
-                if actionType == "viewdetails" {
-                    print("View Details")
-                    let indexPath = IndexPath(row: Int(marker.zIndex), section: 1)
-                    self.navigateToDeliveryDetailsViewController(indexPath: indexPath)
-                }
+                print(actionType)
+                let indexPath = IndexPath(row: Int(marker.zIndex), section: 1)
+                self.navigateToDeliveryDetailsViewController(indexPath: indexPath, actionType: actionType ?? "viewdetails")
             }
         }
     }
@@ -60,7 +58,7 @@ extension HomeViewController {
         marker.userData = modelRestuarantResponseData
         marker.zIndex = Int32(index)
         
-        let location = CLLocationCoordinate2D(latitude: modelRestuarantResponseData.lat ?? 0, longitude: modelRestuarantResponseData.long ?? 0)
+        let location = CLLocationCoordinate2D(latitude: modelRestuarantResponseData.latitude ?? 0, longitude: modelRestuarantResponseData.longitude ?? 0)
         marker.position = location
         marker.map = self.mapView // Setting marker on Mapview
 //        setZoom(location: location)
@@ -76,7 +74,7 @@ extension HomeViewController {
         marker.appearAnimation = .pop // Appearing animation. default
         marker.userData = modelGetPrayerPlacesResponseData
         
-        let location = CLLocationCoordinate2D(latitude: modelGetPrayerPlacesResponseData.lat ?? 0, longitude: modelGetPrayerPlacesResponseData.long ?? 0)
+        let location = CLLocationCoordinate2D(latitude: modelGetPrayerPlacesResponseData.latitude ?? 0, longitude: modelGetPrayerPlacesResponseData.longitude ?? 0)
         marker.position = location
         marker.map = self.mapView // Setting marker on Mapview
         

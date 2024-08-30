@@ -21,7 +21,8 @@ protocol HomePrayerSpacesSubCellDelegate: AnyObject {
 
 class HomePrayerSpacesSubCell: UICollectionViewCell {
     @IBOutlet weak var buttonCall: UIButton!
-
+    @IBOutlet weak var buttonOpenDirectionMap: UIButton!
+    
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
@@ -85,6 +86,9 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         HomeFoodItemSubSuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
+    }
+    @IBAction func buttonOpenDirectionMap(_ sender: Any) {
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: modelMosqueResponseData?.latitude ?? 0, longitude: modelMosqueResponseData?.longitude ?? 0, locationName: modelMosqueResponseData?.address ?? "")
     }
     @IBAction func buttonCall(_ sender: Any) {
         self.viewController.dialNumber(number: modelMosqueResponseData?.phone ?? "")

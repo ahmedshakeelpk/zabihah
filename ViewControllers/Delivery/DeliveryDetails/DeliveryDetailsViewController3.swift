@@ -172,7 +172,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBAction func buttonHalalSummary(_ sender: Any) {
         buttonHalalSummary.tag = buttonHalalSummary.tag == 0 ? 1 : 0
         viewHalalSummaryDetailsBackGround.isHidden = buttonHalalSummary.tag == 0
-        self.imageViewHalalSummaryDropDown.image = UIImage(named: buttonHalalSummary.tag == 0 ? "arrowDropDown" : "forwardArrowGray")
+        self.imageViewHalalSummaryDropDown.image = UIImage(named: buttonHalalSummary.tag == 0 ? "upArrowGray" : "forwardArrowGray")
     }
     
     func setConfiguration() {
@@ -192,7 +192,8 @@ class DeliveryDetailsViewController3: UIViewController {
         if let restuarantResponseData = modelGetRestaurantDetailResponse?.restuarantResponseData {
             
             labelRestaurantName.text = restuarantResponseData.name ?? ""
-            labelAddress.text = restuarantResponseData.address ?? ""
+//            labelAddress.text = restuarantResponseData.address ?? ""
+            labelAddress.text = "restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData restuarantResponseData df asd fasdf asdf a asdf"
             labelDistanceAway.text = "\(restuarantResponseData.distance ?? 0)\(restuarantResponseData.distanceUnit ?? "")"
             imageViewRestaurantIcon.setImage(urlString: restuarantResponseData.iconImage ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque" : "placeholderRestaurantSubIcon")
             
@@ -204,7 +205,8 @@ class DeliveryDetailsViewController3: UIViewController {
             labelFullHalalMenu.text = restuarantResponseData.isFullHalal ?? false ? "Full halal menu" : "NO"
             labelAlcohol.text = restuarantResponseData.isalcohhol ?? false ? "YES" : "No alcohol"
             if modelGetRestaurantDetailResponse?.timing?.count ?? 0 > 0 {
-                labelCloseOpen.text = "Closes at \(is12HourFormat ? "\(modelGetRestaurantDetailResponse?.timing?.last?.closeTime ?? "")".time12String : "\(modelGetRestaurantDetailResponse?.timing?.last?.closeTime ?? "")".time24String)"
+                labelCloseOpen.text =  modelGetRestaurantDetailResponse?.restuarantResponseData?.status ?? ""
+//                labelCloseOpen.text = "Open at \(is12HourFormat ? "\(modelGetRestaurantDetailResponse?.timing?.last?.openTime ?? "")".time12String : "\(modelGetRestaurantDetailResponse?.timing?.last?.openTime ?? "")".time24String)"
             }
             imageViewFavourite.image = UIImage(named: restuarantResponseData.isFavorites ?? false ? "heartFavourite" : "heartMehroon")
             labelReviews.text = "\(restuarantResponseData.reviews ?? 0) reviews"

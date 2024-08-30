@@ -465,24 +465,47 @@
                                                                                         <rect key="frame" x="139" y="0.0" width="21" height="26"/>
                                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                     </view>
-                                                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCh-eu-GpF">
+                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b8K-JT-9UL">
                                                                                         <rect key="frame" x="160" y="0.0" width="50" height="26"/>
                                                                                         <subviews>
-                                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="routingMehroonHome" translatesAutoresizingMaskIntoConstraints="NO" id="npe-3l-37Q">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="7" height="26"/>
-                                                                                            </imageView>
-                                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10.54 km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4bx-L2-2cI">
-                                                                                                <rect key="frame" x="7" y="0.0" width="43" height="26"/>
-                                                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="9"/>
-                                                                                                <color key="textColor" red="0.59999999999999998" green="0.0" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                                <nil key="highlightedColor"/>
-                                                                                            </label>
+                                                                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCh-eu-GpF">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="50" height="26"/>
+                                                                                                <subviews>
+                                                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="routingMehroonHome" translatesAutoresizingMaskIntoConstraints="NO" id="npe-3l-37Q">
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="7" height="26"/>
+                                                                                                    </imageView>
+                                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10.54 km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4bx-L2-2cI">
+                                                                                                        <rect key="frame" x="7" y="0.0" width="43" height="26"/>
+                                                                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="9"/>
+                                                                                                        <color key="textColor" red="0.59999999999999998" green="0.0" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                                        <nil key="highlightedColor"/>
+                                                                                                    </label>
+                                                                                                </subviews>
+                                                                                                <constraints>
+                                                                                                    <constraint firstAttribute="trailing" secondItem="4bx-L2-2cI" secondAttribute="trailing" id="Cre-qW-HHl"/>
+                                                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="b33-3D-T3Y"/>
+                                                                                                </constraints>
+                                                                                            </stackView>
+                                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HcB-f6-eoN">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="50" height="26"/>
+                                                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                                                <connections>
+                                                                                                    <action selector="buttonOpenDirectionMap:" destination="gTV-IL-0wX" eventType="touchUpInside" id="642-ae-JjK"/>
+                                                                                                </connections>
+                                                                                            </button>
                                                                                         </subviews>
+                                                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                         <constraints>
-                                                                                            <constraint firstAttribute="trailing" secondItem="4bx-L2-2cI" secondAttribute="trailing" id="Cre-qW-HHl"/>
-                                                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="b33-3D-T3Y"/>
+                                                                                            <constraint firstAttribute="bottom" secondItem="HcB-f6-eoN" secondAttribute="bottom" id="3AP-Vb-jZT"/>
+                                                                                            <constraint firstAttribute="bottom" secondItem="gCh-eu-GpF" secondAttribute="bottom" id="4cn-xe-79C"/>
+                                                                                            <constraint firstItem="HcB-f6-eoN" firstAttribute="leading" secondItem="b8K-JT-9UL" secondAttribute="leading" id="AYS-Wb-NgG"/>
+                                                                                            <constraint firstItem="gCh-eu-GpF" firstAttribute="top" secondItem="b8K-JT-9UL" secondAttribute="top" id="G5Y-3J-u8F"/>
+                                                                                            <constraint firstItem="gCh-eu-GpF" firstAttribute="leading" secondItem="b8K-JT-9UL" secondAttribute="leading" id="H7z-N8-k7a"/>
+                                                                                            <constraint firstAttribute="trailing" secondItem="HcB-f6-eoN" secondAttribute="trailing" id="PQh-zX-Tgd"/>
+                                                                                            <constraint firstAttribute="trailing" secondItem="gCh-eu-GpF" secondAttribute="trailing" id="Sjt-GD-GAz"/>
+                                                                                            <constraint firstItem="HcB-f6-eoN" firstAttribute="top" secondItem="b8K-JT-9UL" secondAttribute="top" id="zDc-wG-oZ4"/>
                                                                                         </constraints>
-                                                                                    </stackView>
+                                                                                    </view>
                                                                                 </subviews>
                                                                             </stackView>
                                                                         </subviews>
@@ -598,6 +621,7 @@
             <connections>
                 <outlet property="buttonCall" destination="wXW-FO-y73" id="zga-LV-ubd"/>
                 <outlet property="buttonFavourite" destination="Edx-yq-vsg" id="0MN-qZ-4fG"/>
+                <outlet property="buttonOpenDirectionMap" destination="HcB-f6-eoN" id="2Kt-mQ-uJn"/>
                 <outlet property="collectionView" destination="hhk-tI-2tW" id="nGE-OL-7lS"/>
                 <outlet property="imageViewFavourite" destination="6Jl-Yz-MOv" id="HbP-1b-dP5"/>
                 <outlet property="imageViewItem" destination="0g4-Pb-nAe" id="lLw-K0-VFY"/>

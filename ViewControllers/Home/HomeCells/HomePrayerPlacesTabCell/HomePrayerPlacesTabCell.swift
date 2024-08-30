@@ -22,7 +22,8 @@ protocol HomePrayerPlacesTabCellDelegate: AnyObject {
 }
 
 class HomePrayerPlacesTabCell: HomeBaseCell {
-    
+    @IBOutlet weak var buttonOpenDirectionMap: UIButton!
+
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
@@ -102,6 +103,10 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         drawMarkerOnMap()
     }
     
+    @IBAction func buttonOpenDirectionMap(_ sender: Any) {
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: modelMosqueResponseData?.latitude ?? 0, longitude: modelMosqueResponseData?.longitude ?? 0, locationName: modelMosqueResponseData?.address ?? "")
+    }
+    
     @IBAction func buttonCall(_ sender: Any) {
         self.viewController.dialNumber(number: modelMosqueResponseData?.phone ?? "")
     }
@@ -152,7 +157,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
 //        marker.appearAnimation = .pop // Appearing animation. default
 //        marker.userData = modelMosqueResponseData
         
-        let location = CLLocationCoordinate2D(latitude: modelMosqueResponseData?.lat ?? 0, longitude: modelMosqueResponseData?.long ?? 0)
+        let location = CLLocationCoordinate2D(latitude: modelMosqueResponseData?.latitude ?? 0, longitude: modelMosqueResponseData?.longitude ?? 0)
 //        marker.position = location
 //        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
         setZoom(location: location)
@@ -232,26 +237,32 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
             self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
-                if actionType == "viewdetails" {
-                    print("View Details")
-                    self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath)
-                }
+                self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath, actionType: actionType ?? "viewdetails")
+                print(actionType)
             }
         }
     }
-    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath, actionType: String) {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         vc.delegate = viewController as? any DeliveryDetailsViewController3Delegate
         vc.indexPath = indexPath
         vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
         vc.userLocation = (viewController as? HomeViewController)?.userLocation
-        
+        var modelData: HomeViewController.ModelRestuarantResponseData!
+
         if let modelMosqueResponseData =   modelMosqueResponseData {
             vc.modelRestuarantResponseData = modelMosqueResponseData
+            modelData = modelMosqueResponseData
         }
-        viewController.navigationController?.pushViewController(vc, animated: true)
+        if actionType == "viewdetails" {
+            viewController.navigationController?.pushViewController(vc, animated: true)
+
+        }
+        else if actionType == "mapdirection" {
+            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationName: modelData?.address ?? "")
+        }
     }
-    
+
     @objc func tapOnMapInfoView() {
         print("tapOnMapInfoView")
         print("when click on info View")

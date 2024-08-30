@@ -351,28 +351,37 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         NSLog ("You selected row: %@ \(indexPath)")
         tableView.deselectRow(at: indexPath, animated: true)
         if selectedMenuCell == 1 || selectedMenuCell == 3 {
-            navigateToDeliveryDetailsViewController(indexPath: indexPath)
+            navigateToDeliveryDetailsViewController(indexPath: indexPath, actionType: "viewdetails")
         }
     }
     
-    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath, actionType: String) {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         vc.delegate = self
         vc.indexPath = indexPath
         vc.selectedMenuCell = selectedMenuCell
         vc.userLocation = userLocation
+        
+        var modelData: ModelRestuarantResponseData!
         if selectedMenuCell == 1 {
             if let halalRestuarantResponseData =   modelGetHalalRestaurantResponse?.halalRestuarantResponseData?[indexPath.row] {
                 vc.modelRestuarantResponseData = halalRestuarantResponseData
+                modelData = halalRestuarantResponseData
             }
         }
         else if selectedMenuCell == 3 {
             vc.isPrayerPlace = true
             if let mosqueResponseData =   modelGetPrayerPlacesResponse?.mosqueResponseData?[indexPath.row] {
                 vc.modelRestuarantResponseData = mosqueResponseData
+                modelData = mosqueResponseData
             }
         }
-        self.navigationController?.pushViewController(vc, animated: true)
+        if actionType == "viewdetails" {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else if actionType == "mapdirection" {
+            OpenMapDirections.present(in: self, sourceView: buttonCart, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationName: modelData?.address ?? "")
+        }
     }
 }
 

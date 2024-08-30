@@ -28,6 +28,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
     @IBOutlet weak var imageViewRestaurant: UIImageView!
     @IBOutlet weak var viewBikeBackGround: UIView!
     @IBOutlet weak var viewCallBackGround: UIView!
+    @IBOutlet weak var buttonOpenDirectionMap: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var viewRatingBackGround: UIView!
     @IBOutlet weak var imageViewItem: UIImageView!
@@ -76,6 +77,9 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         imageViewRestaurant.circle()
         setData()
     }
+    @IBAction func buttonOpenDirectionMap(_ sender: Any) {
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: modelFeaturedRestuarantResponseData?.latitude ?? 0, longitude: modelFeaturedRestuarantResponseData?.longitude ?? 0, locationName: modelFeaturedRestuarantResponseData?.address ?? "")
+    }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeRestaurantSubCellDelegate
         postFavouriteRestaurants()
@@ -102,7 +106,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
         imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-        viewBackGroundDelivery.isHidden = modelFeaturedRestuarantResponseData?.isDelivery ?? false
+        viewBackGroundDelivery.isHidden = !(modelFeaturedRestuarantResponseData?.isDelivery ?? false)
         viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
         if var tags = modelFeaturedRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
             if tags.last == "" || tags.last == " "{

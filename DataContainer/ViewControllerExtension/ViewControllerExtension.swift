@@ -198,16 +198,19 @@ extension UIViewController {
     
     func dialNumber(number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
         if isActionSheet ?? false {
-            if number == "" {
-                completion?("viewdetails")
+            actionSheetForCall(number: number) {clickOn in
+                completion?(clickOn)
             }
-            else {
-                actionSheetForCall(number: number) {clickOn in
-                    if clickOn == "viewdetails" {
-                        completion?(clickOn)
-                    }
-                }
-            }
+//            if number == "" {
+//                completion?("viewdetails")
+//            }
+//            else {
+//                actionSheetForCall(number: number) {clickOn in
+//                    if clickOn == "viewdetails" {
+//                        completion?(clickOn)
+//                    }
+//                }
+//            }
         }
         else {
             self.callNow(number: number) {actionType in
@@ -243,6 +246,11 @@ extension UIViewController {
             completion?("viewdetails")
         })
         
+        let viewMapDirectionAction = UIAlertAction(title: "Map Direction", style: .destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            completion?("mapdirection")
+        })
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
         })
@@ -251,8 +259,10 @@ extension UIViewController {
             //In iPad Change Rect to position Popover
             myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
         }
+        
         myActionSheet.addAction(callAction)
         myActionSheet.addAction(viewDetailsAction)
+        myActionSheet.addAction(viewMapDirectionAction)
         myActionSheet.addAction(cancelAction)
         self.present(myActionSheet, animated: true, completion: nil)
     }

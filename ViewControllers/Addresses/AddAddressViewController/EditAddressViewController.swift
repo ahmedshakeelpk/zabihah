@@ -76,12 +76,14 @@ class EditAddressViewController: UIViewController {
     var isEditAddress: Bool! = false
     var location: CLLocationCoordinate2D? {
         didSet {
-            if modelUserAddressesResponseData != nil {
-                modelUserAddressesResponseData?.latitude = location?.latitude
-                modelUserAddressesResponseData?.longitude = location?.longitude
-            }
-            DispatchQueue.main.async {
-                self.calculateNewAndOldLatititudeLongitude()
+            if let _ = modelUserAddressesResponseData {
+                if modelUserAddressesResponseData != nil {
+                    modelUserAddressesResponseData?.latitude = location?.latitude
+                    modelUserAddressesResponseData?.longitude = location?.longitude
+                }
+                DispatchQueue.main.async {
+                    self.calculateNewAndOldLatititudeLongitude()
+                }
             }
         }
     }

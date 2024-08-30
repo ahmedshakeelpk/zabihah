@@ -665,6 +665,7 @@
                         <constraints>
                             <constraint firstItem="yny-W3-WEf" firstAttribute="trailing" secondItem="Egp-N4-SPU" secondAttribute="trailing" constant="20" id="07U-8r-qUH"/>
                             <constraint firstItem="yny-W3-WEf" firstAttribute="bottom" secondItem="p2C-nR-xng" secondAttribute="bottom" id="6GA-Vk-3LK"/>
+                            <constraint firstItem="p2C-nR-xng" firstAttribute="top" secondItem="25P-TN-JjB" secondAttribute="bottom" id="Df0-YF-XzU"/>
                             <constraint firstItem="25P-TN-JjB" firstAttribute="leading" secondItem="yny-W3-WEf" secondAttribute="leading" id="G5u-WR-zwb"/>
                             <constraint firstItem="p2C-nR-xng" firstAttribute="leading" secondItem="yny-W3-WEf" secondAttribute="leading" id="Hmz-bE-QJ2"/>
                             <constraint firstItem="c0Q-EE-Lm6" firstAttribute="leading" secondItem="yny-W3-WEf" secondAttribute="leading" id="Kdz-W2-6Rk"/>
@@ -678,7 +679,6 @@
                             <constraint firstItem="c0Q-EE-Lm6" firstAttribute="top" secondItem="yny-W3-WEf" secondAttribute="top" id="iXx-dW-Wri"/>
                             <constraint firstItem="25P-TN-JjB" firstAttribute="leading" secondItem="fgn-tZ-6yL" secondAttribute="leading" id="uPH-xx-UWa"/>
                             <constraint firstItem="p2C-nR-xng" firstAttribute="top" secondItem="Egp-N4-SPU" secondAttribute="bottom" constant="20" id="vJT-KH-Yv8"/>
-                            <constraint firstItem="p2C-nR-xng" firstAttribute="top" secondItem="25P-TN-JjB" secondAttribute="bottom" priority="800" id="wIM-XB-CGZ"/>
                             <constraint firstItem="25P-TN-JjB" firstAttribute="top" secondItem="fgn-tZ-6yL" secondAttribute="top" id="zhg-ek-79V"/>
                         </constraints>
                     </view>

@@ -19,6 +19,7 @@ extension HomeFoodItemSubCell {
     }
 }
 class HomeFoodItemSubCell: UICollectionViewCell {
+    @IBOutlet weak var buttonOpenDirectionMap: UIButton!
     @IBOutlet weak var buttonCall: UIView!
     
     @IBOutlet weak var imageViewFavourite: UIImageView!
@@ -40,8 +41,8 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     @IBOutlet weak var viewRatingBackGround: UIView!
     @IBOutlet weak var imageViewItem: UIImageView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
-    
     @IBOutlet weak var viewBackGroundDelivery: UIView!
+    
     var delegate: HomeFoodItemSubCellDelegate!
     var buttonFavouriteHandler: (() -> ())!
     var viewController = UIViewController()
@@ -85,6 +86,10 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         
         setData()
     }
+    
+    @IBAction func buttonOpenDirectionMap(_ sender: Any) {
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: modelFeaturedRestuarantResponseData?.latitude ?? 0, longitude: modelFeaturedRestuarantResponseData?.longitude ?? 0, locationName: modelFeaturedRestuarantResponseData?.address ?? "")
+    }
     @IBAction func buttonCall(_ sender: Any) {
         self.viewController.dialNumber(number: modelFeaturedRestuarantResponseData?.phone ?? "")
     }
@@ -114,7 +119,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             arrayNames = tags
             collectionView.reloadData()
         }
-        viewBackGroundDelivery.isHidden = modelFeaturedRestuarantResponseData?.isDelivery ?? false
+        viewBackGroundDelivery.isHidden = !(modelFeaturedRestuarantResponseData?.isDelivery ?? false)
         
         if indexPath?.section == 0 {
             viewItemTypeBackGround.isHidden = false

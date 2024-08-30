@@ -55,7 +55,7 @@ extension HomeViewController {
         var isFavorites: Bool?
         let name: String?
         let reviews: Int?
-        let long: Double?
+        let longitude: Double?
         let id: String?
         let coverImage: String?
         let titleImage: String?
@@ -63,7 +63,7 @@ extension HomeViewController {
         let distance: Double?
         let isDelivery: Bool?
         let distanceUnit: String?
-        let lat, rating: Double?
+        let latitude, rating: Double?
         let address: String?
         let gallaryCount: Int?
     }

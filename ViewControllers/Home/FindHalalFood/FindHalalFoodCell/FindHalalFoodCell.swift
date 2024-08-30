@@ -43,7 +43,8 @@ class FindHalalFoodCell: HomeBaseCell {
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
-    
+    @IBOutlet weak var buttonOpenDirectionMap: UIButton!
+
     var arrayNames = [String]()
     let arrayIconNames = ["home", "chefHatHome", "Pickup & delivery", "Prayer spaces"]
     
@@ -78,7 +79,7 @@ class FindHalalFoodCell: HomeBaseCell {
             self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
             self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
             
-            viewBackGroundDelivery.isHidden = halalRestuarantResponseData?.isDelivery ?? false
+            viewBackGroundDelivery.isHidden = !(halalRestuarantResponseData?.isDelivery ?? false)
             self.viewItemTypeBackGround.isHidden = self.halalRestuarantResponseData?.status == ""
             self.labelItemType.text = self.halalRestuarantResponseData?.status
             self.viewCallMainBackGround.isHidden = halalRestuarantResponseData?.phone ?? "" == ""
@@ -132,6 +133,10 @@ class FindHalalFoodCell: HomeBaseCell {
         collectionView.reloadData()
         drawMarkerOnMap()
     }
+
+    @IBAction func buttonOpenDirectionMap(_ sender: Any) {
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: halalRestuarantResponseData?.latitude ?? 0, longitude: halalRestuarantResponseData?.longitude ?? 0, locationName: halalRestuarantResponseData?.address ?? "")
+    }
     
     @IBAction func buttonCall(_ sender: Any) {
         self.viewController.dialNumber(number: halalRestuarantResponseData?.phone ?? "")
@@ -150,7 +155,7 @@ class FindHalalFoodCell: HomeBaseCell {
 //        marker.appearAnimation = .pop // Appearing animation. default
 //        marker.userData = halalRestuarantResponseData
 //        
-        let location = CLLocationCoordinate2D(latitude: halalRestuarantResponseData?.lat ?? 0, longitude: halalRestuarantResponseData?.long ?? 0)
+        let location = CLLocationCoordinate2D(latitude: halalRestuarantResponseData?.latitude ?? 0, longitude: halalRestuarantResponseData?.longitude ?? 0)
 //        marker.position = location
 //        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
         setZoom(location: location)
@@ -235,24 +240,32 @@ extension FindHalalFoodCell: GMSMapViewDelegate {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
             self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { [self] actionType in
-                if actionType == "viewdetails" {
-                    print("View Details")
-                    navigateToDeliveryDetailsViewController(indexPath: indexPath)
-                }
+                navigateToDeliveryDetailsViewController(indexPath: indexPath, actionType: actionType ?? "viewdetails")
             }
         }
     }
-    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+    
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath, actionType: String) {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         vc.delegate = viewController as? any DeliveryDetailsViewController3Delegate
         vc.indexPath = indexPath
         vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
         vc.userLocation = (viewController as? HomeViewController)?.userLocation
         
-        if let halalRestuarantResponseData =   halalRestuarantResponseData {
+        var modelData: HomeViewController.ModelRestuarantResponseData!
+
+        if let halalRestuarantResponseData = halalRestuarantResponseData {
             vc.modelRestuarantResponseData = halalRestuarantResponseData
+            modelData = halalRestuarantResponseData
         }
-        viewController.navigationController?.pushViewController(vc, animated: true)
+        
+        if actionType == "viewdetails" {
+            viewController.navigationController?.pushViewController(vc, animated: true)
+
+        }
+        else if actionType == "mapdirection" {
+            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationName: modelData?.address ?? "")
+        }
     }
     
     @objc func tapOnMapInfoView() {
@@ -279,5 +292,4 @@ extension Bundle {
         fatalError("Could not load view with type " + String(describing: type))
     }
 }
-
 
