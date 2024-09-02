@@ -269,23 +269,26 @@ print(str)
     }
     static func postAPI(apiName: APIsName.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
         
-//        let stringParamters = APIs.json(from: params)
-        //let postData = stringParamters!.data(using: .utf8)
+        let stringParamters = APIs.json(from: parameters as Any)
+        let postData = stringParamters!.data(using: .utf8)
 
         let completeUrl = APIPath.baseUrl + apiName.rawValue
-        
         let url = URL(string: completeUrl)!
 
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.post.rawValue
+        request.httpBody = postData
+        
 //        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("*/*", forHTTPHeaderField: "Accept")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 //        request.setValue("charset=utf-8", forHTTPHeaderField: "Content-Type")
+//        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.timeoutInterval = 30 // 50 secs
 
 //        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
+
         if kAccessToken != "" {
             let authToken = "bearer \(kAccessToken)"
             request.addValue(authToken, forHTTPHeaderField: "Authorization")
@@ -294,7 +297,8 @@ print(str)
         
         print("Url: \(completeUrl)")
         print("Parameters: \(String(describing: parameters ?? nil))")
-        print("Headers: \(kAccessToken)")
+        print("Headers: \(request.headers)")
+        print("kAccessToken: \(kAccessToken)")
         
         let parameters = parameters
 
@@ -304,7 +308,7 @@ print(str)
             vc.showActivityIndicator2()
         }
         
-        AF.request(request.url!, method: methodType ?? .post, parameters: parameters, encoding:encoding ?? JSONEncoding.default, headers: request.headers)
+        AF.request(request.url!, method: methodType ?? .post, parameters: nil, encoding:encoding ?? JSONEncoding.default, headers: request.headers)
                     .responseData { response in
 //           guard let data = response.data else { return }
 //           let json = try? JSON(data:data)

@@ -9,13 +9,13 @@ import Foundation
 
 struct APIPath {
     //original ur
-    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com/"
+    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com:81/"
     
 }
 struct APIsName {
     enum name: String {
         //MARK:- API
-        case sendnotification = "api/Notification/sendnotification"
+        case request = "v1/User/otp/request"
         case verifyOtp = "api/Otp/verifyOtp"
         case getblobcontainer = "api/Blob/getblobcontainer"
         

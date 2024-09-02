@@ -62,7 +62,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
                 return()
             }
         }
-        sendnotification()
+        request()
     }
     
     func setConfiguration() {
@@ -89,7 +89,6 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
             textFieldPhoneNumber.delegate = self
             textFieldPhoneNumber.displayMode = .list // .picker by default
         }
-        
         fieldVilidation()
     }
     @objc func fieldVilidation() {
@@ -125,15 +124,17 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         }
     }
     
-    func sendnotification() {
+    func request() {
+        kAccessToken = ""
         let parameters: Parameters = [
-            "recipient": isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
-            "device": isFromEmail ? "email" : "phone",
-            "validate": false //it will check if user exist in DB
+            "phone": textFieldPhoneNumber.getCompletePhoneNumber(),
+//            "email": textFieldEmail.text!,
+            "email": "",
+            "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
         ]
         
-        APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            
+        APIs.postAPI(apiName: .request, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg in
+
             let model: ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelSendnotificationResponse = model
         }
@@ -181,4 +182,9 @@ extension LoginWithEmailOrPhoneViewController: FPNTextFieldDelegate {
          // Do something...
       }
    }
+}
+enum OtpRequestType: String {
+    case email = "Email"
+    case phone = "Phone"
+    case none = "None"
 }

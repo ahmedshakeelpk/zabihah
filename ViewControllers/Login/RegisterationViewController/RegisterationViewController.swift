@@ -242,7 +242,7 @@ class RegisterationViewController: UIViewController {
             "validate": true //it will check if user exist in DB
         ]
         
-        APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg in
             
             let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelSendnotificationResponse = model
