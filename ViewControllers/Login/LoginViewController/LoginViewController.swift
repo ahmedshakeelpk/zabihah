@@ -139,7 +139,7 @@ class LoginViewController: UIViewController {
         let parameters: Parameters = [
             "timeZoneId": getCurrentTimeZone()
         ]
-        APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: HomeViewController.ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelUserConfigurationResponse = model
         }

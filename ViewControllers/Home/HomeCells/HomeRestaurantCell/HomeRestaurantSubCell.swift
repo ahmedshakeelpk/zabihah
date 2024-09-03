@@ -45,10 +45,10 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         didSet {
             print(modelPostFavouriteRestaurantsResponse as Any)
             if modelPostFavouriteRestaurantsResponse?.success ?? false {
-                if let isFavourite = self.modelFeaturedRestuarantResponseData?.isFavorites {
-                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomeRestaurantSubCell())
-//                    modelFeaturedRestuarantResponseData.isFavorites = !(isFavourite)
-                }
+//                if let isFavourite = self.modelFeaturedRestuarantResponseData?.isFavorites {
+//                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomeRestaurantSubCell())
+////                    modelFeaturedRestuarantResponseData.isFavorites = !(isFavourite)
+//                }
             }
             else {
                 viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
@@ -97,48 +97,48 @@ class HomeRestaurantSubCell: UICollectionViewCell {
     func setData() {
         labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
         labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
-        labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
-        labelReuse.text = "\(modelFeaturedRestuarantResponseData?.visits ?? 0)"
-        labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
-        labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
-        labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"
-        
-        imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-        imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
-        imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-        viewBackGroundDelivery.isHidden = !(modelFeaturedRestuarantResponseData?.isDelivery ?? false)
-        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
-        if var tags = modelFeaturedRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
-            if tags.last == "" || tags.last == " "{
-                tags.removeLast()
-            }
-            arrayNames = tags
-            collectionView.reloadData()
-        }
-        viewItemTypeBackGround.isHidden = modelFeaturedRestuarantResponseData?.status == ""
-        labelItemType.text = modelFeaturedRestuarantResponseData?.status
-        if modelFeaturedRestuarantResponseData?.status?.lowercased() == "closed" {
-            viewItemTypeBackGround.backgroundColor = .colorRed
-        }
-        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" {
-            viewItemTypeBackGround.backgroundColor = .colorGreen
-        }
-        else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {
-            viewItemTypeBackGround.backgroundColor = .colorOrange
-        }
+//        labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
+//        labelReuse.text = "\(modelFeaturedRestuarantResponseData?.visits ?? 0)"
+//        labelComments.text = "\(modelFeaturedRestuarantResponseData?.reviews ?? 0)"
+//        labelPictures.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
+//        labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"
+//        
+//        imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+//        imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+//        imageViewFavourite.image = UIImage(named: modelFeaturedRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+//        viewBackGroundDelivery.isHidden = !(modelFeaturedRestuarantResponseData?.isDelivery ?? false)
+//        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
+//        if var tags = modelFeaturedRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
+//            if tags.last == "" || tags.last == " "{
+//                tags.removeLast()
+//            }
+//            arrayNames = tags
+//            collectionView.reloadData()
+//        }
+//        viewItemTypeBackGround.isHidden = modelFeaturedRestuarantResponseData?.status == ""
+//        labelItemType.text = modelFeaturedRestuarantResponseData?.status
+//        if modelFeaturedRestuarantResponseData?.status?.lowercased() == "closed" {
+//            viewItemTypeBackGround.backgroundColor = .colorRed
+//        }
+//        else if modelFeaturedRestuarantResponseData?.status?.lowercased() == "new" {
+//            viewItemTypeBackGround.backgroundColor = .colorGreen
+//        }
+//        else if modelFeaturedRestuarantResponseData?.status?.lowercased() != "" {
+//            viewItemTypeBackGround.backgroundColor = .colorOrange
+//        }
     }
     
     func postFavouriteRestaurants() {
-        let parameters = [
-            "Id": modelFeaturedRestuarantResponseData?.id ?? "",
-            "isMark": !(modelFeaturedRestuarantResponseData?.isFavorites ?? false),
-            "type" : "rest"
-        ] as [String : Any]
-       
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in
-            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteRestaurantsResponse = model
-        }
+//        let parameters = [
+//            "Id": modelFeaturedRestuarantResponseData?.id ?? "",
+//            "isMark": !(modelFeaturedRestuarantResponseData?.isFavorites ?? false),
+//            "type" : "rest"
+//        ] as [String : Any]
+//       
+//        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg, statusCode in
+//            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+//            self.modelPostFavouriteRestaurantsResponse = model
+//        }
     }
 }
 

@@ -96,7 +96,7 @@ class EditAddressViewController: UIViewController {
                     if let modelRecord = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex] {
                         modelUserAddressesResponseData = modelRecord
                         
-                        setAddress(addressTitle: modelRecord.title ?? "", formattedAddress: modelRecord.address ?? "")
+                        setAddress(addressTitle: modelRecord.name ?? "", formattedAddress: modelRecord.physicalAddress ?? "")
                         setZoom(latitude: modelRecord.latitude, longitude: modelRecord.longitude)
                         location = CLLocationCoordinate2D(latitude: modelRecord.latitude!, longitude: modelRecord.longitude!)
                     }
@@ -138,7 +138,7 @@ class EditAddressViewController: UIViewController {
         //        setAddress()
         
         if modelUserAddressesResponseData != nil {
-            self.setAddress(addressTitle: modelUserAddressesResponseData?.title, formattedAddress: modelUserAddressesResponseData?.address)
+            self.setAddress(addressTitle: modelUserAddressesResponseData?.name, formattedAddress: modelUserAddressesResponseData?.physicalAddress)
             self.setZoom(latitude: modelUserAddressesResponseData?.latitude, longitude: modelUserAddressesResponseData?.longitude)
             self.location = CLLocationCoordinate2D(latitude: modelUserAddressesResponseData?.latitude ?? 0, longitude: modelUserAddressesResponseData?.longitude ?? 0)
             //            labelButtonSaveAsNew.textColor = .lightGray
@@ -296,7 +296,7 @@ class EditAddressViewController: UIViewController {
         //        labelAddressTitle.text = addressTitle
         labelAddress.text = formattedAddress
         modelUserAddressesResponseData?.name = addressTitle
-        modelUserAddressesResponseData?.address = formattedAddress
+        modelUserAddressesResponseData?.physicalAddress = formattedAddress
     }
     
     func getLocationCoordinateFromPlaceId(placeId: String) {
@@ -326,7 +326,7 @@ class EditAddressViewController: UIViewController {
     }
     
     func getUserAddress() {
-        APIs.postAPI(apiName: .getuseraddress, methodType: .get, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .editreview, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: AddressesListViewController.ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserAddressResponse = model
         }

@@ -36,7 +36,7 @@ class RegisterationViewController: UIViewController {
     }
     var modelGetBlobContainer: ModelGetBlobContainer? {
         didSet {
-            print(modelGetBlobContainer?.token as Any)
+            print(modelGetBlobContainer?.uri as Any)
         }
     }
     
@@ -76,11 +76,7 @@ class RegisterationViewController: UIViewController {
     var modelSignUpResponse: ModelSignUpResponse? {
         didSet {
             if modelSignUpResponse?.success ?? false {
-                if let token = modelSignUpResponse?.token {
-                    kAccessToken = token
-                    kDefaults.set(kAccessToken, forKey: "kAccessToken")
-                }
-                navigateToRootHomeViewController()
+                sendnotification()
             }
             else {
                 showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
@@ -106,8 +102,21 @@ class RegisterationViewController: UIViewController {
     }
     
     @IBAction func buttonContinue(_ sender: Any) {
+        if let token = self.modelGetBlobContainer?.uri {
+            if isImageUploaded {
+                self.uploadOnBlob(token: token)
+            }
+            else {
+                self.userSignup()
+            }
+        }
+        else {
+            getblobcontainer()
+        }
+        
+        return()
         if isOtpVerified {
-            if let token = self.modelGetBlobContainer?.token {
+            if let token = self.modelGetBlobContainer?.uri {
                 if isImageUploaded {
                     self.uploadOnBlob(token: token)
                 }
@@ -182,13 +191,9 @@ class RegisterationViewController: UIViewController {
         vc.isFromRegistrationViewController = true
         vc.stringPhoneEmail = isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : textFieldEmail.text!
         vc.isOtpSuccessFullHandler = {
-            self.isOtpVerified = true
-            if let token = self.modelGetBlobContainer?.token {
-                self.uploadOnBlob(token: token)
-            }
-            else {
-                self.userSignup()
-            }
+            kDefaults.set(kAccessToken, forKey: "kAccessToken")
+            kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+            self.navigateToRootHomeViewController()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -224,37 +229,52 @@ class RegisterationViewController: UIViewController {
             "lastName": textFieldLastName.text!,
             "email": isFromEmail ? stringPhoneEmail : textFieldEmail.text!,
             "phone": isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : stringPhoneEmail,
-            "photo": imageUrl,
+            "profilePictureWebUrl": imageUrl!,
             //            "photo": "https://zabihahblob.blob.core.windows.net/profileimage/742473352.835877.jpg",
-            "isNewsLetter": true
+            "isSubscribedToHalalOffersNotification": true,
+            "isSubscribedToHalalEventsNewsletter": true,
         ]
         
-        APIs.postAPI(apiName: .usersignup, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: ModelSignUpResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelSignUpResponse = model
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            
+            if statusCode ==  200 && responseData == nil {
+                let responseModel = ModelSignUpResponse(success: true, message: "", userResponseData: nil, recordFound: true, innerExceptionMessage: "",  token: "")
+                self.modelSignUpResponse = responseModel
+            }
+            else {
+                let model: ModelSignUpResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSignUpResponse = model
+            }
         }
     }
     
     func sendnotification() {
         let parameters: Parameters = [
-            "recipient": !isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
-            "device": isFromEmail ? "phone" : "email",
-            "validate": true //it will check if user exist in DB
+            "phone": isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : "",
+            "email": isFromEmail ? "" : textFieldEmail.text!,
+            "type": isFromEmail ? OtpRequestType.phone.rawValue : OtpRequestType.email.rawValue
         ]
         
-        APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             
-            let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelSendnotificationResponse = model
+            if statusCode ==  200 && responseData == nil {
+                let responseModel = LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                self.modelSendnotificationResponse = responseModel
+            }
+            else {
+                let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSendnotificationResponse = model
+            }
+            
         }
     }
     
     func getblobcontainer() {
-        let parameters: Parameters = [
-            "containerName": "profileimage"
-        ]
-        
-        APIs.postAPI(apiName: .getblobcontainer, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+//        let parameters: Parameters = [
+//            "containerName": "profileimage"
+//        ]
+//        
+        APIs.postAPI(apiName: .getblobcontainer, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
             
             print(responseData)
             print(success)
@@ -283,44 +303,7 @@ class RegisterationViewController: UIViewController {
         //        documentPicker.modalPresentationStyle = .formSheet
         //        self.present(documentPicker, animated: true, completion: nil)
     }
-    
-//    func openGallary() {
-//        let imagePickerController = UIImagePickerController()
-//        imagePickerController.allowsEditing = false //If you want edit option set "true"
-//        imagePickerController.sourceType = .photoLibrary
-//        imagePickerController.delegate = self
-//        self.present(imagePickerController, animated: true, completion: nil)
-//    }
-    
-    
-    
-//    //Mark:- Choose Image Method
-//    func funcMyActionSheet() {
-//        var myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-//        myActionSheet.view.tintColor = UIColor.black
-//        let galleryAction = UIAlertAction(title: "Gallery", style: .default, handler: {
-//            (alert: UIAlertAction!) -> Void in
-//            self.openGallary()
-//        })
-//        let documentAction = UIAlertAction(title: "Documents", style: .default, handler: {
-//            (alert: UIAlertAction!) -> Void in
-//            self.openDocumentPicker()
-//        })
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-//            (alert: UIAlertAction!) -> Void in
-//        })
-//        
-//        if IPAD {
-//            //In iPad Change Rect to position Popover
-//            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
-//        }
-//        myActionSheet.addAction(galleryAction)
-////        myActionSheet.addAction(documentAction)
-//        myActionSheet.addAction(cancelAction)
-//        print("Action Sheet call")
-//        
-//        self.present(myActionSheet, animated: true, completion: nil)
-//    }
+
 }
 
 extension RegisterationViewController: FPNTextFieldDelegate {

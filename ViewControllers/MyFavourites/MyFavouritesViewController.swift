@@ -133,7 +133,7 @@ class MyFavouritesViewController: UIViewController {
             "page": favouritePageNumber,
             "type": buttonRestaurant.tag == 1 ? "rest" : "prayer"
         ]
-        APIs.postAPI(apiName: .getfavouritebyuser, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getfavouritebyuser, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetFavouriteByUserResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetFavouriteByUserResponse = model
         }
@@ -157,7 +157,7 @@ class MyFavouritesViewController: UIViewController {
             "type" : type
         ] as [String : Any]
        
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: FindHalalFoodCell.ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelPostFavouriteDeleteResponse = model
         }

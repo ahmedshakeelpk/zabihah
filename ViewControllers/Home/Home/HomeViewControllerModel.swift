@@ -8,27 +8,106 @@
 import Foundation
 
 extension HomeViewController {
+    // MARK: - ModelFeaturedRequest
+    struct ModelFeaturedRequest: Codable {
+        let ids: [String]?
+        let rating: Int?
+        let page: Int?
+        let pageSize: Int?
+        let cuisine: [String]?
+        let meatHalalStatus: [HalalStatus]?
+        let alcoholPolicy: [AlcoholPolicy]?
+        let parts: [PlacePart]?
+        let orderBy: PlaceOrderBy?
+        let sortOrder: SortOrder?
+        let location: Location?
+    }
+    
+    // MARK: - Location
+    struct Location: Codable {
+        let distanceUnit: DistanceUnit
+        let latitude, longitude: Double
+        let radius: Int
+    }
+    
+    struct ModelFilterRequest: Codable {
+        let radius: String?
+        let rating: String?
+        let isalcoholic: Bool?
+        let isHalal: Bool?
+    }
+    enum PlaceOrderBy: String, Codable {
+        case none = "None"
+        case rating = "Rating"
+        case location = "Location"
+        case ratingAndLocation = "RatingAndLocation"
+    }
+    enum HalalStatus: String, Codable {
+        case none = "None"
+        case unknown = "Unknown"
+        case partial = "Partial"
+        case full = "Full"
+    }
+    enum AlcoholPolicy: String, Codable {
+        case none = "None"
+        case served = "Served"
+        case allowedButNotServed = "AllowedButNotServed"
+        case notAllowed = "NotAllowed"
+    }
+    enum SortOrder: String, Codable {
+        case none = "None"
+        case ascending = "Ascending"
+        case descending = "Descending"
+    }
+    enum PlacePart: String, Codable {
+        case none = "None"
+        case webLinks = "WebLinks"
+        case amenities = "Amenities"
+        case reviews = "Reviews"
+        case cuisines = "Cuisines"
+        case timings = "Timings"
+    }
+    enum DistanceUnit: String, Codable {
+        case none = "None"
+        case meters = "Meters"
+        case kilometers = "Kilometers"
+        case miles = "Miles"
+    }
+}
+
+extension HomeViewController {
     // MARK: - ModelGetUserResponse
     struct ModelGetUserProfileResponse: Codable {
-        let success: Bool?
-        let message: String?
-        var userResponseData: ModelGetUserResponseData?
-        let recordFound: Bool?
-        let innerExceptionMessage, token: String?
+        var id, lastName, firstName, phone: String?
+        var isSubscribedToHalalEventsNewsletter: Bool?
+        var addresses: [AddressesListViewController.ModelUserAddressesResponseData]?
+        var isEmailVerified: Bool?
+        var createdOn, updatedOn: String?
+        var isPhoneVerified, isDeleted, isSubscribedToHalalOffersNotification: Bool?
+        var createdBy, profilePictureWebUrl, updatedBy, email: String?
     }
 
-    // MARK: - UserResponseData
-    struct ModelGetUserResponseData: Codable {
-        var phone: String?
-        var isNewsLetterSubcription: Bool?
-        var firstname, email: String?
-        var isUpdateSubcription: Bool?
-        let photo: String?
-        var lastName: String?
-    }
+//    // MARK: - UserResponseData
+//    struct ModelGetUserResponseData: Codable {
+//        var id: String?
+//        var firstname, email: String?
+//        var isSubscribedToHalalEventsNewsletter: Bool?
+//        var isSubscribedToHalalOffersNotification: Bool?
+//        let profilePictureWebUrl: String?
+//        var lastName: String?
+//        var phone: String?
+//        var isPhoneVerified: Bool?
+//        var isDeleted: Bool?
+//        var isEmailVerified: Bool?
+//        var addresses: [AddressesListViewController.ModelUserAddressesResponseData]?
+//        var updatedOn : String?
+//        var createdOn : String?
+//        var createdBy : String?
+//        var updatedBy : String?
+//    }
 
     // MARK: - ModelGetHomeRestaurantsResponse
-    struct ModelGetHomeRestaurantsResponse: Codable {
+    struct ModelGetHomeRestaurantsResponse2: Codable {
         var restuarantResponseData: [ModelRestuarantResponseData]?
         let totalCountHalal, totalPages, totalPrayerSpaces: Int?
         let success: Bool?
@@ -46,7 +125,7 @@ extension HomeViewController {
     }
 
     // MARK: - RestuarantResponseDatum
-    struct ModelRestuarantResponseData: Codable {
+    struct ModelRestuarantResponseData2: Codable {
         let iconImage: String?
         let status, tags: String?
         let createdOn: String?
@@ -123,5 +202,156 @@ extension HomeViewController {
         let distanceUnit: String?
         let recordFound: Bool?
     }
-
 }
+
+
+extension HomeViewController {
+    // MARK: - ModelFeaturedRequest
+    struct ModelFeaturedResponse: Codable {
+        let currentPageIndex, pageSize, totalRecords: Int?
+        let onFirstPage: Bool?
+        let currentPage, totalPages: Int?
+        let hasNextPage, onLastPage, hasPreviousPage: Bool?
+        var items: [ModelRestuarantResponseData?]?
+    }
+
+    // MARK: - Item
+    struct ModelRestuarantResponseData: Codable {
+        let halalDescription: String?
+        let averageRating: Rating?
+        let isDeleted: Bool?
+        let zip: String?
+        let country: String?
+        let timings: [Timing?]?
+        let offersDelivery: Bool?
+        let region: String?
+        let subRegion: String?
+        let restaurantType: String?
+        let latitude: Double?
+        let city, name: String?
+        let reviews: [Review?]?
+        let type: String?
+        let state: String?
+        let totalReviews: Int?
+        let amenities: [Amenity]?
+        let id: String?
+        let cuisines: [Cuisine?]?
+        let webLinks: [WebLink?]?
+        let longitude: Double?
+        let mobile: String?
+        let phone: String?
+        let distance: Distance?
+        let willReturnPercentage: Int?
+        let approvalState: String?
+        let address: String?
+        let description: String?
+        let alcoholPolicy: String?
+        let meatHalalStatus: String?
+    }
+
+    enum Rating: Codable {
+        case int(Int)
+        case string(String)
+        case double(Double)
+        case none
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if let intValue = try? container.decode(Int.self) {
+                self = .int(intValue)
+            } else if let doubleValue = try? container.decode(Double.self) {
+                self = .double(doubleValue)
+            } else if let stringValue = try? container.decode(String.self) {
+                self = .string(stringValue)
+            } else if container.decodeNil() {
+                self = .none
+            } else {
+                throw DecodingError.typeMismatch(Rating.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Expected int, double, string, or nil for rating"))
+            }
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            switch self {
+            case .int(let intValue):
+                try container.encode(intValue)
+            case .double(let doubleValue):
+                try container.encode(doubleValue)
+            case .string(let stringValue):
+                try container.encode(stringValue)
+            case .none:
+                try container.encodeNil()
+            }
+        }
+    }
+
+
+    
+    // MARK: - Cuisine
+    struct Cuisine: Codable {
+        let name: String?
+    }
+    
+    // MARK: - Amenity
+    struct Amenity: Codable {
+        let type: String?
+        let value: Int?
+    }
+
+    // MARK: - Distance
+    struct Distance: Codable {
+        let distance: Double?
+        let unit: String?
+    }
+
+    // MARK: - Review
+    struct Review: Codable {
+        let rating: Int?
+        let isDeleted: Bool?
+        let updatedOn, createdOn: String?
+        let createdBy: String?
+        let comment: String?
+        let user: User?
+        let willReturn: Bool?
+    }
+
+    // MARK: - User
+    struct User: Codable {
+        let id, firstName, lastName: String?
+    }
+
+    // MARK: - Timing
+    struct Timing: Codable {
+        let closingTime: String?
+        let dayOfWeek: String?
+        let openingTime: String?
+    }
+
+    // MARK: - WebLink
+    struct WebLink: Codable {
+        let type: String?
+        let value: String?
+    }
+}
+
+
+//Feature Request{
+//            "location":
+//            {"distanceUnit":"Miles",
+//                "latitude":33.6114733,
+//                "longitude":73.1733117,
+//                "radius":20},
+//            "orderBy":"Rating",
+//            "page":1,
+//            "pageSize":20,
+//            "parts":["Amenities","Cuisines","Reviews","Timings","WebLinks"],"sortOrder":"Descending"}
+//Halal Request
+//{"alcoholPolicy":["NotAllowed"],
+//    "location":
+//    {"distanceUnit":"Miles",
+//        "latitude":37.4220936,
+//        "longitude":-122.083922,
+//        "radius":20},
+//    "meatHalalStatus":["Full"],
+//    "page":1,"pageSize":20,
+//    "parts":["Amenities","Cuisines","Reviews","Timings","WebLinks"]}

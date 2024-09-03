@@ -151,7 +151,7 @@ class WriteReviewViewController: UIViewController {
             //            "Images": isPrayerPlace ? "prayer" : "rest"
         ] as [String : Any]
         
-        APIs.uploadImage(apiName: .postreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "Images", parameter: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.uploadImage(apiName: .postreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "Images", parameter: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData)
             DispatchQueue.main.async {
                 self.modelPostReview = model
@@ -171,7 +171,7 @@ class WriteReviewViewController: UIViewController {
             //            "newImages": arrayLocalGallery,
         ] as [String : Any]
         
-        APIs.uploadImage(apiName: .editreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "newImages", parameter: parameters, requestType: "PUT", viewController: self) { responseData, success, errorMsg in
+        APIs.uploadImage(apiName: .editreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "newImages", parameter: parameters, requestType: "PUT", viewController: self) { responseData, success, errorMsg, statusCode in
             if let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData) {
                 DispatchQueue.main.async {
                     self.modelPostReview = model

@@ -34,7 +34,6 @@ extension RegisterationViewController {
     }
     
     struct ModelGetBlobContainer: Codable {
-        let token: String
-        let containerName, storageAccountURL: String
+        let uri: String
     }
 }

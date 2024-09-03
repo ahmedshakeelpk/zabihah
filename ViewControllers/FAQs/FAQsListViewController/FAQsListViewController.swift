@@ -47,7 +47,7 @@ class FAQsListViewController: UIViewController {
     
 
     func getFAQs() {
-        APIs.postAPI(apiName: .getfaq, methodType: .get, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getfaq, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode  in
             let model: ModelGetFAQsResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetFAQsResponse = model
         }

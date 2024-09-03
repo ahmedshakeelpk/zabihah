@@ -20,8 +20,8 @@ class EditNameViewController: UIViewController {
     var modelEditProfileResponse: ModelEditProfileResponse? {
         didSet {
             if modelEditProfileResponse?.success ?? false {
-                modelGetUserProfileResponse?.userResponseData?.firstname = self.modelEditProfileResponse?.userResponseData?.firstname
-                modelGetUserProfileResponse?.userResponseData?.lastName = self.modelEditProfileResponse?.userResponseData?.lastName
+                kModelGetUserProfileResponse?.firstName = textFieldFirstName.text!
+                kModelGetUserProfileResponse?.lastName = textFieldLastName.text!
                 self.editProfileResponseHandler?()
                 self.popViewController(animated: true)
                 
@@ -45,8 +45,8 @@ class EditNameViewController: UIViewController {
         setConfiguration()
     }
     func setData() {
-        textFieldFirstName.text = modelGetUserProfileResponse?.userResponseData?.firstname
-        textFieldLastName.text = modelGetUserProfileResponse?.userResponseData?.lastName
+        textFieldFirstName.text = kModelGetUserProfileResponse?.firstName
+        textFieldLastName.text = kModelGetUserProfileResponse?.lastName
     }
     
     func setConfiguration() {
@@ -87,15 +87,21 @@ class EditNameViewController: UIViewController {
         let parameters: Parameters = [
             "firstname": textFieldFirstName.text!,
             "lastName": textFieldLastName.text!,
-//              "email": "string",
-//              "phone": "string",
-//              "photo": "string",
-//              "isUpdateSubcription": true,
-//              "isNewsLetterSubcription": true
+            "email": kModelGetUserProfileResponse?.email ?? "",
+            "phone": kModelGetUserProfileResponse?.phone ?? "",
+            "profilePictureWebUrl": kModelGetUserProfileResponse?.profilePictureWebUrl ?? "",
+            "isSubscribedToHalalOffersNotification": kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "",
+            "isSubscribedToHalalEventsNewsletter": kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? ""
         ]
-        APIs.postAPI(apiName: .editprofile, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
-            let model: ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelEditProfileResponse = model
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let model = ModelEditProfileResponse(success: true, message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
+                self.modelEditProfileResponse = model
+            }
+            else {
+                let model: ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelEditProfileResponse = model
+            }
         }
     }
 }

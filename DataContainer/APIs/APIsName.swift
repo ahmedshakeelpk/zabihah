@@ -9,15 +9,28 @@ import Foundation
 
 struct APIPath {
     //original ur
-    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com:81/"
+    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com:81/v1/"
     
 }
 struct APIsName {
     enum name: String {
         //MARK:- API
-        case request = "v1/User/otp/request"
-        case verifyOtp = "api/Otp/verifyOtp"
-        case getblobcontainer = "api/Blob/getblobcontainer"
+        case request = "User/otp/request"
+        case verifyOtp = "User/otp/verify"
+        case mySelf = "User/my"
+        case updateUser = "User"
+        case edituseraddress = "User/address"
+        case search = "Restaurant/search"
+
+        
+        
+        
+        
+        
+        
+        
+        
+        case getblobcontainer = "User/profile-picture/generate/sas/upload"
         
         //MARK:- Restaurant
         case gethomerestaurants = "api/Restaurant/gethomerestaurants"
@@ -40,14 +53,8 @@ struct APIsName {
         
         
         //MARK:- V1
-        case usersignup = "v1/User/usersignup"
         case getuser = "v1/User/getuser"
-        case deleteuser = "v1/User/deleteuser"
         case editprofile = "v1/User/editprofile"
-        case getuseraddress = "v1/User/getuseraddress"
-        case adduseraddress = "v1/User/adduseraddress"
-        case edituseraddress = "v1/User/edituseraddress"
-        case deleteuseraddress = "v1/User/deleteuseraddress"
         
         //MARK:- Faq
         case getfaq = "api/Faq/getfaq"

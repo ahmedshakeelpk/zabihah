@@ -156,9 +156,9 @@ class SideMenuView: UIView {
     }
     
     @objc func setData() {
-        labelFullName.text = "\(modelGetUserProfileResponse?.userResponseData?.firstname ?? "") \(modelGetUserProfileResponse?.userResponseData?.lastName ?? "")"
-        labelAddress.text = modelGetUserProfileResponse?.userResponseData?.email ?? ""
-        imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "", placeHolderIcon: "placeHolderUser")
+        labelFullName.text = "\(kModelGetUserProfileResponse?.firstName ?? "") \(kModelGetUserProfileResponse?.lastName ?? "")"
+        labelAddress.text = kModelGetUserProfileResponse?.email ?? ""
+        imageViewProfile.setImage(urlString: kModelGetUserProfileResponse?.profilePictureWebUrl ?? "", placeHolderIcon: "placeHolderUser")
     }
     
     @IBOutlet weak var viewProfileImageBackGround: UIView!

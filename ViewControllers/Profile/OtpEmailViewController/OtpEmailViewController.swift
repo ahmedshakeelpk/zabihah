@@ -45,7 +45,7 @@ class OtpEmailViewController: UIViewController{
             }
             else {
                 labelResendCodeTimer.text = "Resend in \(resendCodeCounter) seconds"
-                print("Resend in \(resendCodeCounter) seconds")
+//                print("Resend in \(resendCodeCounter) seconds")
             }
         }
     }
@@ -53,13 +53,11 @@ class OtpEmailViewController: UIViewController{
     var otpString: String!
     var modelOtpResponse: OtpLoginViewController.ModelOtpResponse? {
         didSet {
-            if modelOtpResponse?.success ?? false {
+            if !(modelOtpResponse?.token ?? "").isEmpty {
                 self.popViewController(animated: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.isOtpSuccessFullHandler?()
                 }
-//                showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
-//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelOtpResponse?.message ?? "", iconName: .iconError)
@@ -136,12 +134,19 @@ class OtpEmailViewController: UIViewController{
 
     func verifyOtp() {
         let parameters: Parameters = [
-            "otp": otpString ?? ""
+            "code": otpString ?? "",
+            "createJwt": true
         ]
         
-        APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: OtpLoginViewController.ModelOtpResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelOtpResponse = model
+        APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let responseModel = OtpLoginViewController.ModelOtpResponse(message: "", token: "test token", refreshToken: "")
+                self.modelOtpResponse = responseModel
+            }
+            else {
+                let model: OtpLoginViewController.ModelOtpResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelOtpResponse = model
+            }
         }
     }
 }

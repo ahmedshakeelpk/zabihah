@@ -39,65 +39,65 @@ class MarkerInfoView: UIView {
         viewRestaurantBackGround.isHidden = false
         labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
         labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
-        labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
-        labelImages.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
-        labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"
-        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
-        
-        if let iconImage = modelFeaturedRestuarantResponseData?.iconImage {
-            if iconImage == "" {
-                imageViewItem.image = UIImage(named: "placeHolderRestaurant")
-            }
-            else {
-                imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant") {
-                    image in
-                    self.imageViewItem.image = UIImage(named: "placeHolderRestaurant")
-                }
-            }
-        }
-        if let coverImage = modelFeaturedRestuarantResponseData?.coverImage {
-            if coverImage == "" {
-                imageViewItem.image = UIImage(named: "placeHolderFoodItem")
-            }
-            else {
-                imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem") {
-                    image in
-                    self.imageViewItem.image = UIImage(named: "placeHolderFoodItem")
-                }
-            }
-        }
+//        labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
+//        labelImages.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
+//        labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"
+//        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
+//        
+//        if let iconImage = modelFeaturedRestuarantResponseData?.iconImage {
+//            if iconImage == "" {
+//                imageViewItem.image = UIImage(named: "placeHolderRestaurant")
+//            }
+//            else {
+//                imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant") {
+//                    image in
+//                    self.imageViewItem.image = UIImage(named: "placeHolderRestaurant")
+//                }
+//            }
+//        }
+//        if let coverImage = modelFeaturedRestuarantResponseData?.coverImage {
+//            if coverImage == "" {
+//                imageViewItem.image = UIImage(named: "placeHolderFoodItem")
+//            }
+//            else {
+//                imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem") {
+//                    image in
+//                    self.imageViewItem.image = UIImage(named: "placeHolderFoodItem")
+//                }
+//            }
+//        }
     }
     
     func setDataPrayerPlacesResponseData() {
         viewRestaurantBackGround.isHidden = true
         labelRestaurantName.text = modelGetPrayerPlacesResponseData?.name
         labelRestaurantAddress.text = modelGetPrayerPlacesResponseData?.address
-        labelRating.text = "\(modelGetPrayerPlacesResponseData?.rating ?? 0)"
-        labelImages.text = "\(modelGetPrayerPlacesResponseData?.gallaryCount ?? 0)"
-        labelDistance.text = "\(modelGetPrayerPlacesResponseData?.distance ?? 0)\(modelGetPrayerPlacesResponseData?.distanceUnit ?? "")"
-        viewCallMainBackGround.isHidden = modelGetPrayerPlacesResponseData?.phone ?? "" == ""
-        if let iconImage = modelGetPrayerPlacesResponseData?.iconImage {
-            if iconImage == "" {
-                imageViewItem.image = UIImage(named: "placeHolderRestaurant")
-            }
-            else {
-                imageViewRestaurant.setImage(urlString: modelGetPrayerPlacesResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant") {
-                    image in
-                    self.imageViewItem.image = UIImage(named: "placeHolderRestaurant")
-                }
-            }
-        }
-        if let coverImage = modelGetPrayerPlacesResponseData?.coverImage {
-            if coverImage == "" {
-                imageViewItem.image = UIImage(named: "placeHolderFoodItem")
-            }
-            else {
-                imageViewItem.setImage(urlString: modelGetPrayerPlacesResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem") {
-                    image in
-                    self.imageViewItem.image = UIImage(named: "placeHolderFoodItem")
-                }
-            }
-        }
+//        labelRating.text = "\(modelGetPrayerPlacesResponseData?.rating ?? 0)"
+//        labelImages.text = "\(modelGetPrayerPlacesResponseData?.gallaryCount ?? 0)"
+//        labelDistance.text = "\(modelGetPrayerPlacesResponseData?.distance ?? 0)\(modelGetPrayerPlacesResponseData?.distanceUnit ?? "")"
+//        viewCallMainBackGround.isHidden = modelGetPrayerPlacesResponseData?.phone ?? "" == ""
+//        if let iconImage = modelGetPrayerPlacesResponseData?.iconImage {
+//            if iconImage == "" {
+//                imageViewItem.image = UIImage(named: "placeHolderRestaurant")
+//            }
+//            else {
+//                imageViewRestaurant.setImage(urlString: modelGetPrayerPlacesResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant") {
+//                    image in
+//                    self.imageViewItem.image = UIImage(named: "placeHolderRestaurant")
+//                }
+//            }
+//        }
+//        if let coverImage = modelGetPrayerPlacesResponseData?.coverImage {
+//            if coverImage == "" {
+//                imageViewItem.image = UIImage(named: "placeHolderFoodItem")
+//            }
+//            else {
+//                imageViewItem.setImage(urlString: modelGetPrayerPlacesResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem") {
+//                    image in
+//                    self.imageViewItem.image = UIImage(named: "placeHolderFoodItem")
+//                }
+//            }
+//        }
     }
     
     override func awakeFromNib() {

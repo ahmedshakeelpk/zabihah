@@ -40,15 +40,15 @@ class AddressesCell: UITableViewCell {
     var modelUserAddressesResponseData: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
             if modelUserAddressesResponseData != nil {
-                labelTitle.text = modelUserAddressesResponseData?.title ?? ""
-                labelAddress.text = modelUserAddressesResponseData?.address ?? ""
-                if "Home".lowercased() == (modelUserAddressesResponseData?.title ?? "").lowercased() {
+                labelTitle.text = modelUserAddressesResponseData?.name ?? ""
+                labelAddress.text = modelUserAddressesResponseData?.physicalAddress ?? ""
+                if "Home".lowercased() == (modelUserAddressesResponseData?.name ?? "").lowercased() {
                     imageViewAddressType.image = UIImage(named: "houseMehroon")
                 }
-                else if "Office".lowercased() == (modelUserAddressesResponseData?.title ?? "").lowercased() {
+                else if "Office".lowercased() == (modelUserAddressesResponseData?.name ?? "").lowercased() {
                     imageViewAddressType.image = UIImage(named: "briefcaseMehroon")
                 }
-                else if "Person".lowercased() == (modelUserAddressesResponseData?.title ?? "").lowercased() {
+                else if "Person".lowercased() == (modelUserAddressesResponseData?.name ?? "").lowercased() {
                     imageViewAddressType.image = UIImage(named: "userMehroon")
                 }
                 else {

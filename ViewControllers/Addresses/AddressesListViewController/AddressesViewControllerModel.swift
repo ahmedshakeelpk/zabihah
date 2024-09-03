@@ -26,22 +26,24 @@ extension AddressesListViewController {
         let innerExceptionMessage: String?
     }
 
+    
     // MARK: - UserAddressesResponseData
     struct ModelUserAddressesResponseData: Codable {
         let id: String?
         let utmCoordinates: Double?
         let createdOn: String?
+        let updatedOn: String?
+        let updatedBy: String?
+        let label: String?
+        var physicalAddress: String?
+        let locationInstructions: String?
+        let deliveryInstructions: String?
         var longitude: Double?
         let isDefault: Bool?
         var latitude: Double?
-        var title, userID, address, createdBy: String?
+        var userId, createdBy: String?
         let isDeleted: Bool?
-        var deliveryInstructions, name, locationInstruction: String?
+        var name, locationInstruction: String?
 
-        enum CodingKeys: String, CodingKey {
-            case id, utmCoordinates, createdOn, longitude, isDefault, latitude, title
-            case userID = "userId"
-            case address, createdBy, isDeleted, deliveryInstructions, name, locationInstruction
-        }
     }
 }

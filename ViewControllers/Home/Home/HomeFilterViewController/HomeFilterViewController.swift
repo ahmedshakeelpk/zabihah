@@ -47,8 +47,8 @@ class HomeFilterViewController: UIViewController {
     @IBOutlet weak var buttonCross: UIButton!
     @IBOutlet weak var stackViewHalalAlCohal: UIStackView!
 
-    var filterParametersHome: [String: Any]!
-    var buttonFilterHandler: (([String: Any]) -> ())!
+    var filterParametersHome: HomeViewController.ModelFilterRequest!
+    var buttonFilterHandler: ((HomeViewController.ModelFilterRequest) -> ())!
     var location: CLLocationCoordinate2D? {
         didSet {
             
@@ -69,21 +69,37 @@ class HomeFilterViewController: UIViewController {
         getStarRating()
         setSliderRange()
         if filterParametersHome != nil {
-            if let radius = filterParametersHome["radius"] as? String {
+            if let radius = filterParametersHome.radius {
                 labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
                 
                 sliderRange.value = Float(radius) ?? 0
             }
-            if let rating = filterParametersHome["rating"] as? String {
+            if let rating = filterParametersHome.radius {
                 labelStarRating.text = rating
                 starRatingView.rating = Double(rating) ?? 0
             }
-            if let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool {
+            if let isAlCoholic = filterParametersHome.isalcoholic {
                 switchHideAlcoholPlaces.isOn = isAlCoholic
             }
-            if let isHalal = filterParametersHome["isHalal"] as? Bool {
+            if let isHalal = filterParametersHome.isHalal{
                 switchHideHalalPlaces.isOn = isHalal
             }
+                
+//            if let radius = filterParametersHome["radius"] as? String {
+//                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+//                
+//                sliderRange.value = Float(radius) ?? 0
+//            }
+//            if let rating = filterParametersHome["rating"] as? String {
+//                labelStarRating.text = rating
+//                starRatingView.rating = Double(rating) ?? 0
+//            }
+//            if let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool {
+//                switchHideAlcoholPlaces.isOn = isAlCoholic
+//            }
+//            if let isHalal = filterParametersHome["isHalal"] as? Bool {
+//                switchHideHalalPlaces.isOn = isHalal
+//            }
         }
         if selectedMenuCell == 3 {
             stackViewHalalAlCohal.isHidden = true
@@ -115,16 +131,21 @@ class HomeFilterViewController: UIViewController {
     }
     @IBAction func buttonFilter(_ sender: Any) {
         self.dismiss(animated: true) {
-            let parameters = [
-                "lat": self.location?.latitude ?? 0,
-                "long": self.location?.longitude ?? 0,
-                "radius": self.labelRangeEnd.text!.getIntegerValue(),
-                "rating": self.labelStarRating.text!,
-                "isalcoholic": self.switchHideAlcoholPlaces.isOn,
-                "isHalal": self.switchHideHalalPlaces.isOn
-            ] as! [String: Any]
+//            let parameters = [
+//                "lat": self.location?.latitude ?? 0,
+//                "long": self.location?.longitude ?? 0,
+//                "radius": self.labelRangeEnd.text!.getIntegerValue(),
+//                "rating": self.labelStarRating.text!,
+//                "isalcoholic": self.switchHideAlcoholPlaces.isOn,
+//                "isHalal": self.switchHideHalalPlaces.isOn
+//            ] as! [String: Any]
+            var parameter = HomeViewController.ModelFilterRequest(
+                radius: self.labelRangeEnd.text!.getIntegerValue(),
+                rating: self.labelStarRating.text!,
+                isalcoholic: self.switchHideAlcoholPlaces.isOn,
+                isHalal: self.switchHideHalalPlaces.isOn)
             
-            self.buttonFilterHandler?(parameters)
+            self.buttonFilterHandler?(parameter)
         }
     }
     

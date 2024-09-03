@@ -33,7 +33,7 @@ class MyFavouriteCell: UITableViewCell {
                 labelTitle.text = halalRestuarantResponseData?.name ?? ""
                 labelAddress.text = halalRestuarantResponseData?.address ?? ""
                 
-                imageViewRestaurant.setImage(urlString: halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+//                imageViewRestaurant.setImage(urlString: halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
             }
             
         }

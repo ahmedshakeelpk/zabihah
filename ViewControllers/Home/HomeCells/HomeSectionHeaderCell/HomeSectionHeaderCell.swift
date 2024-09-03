@@ -94,12 +94,12 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
         }
     }
     
-    var modelGetHomeRestaurantsResponse: HomeViewController.ModelGetHomeRestaurantsResponse? {
+    var modelGetHomeRestaurantsResponse: HomeViewController.ModelFeaturedResponse? {
         didSet {
             
         }
     }
-    var modelGetHalalRestaurantResponse: HomeViewController.ModelGetHalalRestaurantResponse? {
+    var modelGetHalalRestaurantResponse: HomeViewController.ModelFeaturedResponse? {
         didSet {
             
         }

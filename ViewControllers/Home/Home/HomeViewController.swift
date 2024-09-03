@@ -59,7 +59,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    var filterParametersHome: [String: Any]!
+    var filterParametersHome: ModelFilterRequest?
     
     var selectedMenuCell: Int = 0 {
         didSet {
@@ -107,15 +107,15 @@ class HomeViewController: UIViewController {
     var dontTriggerModelGetHomeRestaurantsResponseObservers:Bool = false
     var dontTriggerModelGetHalalRestaurantResponseObservers:Bool = false
 
-    var modelGetUserAddressResponse: AddressesListViewController.ModelGetUserAddressResponse? {
+    var modelGetUserAddressResponse: [AddressesListViewController.ModelUserAddressesResponseData]? {
         didSet {
-            if modelGetUserAddressResponse?.userAddressesResponseData?.count ?? 0 > 0 {
-                if let defaultAddressIndex = modelGetUserAddressResponse?.userAddressesResponseData?.firstIndex(where: { model in
+            if modelGetUserAddressResponse?.count ?? 0 > 0 {
+                if let defaultAddressIndex = modelGetUserAddressResponse?.firstIndex(where: { model in
                     model.isDefault ?? false
                 }) {
-                    let latitude = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex].latitude ?? 0
+                    let latitude = modelGetUserAddressResponse?[defaultAddressIndex].latitude ?? 0
                     
-                    let longitude = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex].longitude ?? 0
+                    let longitude = modelGetUserAddressResponse?[defaultAddressIndex].longitude ?? 0
                     
                     userLocation = CLLocation(latitude: latitude, longitude: longitude)
                 }
@@ -133,7 +133,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    var modelGetHomeRestaurantsResponse: ModelGetHomeRestaurantsResponse? {
+    var modelGetHomeRestaurantsResponse: ModelFeaturedResponse? {
         didSet {
             if dontTriggerModelGetHomeRestaurantsResponseObservers {
                 dontTriggerModelGetHomeRestaurantsResponseObservers = false
@@ -179,7 +179,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    var modelGetHalalRestaurantResponse: ModelGetHalalRestaurantResponse? {
+    var modelGetHalalRestaurantResponse: ModelFeaturedResponse? {
         didSet {
             if modelGetHalalRestaurantResponse == nil {
                 self.tableViewReload()
@@ -198,9 +198,9 @@ class HomeViewController: UIViewController {
             listItems[1] = recordFindHalalFoodCell.0
             tableViewReload()
             mapView.clear()
-            if let modelData = modelGetHalalRestaurantResponse?.halalRestuarantResponseData {
+            if let modelData = modelGetHalalRestaurantResponse?.items {
                 for (index, model) in modelData.enumerated() {
-                    drawMarkerOnMap(modelRestuarantResponseData: model, index: index)
+                    drawMarkerOnMap(modelRestuarantResponseData: model!, index: index)
                 }
             }
         }
@@ -210,7 +210,7 @@ class HomeViewController: UIViewController {
     var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
         didSet {
             sideMenuSetup()
-            modelGetUserProfileResponse = modelGetUserResponseLocal
+            kModelGetUserProfileResponse = modelGetUserResponseLocal
         }
     }
 
@@ -374,16 +374,16 @@ class HomeViewController: UIViewController {
                 labelNoRecordFound.text = "No Restaurant Found"
             }
             else {
-                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
-                    viewNoDataFound.isHidden = false
-                    tableView.isHidden = true
-                    imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
-                    labelNoRecordFound.text = "No Restaurant Found"
-                }
-                else {
-                    viewNoDataFound.isHidden = true
-                    tableView.isHidden = false
-                }
+//                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
+//                    viewNoDataFound.isHidden = false
+//                    tableView.isHidden = true
+//                    imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
+//                    labelNoRecordFound.text = "No Restaurant Found"
+//                }
+//                else {
+//                    viewNoDataFound.isHidden = true
+//                    tableView.isHidden = false
+//                }
             }
         }
         else if selectedMenuCell == 1 {
@@ -394,16 +394,16 @@ class HomeViewController: UIViewController {
                 labelNoRecordFound.text = "No Restaurant Found"
             }
             else {
-                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
-                    viewNoDataFound.isHidden = false
-                    tableView.isHidden = true
-                    imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
-                    labelNoRecordFound.text = "No Restaurant Found"
-                }
-                else {
-                    viewNoDataFound.isHidden = true
-                    tableView.isHidden = false
-                }
+//                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
+//                    viewNoDataFound.isHidden = false
+//                    tableView.isHidden = true
+//                    imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
+//                    labelNoRecordFound.text = "No Restaurant Found"
+//                }
+//                else {
+//                    viewNoDataFound.isHidden = true
+//                    tableView.isHidden = false
+//                }
             }
         }
         else if selectedMenuCell == 2 {
@@ -504,7 +504,6 @@ extension HomeViewController : CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
          print("error:: \(error.localizedDescription)")
-        locationManager.authorizationStatus
         getUserAddress()
     }
 

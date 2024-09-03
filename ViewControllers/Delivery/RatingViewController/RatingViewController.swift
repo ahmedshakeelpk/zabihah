@@ -171,7 +171,7 @@ class RatingViewController: UIViewController {
             "page": pageNumberForApi!
         ] as [String : Any]
         
-        APIs.postAPI(apiName: .getbytype, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getbytype, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             var model: ModelGetByType? = APIs.decodeDataToObject(data: responseData)
            
             if self.pageNumberForApi > 1 {

@@ -10,20 +10,24 @@ import Foundation
 extension OtpLoginViewController {
     // MARK: - ModelOtpResponse
     struct ModelOtpResponse: Codable {
-        let success: Bool?
+//        let success: Bool?
         let message: String?
-        let userResponseData: ModelOtpResponseData?
-        let recordFound: Bool?
-        let innerExceptionMessage, token: String?
+//        let userResponseData: ModelOtpResponseData?
+//        let recordFound: Bool?
+//        let innerExceptionMessage: String?
+        let token: String?
+        let refreshToken: String?
     }
-
+    
     // MARK: - ModelOtpResponseData
     struct ModelOtpResponseData: Codable {
-        let phone: String?
-        let isNewsLetterSubcription: Bool?
-        let firstname, email: String?
-        let isUpdateSubcription: Bool?
-        let photo: String?
-        let lastName: String?
+//        let phone: String?
+//        let isNewsLetterSubcription: Bool?
+//        let firstname, email: String?
+//        let isUpdateSubcription: Bool?
+//        let photo: String?
+//        let lastName: String?
+        let token: String?
+        let refreshToken: String?
     }
 }

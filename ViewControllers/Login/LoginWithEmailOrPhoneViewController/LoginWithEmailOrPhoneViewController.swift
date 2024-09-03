@@ -112,7 +112,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         vc.isFromEmail = isFromEmail
         vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
         vc.isOtpSuccessFullHandler = {
-            self.navigateToRootHomeViewController()
+            self.mySelf()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -124,19 +124,54 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         }
     }
     
+    func navigateToRegisterationViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RegisterationViewController") as! RegisterationViewController
+        vc.isFromEmail = isFromEmail
+        vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func request() {
         kAccessToken = ""
         let parameters: Parameters = [
             "phone": textFieldPhoneNumber.getCompletePhoneNumber(),
-//            "email": textFieldEmail.text!,
-            "email": "",
+            "email": textFieldEmail.text!,
             "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
         ]
         
-        APIs.postAPI(apiName: .request, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .request, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode  in
 
-            let model: ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelSendnotificationResponse = model
+            if statusCode == 200 && responseData == nil {
+                let responseModel = ModelSendnotificationResponse(recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                self.modelSendnotificationResponse = responseModel
+            }
+            else {
+                let model: ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSendnotificationResponse = model
+            }
+        }
+    }
+    
+    var modelGetUserProfileResponse : HomeViewController.ModelGetUserProfileResponse! {
+        didSet {
+            if modelGetUserProfileResponse?.isEmailVerified ?? false,
+               modelGetUserProfileResponse?.isPhoneVerified ?? false {
+                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                self.navigateToRootHomeViewController()
+            }
+            else {
+                self.navigateToRegisterationViewController()
+            }
+        }
+    }
+    
+    func mySelf() {
+        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+            print(responseData ?? "")
+            print(success)
+            let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserProfileResponse = model
         }
     }
     

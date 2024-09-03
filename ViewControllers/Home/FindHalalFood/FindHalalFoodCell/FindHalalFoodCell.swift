@@ -55,10 +55,10 @@ class FindHalalFoodCell: HomeBaseCell {
         didSet {
             print(modelPostFavouriteDeleteResponse as Any)
             if modelPostFavouriteDeleteResponse?.success ?? false {
-                if let isFavourite = self.halalRestuarantResponseData?.isFavorites {
-                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: FindHalalFoodCell())
-//                    halalRestuarantResponseData?.isFavorites = !(isFavourite)
-                }
+//                if let isFavourite = self.halalRestuarantResponseData?.isFavorites {
+//                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: FindHalalFoodCell())
+////                    halalRestuarantResponseData?.isFavorites = !(isFavourite)
+//                }
             }
             else {
                 viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteDeleteResponse?.message ?? "", iconName: .iconError)
@@ -70,35 +70,35 @@ class FindHalalFoodCell: HomeBaseCell {
         didSet {
             self.labelRestaurantName.text = self.halalRestuarantResponseData?.name
             self.labelRestaurantAddress.text = self.halalRestuarantResponseData?.address
-            self.labelRating.text = "\(self.halalRestuarantResponseData?.rating ?? 0)"
-            self.labelReuse.text = "\(self.halalRestuarantResponseData?.visits ?? 0)"
-            self.labelComments.text = "\(self.halalRestuarantResponseData?.reviews ?? 0)"
-            self.labelPictures.text = "\(self.halalRestuarantResponseData?.gallaryCount ?? 0)"
-            self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)\(self.halalRestuarantResponseData?.distanceUnit ?? "")"
-            self.imageViewRestaurant.setImage(urlString: self.halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-            self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
-            self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-            
-            viewBackGroundDelivery.isHidden = !(halalRestuarantResponseData?.isDelivery ?? false)
-            self.viewItemTypeBackGround.isHidden = self.halalRestuarantResponseData?.status == ""
-            self.labelItemType.text = self.halalRestuarantResponseData?.status
-            self.viewCallMainBackGround.isHidden = halalRestuarantResponseData?.phone ?? "" == ""
-            if self.halalRestuarantResponseData?.status?.lowercased() == "closed" {
-                self.viewItemTypeBackGround.backgroundColor = .colorRed
-            }
-            else if self.halalRestuarantResponseData?.status?.lowercased() == "new" {
-                self.viewItemTypeBackGround.backgroundColor = .colorGreen
-            }
-            else if self.halalRestuarantResponseData?.status?.lowercased() != "" {
-                self.viewItemTypeBackGround.backgroundColor = .colorOrange
-            }
-            if var tags = halalRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
-                if tags.last == "" || tags.last == " "{
-                    tags.removeLast()
-                }
-                arrayNames = tags
-                collectionView.reloadData()
-            }
+//            self.labelRating.text = "\(self.halalRestuarantResponseData?.rating ?? 0)"
+//            self.labelReuse.text = "\(self.halalRestuarantResponseData?.visits ?? 0)"
+//            self.labelComments.text = "\(self.halalRestuarantResponseData?.reviews ?? 0)"
+//            self.labelPictures.text = "\(self.halalRestuarantResponseData?.gallaryCount ?? 0)"
+//            self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)\(self.halalRestuarantResponseData?.distanceUnit ?? "")"
+//            self.imageViewRestaurant.setImage(urlString: self.halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+//            self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
+//            self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+//            
+//            viewBackGroundDelivery.isHidden = !(halalRestuarantResponseData?.isDelivery ?? false)
+//            self.viewItemTypeBackGround.isHidden = self.halalRestuarantResponseData?.status == ""
+//            self.labelItemType.text = self.halalRestuarantResponseData?.status
+//            self.viewCallMainBackGround.isHidden = halalRestuarantResponseData?.phone ?? "" == ""
+//            if self.halalRestuarantResponseData?.status?.lowercased() == "closed" {
+//                self.viewItemTypeBackGround.backgroundColor = .colorRed
+//            }
+//            else if self.halalRestuarantResponseData?.status?.lowercased() == "new" {
+//                self.viewItemTypeBackGround.backgroundColor = .colorGreen
+//            }
+//            else if self.halalRestuarantResponseData?.status?.lowercased() != "" {
+//                self.viewItemTypeBackGround.backgroundColor = .colorOrange
+//            }
+//            if var tags = halalRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
+//                if tags.last == "" || tags.last == " "{
+//                    tags.removeLast()
+//                }
+//                arrayNames = tags
+//                collectionView.reloadData()
+//            }
         }
     }
     
@@ -171,16 +171,16 @@ class FindHalalFoodCell: HomeBaseCell {
     }
     
     func postFavouriteRestaurants() {
-        let parameters = [
-            "Id": halalRestuarantResponseData?.id ?? "",
-            "isMark": !(halalRestuarantResponseData?.isFavorites ?? false),
-            "type" : "rest"
-        ] as [String : Any]
-       
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in
-            let model: ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteDeleteResponse = model
-        }
+//        let parameters = [
+//            "Id": halalRestuarantResponseData?.id ?? "",
+//            "isMark": !(halalRestuarantResponseData?.isFavorites ?? false),
+//            "type" : "rest"
+//        ] as [String : Any]
+//       
+//        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg, statusCode in
+//            let model: ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
+//            self.modelPostFavouriteDeleteResponse = model
+//        }
     }
     
     struct ModelPostFavouriteDeleteResponse: Codable {

@@ -117,7 +117,7 @@ class ReviewsViewController: UIViewController {
             "page": 1,
             //              "pageSize": 0
         ]
-        APIs.postAPI(apiName: .getbyuser, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getbyuser, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetByUser? = APIs.decodeDataToObject(data: responseData)
             self.modelGetByUser = model
         }
@@ -134,7 +134,7 @@ class ReviewsViewController: UIViewController {
                 "type": buttonHalalFood.tag == 1 ? "rest" : "prayer",
                 "id": id,
             ]
-            APIs.deleteAPI(apiName: url, parameters: parameters, methodType: .delete, viewController: self) { responseData, success, errorMsg in
+            APIs.deleteAPI(apiName: url, parameters: parameters, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
                 let model: ModelDeleteReviewResponse? = APIs.decodeDataToObject(data: responseData)
                 self.modelDeleteReviewResponse = model
             }

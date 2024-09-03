@@ -135,7 +135,7 @@ class DeliveryDetailsViewController3: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        isPrayerPlace = modelRestuarantResponseData.type ?? "" != "rest"
+//        isPrayerPlace = modelRestuarantResponseData.type ?? "" != "rest"
         setConfiguration()
         getRestaurantDetail()
         enableSwipeToPop()
@@ -273,7 +273,7 @@ class DeliveryDetailsViewController3: UIViewController {
             "id": modelRestuarantResponseData.id ?? "",
             "type": modelRestuarantResponseData.type ?? ""
         ] as [String : Any]
-        APIs.postAPI(apiName: .getrestaurantdetail, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .getrestaurantdetail, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetRestaurantDetailResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetRestaurantDetailResponse = model
         }
@@ -294,7 +294,7 @@ class DeliveryDetailsViewController3: UIViewController {
             "type" : modelRestuarantResponseData.type ?? ""
         ] as [String : Any]
         
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: FindHalalFoodCell.ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelPostFavouriteDeleteResponse = model
         }
@@ -509,7 +509,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
     func uploadImage(image: UIImage) {
         let parameter = ["Id": modelRestuarantResponseData.id ?? "",
                          "type": isPrayerPlace ? "prayer" : "rest"] as [String : Any]
-        APIs.uploadImage(apiName: .AddImageUrlsToPhoto, imagesArray: [image], imageParameter: "UploadImage", parameter: parameter) { responseData, success, errorMsg in
+        APIs.uploadImage(apiName: .AddImageUrlsToPhoto, imagesArray: [image], imageParameter: "UploadImage", parameter: parameter) { responseData, success, errorMsg, statusCode in
             let model: ModelAddImageUrlsToPhoto? = APIs.decodeDataToObject(data: responseData)
             self.modelAddImageUrlsToPhoto = model
         }
