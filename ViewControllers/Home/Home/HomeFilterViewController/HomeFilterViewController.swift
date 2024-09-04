@@ -141,7 +141,7 @@ class HomeFilterViewController: UIViewController {
 //            ] as! [String: Any]
             var parameter = HomeViewController.ModelFilterRequest(
                 radius: self.labelRangeEnd.text!.getIntegerValue(),
-                rating: self.labelStarRating.text!,
+                rating: Int(self.labelStarRating.text!),
                 isalcoholic: self.switchHideAlcoholPlaces.isOn,
                 isHalal: self.switchHideHalalPlaces.isOn)
             

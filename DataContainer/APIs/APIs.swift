@@ -267,13 +267,102 @@ print(str)
 
         return components?.url?.absoluteString
     }
+    static func getAPI(apiName: APIsName.name, parameters: [String: String]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void?) {
+        
+        let completeUrl = APIPath.baseUrl + apiName.rawValue
+        let baseURL = completeUrl
+        
+        var queryParams = [String: String]()
+        if let parameter = parameters {
+            queryParams = parameter
+        }
+
+        // Create URL components
+        var urlComponents = URLComponents(string: baseURL)!
+
+        // Add the query items to the URL components
+        urlComponents.queryItems = queryParams.map { URLQueryItem(name: $0.key, value: $0.value) }
+
+        // Get the final URL with the query string
+        guard let url = urlComponents.url else {
+            fatalError("Invalid URL")
+        }
+
+        // Create a URL request
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        if kAccessToken != "" {
+            let authToken = "bearer \(kAccessToken)"
+            request.addValue(authToken, forHTTPHeaderField: "Authorization")
+        }
+        
+        if let vc = viewController {
+            vc.showActivityIndicator2()
+        }
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            // Hide activity indicator (if applicable)
+            if let vc = viewController {
+                DispatchQueue.main.async {
+                    vc.hideActivityIndicator2()
+                }
+            }
+            
+            // Print the response
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Response: \(httpResponse)")
+                
+                // Handle HTTP status code
+                switch httpResponse.statusCode {
+                case 200:
+                    // Successful response
+                    do {
+                        if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                            print("Response JSON: \(jsonResponse)")
+                            // Call the completion handler with the response data
+                            completion(data, true, "", httpResponse.statusCode)
+                        }
+                    } catch let jsonError {
+                        print("Failed to decode JSON: \(jsonError.localizedDescription)")
+                        // Call the completion handler with failure
+                        completion(nil, true, jsonError.localizedDescription, httpResponse.statusCode)
+                    }
+                    
+                default:
+                    // Handle other HTTP status codes
+                    var errorMessage = "Unexpected error"
+                    if let error = error?.localizedDescription {
+                        let errorArray = error.components(separatedBy: ":")
+                        errorMessage = errorArray.count > 1 ? errorArray[1] : error
+                    }
+                    print("Error: \(errorMessage)")
+                    completion(nil, false, errorMessage, httpResponse.statusCode)
+                }
+            } else {
+                // No HTTP response
+                print("No valid HTTP response")
+                completion(nil, false, "No valid HTTP response", nil)
+            }
+            
+            // Handle network error
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                completion(nil, false, error.localizedDescription, nil)
+                return
+            }
+        }
+
+        // Start the data task
+        task.resume()
+    }
+    
     static func postAPI(apiName: APIsName.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void?) {
         
 //        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
 
         let completeUrl = APIPath.baseUrl + apiName.rawValue
-        
         let url = URL(string: completeUrl)!
 
         var request = URLRequest(url: url)

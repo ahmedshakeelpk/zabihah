@@ -32,7 +32,7 @@ extension HomeViewController {
     
     struct ModelFilterRequest: Codable {
         let radius: String?
-        let rating: String?
+        let rating: Int?
         let isalcoholic: Bool?
         let isHalal: Bool?
     }
@@ -205,6 +205,8 @@ extension HomeViewController {
 }
 
 
+
+
 extension HomeViewController {
     // MARK: - ModelFeaturedRequest
     struct ModelFeaturedResponse: Codable {
@@ -241,12 +243,22 @@ extension HomeViewController {
         let mobile: String?
         let phone: String?
         let distance: Distance?
-        let willReturnPercentage: Int?
+        let willReturnPercentage: Rating?
         let approvalState: String?
         let address: String?
         let description: String?
         let alcoholPolicy: String?
         let meatHalalStatus: String?
+        
+        
+        let createdOn: String?
+        var isFavorites: Bool?
+        var totalPhotos: Int?
+        
+        let photoWebUrls: [String?]?
+        let isMyFavorite: Bool?
+        let iconImageWebUrl: String?
+        let coverImageWebUrl: String?
     }
 
     enum Rating: Codable {
@@ -290,12 +302,14 @@ extension HomeViewController {
     // MARK: - Cuisine
     struct Cuisine: Codable {
         let name: String?
+        var iconImageWebUrl: String?
     }
     
     // MARK: - Amenity
     struct Amenity: Codable {
         let type: String?
         let value: Int?
+        let iconImageWebUrl: String?
     }
 
     // MARK: - Distance
@@ -313,8 +327,8 @@ extension HomeViewController {
         let comment: String?
         let user: User?
         let willReturn: Bool?
+        var photoWebUrls: [String?]?
     }
-
     // MARK: - User
     struct User: Codable {
         let id, firstName, lastName: String?
@@ -326,7 +340,7 @@ extension HomeViewController {
         let dayOfWeek: String?
         let openingTime: String?
     }
-
+    
     // MARK: - WebLink
     struct WebLink: Codable {
         let type: String?

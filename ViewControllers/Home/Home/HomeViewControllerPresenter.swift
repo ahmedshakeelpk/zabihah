@@ -146,14 +146,14 @@ extension HomeViewController {
         
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
-            rating: nil,
+            rating: filterParametersHome?.rating,
             page: 1,
             pageSize: 20,
             cuisine: nil,
             meatHalalStatus: nil,
             alcoholPolicy: nil,
-            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
-            orderBy: PlaceOrderBy.rating,
+            parts: [.cuisines],
+            orderBy: nil,
             sortOrder: SortOrder.descending,
             location: Location(
                 distanceUnit: DistanceUnit.miles,
@@ -193,32 +193,20 @@ extension HomeViewController {
         
     func getHalalRestaurants(pageSize: Int, cuisine: String) {
         var parameters = [String: Any]()
-
-//        var parameters = [
-//            "lat": userLocation?.coordinate.latitude ?? 0,
-//            "long": userLocation?.coordinate.longitude ?? 0,
-//            "radius": 20,
-//            "rating": 0,
-//            "isalcoholic": false,
-//            "isHalal": true,
-//            "page": Int(pageSize),
-//            "pageSize": 0,
-//            "cuisine": cuisine
-//        ] as [String : Any]
-        
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
             rating: nil,
-            page: 1,
+            page: Int(pageSize),
             pageSize: 20,
-            cuisine: nil,
+            cuisine: [cuisine],
             meatHalalStatus: [.full],
             alcoholPolicy: [.notAllowed],
-            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
+            parts: [.cuisines],
+//            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
             orderBy: nil,
             sortOrder: nil,
             location: Location(
-                distanceUnit: DistanceUnit.miles,
+                distanceUnit: .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: Int(filterParametersHome?.radius ?? "20") ?? 20
@@ -300,10 +288,11 @@ extension HomeViewController {
     
     func userConfiguration() {
         print(getCurrentTimeZone())
-        let parameters: Parameters = [
+        let parameters = [
             "timeZoneId": getCurrentTimeZone()
         ]
-        APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
+        
+        APIs.getAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelUserConfigurationResponse = model
         }
