@@ -129,7 +129,7 @@
 		6AD39E832C3E469000BDAC05 /* HomeCuisinesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E812C3E469000BDAC05 /* HomeCuisinesCell.xib */; };
 		6AD39E872C3E5B1E00BDAC05 /* HomeSectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E852C3E5B1E00BDAC05 /* HomeSectionHeaderCell.swift */; };
 		6AD39E882C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E862C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib */; };
-		6AD39E8B2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E892C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift */; };
+		6AD39E8B2C3E745200BDAC05 /* HomeFoodItemSubCuisineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E892C3E745200BDAC05 /* HomeFoodItemSubCuisineCell.swift */; };
 		6AD39E8C2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E8A2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.xib */; };
 		6AD39E902C3E904600BDAC05 /* HomePrayerPlacesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD39E8E2C3E904600BDAC05 /* HomePrayerPlacesCell.swift */; };
 		6AD39E912C3E904600BDAC05 /* HomePrayerPlacesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD39E8F2C3E904600BDAC05 /* HomePrayerPlacesCell.xib */; };
@@ -279,7 +279,7 @@
 		6AD39E812C3E469000BDAC05 /* HomeCuisinesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCuisinesCell.xib; sourceTree = "<group>"; };
 		6AD39E852C3E5B1E00BDAC05 /* HomeSectionHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeSectionHeaderCell.swift; sourceTree = "<group>"; };
 		6AD39E862C3E5B1E00BDAC05 /* HomeSectionHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeSectionHeaderCell.xib; sourceTree = "<group>"; };
-		6AD39E892C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFoodItemSubSuisineCell.swift; sourceTree = "<group>"; };
+		6AD39E892C3E745200BDAC05 /* HomeFoodItemSubCuisineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFoodItemSubCuisineCell.swift; sourceTree = "<group>"; };
 		6AD39E8A2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeFoodItemSubSuisineCell.xib; sourceTree = "<group>"; };
 		6AD39E8E2C3E904600BDAC05 /* HomePrayerPlacesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePrayerPlacesCell.swift; sourceTree = "<group>"; };
 		6AD39E8F2C3E904600BDAC05 /* HomePrayerPlacesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomePrayerPlacesCell.xib; sourceTree = "<group>"; };
@@ -923,7 +923,7 @@
 				6AD39E582C3D7EA200BDAC05 /* HomeFoodItemCell.xib */,
 				6A6269312C3D3EDD00DA844F /* HomeFoodItemSubCell.swift */,
 				6A6269322C3D3EDD00DA844F /* HomeFoodItemSubCell.xib */,
-				6AD39E892C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift */,
+				6AD39E892C3E745200BDAC05 /* HomeFoodItemSubCuisineCell.swift */,
 				6AD39E8A2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.xib */,
 			);
 			path = HomeFoodItemCell;
@@ -1237,7 +1237,7 @@
 				6A3AB5872C39703B0030F016 /* SideMenuViewCell.swift in Sources */,
 				6ACA066C2C57B9AB00EE8F43 /* SocialConnectCell.swift in Sources */,
 				6A3AB5982C3A7A2D0030F016 /* AddressesListViewController.swift in Sources */,
-				6AD39E8B2C3E745200BDAC05 /* HomeFoodItemSubSuisineCell.swift in Sources */,
+				6AD39E8B2C3E745200BDAC05 /* HomeFoodItemSubCuisineCell.swift in Sources */,
 				6A16E0002C36703B00E1383B /* ViewExtension.swift in Sources */,
 				6A28D8572C37DEEC00F5A95F /* EditNameViewController.swift in Sources */,
 				6ACA06652C579A5400EE8F43 /* DeliveryDetailsViewController3.swift in Sources */,

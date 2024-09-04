@@ -178,7 +178,7 @@ class DeliveryDetailsViewController3: UIViewController {
     func setConfiguration() {
         viewAddressDevider.circle()
         imageViewRestaurantIcon.circle()
-        HomeFoodItemSubSuisineCell.register(collectionView: collectionViewCountry)
+        HomeFoodItemSubCuisineCell.register(collectionView: collectionViewCountry)
         RecentPhotoCell.register(collectionView: collectionViewRecentPhoto)
         UpLoadPhotoCell.register(collectionView: collectionViewRecentPhoto)
         SocialConnectCell.register(collectionView: collectionViewConnect)
@@ -379,7 +379,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if (collectionViewCountry == collectionView) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubSuisineCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
             cell.labelName.text = arrayNames[indexPath.item]
             return cell
         }

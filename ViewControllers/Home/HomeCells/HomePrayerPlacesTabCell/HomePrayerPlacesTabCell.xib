@@ -652,6 +652,7 @@
                 <outlet property="labelReuse" destination="Hcx-9Q-sYX" id="AUK-Ux-8fr"/>
                 <outlet property="stackViewBackGround" destination="COV-Co-aep" id="T9M-aY-ihS"/>
                 <outlet property="stackViewRatingBackGround" destination="JsF-Qu-cbC" id="osg-mM-f8q"/>
+                <outlet property="viewBackGroundDelivery" destination="uJu-go-c0H" id="4ed-7x-dnt"/>
                 <outlet property="viewCallBackGround" destination="xbs-ot-xGU" id="SEG-Ys-AA3"/>
                 <outlet property="viewCallMainBackGround" destination="cP5-bu-7S1" id="hzn-yJ-N83"/>
                 <outlet property="viewItemTypeBackGround" destination="Ykd-ce-tih" id="sLc-YE-EZR"/>

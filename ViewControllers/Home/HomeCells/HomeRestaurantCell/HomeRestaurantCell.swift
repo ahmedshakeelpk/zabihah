@@ -63,7 +63,7 @@ extension HomeRestaurantCell: UICollectionViewDataSource, UICollectionViewDelega
             cell.indexPath = indexPath
             cell.buttonFavouriteHandler = buttonFavouriteHandler
             cell.viewController = viewController
-            cell.modelFeaturedRestuarantResponseData = self.restuarantResponseData?[indexPath.item]
+            cell.restuarentResponseModel = self.restuarantResponseData?[indexPath.item]
         }
         return cell
     }

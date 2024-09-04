@@ -34,6 +34,7 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
     @IBOutlet weak var labelReuse: UILabel!
     @IBOutlet weak var labelPictures: UILabel!
     @IBOutlet weak var labelDistance: UILabel!
+    @IBOutlet weak var viewBackGroundDelivery: UIView!
     @IBOutlet weak var viewItemTypeBackGround: UIView!
     @IBOutlet weak var labelItemType: UILabel!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
@@ -53,7 +54,7 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
     var indexPath: IndexPath! = nil
     var arrayNames = [String]()
 
-    var modelMosqueResponseData: HomeViewController.ModelRestuarantResponseData! {
+    var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData! {
         didSet {
             setData()
         }
@@ -83,15 +84,15 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
         
-        HomeFoodItemSubSuisineCell.register(collectionView: collectionView)
+        HomeFoodItemSubCuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
     }
     @IBAction func buttonOpenDirectionMap(_ sender: Any) {
-        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: modelMosqueResponseData?.latitude ?? 0, longitude: modelMosqueResponseData?.longitude ?? 0, locationName: modelMosqueResponseData?.address ?? "")
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationName: restuarentResponseModel?.address ?? "")
     }
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: modelMosqueResponseData?.phone ?? "")
+        self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeFoodItemSubCellDelegate
@@ -99,36 +100,36 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
     }
     
     func setData() {
-        labelRestaurantName.text = modelMosqueResponseData?.name ?? ""
-        labelRestaurantAddress.text = modelMosqueResponseData?.address ?? ""
-//        labelRating.text = "\(modelMosqueResponseData?.rating ?? 0)"
-//        labelReuse.text = "\(modelMosqueResponseData?.visits ?? 0)"
-//        labelComments.text = "\(modelMosqueResponseData?.reviews ?? 0)"
-//        labelPictures.text = "\(modelMosqueResponseData?.gallaryCount ?? 0)"
-//        labelDistance.text = "\(modelMosqueResponseData?.distance ?? 0)\(modelMosqueResponseData?.distanceUnit ?? "")"
-//        
-//        imageViewRestaurant.setImage(urlString: modelMosqueResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-//        imageViewItem.setImage(urlString: modelMosqueResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
-//        imageViewFavourite.image = UIImage(named: modelMosqueResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-//        viewCallMainBackGround.isHidden = modelMosqueResponseData?.phone ?? "" == ""
-//        viewBackGroundNewRestaurant.isHidden = modelMosqueResponseData?.status == ""
-//        labelItemType.text = modelMosqueResponseData?.status
-//        if modelMosqueResponseData?.status?.lowercased() == "closed" {
-//            viewBackGroundNewRestaurant.backgroundColor = .colorRed
-//        }
-//        else if modelMosqueResponseData?.status?.lowercased() == "new" {
-//            viewBackGroundNewRestaurant.backgroundColor = .colorGreen
-//        }
-//        else if modelMosqueResponseData?.status?.lowercased() != "" {
-//            viewBackGroundNewRestaurant.backgroundColor = .colorOrange
-//        }
-//        if var tags = modelMosqueResponseData?.tags?.split(separator: ",").map({ String($0)}) {
-//            if tags.last == "" || tags.last == " "{
-//                tags.removeLast()
-//            }
-//            arrayNames = tags
-//            collectionView.reloadData()
-//        }
+        labelRestaurantName.text = restuarentResponseModel?.name
+        labelRestaurantAddress.text = restuarentResponseModel?.address
+        labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
+        labelReuse.text = getRating(averageRating: restuarentResponseModel?.willReturnPercentage)
+        labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
+        labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
+//        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
+        imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
+        imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
+        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+        viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
+        
+        if let cuisines = restuarentResponseModel?.cuisines {
+            let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
+            arrayNames = filteredCuisines
+            collectionView.reloadData()
+        }
+        viewBackGroundDelivery.isHidden = !(restuarentResponseModel?.offersDelivery ?? false)
+        viewItemTypeBackGround.isHidden = restuarentResponseModel?.restaurantType == ""
+        labelItemType.text = restuarentResponseModel?.restaurantType
+        if restuarentResponseModel?.meatHalalStatus?.lowercased() == "close" {
+            viewItemTypeBackGround.backgroundColor = .colorRed
+        }
+        else if restuarentResponseModel?.meatHalalStatus?.lowercased() == "new" || restuarentResponseModel?.meatHalalStatus?.lowercased() == "open"{
+            viewItemTypeBackGround.backgroundColor = .colorGreen
+        }
+        else if restuarentResponseModel?.meatHalalStatus?.lowercased() != "" {
+            viewItemTypeBackGround.backgroundColor = .colorOrange
+        }
     }
     
     func postFavouriteRestaurants() {
@@ -163,7 +164,7 @@ extension HomePrayerSpacesSubCell: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubSuisineCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
         cell.labelName.text = arrayNames[indexPath.item]
 
         return cell

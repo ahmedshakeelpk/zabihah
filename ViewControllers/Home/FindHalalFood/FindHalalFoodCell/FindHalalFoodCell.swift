@@ -111,7 +111,7 @@ class FindHalalFoodCell: HomeBaseCell {
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
         
-        HomeFoodItemSubSuisineCell.register(collectionView: collectionView)
+        HomeFoodItemSubCuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
         imageViewRestaurant.circle()
@@ -207,7 +207,7 @@ extension FindHalalFoodCell: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubSuisineCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
         cell.labelName.text = arrayNames[indexPath.item]
 
         return cell

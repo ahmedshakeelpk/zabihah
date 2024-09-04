@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeFoodItemSubSuisineCell: UICollectionViewCell {
+class HomeFoodItemSubCuisineCell: UICollectionViewCell {
 
     @IBOutlet weak var viewBackGroundName: UIView!
     @IBOutlet weak var labelName: UILabel!

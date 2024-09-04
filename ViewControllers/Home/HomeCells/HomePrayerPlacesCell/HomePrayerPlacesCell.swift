@@ -74,7 +74,7 @@ extension HomePrayerPlacesCell: UICollectionViewDataSource, UICollectionViewDele
             cell.indexPath = indexPath
             cell.buttonFavouriteHandler = buttonFavouriteHandler
             cell.viewController = viewController
-            cell.modelMosqueResponseData = self.modelMosqueResponseData?[indexPath.item]
+            cell.restuarentResponseModel = self.modelMosqueResponseData?[indexPath.item]
         }
         return cell
     }
