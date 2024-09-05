@@ -21,9 +21,14 @@ struct APIsName {
         case updateUser = "User"
         case edituseraddress = "User/address"
         case search = "Restaurant/search"
+        case mosqueSearch = "Mosque/search"
         //MARK:- Config
         case userConfiguration = "Configuration"
-
+        //MARK:- Favorite
+//        case favourite = "Favorite/{placeId}"
+        case favourite = "Favorite/{placeId}"
+        case favouriteDelete = "Favorite/by/place/{placeId}"
+        case getfavouritebyuser = "api/Favorite/getfavouritebyuser"
         
         
         
@@ -45,9 +50,7 @@ struct APIsName {
         
         
         
-        //MARK:- Favorite
-        case postfavouriterestaurants = "api/Favorite/postfavouriterestaurants"
-        case getfavouritebyuser = "api/Favorite/getfavouritebyuser"
+        
         
 
         

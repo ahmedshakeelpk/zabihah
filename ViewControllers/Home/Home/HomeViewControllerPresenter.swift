@@ -114,169 +114,6 @@ extension HomeViewController {
     func someFunctionAcceptingDictionary(_ params: [String: Any]?) {
         // Your code here
     }
-    func getFeaturedRestaurants() {
-        var parameters = [String: Any]()
-//        parameters = [
-//            "lat": userLocation?.coordinate.latitude as Any,
-//            "long": userLocation?.coordinate.longitude as Any,
-//            "radius": 20,
-//            "rating": 0,
-//            "isalcoholic": false,
-//            "isHalal": true
-//        ]
-        
-//        let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
-//            ids: nil,
-//            rating: nil,
-//            page: 1,
-//            pageSize: 20,
-//            cuisine: nil,
-//            meatHalalStatus: [HalalStatus.none],
-//            alcoholPolicy: [AlcoholPolicy.none],
-//            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
-//            orderBy: PlaceOrderBy.rating,
-//            sortOrder: SortOrder.descending,
-//            location: Location(
-//                distanceUnit: DistanceUnit.miles,
-//                latitude: userLocation?.coordinate.latitude ?? 0.0,
-//                longitude: userLocation?.coordinate.longitude ?? 0.0,
-//                radius: Int(filterParametersHome?.radius ?? "20") ?? 20
-//            )
-//        )
-        
-        let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
-            ids: nil,
-            rating: filterParametersHome?.rating,
-            page: 1,
-            pageSize: 20,
-            cuisine: nil,
-            meatHalalStatus: nil,
-            alcoholPolicy: nil,
-            parts: [.cuisines],
-            orderBy: nil,
-            sortOrder: SortOrder.descending,
-            location: Location(
-                distanceUnit: DistanceUnit.miles,
-                latitude: userLocation?.coordinate.latitude ?? 0.0,
-                longitude: userLocation?.coordinate.longitude ?? 0.0,
-                radius: Int(filterParametersHome?.radius ?? "20") ?? 20
-            )
-        )
-        do {
-            let jsonData = try JSONEncoder().encode(featureRequestModel)
-            if let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                someFunctionAcceptingDictionary(jsonDict)
-                parameters = jsonDict
-            }
-        } catch {
-            print("Failed to convert model to dictionary: \(error)")
-        }
-        
-        
-//        if filterParametersHome != nil {
-//            let radius = filterParametersHome["radius"] as? String
-//            parameters["radius"] = Int(radius ?? "0")
-//            let rating = filterParametersHome["rating"] as? String
-//            parameters["rating"] = Int(rating ?? "0")
-//            let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool
-//            parameters["isalcoholic"] = isAlCoholic
-//            let isHalal = filterParametersHome["isHalal"] as? Bool
-//            parameters["isHalal"] = isHalal
-//        }
-        
-        APIs.postAPI(apiName: .search, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
-            let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetHomeRestaurantsResponse = nil
-            self.modelGetHomeRestaurantsResponse = model
-        }
-    }
-        
-    func getHalalRestaurants(pageSize: Int, cuisine: String) {
-        var parameters = [String: Any]()
-        let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
-            ids: nil,
-            rating: nil,
-            page: Int(pageSize),
-            pageSize: 20,
-            cuisine: [cuisine],
-            meatHalalStatus: [.full],
-            alcoholPolicy: [.notAllowed],
-            parts: [.cuisines],
-//            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
-            orderBy: nil,
-            sortOrder: nil,
-            location: Location(
-                distanceUnit: .kilometers,
-                latitude: userLocation?.coordinate.latitude ?? 0.0,
-                longitude: userLocation?.coordinate.longitude ?? 0.0,
-                radius: Int(filterParametersHome?.radius ?? "20") ?? 20
-            )
-        )
-        do {
-            let jsonData = try JSONEncoder().encode(featureRequestModel)
-            if let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                someFunctionAcceptingDictionary(jsonDict)
-                parameters = jsonDict
-            }
-        } catch {
-            print("Failed to convert model to dictionary: \(error)")
-        }
-        
-//        if filterParametersHome != nil {
-//            let radius = filterParametersHome["radius"] as? String
-//            parameters["radius"] = Int(radius ?? "0")
-//            let rating = filterParametersHome["rating"] as? String
-//            parameters["rating"] = Int(rating ?? "0")
-//            let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool
-//            parameters["isalcoholic"] = isAlCoholic
-//            let isHalal = filterParametersHome["isHalal"] as? Bool
-//            parameters["isHalal"] = isHalal
-//        }
-        
-        APIs.postAPI(apiName: .search, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
-            var model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
-            
-            if self.pageNumberForApi > 1 {
-                if let record = self.modelGetHalalRestaurantResponse?.items {
-                    var oldModel = record
-                    oldModel.append(contentsOf: model?.items ?? [])
-                    model?.items = oldModel
-                }
-            }
-            self.modelGetHalalRestaurantResponse = model
-        }
-    }
-    
-    func getPrayerPlaces(pageSize: Int) {
-        var parameters = [
-            "lat": userLocation?.coordinate.latitude ?? 0,
-            "long": userLocation?.coordinate.longitude ?? 0,
-            "radius": 20,
-            "rating": 0,
-            "page": Int(pageSize),
-            "pageSize": 0,
-            "type": selectedCuisine
-        ] as [String : Any]
-        
-//        if filterParametersHome != nil {
-//            let radius = filterParametersHome["radius"] as? String
-//            parameters["radius"] = Int(radius ?? "0")
-//            let rating = filterParametersHome["rating"] as? String
-//            parameters["rating"] = Int(rating ?? "0")
-//        }
-        
-        APIs.postAPI(apiName: .getprayerplaces, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
-            var model: ModelGetPrayerPlacesResponse? = APIs.decodeDataToObject(data: responseData)
-            if self.pageNumberForApi > 1 {
-                if let record = self.modelGetPrayerPlacesResponse?.mosqueResponseData {
-                    var oldModel = record
-                    oldModel.append(contentsOf: model?.mosqueResponseData ?? [])
-                    model?.mosqueResponseData = oldModel
-                }
-            }
-//            self.modelGetPrayerPlacesResponse = model
-        }
-    }
 
     func getUserAddress() {
         modelGetUserAddressResponse = modelGetUserResponseLocal?.addresses
@@ -292,7 +129,7 @@ extension HomeViewController {
             "timeZoneId": getCurrentTimeZone()
         ]
         
-        APIs.getAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.getAPI(apiName: .userConfiguration, parameters: parameters, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelUserConfigurationResponse = model
         }
@@ -313,13 +150,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         else if selectedMenuCell == 3 {
-            if indexPath.row == ((modelGetPrayerPlacesResponse?.mosqueResponseData?.count ?? 0) - 1) {
+            if indexPath.row == ((modelGetPrayerPlacesResponse?.items?.count ?? 0) - 1) {
                 print("came to last row")
                 pageNumberForApi += 1
             }
         }
-        cell.layoutSubviews()
-        cell.layoutIfNeeded()
+        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -359,8 +195,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 return 1
             }
             else {
-                return 0
-//                return modelGetHalalRestaurantResponse?.halalRestuarantResponseData?.count ?? 0
+                return modelGetHalalRestaurantResponse?.items?.count ?? 0
             }
         }
         else if selectedMenuCell == 3 {
@@ -368,8 +203,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 return 1
             }
             else {
-                return 0
-//                return modelGetPrayerPlacesResponse?.mosqueResponseData?.count ?? 0
+                return modelGetPrayerPlacesResponse?.items?.count ?? 0
             }
         }
         else {
@@ -393,10 +227,10 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 var cuisineCount = ""
                 if selectedMenuCell == 0 {
                     if section == 1 {
-                        cuisineCount = "\(modelGetHomeRestaurantsResponse?.totalRecords ?? 0)"
+                        cuisineCount = "\(modelGetHomeRestaurantsResponseForHome?.totalRecords ?? 0)"
                     }
                     else if section == 3 {
-                        cuisineCount = "\(modelGetHomeRestaurantsResponse?.totalRecords ?? 0)"
+                        cuisineCount = "\(modelGetHalalRestaurantResponseForHomeTab?.totalRecords ?? 0)"
                     }
                 }
                 else if selectedMenuCell == 1 {
@@ -404,13 +238,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     
                 }
                 else if selectedMenuCell == 3 {
-                    cuisineCount = "\(modelGetPrayerPlacesResponse?.totalMosque ?? 0)"
+                    cuisineCount = "\(modelGetPrayerPlacesResponse?.totalRecords ?? 0)"
                 }
                 myHeader.viewController = self
                 myHeader.cuisineCount = cuisineCount
                 myHeader.selectedMenuCell = selectedMenuCell
                 myHeader.sectionName = "\((listItems[section]).sectionName ?? "")"
-                myHeader.modelGetHomeRestaurantsResponse = modelGetHomeRestaurantsResponse
+                myHeader.modelGetHomeRestaurantsResponse = modelGetHomeRestaurantsResponseForHome
                 myHeader.modelGetHalalRestaurantResponse = modelGetHalalRestaurantResponse
                 myHeader.buttonViewAllHandler = buttonViewAllHandler
             }
@@ -443,7 +277,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         else if selectedMenuCell == 3 {
             vc.isPrayerPlace = true
-            if let mosqueResponseData =   modelGetPrayerPlacesResponse?.mosqueResponseData?[indexPath.row] {
+            if let mosqueResponseData =   modelGetPrayerPlacesResponse?.items?[indexPath.row] {
                 vc.modelRestuarantResponseData = mosqueResponseData
                 modelData = mosqueResponseData
             }
@@ -523,7 +357,7 @@ extension HomeViewController {
     func addFeaturedCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeFoodItemCell.nibName()) {
             var featuredRestuarantResponseData = [ModelRestuarantResponseData?]()
-            featuredRestuarantResponseData = modelGetHomeRestaurantsResponse?.items ?? []
+            featuredRestuarantResponseData = modelGetHomeRestaurantsResponseForHome?.items ?? []
             
             print(indexOf)
             let recordCount = featuredRestuarantResponseData.count
@@ -542,7 +376,7 @@ extension HomeViewController {
     func addRestuarantCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeRestaurantCell.nibName()) {
             var restuarantResponseData = [ModelRestuarantResponseData?]()
-            restuarantResponseData = modelGetHomeRestaurantsResponse?.items ?? []
+            restuarantResponseData = modelGetHalalRestaurantResponseForHomeTab?.items ?? []
             print(indexOf)
             let recordCount = restuarantResponseData.count
             if recordCount > 0 {
@@ -557,10 +391,10 @@ extension HomeViewController {
         return (HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
     }
     
-    func addPrayerPlacesCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
+    func addPrayerPlacesHomeTabCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomePrayerPlacesCell.nibName()) {
             var mosqueResponseData = [ModelRestuarantResponseData?]()
-            mosqueResponseData = modelGetHomeRestaurantsResponse?.items ?? []
+            mosqueResponseData = modelGetPrayerPlacesResponseForHomeTab?.items ?? []
             print(indexOf)
             let recordCount = mosqueResponseData.count
             if recordCount > 0 {
@@ -577,8 +411,8 @@ extension HomeViewController {
     
     func addHomePrayerPlacesTabCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomePrayerPlacesTabCell.nibName()) {
-            var mosqueResponseData = [ModelRestuarantResponseData]()
-            mosqueResponseData = modelGetPrayerPlacesResponse?.mosqueResponseData ?? []
+            var mosqueResponseData = [ModelRestuarantResponseData?]()
+            mosqueResponseData = modelGetPrayerPlacesResponse?.items ?? []
             print(indexOf)
             let recordCount = mosqueResponseData.count
             if recordCount > 0 {
@@ -598,7 +432,6 @@ extension HomeViewController {
         if let indexOf = findIndexOfIdentifier(identifier: FindHalalFoodCell.nibName()) {
             var modelHalalRestuarantResponseData = [ModelRestuarantResponseData?]()
             modelHalalRestuarantResponseData = modelGetHalalRestaurantResponse?.items ?? []
-            
             print(indexOf)
             let recordCount = modelHalalRestuarantResponseData.count
             if recordCount > 0 {
@@ -619,17 +452,20 @@ extension HomeViewController {
             var cuisine = [ModelCuisine]()
             
             if selectedMenuCell == 0 {
-//                cuisine = modelGetHomeRestaurantsResponse?.cuisine ?? []
+                let allUniqueCuisines = getAllUniqueCuisines(items: modelGetHalalRestaurantResponseForHomeTab?.items)
+                cuisine = allUniqueCuisines
                 sectionName = "halal places near you"
                 selectedPlaceHolderIcon = "placeHolderSubCuisine"
             }
             else if selectedMenuCell == 1 {
-//                cuisine = modelGetHalalRestaurantResponse?.cuisine ?? []
+                let allUniqueCuisines = getAllUniqueCuisines(items: modelGetHalalRestaurantResponse?.items)
+                cuisine = allUniqueCuisines
                 sectionName = "halal places near you"
                 selectedPlaceHolderIcon = "placeholderHalalFood"
             }
             else if selectedMenuCell == 3 {
-//                cuisine = modelGetPrayerPlacesResponse?.mosqueTypes ?? []
+                let allUniqueCuisines = getAllUniqueCuisines(items: modelGetPrayerPlacesResponse?.items)
+                cuisine = allUniqueCuisines
                 sectionName = "prayer spaces near you"
                 selectedPlaceHolderIcon = "markerPrayerPlacesSelected"
             }
@@ -681,15 +517,25 @@ extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDele
     }
     
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UICollectionViewCell) {
-//        dontTriggerModelGetHomeRestaurantsResponseObservers = true
-        if cellType is HomeFoodItemSubCell {
-//            modelGetHomeRestaurantsResponse?.featuredRestuarantResponseData?[indexPath.item].isFavorites = isFavourite
-        }
-        else if cellType is HomeRestaurantSubCell {
-//            modelGetHomeRestaurantsResponse?.restuarantResponseData?[indexPath.item].isFavorites = isFavourite
-        }
-        else if cellType is HomePrayerSpacesSubCell {
-//            modelGetHomeRestaurantsResponse?.mosqueResponseData?[indexPath.item].isFavorites = isFavourite
+        //        dontTriggerModelGetHomeRestaurantsResponseObservers = true
+        DispatchQueue.main.async {
+            if self.selectedMenuCell == 0 {
+                if cellType is HomeFoodItemSubCell {
+                    self.modelGetHomeRestaurantsResponseForHome?.items?[indexPath.item]?.isMyFavorite = isFavourite
+                }
+            }
+            else if cellType is HomeRestaurantSubCell {
+                self.modelGetHalalRestaurantResponseForHomeTab?.items?[indexPath.item]?.isMyFavorite = isFavourite
+            }
+            else if cellType is HomePrayerSpacesSubCell {
+                self.modelGetPrayerPlacesResponseForHomeTab?.items?[indexPath.item]?.isMyFavorite = isFavourite
+            }
+            else if self.selectedMenuCell == 1 {
+                self.modelGetHalalRestaurantResponse?.items?[indexPath.item]?.isMyFavorite = isFavourite
+            }
+            else if self.selectedMenuCell == 3 {
+                self.modelGetPrayerPlacesResponse?.items?[indexPath.item]?.isMyFavorite = isFavourite
+            }
         }
     }
     

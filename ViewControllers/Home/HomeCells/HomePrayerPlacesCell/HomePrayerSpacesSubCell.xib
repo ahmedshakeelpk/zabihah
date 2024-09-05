@@ -656,6 +656,7 @@
                 <outlet property="labelRestaurantName" destination="u2e-Ag-rqv" id="59J-on-CC0"/>
                 <outlet property="labelReuse" destination="J8V-1b-74y" id="NzA-S4-R5R"/>
                 <outlet property="stackViewBackGround" destination="LKW-y4-ENN" id="h1a-fS-PVG"/>
+                <outlet property="stackViewFavouriteBackGround" destination="KGL-Y2-Xg3" id="Q92-Jg-bBC"/>
                 <outlet property="stackViewRatingBackGround" destination="Se2-j0-BVO" id="5pi-5M-ams"/>
                 <outlet property="viewBackGroundDelivery" destination="Xns-zZ-tMx" id="Y1Y-Bh-Ysg"/>
                 <outlet property="viewBackGroundNewRestaurant" destination="5th-pD-igU" id="GAC-X0-Uaf"/>

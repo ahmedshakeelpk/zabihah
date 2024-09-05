@@ -13,12 +13,15 @@ protocol HomeFoodItemSubCellDelegate: AnyObject {
 
 extension HomeFoodItemSubCell {
     struct ModelPostFavouriteRestaurantsResponse: Codable {
-        let recordFound, success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
+        let createdOn: String?
+        let updatedBy, id: String?
+        let updatedOn: String?
+        let isDeleted: Bool?
+        let createdBy: String?
     }
 }
 class HomeFoodItemSubCell: UICollectionViewCell {
+    @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
     @IBOutlet weak var buttonOpenDirectionMap: UIButton!
     @IBOutlet weak var buttonCall: UIView!
     
@@ -48,18 +51,19 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     var viewController = UIViewController()
     var indexPath: IndexPath! = nil
     var arrayNames = [String]()
-//    var isFavourite = false
+    //    var isFavourite = false
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
             print(modelPostFavouriteRestaurantsResponse as Any)
-            if modelPostFavouriteRestaurantsResponse?.success ?? false {
-//                if let isFavourite = self.modelFeaturedRestuarantResponseData?.isFavorites {
-//                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomeFoodItemSubCell())
-//                    modelFeaturedRestuarantResponseData.isFavorites = !(isFavourite)
-//                }
+            if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
+                delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomeFoodItemSubCell())
+                restuarentResponseModel.isMyFavorite = !(isFavourite)
+            }
+            if modelPostFavouriteRestaurantsResponse?.id ?? "" != "" {
+                
             }
             else {
-                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
+//                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
             }
         }
     }
@@ -68,7 +72,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             setData()
         }
     }
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -77,7 +81,6 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
-        
         HomeFoodItemSubCuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -95,8 +98,8 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeFoodItemSubCellDelegate
-        postFavouriteRestaurants()
-    }    
+        favouriteRestaurants()
+    }
     
     func setData() {
         labelRestaurantName.text = restuarentResponseModel?.name
@@ -106,11 +109,12 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
-//        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
+        //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
-        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
         viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
+//        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
         
         if let cuisines = restuarentResponseModel?.cuisines {
             let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
@@ -125,44 +129,44 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             viewItemTypeBackGround.backgroundColor = .colorRed
         }
         else {
-            viewItemTypeBackGround.isHidden = restuarentResponseModel?.meatHalalStatus == ""
-            labelItemType.text = restuarentResponseModel?.meatHalalStatus
-            if restuarentResponseModel?.meatHalalStatus?.lowercased() == "close" {
-                viewItemTypeBackGround.backgroundColor = .colorRed
+            let isNewRestaurent = ifNewRestaurent(createdOn: restuarentResponseModel?.createdOn ?? "")
+            viewItemTypeBackGround.isHidden = isNewRestaurent == ""
+            labelItemType.text = isNewRestaurent
+            viewItemTypeBackGround.backgroundColor = .colorGreen
+            
+            
+            let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? [])
+            if isClose {
+                //                viewItemTypeBackGround.isHidden = !isClose
+                //                labelItemType.text = "Close"
+                //                viewItemTypeBackGround.backgroundColor = .colorRed
             }
-            else if restuarentResponseModel?.meatHalalStatus?.lowercased() == "new" || restuarentResponseModel?.meatHalalStatus?.lowercased() == "open"{
-                viewItemTypeBackGround.backgroundColor = .colorGreen
-            }
-            else if restuarentResponseModel?.meatHalalStatus?.lowercased() != "" {
-                viewItemTypeBackGround.backgroundColor = .colorOrange
-            }
+            //            viewItemTypeBackGround.backgroundColor = .colorOrange
         }
     }
     
-    
-    func postFavouriteRestaurants() {
-//        let parameters = [
-//            "Id": modelFeaturedRestuarantResponseData?.id ?? "",
-//            "isMark": !(modelFeaturedRestuarantResponseData?.isFavorites ?? false),
-//            "type" : "rest"
-//            
-//        ] as [String : Any]
-//       
-//        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg, statusCode in
-//            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-//            self.modelPostFavouriteRestaurantsResponse = model
-//        }
+    func favouriteRestaurants() {
+        let parameters = [
+            "placeId": restuarentResponseModel.id ?? ""
+        ]
+//        Awais user token
+//        kAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJhZTBhYTZlNS0yNWMwLTQ4Y2ItOTgzMy1jYWU3MGI2NGVmY2QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIwYzhhNjMyYy1iNmY1LTRkOTgtOTBiNS04YmNkMmJhNGQ1MjkiLCJuYmYiOjE3MjU1MTEwOTYsImV4cCI6MTcyODEwMzA5NiwiaXNzIjoiaHR0cHM6Ly96YWJpaGFoLmNvbS8iLCJhdWQiOiJodHRwczovL3phYmloYWguY29tLyJ9.gWg4g1NHAVem1GIBDFWxLTWKPDP1TTIV5gERXh8FEsk"
+
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: restuarentResponseModel?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelPostFavouriteRestaurantsResponse = model
+        }
     }
 }
 
 extension HomeFoodItemSubCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 12)
+        return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 12)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
+        
         let width = arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]).width + 20
         return CGSize(width: width, height: 18)
     }
@@ -172,19 +176,19 @@ extension HomeFoodItemSubCell: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
         cell.labelName.text = arrayNames[indexPath.item]
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//            DispatchQueue.main.async {
-//                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
-//            }
+        //            DispatchQueue.main.async {
+        //                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
+        //            }
         
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        collectionView.reloadData()
+        //        collectionView.reloadData()
     }
 }
 func getRating(averageRating: HomeViewController.Rating?) -> String {
@@ -215,3 +219,81 @@ func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
         return "0"
     }
 }
+
+func ifNewRestaurent(createdOn: String) -> String {
+    let createdOnString = createdOn //"2024-08-28T14:20:00Z" // Example ISO 8601 date string
+    let dateFormatter = ISO8601DateFormatter() // Using ISO8601 format for the date
+    if let createdOnDate = dateFormatter.date(from: createdOnString) {
+        // Get the current date
+        let currentDate = Date()
+        
+        // Calculate the difference in days
+        let calendar = Calendar.current
+        let dateDifference = calendar.dateComponents([.day], from: createdOnDate, to: currentDate)
+        
+        if let daysPassed = dateDifference.day {
+            if daysPassed < 30 {
+                print("NEW")
+                return "NEW"
+            } else {
+                print("Days passed: \(daysPassed) days")
+                return ""
+            }
+        }
+    } else {
+        print("Invalid date format")
+        
+    }
+    return ""
+}
+
+// Function to check if the restaurant is open
+func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> Bool {
+    // Get the current day and time
+    let currentDate = Date()
+    let calendar = Calendar.current
+    
+    // Get the current day of the week as a string (e.g., Monday, Tuesday)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "EEEE"
+    let currentDayOfWeek = dateFormatter.string(from: currentDate)
+    
+    // Find the opening and closing times for the current day
+    guard let todayTiming = timings?.first(where: { $0?.dayOfWeek == currentDayOfWeek }) else {
+        return false // If no matching day is found, return closed
+    }
+    
+    // Create DateFormatter for time comparison
+    let timeFormatter = DateFormatter()
+    timeFormatter.dateFormat = "HH:mm:ss"
+    
+    // Parse the opening and closing times
+    guard let openingTime = timeFormatter.date(from: todayTiming?.openingTime ?? ""),
+          let closingTime = timeFormatter.date(from: todayTiming?.closingTime ?? "") else {
+        return false
+    }
+    
+    // Get the current time as a Date object
+    let currentTime = timeFormatter.date(from: timeFormatter.string(from: currentDate))!
+    
+    // Check if the current time is within the opening and closing times
+    return currentTime >= openingTime && currentTime <= closingTime
+}
+
+func getAllUniqueCuisines(items: [HomeViewController.ModelRestuarantResponseData?]?) -> [ HomeViewController.ModelCuisine] {
+    if let items = items {
+        // Flatten the cuisines arrays into a single array
+        let allCuisines = items.compactMap { $0?.cuisines }.flatMap { $0 }
+
+        // Use a Set to filter out duplicate cuisines based on name
+        let uniqueCuisines = Array(Set(allCuisines.compactMap { $0 }.filter { $0.name != nil }))
+        
+        // Return unique cuisines
+        return uniqueCuisines
+    } else {
+        print("No items available")
+        return [] // Return an empty array if no items are available
+    }
+}
+
+

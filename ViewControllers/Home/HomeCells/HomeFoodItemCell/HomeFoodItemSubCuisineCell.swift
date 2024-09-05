@@ -1,5 +1,5 @@
 //
-//  HomeFoodItemSubSuisineCell.swift
+//  HomeFoodItemSubCuisineCell.swift
 //  zabihah
 //
 //  Created by Shakeel Ahmed on 10/07/2024.

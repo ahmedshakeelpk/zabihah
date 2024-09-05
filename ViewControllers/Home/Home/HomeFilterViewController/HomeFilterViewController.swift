@@ -70,7 +70,7 @@ class HomeFilterViewController: UIViewController {
         setSliderRange()
         if filterParametersHome != nil {
             if let radius = filterParametersHome.radius {
-                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distance?.unit ?? "ml")"
                 
                 sliderRange.value = Float(radius) ?? 0
             }
@@ -115,9 +115,9 @@ class HomeFilterViewController: UIViewController {
         labelRangeEnd.text = "\(Int(sliderRange?.value ?? 0))" //Default
         
         if kModelUserConfigurationResponse != nil {
-            sliderRange.maximumValue = Float(Double(kModelUserConfigurationResponse.distanceValue ?? 0))
+            sliderRange.maximumValue = Float(Double(kModelUserConfigurationResponse?.distance?.distance ?? 0))
             sliderRange.value = sliderRange.maximumValue
-            labelRangeEnd.text = "\(Int(sliderRange.value))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+            labelRangeEnd.text = "\(Int(sliderRange.value))\(kModelUserConfigurationResponse.distance?.unit ?? "ml")"
         }
     }
     
@@ -127,7 +127,7 @@ class HomeFilterViewController: UIViewController {
         }
     }
     @IBAction func sliderRange(_ sender: UISlider) {
-        labelRangeEnd.text = "\(Int(sender.value))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+        labelRangeEnd.text = "\(Int(sender.value))\(kModelUserConfigurationResponse.distance?.unit ?? "ml")"
     }
     @IBAction func buttonFilter(_ sender: Any) {
         self.dismiss(animated: true) {

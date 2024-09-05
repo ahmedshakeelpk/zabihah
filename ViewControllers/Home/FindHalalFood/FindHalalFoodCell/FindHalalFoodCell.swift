@@ -40,6 +40,7 @@ class FindHalalFoodCell: HomeBaseCell {
     @IBOutlet weak var viewRatingBackGround: UIView!
     @IBOutlet weak var imageViewItem: UIImageView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
+    @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
@@ -66,39 +67,9 @@ class FindHalalFoodCell: HomeBaseCell {
         }
     }
     
-    var halalRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
+    var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData? {
         didSet {
-            self.labelRestaurantName.text = self.halalRestuarantResponseData?.name
-            self.labelRestaurantAddress.text = self.halalRestuarantResponseData?.address
-//            self.labelRating.text = "\(self.halalRestuarantResponseData?.rating ?? 0)"
-//            self.labelReuse.text = "\(self.halalRestuarantResponseData?.visits ?? 0)"
-//            self.labelComments.text = "\(self.halalRestuarantResponseData?.reviews ?? 0)"
-//            self.labelPictures.text = "\(self.halalRestuarantResponseData?.gallaryCount ?? 0)"
-//            self.labelDistance.text = "\(self.halalRestuarantResponseData?.distance ?? 0)\(self.halalRestuarantResponseData?.distanceUnit ?? "")"
-//            self.imageViewRestaurant.setImage(urlString: self.halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-//            self.imageViewItem.setImage(urlString: self.halalRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem")
-//            self.imageViewFavourite.image = UIImage(named: self.halalRestuarantResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-//            
-//            viewBackGroundDelivery.isHidden = !(halalRestuarantResponseData?.isDelivery ?? false)
-//            self.viewItemTypeBackGround.isHidden = self.halalRestuarantResponseData?.status == ""
-//            self.labelItemType.text = self.halalRestuarantResponseData?.status
-//            self.viewCallMainBackGround.isHidden = halalRestuarantResponseData?.phone ?? "" == ""
-//            if self.halalRestuarantResponseData?.status?.lowercased() == "closed" {
-//                self.viewItemTypeBackGround.backgroundColor = .colorRed
-//            }
-//            else if self.halalRestuarantResponseData?.status?.lowercased() == "new" {
-//                self.viewItemTypeBackGround.backgroundColor = .colorGreen
-//            }
-//            else if self.halalRestuarantResponseData?.status?.lowercased() != "" {
-//                self.viewItemTypeBackGround.backgroundColor = .colorOrange
-//            }
-//            if var tags = halalRestuarantResponseData?.tags?.split(separator: ",").map({ String($0)}) {
-//                if tags.last == "" || tags.last == " "{
-//                    tags.removeLast()
-//                }
-//                arrayNames = tags
-//                collectionView.reloadData()
-//            }
+            setData()
         }
     }
     
@@ -128,22 +99,22 @@ class FindHalalFoodCell: HomeBaseCell {
         // Configure the view for the selected state
         dataRecord = data as? HomeBaseCell.HomeListItem
         if let modelData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData] {
-            halalRestuarantResponseData = modelData[indexPath.row]
+            restuarentResponseModel = modelData[indexPath.row]
         }
         collectionView.reloadData()
         drawMarkerOnMap()
     }
 
     @IBAction func buttonOpenDirectionMap(_ sender: Any) {
-        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: halalRestuarantResponseData?.latitude ?? 0, longitude: halalRestuarantResponseData?.longitude ?? 0, locationName: halalRestuarantResponseData?.address ?? "")
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationName: restuarentResponseModel?.address ?? "")
     }
     
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: halalRestuarantResponseData?.phone ?? "")
+        self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any FindHalalFoodCellDelegate
-        postFavouriteRestaurants()
+        favouriteRestaurants()
     }
     
     func drawMarkerOnMap() {
@@ -155,7 +126,7 @@ class FindHalalFoodCell: HomeBaseCell {
 //        marker.appearAnimation = .pop // Appearing animation. default
 //        marker.userData = halalRestuarantResponseData
 //        
-        let location = CLLocationCoordinate2D(latitude: halalRestuarantResponseData?.latitude ?? 0, longitude: halalRestuarantResponseData?.longitude ?? 0)
+        let location = CLLocationCoordinate2D(latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0)
 //        marker.position = location
 //        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
         setZoom(location: location)
@@ -170,17 +141,53 @@ class FindHalalFoodCell: HomeBaseCell {
         (viewController as? HomeViewController)?.mapView.delegate = self
     }
     
-    func postFavouriteRestaurants() {
-//        let parameters = [
-//            "Id": halalRestuarantResponseData?.id ?? "",
-//            "isMark": !(halalRestuarantResponseData?.isFavorites ?? false),
-//            "type" : "rest"
-//        ] as [String : Any]
-//       
-//        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg, statusCode in
-//            let model: ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
-//            self.modelPostFavouriteDeleteResponse = model
-//        }
+    func setData() {
+        labelRestaurantName.text = restuarentResponseModel?.name
+        labelRestaurantAddress.text = restuarentResponseModel?.address
+        labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
+        labelReuse.text = getRating(averageRating: restuarentResponseModel?.willReturnPercentage)
+        labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
+        labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
+        //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
+        imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
+        imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
+        imageViewFavourite.image = UIImage(named: !(restuarentResponseModel?.isMyFavorite ?? false) ? "heartFavourite" : "heartUnFavourite")
+        viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
+        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
+        
+        if let cuisines = restuarentResponseModel?.cuisines {
+            let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
+            arrayNames = filteredCuisines
+            collectionView.reloadData()
+        }
+        viewBackGroundDelivery.isHidden = !(restuarentResponseModel?.offersDelivery ?? false)
+        
+        let isNewRestaurent = ifNewRestaurent(createdOn: restuarentResponseModel?.createdOn ?? "")
+        viewItemTypeBackGround.isHidden = isNewRestaurent == ""
+        labelItemType.text = isNewRestaurent
+        viewItemTypeBackGround.backgroundColor = .colorGreen
+        
+        
+        let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? [])
+        if isClose {
+            //                viewItemTypeBackGround.isHidden = !isClose
+            //                labelItemType.text = "Close"
+            //                viewItemTypeBackGround.backgroundColor = .colorRed
+        }
+        //            viewItemTypeBackGround.backgroundColor = .colorOrange
+        
+    }
+    
+    func favouriteRestaurants() {
+        let parameters = [
+            "placeId": restuarentResponseModel?.id ?? ""
+        ]
+        
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, methodType: .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelPostFavouriteDeleteResponse = model
+        }
     }
     
     struct ModelPostFavouriteDeleteResponse: Codable {
@@ -207,7 +214,7 @@ extension FindHalalFoodCell: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
         cell.labelName.text = arrayNames[indexPath.item]
 
         return cell
@@ -254,7 +261,7 @@ extension FindHalalFoodCell: GMSMapViewDelegate {
         
         var modelData: HomeViewController.ModelRestuarantResponseData!
 
-        if let halalRestuarantResponseData = halalRestuarantResponseData {
+        if let halalRestuarantResponseData = restuarentResponseModel {
             vc.modelRestuarantResponseData = halalRestuarantResponseData
             modelData = halalRestuarantResponseData
         }

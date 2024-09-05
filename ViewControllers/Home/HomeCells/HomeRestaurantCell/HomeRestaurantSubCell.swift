@@ -12,6 +12,7 @@ protocol HomeRestaurantSubCellDelegate: AnyObject {
 }
 
 class HomeRestaurantSubCell: UICollectionViewCell {
+    @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
     @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var viewBackGroundDelivery: UIView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
@@ -82,7 +83,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeRestaurantSubCellDelegate
-        postFavouriteRestaurants()
+        favouriteRestaurants()
     }
     @IBAction func buttonCall(_ sender: Any) {
         self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
@@ -94,7 +95,6 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         let token: String?
     }
 
-    
     func setData() {
         labelRestaurantName.text = restuarentResponseModel?.name
         labelRestaurantAddress.text = restuarentResponseModel?.address
@@ -103,11 +103,12 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
-//        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
+        //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
-        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+        imageViewFavourite.image = UIImage(named: !(restuarentResponseModel?.isMyFavorite ?? false) ? "heartFavourite" : "heartUnFavourite")
         viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
+        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
         
         if let cuisines = restuarentResponseModel?.cuisines {
             let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
@@ -115,30 +116,32 @@ class HomeRestaurantSubCell: UICollectionViewCell {
             collectionView.reloadData()
         }
         viewBackGroundDelivery.isHidden = !(restuarentResponseModel?.offersDelivery ?? false)
-        viewItemTypeBackGround.isHidden = restuarentResponseModel?.restaurantType == ""
-        labelItemType.text = restuarentResponseModel?.restaurantType
-        if restuarentResponseModel?.meatHalalStatus?.lowercased() == "close" {
-            viewItemTypeBackGround.backgroundColor = .colorRed
+        
+        let isNewRestaurent = ifNewRestaurent(createdOn: restuarentResponseModel?.createdOn ?? "")
+        viewItemTypeBackGround.isHidden = isNewRestaurent == ""
+        labelItemType.text = isNewRestaurent
+        viewItemTypeBackGround.backgroundColor = .colorGreen
+        
+        
+        let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? [])
+        if isClose {
+            //                viewItemTypeBackGround.isHidden = !isClose
+            //                labelItemType.text = "Close"
+            //                viewItemTypeBackGround.backgroundColor = .colorRed
         }
-        else if restuarentResponseModel?.meatHalalStatus?.lowercased() == "new" || restuarentResponseModel?.meatHalalStatus?.lowercased() == "open"{
-            viewItemTypeBackGround.backgroundColor = .colorGreen
-        }
-        else if restuarentResponseModel?.meatHalalStatus?.lowercased() != "" {
-            viewItemTypeBackGround.backgroundColor = .colorOrange
-        }
+        //            viewItemTypeBackGround.backgroundColor = .colorOrange
+        
     }
     
-    func postFavouriteRestaurants() {
-//        let parameters = [
-//            "Id": modelFeaturedRestuarantResponseData?.id ?? "",
-//            "isMark": !(modelFeaturedRestuarantResponseData?.isFavorites ?? false),
-//            "type" : "rest"
-//        ] as [String : Any]
-//       
-//        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg, statusCode in
-//            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-//            self.modelPostFavouriteRestaurantsResponse = model
-//        }
+    func favouriteRestaurants() {
+        let parameters = [
+            "placeId": restuarentResponseModel.id ?? ""
+        ]
+        
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, methodType: .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelPostFavouriteRestaurantsResponse = model
+        }
     }
 }
 

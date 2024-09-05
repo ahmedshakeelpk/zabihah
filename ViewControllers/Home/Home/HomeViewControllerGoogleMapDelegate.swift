@@ -48,21 +48,23 @@ extension HomeViewController: GMSMapViewDelegate {
 }
 
 extension HomeViewController {
-    func drawMarkerOnMap(modelRestuarantResponseData: ModelRestuarantResponseData, index: Int) {
-        /// Marker - Google Place marker
-        let marker: GMSMarker = GMSMarker() // Allocating Marker
-        marker.title = modelRestuarantResponseData.name // Setting title
-        marker.snippet = modelRestuarantResponseData.address // Setting sub title
-        marker.icon = UIImage(named: "markerHome") // Marker icon
-        marker.appearAnimation = .pop // Appearing animation. default
-        marker.userData = modelRestuarantResponseData
-        marker.zIndex = Int32(index)
-        
-        let location = CLLocationCoordinate2D(latitude: modelRestuarantResponseData.latitude ?? 0, longitude: modelRestuarantResponseData.longitude ?? 0)
-        marker.position = location
-        marker.map = self.mapView // Setting marker on Mapview
-//        setZoom(location: location)
-        self.mapView.delegate = self
+    func drawMarkerOnMap(modelRestuarantResponseData: HomeViewController.ModelRestuarantResponseData?, index: Int) {
+        if let modelRestuarantResponseData = modelRestuarantResponseData {
+            /// Marker - Google Place marker
+            let marker: GMSMarker = GMSMarker() // Allocating Marker
+            marker.title = modelRestuarantResponseData.name // Setting title
+            marker.snippet = modelRestuarantResponseData.address // Setting sub title
+            marker.icon = UIImage(named: "markerHome") // Marker icon
+            marker.appearAnimation = .pop // Appearing animation. default
+            marker.userData = modelRestuarantResponseData
+            marker.zIndex = Int32(index)
+            
+            let location = CLLocationCoordinate2D(latitude: modelRestuarantResponseData.latitude ?? 0, longitude: modelRestuarantResponseData.longitude ?? 0)
+            marker.position = location
+            marker.map = self.mapView // Setting marker on Mapview
+            //        setZoom(location: location)
+            self.mapView.delegate = self
+        }
     }
     
     func drawMarkerOnMap(modelGetPrayerPlacesResponseData: ModelRestuarantResponseData) {

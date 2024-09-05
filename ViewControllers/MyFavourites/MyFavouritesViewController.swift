@@ -157,7 +157,7 @@ class MyFavouritesViewController: UIViewController {
             "type" : type
         ] as [String : Any]
        
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .favourite, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: FindHalalFoodCell.ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelPostFavouriteDeleteResponse = model
         }

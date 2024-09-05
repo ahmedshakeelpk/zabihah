@@ -472,10 +472,10 @@
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="26"/>
                                                                                                 <subviews>
                                                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="routingMehroonHome" translatesAutoresizingMaskIntoConstraints="NO" id="npe-3l-37Q">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="7" height="26"/>
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="12" height="26"/>
                                                                                                     </imageView>
                                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10.54 km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4bx-L2-2cI">
-                                                                                                        <rect key="frame" x="7" y="0.0" width="43" height="26"/>
+                                                                                                        <rect key="frame" x="12" y="0.0" width="38" height="26"/>
                                                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="9"/>
                                                                                                         <color key="textColor" red="0.59999999999999998" green="0.0" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <nil key="highlightedColor"/>
@@ -635,6 +635,7 @@
                 <outlet property="labelRestaurantName" destination="ywd-aY-nYp" id="99Z-xj-PB7"/>
                 <outlet property="labelReuse" destination="RaT-Pi-cik" id="Yif-VO-dwE"/>
                 <outlet property="stackViewBackGround" destination="9zK-3c-89f" id="fa4-uR-2KV"/>
+                <outlet property="stackViewFavouriteBackGround" destination="zqT-RF-uzc" id="Jc1-at-8do"/>
                 <outlet property="viewBackGroundDelivery" destination="5UB-13-XdE" id="s3p-gL-hfg"/>
                 <outlet property="viewBikeBackGround" destination="Eew-U1-asG" id="oXi-0S-Pca"/>
                 <outlet property="viewCallBackGround" destination="KHF-uR-UAB" id="3Qx-5e-E8V"/>

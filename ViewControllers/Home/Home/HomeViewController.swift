@@ -88,7 +88,7 @@ class HomeViewController: UIViewController {
                     return
                 }
                 if pageNumberForApi > 1 {
-                    if pageNumberForApi > modelGetPrayerPlacesResponse?.totalPage ?? 0 {
+                    if pageNumberForApi > modelGetPrayerPlacesResponse?.totalPages ?? 0 {
                         return()
                     }
                 }
@@ -133,28 +133,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-    var modelGetHomeRestaurantsResponse: ModelFeaturedResponse? {
-        didSet {
-            if dontTriggerModelGetHomeRestaurantsResponseObservers {
-                dontTriggerModelGetHomeRestaurantsResponseObservers = false
-                return
-            }
-            if selectedMenuCell != 0 {
-                return()
-            }
-            let recordFeatureCell = addFeaturedCell()
-            listItems[0] = recordFeatureCell.0
-            let recordCuisineCell = addCuisineCell()
-            listItems[1] = recordCuisineCell.0
-            let recordRestuarantCell = addRestuarantCell()
-            listItems[2] = recordRestuarantCell.0
-            let recordPrayerPlacesCell = addPrayerPlacesCell()
-            listItems[3] = recordPrayerPlacesCell.0
-            tableViewReload()
-        }
-    }
-    
-    var modelGetPrayerPlacesResponse: ModelGetPrayerPlacesResponse? {
+    var modelGetPrayerPlacesResponse: ModelFeaturedResponse? {
         didSet {
             if dontTriggerModelGetHomeRestaurantsResponseObservers {
                 dontTriggerModelGetHomeRestaurantsResponseObservers = false
@@ -171,11 +150,77 @@ class HomeViewController: UIViewController {
             
             tableViewReload()
             mapView.clear()
-            if let modelData = modelGetPrayerPlacesResponse?.mosqueResponseData {
+            if let modelData = modelGetPrayerPlacesResponse?.items {
                 for (index, model) in modelData.enumerated() {
-                    drawMarkerOnMap(modelRestuarantResponseData: model, index: index)
+                    if let model = model {
+                        drawMarkerOnMap(modelRestuarantResponseData: model, index: index)
+                    }
                 }
             }
+        }
+    }
+    
+    
+    var modelGetHomeRestaurantsResponseForHome: ModelFeaturedResponse? {
+        didSet {
+            if modelGetHomeRestaurantsResponseForHome == nil {
+                self.tableViewReload()
+                return
+            }
+            if dontTriggerModelGetHomeRestaurantsResponseObservers {
+                dontTriggerModelGetHomeRestaurantsResponseObservers = false
+                return
+            }
+            if selectedMenuCell != 0 {
+                return()
+            }
+            setDataForHomeTab()
+        }
+    }
+    var modelGetHalalRestaurantResponseForHomeTab: ModelFeaturedResponse? {
+        didSet {
+            if modelGetHalalRestaurantResponseForHomeTab == nil {
+                self.tableViewReload()
+                return
+            }
+            if dontTriggerModelGetHalalRestaurantResponseObservers {
+                dontTriggerModelGetHalalRestaurantResponseObservers = false
+                return
+            }
+            if selectedMenuCell != 0 {
+                return()
+            }
+            
+            setDataForHomeTab()
+        }
+    }
+    
+    func setDataForHomeTab() {
+        let recordFeatureCell = addFeaturedCell()
+        listItems[0] = recordFeatureCell.0
+        let recordCuisineCell = addCuisineCell()
+        listItems[1] = recordCuisineCell.0
+        let recordRestuarantCell = addRestuarantCell()
+        listItems[2] = recordRestuarantCell.0
+        let recordPrayerPlacesCell = addPrayerPlacesHomeTabCell()
+        listItems[3] = recordPrayerPlacesCell.0
+        tableViewReload()
+    }
+    
+    var modelGetPrayerPlacesResponseForHomeTab: ModelFeaturedResponse? {
+        didSet {
+            if modelGetPrayerPlacesResponseForHomeTab == nil {
+                self.tableViewReload()
+                return
+            }
+            if dontTriggerModelGetHomeRestaurantsResponseObservers {
+                dontTriggerModelGetHomeRestaurantsResponseObservers = false
+                return
+            }
+            if selectedMenuCell != 3 {
+                return()
+            }
+            setDataForHomeTab()
         }
     }
     
@@ -414,6 +459,38 @@ class HomeViewController: UIViewController {
         }
     }
     
+    func homeTabApisCall() {
+        self.getFeaturedRestaurantsForHomeTab()
+        self.getHalalRestaurantsForHomeTab()
+        self.getPrayerPlacesForHomeTab()
+        
+//        let dispatchGroup = DispatchGroup()
+//        // Dispatch function1
+//        dispatchGroup.enter()
+//        DispatchQueue.global().async {
+//            self.getFeaturedRestaurantsForHomeTab()
+//            dispatchGroup.leave()
+//        }
+//
+//        // Dispatch function2
+//        dispatchGroup.enter()
+//        DispatchQueue.global().async {
+//            self.getHalalRestaurantsForHomeTab()
+//            dispatchGroup.leave()
+//        }
+//
+//        // Dispatch function3
+//        dispatchGroup.enter()
+//        DispatchQueue.global().async {
+//            self.getPrayerPlacesForHomeTab()
+//            dispatchGroup.leave()
+//        }
+//
+//        // Notify when all functions are done
+//        dispatchGroup.notify(queue: DispatchQueue.main) {
+//            print("All functions are done")
+//        }
+    }
     func handleMenuTap() {
         mapView.clear()
         if selectedMenuCell == 0 {
@@ -423,9 +500,9 @@ class HomeViewController: UIViewController {
                 addFeaturedCell().0,
                 addCuisineCell().0,
                 addRestuarantCell().0,
-                addPrayerPlacesCell().0
+                addPrayerPlacesHomeTabCell().0
             ]
-            getFeaturedRestaurants()
+            homeTabApisCall()
         }
         else if selectedMenuCell == 1 {
             listItems = [

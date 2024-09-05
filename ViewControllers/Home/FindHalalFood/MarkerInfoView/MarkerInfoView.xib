@@ -21,7 +21,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jW-dv-VU5">
                             <rect key="frame" x="0.0" y="0.0" width="170" height="65"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyFood2" translatesAutoresizingMaskIntoConstraints="NO" id="A6P-EQ-kM5">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderFoodItem" translatesAutoresizingMaskIntoConstraints="NO" id="A6P-EQ-kM5">
                                     <rect key="frame" x="0.0" y="0.0" width="170" height="65"/>
                                 </imageView>
                             </subviews>
@@ -326,8 +326,8 @@
     <resources>
         <image name="callMisc" width="16" height="16"/>
         <image name="dummyBurgerKing" width="28" height="28"/>
-        <image name="dummyFood2" width="226" height="124"/>
         <image name="galleryGrayHome" width="12" height="12"/>
+        <image name="placeHolderFoodItem" width="226" height="124"/>
         <image name="routingMehroonHome" width="12" height="12"/>
         <image name="startOrangeHome" width="10" height="9"/>
         <systemColor name="systemBackgroundColor">

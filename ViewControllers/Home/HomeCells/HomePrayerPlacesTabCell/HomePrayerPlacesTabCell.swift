@@ -24,6 +24,7 @@ protocol HomePrayerPlacesTabCellDelegate: AnyObject {
 class HomePrayerPlacesTabCell: HomeBaseCell {
     @IBOutlet weak var buttonOpenDirectionMap: UIButton!
 
+    @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
@@ -114,7 +115,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomePrayerPlacesTabCellDelegate
-        postFavouriteRestaurants()
+        favouriteRestaurants()
     }
     
     func setData() {
@@ -125,11 +126,12 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
-//        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
+        //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
-        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
+        imageViewFavourite.image = UIImage(named: !(restuarentResponseModel?.isMyFavorite ?? false) ? "heartFavourite" : "heartUnFavourite")
         viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
+        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
         
         if let cuisines = restuarentResponseModel?.cuisines {
             let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
@@ -137,18 +139,34 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
             collectionView.reloadData()
         }
         viewBackGroundDelivery.isHidden = !(restuarentResponseModel?.offersDelivery ?? false)
-        viewItemTypeBackGround.isHidden = restuarentResponseModel?.restaurantType == ""
-        labelItemType.text = restuarentResponseModel?.restaurantType
-        if restuarentResponseModel?.meatHalalStatus?.lowercased() == "close" {
-            viewItemTypeBackGround.backgroundColor = .colorRed
+        
+        let isNewRestaurent = ifNewRestaurent(createdOn: restuarentResponseModel?.createdOn ?? "")
+        viewItemTypeBackGround.isHidden = isNewRestaurent == ""
+        labelItemType.text = isNewRestaurent
+        viewItemTypeBackGround.backgroundColor = .colorGreen
+        
+        
+        let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? [])
+        if isClose {
+            //                viewItemTypeBackGround.isHidden = !isClose
+            //                labelItemType.text = "Close"
+            //                viewItemTypeBackGround.backgroundColor = .colorRed
         }
-        else if restuarentResponseModel?.meatHalalStatus?.lowercased() == "new" || restuarentResponseModel?.meatHalalStatus?.lowercased() == "open"{
-            viewItemTypeBackGround.backgroundColor = .colorGreen
-        }
-        else if restuarentResponseModel?.meatHalalStatus?.lowercased() != "" {
-            viewItemTypeBackGround.backgroundColor = .colorOrange
+        //            viewItemTypeBackGround.backgroundColor = .colorOrange
+        
+    }
+    
+    func favouriteRestaurants() {
+        let parameters = [
+            "placeId": restuarentResponseModel.id ?? ""
+        ]
+        
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, methodType: .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelPostFavouriteRestaurantsResponse = model
         }
     }
+    
     func drawMarkerOnMap() {
         /// Marker - Google Place marker
 //        let marker: GMSMarker = GMSMarker() // Allocating Marker
@@ -172,18 +190,6 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         (viewController as? HomeViewController)?.mapView.camera = camera
         (viewController as? HomeViewController)?.mapView.delegate = self
     }
-    func postFavouriteRestaurants() {
-//        let parameters = [
-//            "Id": modelMosqueResponseData?.id ?? "",
-//            "isMark": !(modelMosqueResponseData?.isFavorites ?? false),
-//            "type" : "\((viewController as? HomeViewController)?.selectedCuisine.lowercased() == "restaurants" ? "rest" : "prayer")"
-//        ] as [String : Any]
-//       
-//        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg, statusCode in
-//            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-//            self.modelPostFavouriteRestaurantsResponse = model
-//        }
-    }
 }
 
 extension HomePrayerPlacesTabCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -203,7 +209,7 @@ extension HomePrayerPlacesTabCell: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
         cell.labelName.text = arrayNames[indexPath.item]
 
         return cell

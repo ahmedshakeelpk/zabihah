@@ -267,7 +267,7 @@ print(str)
 
         return components?.url?.absoluteString
     }
-    static func getAPI(apiName: APIsName.name, parameters: [String: String]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void?) {
+    static func getAPI(apiName: APIsName.name, parameters: [String: String]? = nil, isPathParameters: Bool? = false, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void?) {
         
         let completeUrl = APIPath.baseUrl + apiName.rawValue
         let baseURL = completeUrl
@@ -280,8 +280,20 @@ print(str)
         // Create URL components
         var urlComponents = URLComponents(string: baseURL)!
 
-        // Add the query items to the URL components
-        urlComponents.queryItems = queryParams.map { URLQueryItem(name: $0.key, value: $0.value) }
+        var path = baseURL
+        if isPathParameters ?? false {
+            for (key, value) in queryParams {
+                path = path.replacingOccurrences(of: "{\(key)}", with: value)
+            }
+            // Append the modified path to the base URL
+//            urlComponents.path = path
+            urlComponents = URLComponents(string: path)!
+        }
+        else {
+            // Add the query items to the URL components
+            urlComponents.queryItems = queryParams.map { URLQueryItem(name: $0.key, value: $0.value) }
+        }
+        
 
         // Get the final URL with the query string
         guard let url = urlComponents.url else {
@@ -290,7 +302,17 @@ print(str)
 
         // Create a URL request
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        if methodType == .delete {
+            request.httpMethod = "DELETE"
+        }
+        else if methodType == .post {
+            request.httpMethod = "POST"
+        }
+        else if methodType == .get {
+            request.httpMethod = "GET"
+        }
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
         if kAccessToken != "" {
             let authToken = "bearer \(kAccessToken)"
             request.addValue(authToken, forHTTPHeaderField: "Authorization")
@@ -476,6 +498,81 @@ print(str)
                 break
             }
         }
+    }
+    
+    
+    static func postAPIWithPathParameters(apiName: APIsName.name, parameters: [String: String], headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void?) {
+        
+        var completeUrl = APIPath.baseUrl + apiName.rawValue
+        
+            for (key, value) in parameters {
+                completeUrl = completeUrl.replacingOccurrences(of: "{\(key)}", with: value)
+            }
+            // Append the modified path to the base URL
+//            urlComponents.path = path
+        
+        let url = URL(string: completeUrl)!
+        
+        var request = URLRequest(url: url,timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        request.httpMethod = "POST"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            // Hide activity indicator (if applicable)
+            if let vc = viewController {
+                DispatchQueue.main.async {
+                    vc.hideActivityIndicator2()
+                }
+            }
+            
+            // Print the response
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Response: \(httpResponse)")
+                
+                // Handle HTTP status code
+                switch httpResponse.statusCode {
+                case 200:
+                    // Successful response
+                    do {
+                        if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                            print("Response JSON: \(jsonResponse)")
+                            // Call the completion handler with the response data
+                            completion(data, true, "", httpResponse.statusCode)
+                        }
+                    } catch let jsonError {
+                        print("Failed to decode JSON: \(jsonError.localizedDescription)")
+                        // Call the completion handler with failure
+                        completion(nil, true, jsonError.localizedDescription, httpResponse.statusCode)
+                    }
+                    
+                default:
+                    // Handle other HTTP status codes
+                    var errorMessage = "Unexpected error"
+                    if let error = error?.localizedDescription {
+                        let errorArray = error.components(separatedBy: ":")
+                        errorMessage = errorArray.count > 1 ? errorArray[1] : error
+                    }
+                    print("Error: \(errorMessage)")
+                    completion(nil, false, errorMessage, httpResponse.statusCode)
+                }
+            } else {
+                // No HTTP response
+                print("No valid HTTP response")
+                completion(nil, false, "No valid HTTP response", nil)
+            }
+            
+            // Handle network error
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                completion(nil, false, error.localizedDescription, nil)
+                return
+            }
+        }
+        
+        task.resume()
+        
     }
     
     static func deleteAPI(apiName: String, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void) {

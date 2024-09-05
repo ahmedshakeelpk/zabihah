@@ -294,7 +294,7 @@ class DeliveryDetailsViewController3: UIViewController {
             "type" : modelRestuarantResponseData.type ?? ""
         ] as [String : Any]
         
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .favourite, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: FindHalalFoodCell.ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelPostFavouriteDeleteResponse = model
         }
@@ -379,7 +379,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if (collectionViewCountry == collectionView) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
             cell.labelName.text = arrayNames[indexPath.item]
             return cell
         }

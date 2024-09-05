@@ -36,6 +36,7 @@ extension HomeViewController {
         let isalcoholic: Bool?
         let isHalal: Bool?
     }
+    
     enum PlaceOrderBy: String, Codable {
         case none = "None"
         case rating = "Rating"
@@ -119,11 +120,6 @@ extension HomeViewController {
         var mosqueResponseData: [ModelRestuarantResponseData]?
     }
 
-    // MARK: - Cuisine
-    struct ModelCuisine: Codable {
-        let name, image: String?
-    }
-
     // MARK: - RestuarantResponseDatum
     struct ModelRestuarantResponseData2: Codable {
         let iconImage: String?
@@ -166,7 +162,7 @@ extension HomeViewController {
         let success: Bool?
         let message, innerExceptionMessage: String?
         let token: String?
-        var mosqueResponseData: [ModelRestuarantResponseData]?
+        var mosqueResponseData: [ModelRestuarantResponseData?]?
         var mosqueTypes: [ModelCuisine]?
         let totalPage: Int?
         let recordFound: Bool?
@@ -193,15 +189,24 @@ extension HomeViewController {
 //        let gallaryCount: Int?
 //    }
     
-    // MARK: - ModelGetConfigurationResponse
     struct ModelUserConfigurationResponse: Codable {
-        let distanceValue: Int?
-        let success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
-        let distanceUnit: String?
-        let recordFound: Bool?
+        let distance: ModelUserConfigurationResponseData?
     }
+
+    // MARK: - Distance
+    struct ModelUserConfigurationResponseData: Codable {
+        let distance: Int?
+        let unit: String?
+    }
+//    // MARK: - ModelGetConfigurationResponse
+//    struct ModelUserConfigurationResponse: Codable {
+//        let distanceValue: Int?
+//        let success: Bool?
+//        let message, innerExceptionMessage: String?
+//        let token: String?
+//        let distanceUnit: String?
+//        let recordFound: Bool?
+//    }
 }
 
 
@@ -214,7 +219,7 @@ extension HomeViewController {
         let onFirstPage: Bool?
         let currentPage, totalPages: Int?
         let hasNextPage, onLastPage, hasPreviousPage: Bool?
-        var items: [ModelRestuarantResponseData?]?
+        var items: [HomeViewController.ModelRestuarantResponseData?]?
     }
 
     // MARK: - Item
@@ -237,7 +242,7 @@ extension HomeViewController {
         let totalReviews: Int?
         let amenities: [Amenity]?
         let id: String?
-        let cuisines: [Cuisine?]?
+        let cuisines: [ModelCuisine?]?
         let webLinks: [WebLink?]?
         let longitude: Double?
         let mobile: String?
@@ -256,7 +261,7 @@ extension HomeViewController {
         var totalPhotos: Int?
         
         let photoWebUrls: [String?]?
-        let isMyFavorite: Bool?
+        var isMyFavorite: Bool?
         let iconImageWebUrl: String?
         let coverImageWebUrl: String?
     }
@@ -300,9 +305,19 @@ extension HomeViewController {
 
     
     // MARK: - Cuisine
-    struct Cuisine: Codable {
+    // MARK: - Cuisine
+    struct ModelCuisine: Codable, Hashable {
         let name: String?
         var iconImageWebUrl: String?
+        
+        // Implementing Hashable protocol
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(name)
+        }
+        
+        static func == (lhs: ModelCuisine, rhs: ModelCuisine) -> Bool {
+            return lhs.name == rhs.name
+        }
     }
     
     // MARK: - Amenity
