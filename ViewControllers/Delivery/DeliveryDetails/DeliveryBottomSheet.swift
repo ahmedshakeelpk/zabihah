@@ -18,13 +18,13 @@ class DeliveryBottomSheet: UIViewController {
     @IBOutlet weak var buttonDismiss: UIButton!
     
     var isAmenities: Bool! = false
-    var amenitiesData: [DeliveryDetailsViewController3.Amenities]? {
+    var amenitiesData: [HomeViewController.Amenity?]? {
         didSet {
             
         }
     }
     
-    var timingOpenClose: [DeliveryDetailsViewController3.Timing]?
+    var timingOpenClose: [HomeViewController.Timing?]?
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -68,17 +68,17 @@ extension DeliveryBottomSheet: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isAmenities {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DeliveryAmenitiesCell") as! DeliveryAmenitiesCell
-            cell.labelTitle.text = amenitiesData?[indexPath.row].title
-            cell.imageViewIcon.setImage(urlString: amenitiesData?[indexPath.row].image ?? "", placeHolderIcon: "amenitiesPlaceHolder")
+            cell.labelTitle.text = amenitiesData?[indexPath.row]?.type
+            cell.imageViewIcon.setImage(urlString: amenitiesData?[indexPath.row]?.iconImageWebUrl ?? "", placeHolderIcon: "amenitiesPlaceHolder")
             
             return cell
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DeliveryTimingCell") as! DeliveryTimingCell
-            cell.labelDay.text = timingOpenClose?[indexPath.row].day
-            cell.labelTiming.text = is12HourFormat ? "\("\((timingOpenClose?[indexPath.row].openTime ?? "").time12String)") \("\("\((timingOpenClose?[indexPath.row].closeTime ?? "").time12String)")")"
+            cell.labelDay.text = timingOpenClose?[indexPath.row]?.dayOfWeek
+            cell.labelTiming.text = is12HourFormat ? "\("\((timingOpenClose?[indexPath.row]?.openingTime ?? "").time12String)") \("\("\((timingOpenClose?[indexPath.row]?.closingTime ?? "").time12String)")")"
             :
-            "\("\((timingOpenClose?[indexPath.row].openTime ?? "").time24String)") \("\("\((timingOpenClose?[indexPath.row].closeTime ?? "").time24String)")")"
+            "\("\((timingOpenClose?[indexPath.row]?.openingTime ?? "").time24String)") \("\("\((timingOpenClose?[indexPath.row]?.closingTime ?? "").time24String)")")"
 
             return cell
         }

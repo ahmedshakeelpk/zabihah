@@ -40,7 +40,6 @@ extension HomeViewController {
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)
             if let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                someFunctionAcceptingDictionary(jsonDict)
                 parameters = jsonDict
             }
         } catch {

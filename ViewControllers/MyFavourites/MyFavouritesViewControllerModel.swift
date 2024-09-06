@@ -47,35 +47,26 @@ extension MyFavouritesViewController {
     
     
     // MARK: - ModelGetFavouriteByUserResponse
-    struct ModelGetFavouriteByUserResponse: Codable {
-        let halalRestuarantResponseData, prayerSpacesResponseData: [HomeViewController.ModelRestuarantResponseData]?
-        let totalPages: Int?
-        let success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
-        let totalFavorities: Int?
-        let recordFound: Bool?
+    struct ModelGetFavouriteResponse: Codable {
+        let currentPage, pageSize, totalRecords, totalPages: Int?
+        let onFirstPage, onLastPage, hasNextPage, hasPreviousPage: Bool?
+        let items: [ModelGetFavouriteResponseData?]?
+    }
+    // MARK: - Item
+    struct ModelGetFavouriteResponseData: Codable {
+        let id, createdBy, createdOn, updatedBy: String
+        let updatedOn: String
+        let isDeleted: Bool
+        let place: Place
     }
 
-//    // MARK: - ResponseDatum
-//    struct ModelGetFavouriteByUserResponseData: Codable {
-//        let iconImage: String?
-//        let status, tags: String?
-//        let createdOn: String?
-//        let visits: Int?
-//        let isFavorites: Bool?
-//        let name: String?
-//        let reviews: Int?
-//        let long: Double?
-//        let id: String?
-//        let coverImage: String?
-//        let titleImage: String?
-//        let phone: String?
-//        let distance: Int?
-//        let isDelivery: Bool?
-//        let distanceUnit: String?
-//        let lat, rating: Double?
-//        let address: String?
-//        let gallaryCount: Int?
-//    }
+    // MARK: - Place
+    struct Place: Codable {
+        let id, name, address, iconImageWebURL: String
+
+        enum CodingKeys: String, CodingKey {
+            case id, name, address
+            case iconImageWebURL = "iconImageWebUrl"
+        }
+    }
 }

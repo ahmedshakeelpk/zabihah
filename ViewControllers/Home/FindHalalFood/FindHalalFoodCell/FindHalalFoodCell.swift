@@ -69,7 +69,9 @@ class FindHalalFoodCell: HomeBaseCell {
     
     var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData? {
         didSet {
-            setData()
+            DispatchQueue.main.async {
+                self.setData()
+            }
         }
     }
     
@@ -152,9 +154,9 @@ class FindHalalFoodCell: HomeBaseCell {
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
-        imageViewFavourite.image = UIImage(named: !(restuarentResponseModel?.isMyFavorite ?? false) ? "heartFavourite" : "heartUnFavourite")
+        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
         viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
-        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
+//        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
         
         if let cuisines = restuarentResponseModel?.cuisines {
             let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }

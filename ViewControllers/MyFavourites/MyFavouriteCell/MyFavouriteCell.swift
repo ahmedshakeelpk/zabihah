@@ -21,28 +21,31 @@ class MyFavouriteCell: UITableViewCell {
     var index: Int!
     var buttonDeleteHandler: ((Int) -> ())!
     var buttonCheckHandler: ((Int) -> ())!
-    
+    var selectedIndex = 0
     var selectedAddressIndex: Int? {
         didSet {
             
         }
     }
-    var halalRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
+    var modelGetFavouriteResponseData: MyFavouritesViewController.ModelGetFavouriteResponseData? {
         didSet {
-            if halalRestuarantResponseData != nil {
-                labelTitle.text = halalRestuarantResponseData?.name ?? ""
-                labelAddress.text = halalRestuarantResponseData?.address ?? ""
-                
-//                imageViewRestaurant.setImage(urlString: halalRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
+            DispatchQueue.main.async {
+                self.setData()
             }
-            
+        }
+    }
+    
+    func setData() {
+        if modelGetFavouriteResponseData != nil {
+            labelTitle.text = modelGetFavouriteResponseData?.place.name ?? ""
+            labelAddress.text = modelGetFavouriteResponseData?.place.address ?? ""
+            imageViewRestaurant.setImage(urlString: modelGetFavouriteResponseData?.place.iconImageWebURL ?? "", placeHolderIcon: selectedIndex == 0 ? "placeHolderRestaurant" : "placeholderMosque2")
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
         viewBackGroundForRadius.setShadow(radius: 12)
         stackViewBackGround.radius(radius: 12)
         imageViewRestaurant.circle()

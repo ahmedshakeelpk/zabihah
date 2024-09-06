@@ -111,9 +111,6 @@ extension HomeViewController {
             self.modelGetUserResponseLocal = model
         }
     }
-    func someFunctionAcceptingDictionary(_ params: [String: Any]?) {
-        // Your code here
-    }
 
     func getUserAddress() {
         modelGetUserAddressResponse = modelGetUserResponseLocal?.addresses
@@ -517,25 +514,23 @@ extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDele
     }
     
     func changeFavouriteStatus(isFavourite: Bool, indexPath: IndexPath, cellType: UICollectionViewCell) {
-        //        dontTriggerModelGetHomeRestaurantsResponseObservers = true
-        DispatchQueue.main.async {
-            if self.selectedMenuCell == 0 {
-                if cellType is HomeFoodItemSubCell {
-                    self.modelGetHomeRestaurantsResponseForHome?.items?[indexPath.item]?.isMyFavorite = isFavourite
-                }
+        dontTriggerModelGetHomeRestaurantsResponseObservers = true
+        if self.selectedMenuCell == 0 {
+            if cellType is HomeFoodItemSubCell {
+                self.modelGetHomeRestaurantsResponseForHome?.items?[indexPath.item]?.isMyFavorite = isFavourite
             }
-            else if cellType is HomeRestaurantSubCell {
-                self.modelGetHalalRestaurantResponseForHomeTab?.items?[indexPath.item]?.isMyFavorite = isFavourite
-            }
-            else if cellType is HomePrayerSpacesSubCell {
-                self.modelGetPrayerPlacesResponseForHomeTab?.items?[indexPath.item]?.isMyFavorite = isFavourite
-            }
-            else if self.selectedMenuCell == 1 {
-                self.modelGetHalalRestaurantResponse?.items?[indexPath.item]?.isMyFavorite = isFavourite
-            }
-            else if self.selectedMenuCell == 3 {
-                self.modelGetPrayerPlacesResponse?.items?[indexPath.item]?.isMyFavorite = isFavourite
-            }
+        }
+        else if cellType is HomeRestaurantSubCell {
+            self.modelGetHalalRestaurantResponseForHomeTab?.items?[indexPath.item]?.isMyFavorite = isFavourite
+        }
+        else if cellType is HomePrayerSpacesSubCell {
+            self.modelGetPrayerPlacesResponseForHomeTab?.items?[indexPath.item]?.isMyFavorite = isFavourite
+        }
+        else if self.selectedMenuCell == 1 {
+            self.modelGetHalalRestaurantResponse?.items?[indexPath.item]?.isMyFavorite = isFavourite
+        }
+        else if self.selectedMenuCell == 3 {
+            self.modelGetPrayerPlacesResponse?.items?[indexPath.item]?.isMyFavorite = isFavourite
         }
     }
     

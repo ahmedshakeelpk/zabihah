@@ -42,23 +42,12 @@ class HomeRestaurantSubCell: UICollectionViewCell {
     var indexPath: IndexPath! = nil
     var arrayNames = [String]()
 //    var isFavourite = false
-    var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
-        didSet {
-            print(modelPostFavouriteRestaurantsResponse as Any)
-            if modelPostFavouriteRestaurantsResponse?.success ?? false {
-//                if let isFavourite = self.modelFeaturedRestuarantResponseData?.isFavorites {
-//                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomeRestaurantSubCell())
-////                    modelFeaturedRestuarantResponseData.isFavorites = !(isFavourite)
-//                }
-            }
-            else {
-                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
-            }
-        }
-    }
+
     var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData! {
         didSet {
-            setData()
+            DispatchQueue.main.async {
+                self.setData()
+            }
         }
     }
 
@@ -89,11 +78,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
     }
     
-    struct ModelPostFavouriteRestaurantsResponse: Codable {
-        let recordFound, success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
-    }
+   
 
     func setData() {
         labelRestaurantName.text = restuarentResponseModel?.name
@@ -106,9 +91,10 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
-        imageViewFavourite.image = UIImage(named: !(restuarentResponseModel?.isMyFavorite ?? false) ? "heartFavourite" : "heartUnFavourite")
+        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
+
         viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
-        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
+//        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
         
         if let cuisines = restuarentResponseModel?.cuisines {
             let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
@@ -133,14 +119,28 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         
     }
     
+    
+   
     func favouriteRestaurants() {
         let parameters = [
             "placeId": restuarentResponseModel.id ?? ""
         ]
-        
-        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, methodType: .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: restuarentResponseModel?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
             let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteRestaurantsResponse = model
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
+        }
+    }
+    
+    var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
+        didSet {
+            if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
+                DispatchQueue.main.async {
+                    self.delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: self.indexPath, cellType: HomeRestaurantSubCell())
+                }
+                restuarentResponseModel.isMyFavorite = !(isFavourite)
+            }
         }
     }
 }
@@ -176,4 +176,9 @@ extension HomeRestaurantSubCell: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.reloadData()
     }
+}
+struct ModelPostFavouriteRestaurantsResponse: Codable {
+    let recordFound, success: Bool?
+    let message, innerExceptionMessage: String?
+    let token: String?
 }

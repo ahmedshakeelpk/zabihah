@@ -28,8 +28,10 @@ struct APIsName {
 //        case favourite = "Favorite/{placeId}"
         case favourite = "Favorite/{placeId}"
         case favouriteDelete = "Favorite/by/place/{placeId}"
-        case getfavouritebyuser = "api/Favorite/getfavouritebyuser"
-        
+        case getFavourite = "Favorite/my"
+        //MARK:- Faq
+        case faq = "Faq"
+
         
         
         
@@ -59,8 +61,6 @@ struct APIsName {
         case getuser = "v1/User/getuser"
         case editprofile = "v1/User/editprofile"
         
-        //MARK:- Faq
-        case getfaq = "api/Faq/getfaq"
         
         //MARK:- Blob
         case AddImageUrlsToPhoto = "api/Blob/AddImageUrlsToPhoto"

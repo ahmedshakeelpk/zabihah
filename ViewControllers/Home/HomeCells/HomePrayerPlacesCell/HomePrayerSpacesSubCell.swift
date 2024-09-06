@@ -57,21 +57,19 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
 
     var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData! {
         didSet {
-            setData()
+            DispatchQueue.main.async {
+                self.setData()
+            }
         }
     }
     
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
-            print(modelPostFavouriteRestaurantsResponse as Any)
-            if modelPostFavouriteRestaurantsResponse?.success ?? false {
-//                if let isFavourite = self.modelMosqueResponseData?.isFavorites {
-//                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomePrayerSpacesSubCell())
-//                    modelMosqueResponseData.isFavorites = !(isFavourite)
-//                }
-            }
-            else {
-                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
+            if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
+                DispatchQueue.main.async {
+                    self.delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: self.indexPath, cellType: HomePrayerSpacesSubCell())
+                }
+                restuarentResponseModel.isMyFavorite = !(isFavourite)
             }
         }
     }
@@ -111,9 +109,9 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
-        imageViewFavourite.image = UIImage(named: !(restuarentResponseModel?.isMyFavorite ?? false) ? "heartFavourite" : "heartUnFavourite")
+        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
         viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
-        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
+//        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
         
         if let cuisines = restuarentResponseModel?.cuisines {
             let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
@@ -143,9 +141,11 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
             "placeId": restuarentResponseModel.id ?? ""
         ]
         
-        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, methodType: .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: restuarentResponseModel?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
             let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteRestaurantsResponse = model
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
         }
     }
 }

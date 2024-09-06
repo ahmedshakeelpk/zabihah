@@ -56,22 +56,22 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
 
     var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData! {
         didSet {
-            setData()
+            DispatchQueue.main.async {
+                self.setData()
+            }
         }
     }
     
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
             print(modelPostFavouriteRestaurantsResponse as Any)
-            if modelPostFavouriteRestaurantsResponse?.success ?? false {
-//                if let isFavourite = self.modelMosqueResponseData?.isFavorites {
-//                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomePrayerPlacesTabCell())
-//                    modelMosqueResponseData.isFavorites = !(isFavourite)
-//                }
+            if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
+                DispatchQueue.main.async {
+                    self.delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: self.indexPath, cellType: HomePrayerPlacesTabCell())
+                }
+                restuarentResponseModel.isMyFavorite = !(isFavourite)
             }
-            else {
-                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
-            }
+            
         }
     }
     
@@ -129,9 +129,9 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
-        imageViewFavourite.image = UIImage(named: !(restuarentResponseModel?.isMyFavorite ?? false) ? "heartFavourite" : "heartUnFavourite")
+        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
         viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
-        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
+//        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
         
         if let cuisines = restuarentResponseModel?.cuisines {
             let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
@@ -163,7 +163,9 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         
         APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, methodType: .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
             let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteRestaurantsResponse = model
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
         }
     }
     
@@ -257,7 +259,7 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         vc.userLocation = (viewController as? HomeViewController)?.userLocation
         var modelData: HomeViewController.ModelRestuarantResponseData!
 
-        if let modelMosqueResponseData =   restuarentResponseModel {
+        if let modelMosqueResponseData = restuarentResponseModel {
             vc.modelRestuarantResponseData = modelMosqueResponseData
             modelData = modelMosqueResponseData
         }

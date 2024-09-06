@@ -54,22 +54,19 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     //    var isFavourite = false
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
-            print(modelPostFavouriteRestaurantsResponse as Any)
             if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
-                delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomeFoodItemSubCell())
+                DispatchQueue.main.async {
+                    self.delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: self.indexPath, cellType: HomeFoodItemSubCell())
+                }
                 restuarentResponseModel.isMyFavorite = !(isFavourite)
-            }
-            if modelPostFavouriteRestaurantsResponse?.id ?? "" != "" {
-                
-            }
-            else {
-//                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
             }
         }
     }
     var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData! {
         didSet {
-            setData()
+            DispatchQueue.main.async {
+                self.setData()
+            }
         }
     }
     
@@ -154,7 +151,9 @@ class HomeFoodItemSubCell: UICollectionViewCell {
 
         APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: restuarentResponseModel?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
             let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteRestaurantsResponse = model
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
         }
     }
 }

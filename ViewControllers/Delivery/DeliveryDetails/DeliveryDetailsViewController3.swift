@@ -86,30 +86,32 @@ class DeliveryDetailsViewController3: UIViewController {
     var isFeaturedCell: Bool! = false
     var isFromFavouriteScreen = false
     
-    var modelGetRestaurantDetailResponse: ModelGetRestaurantDetailResponse? {
+    var modelFeaturedResponse: HomeViewController.ModelFeaturedResponse? {
         didSet {
-            print(modelGetRestaurantDetailResponse as Any)
-            setData()
+            print(modelFeaturedResponse as Any)
+            DispatchQueue.main.async {
+                self.setData()
+            }
         }
     }
-    var galleryRecentPhotos: [String]? {
+    var galleryRecentPhotos: [String?]? {
         didSet {
             DispatchQueue.main.async {
                 self.collectionViewRecentPhoto.reloadData()
             }
         }
     }
-    var connectSocial: [Social]? {
+    var connectSocial: [HomeViewController.WebLink?]? {
         didSet {
             collectionViewConnect.reloadData()
         }
     }
-    var timingOpenClose: [Timing]? {
+    var timingOpenClose: [HomeViewController.Timing?]? {
         didSet {
             
         }
     }
-    var amenitiesData: [Amenities]? {
+    var amenitiesData: [HomeViewController.Amenity?]? {
         didSet {
             
         }
@@ -118,15 +120,12 @@ class DeliveryDetailsViewController3: UIViewController {
     var modelPostFavouriteDeleteResponse: FindHalalFoodCell.ModelPostFavouriteDeleteResponse? {
         didSet {
             print(modelPostFavouriteDeleteResponse as Any)
-            if modelPostFavouriteDeleteResponse?.success ?? false {
-                if let isFavourite = self.modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites {
-                    delegate.changeFavouriteStatusFromDetails(isFavourite: !isFavourite, indexPath: indexPath)
-                    modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites = !isFavourite
+            if let isFavourite = self.modelFeaturedResponse?.items?.first??.isMyFavorite {
+                DispatchQueue.main.async {
+                    self.delegate.changeFavouriteStatusFromDetails(isFavourite: !isFavourite, indexPath: self.indexPath)
                 }
-            }
-            else {
-                self.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteDeleteResponse?.message ?? "", iconName: .iconError)
-            }
+                modelFeaturedResponse?.items?[0]?.isMyFavorite = !isFavourite
+                }
         }
     }
     
@@ -142,14 +141,14 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     
     @IBAction func buttonFavourite(_ sender: Any) {
-        postFavouriteRestaurants()
+        favouriteRestaurants()
     }
     @IBAction func buttonCall(_ sender: Any) {
-        dialNumber(number: modelGetRestaurantDetailResponse?.restuarantResponseData?.phone ?? "")
+        dialNumber(number: modelFeaturedResponse?.items?[0]?.phone ?? "")
     }
     
     @IBAction func buttonShare(_ sender: Any) {
-        let text = modelGetRestaurantDetailResponse?.restuarantResponseData?.shareLink ?? ""
+        let text = modelFeaturedResponse?.items?[0]?.address ?? ""
         let textShare = [ text ]
         let activityViewController = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
@@ -189,56 +188,57 @@ class DeliveryDetailsViewController3: UIViewController {
         collectionViewConnect.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
     }
     func setData() {
-        if let restuarantResponseData = modelGetRestaurantDetailResponse?.restuarantResponseData {
+        if let restuarantResponseData = modelFeaturedResponse?.items?.first {
             
-            labelRestaurantName.text = restuarantResponseData.name ?? ""
-            labelAddress.text = restuarantResponseData.address ?? ""
-            labelDistanceAway.text = "\(restuarantResponseData.distance ?? 0)\(restuarantResponseData.distanceUnit ?? "")"
-            imageViewRestaurantIcon.setImage(urlString: restuarantResponseData.iconImage ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque" : "placeholderRestaurantSubIcon")
+            labelRestaurantName.text = restuarantResponseData?.name ?? ""
+            labelAddress.text = restuarantResponseData?.address ?? ""
+//            labelDistanceAway.text = "\(restuarantResponseData?.distance ?? 0)\(restuarantResponseData?.distanceUnit ?? "")"
+            imageViewRestaurantIcon.setImage(urlString: restuarantResponseData?.iconImageWebUrl ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque" : "placeholderRestaurantSubIcon")
             
-            labelRestaurantDetails.text = restuarantResponseData.description
-            labelHalalSummaryDetails.text = restuarantResponseData.halalDescription
-            viewHalalSummaryBackGround.isHidden = restuarantResponseData.halalDescription ?? "" == ""
+            labelRestaurantDetails?.text = restuarantResponseData?.description
+            labelHalalSummaryDetails.text = restuarantResponseData?.halalDescription
+            viewHalalSummaryBackGround.isHidden = restuarantResponseData?.halalDescription ?? "" == ""
             viewHalalMenuBackGround.isHidden = isPrayerPlace
             
-            labelFullHalalMenu.text = restuarantResponseData.isFullHalal ?? false ? "Full halal menu" : "NO"
-            labelAlcohol.text = restuarantResponseData.isalcohhol ?? false ? "YES" : "No alcohol"
-            if modelGetRestaurantDetailResponse?.timing?.count ?? 0 > 0 {
-                labelCloseOpen.text =  modelGetRestaurantDetailResponse?.restuarantResponseData?.status ?? ""
+//            labelFullHalalMenu.text = restuarantResponseData.isFullHalal ?? false ? "Full halal menu" : "NO"
+//            labelAlcohol.text = restuarantResponseData.isalcohhol ?? false ? "YES" : "No alcohol"
+            if restuarantResponseData?.timings?.count ?? 0 > 0 {
+//                labelCloseOpen.text =  restuarantResponseData?.status ?? ""
 //                labelCloseOpen.text = "Open at \(is12HourFormat ? "\(modelGetRestaurantDetailResponse?.timing?.last?.openTime ?? "")".time12String : "\(modelGetRestaurantDetailResponse?.timing?.last?.openTime ?? "")".time24String)"
             }
-            imageViewFavourite.image = UIImage(named: restuarantResponseData.isFavorites ?? false ? "heartFavourite" : "heartMehroon")
-            labelReviews.text = "\(restuarantResponseData.reviews ?? 0) reviews"
-            labelReturning.text = "\(restuarantResponseData.returning ?? 0) returning"
-            labelRating.text = "Rating: \(restuarantResponseData.rating ?? 0)"
-            viewShareBackGround.isHidden = modelGetRestaurantDetailResponse?.restuarantResponseData?.shareLink ?? "" == ""
-            viewCallBackGround.isHidden = modelGetRestaurantDetailResponse?.restuarantResponseData?.phone ?? "" == ""
-            viewTagBackGround.isHidden = restuarantResponseData.tags == nil || restuarantResponseData.tags == ""
-            if var tags = restuarantResponseData.tags?.split(separator: ",").map({ String($0)}) {
-                if tags.last == "" || tags.last == " "{
-                    tags.removeLast()
-                }
-                arrayNames = tags
-                collectionViewCountry.reloadData()
-            }
+            imageViewFavourite.image = UIImage(named: restuarantResponseData?.isMyFavorite ?? false ? "heartFavourite" : "heartMehroon")
+            labelReviews.text = "\(restuarantResponseData?.reviews?.count ?? 0) reviews"
+            labelReturning.text = "\(getRating(averageRating: restuarantResponseData?.willReturnPercentage)) returning"
             
-            if let timing = modelGetRestaurantDetailResponse?.timing, timing.count > 0 {
+            labelRating.text = "Rating: \(getRating(averageRating: restuarantResponseData?.averageRating))"
+//            viewShareBackGround.isHidden = restuarantResponseData?.shareLink ?? "" == ""
+            viewCallBackGround.isHidden = restuarantResponseData?.phone ?? "" == ""
+//            viewTagBackGround.isHidden = restuarantResponseData.tags == nil || restuarantResponseData.tags == ""
+//            if var tags = restuarantResponseData.tags?.split(separator: ",").map({ String($0)}) {
+//                if tags.last == "" || tags.last == " "{
+//                    tags.removeLast()
+//                }
+//                arrayNames = tags
+//                collectionViewCountry.reloadData()
+//            }
+            
+            if let timing = restuarantResponseData?.timings, timing.count > 0 {
                 timingOpenClose = timing
             }
-            if let amenities = modelGetRestaurantDetailResponse?.amenities, amenities.count > 0 {
+            if let amenities = restuarantResponseData?.amenities, amenities.count > 0 {
                 amenitiesData = amenities
                 viewAmenitiesBackGround.isHidden = false
             }
             else {
                 viewAmenitiesBackGround.isHidden = true
             }
-            if let gallery = restuarantResponseData.gallery, gallery.count > 0 {
+            if let gallery = restuarantResponseData?.photoWebUrls, gallery.count > 0 {
                 galleryRecentPhotos = gallery.reversed()
             }
             else {
                 collectionViewRecentPhoto.reloadData()
             }
-            if let connect = modelGetRestaurantDetailResponse?.social, connect.count > 0 {
+            if let connect = restuarantResponseData?.webLinks, connect.count > 0 {
                 connectSocial = connect
                 stackViewConnectBackGround.isHidden = false
             }
@@ -258,24 +258,24 @@ class DeliveryDetailsViewController3: UIViewController {
     func navigateToRatingViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
         vc.stringTitle = labelRestaurantName.text!
-//        vc.galleryRecentPhotos = self.galleryRecentPhotos
-        vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
+////        vc.galleryRecentPhotos = self.galleryRecentPhotos
+//        vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
         vc.isPrayerPlace = isPrayerPlace
         vc.reviewPostedHandler = {
             self.getRestaurantDetail()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func getRestaurantDetail() {
+    func getRestaurantDetail2() {
         let parameters = [
             "lat": userLocation?.coordinate.latitude ?? 0,
             "long": userLocation?.coordinate.longitude ?? 0,
             "id": modelRestuarantResponseData.id ?? "",
-            "type": modelRestuarantResponseData.type ?? ""
+//            "type": modelRestuarantResponseData.type ?? ""
         ] as [String : Any]
         APIs.postAPI(apiName: .getrestaurantdetail, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetRestaurantDetailResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetRestaurantDetailResponse = model
+//            self.modelGetRestaurantDetailResponse = model
         }
     }
     
@@ -287,16 +287,27 @@ class DeliveryDetailsViewController3: UIViewController {
 //        self.present(imagePickerController, animated: true, completion: nil)
 //    }
     
-    func postFavouriteRestaurants() {
-        let parameters = [
-            "Id": modelGetRestaurantDetailResponse?.restuarantResponseData?.id ?? "",
-            "isMark": !(modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites ?? false),
-            "type" : modelRestuarantResponseData.type ?? ""
-        ] as [String : Any]
-        
-        APIs.postAPI(apiName: .favourite, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
-            let model: FindHalalFoodCell.ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteDeleteResponse = model
+    
+    func favouriteRestaurants() {
+//        let parameters = [
+//            "placeId": modelGetRestaurantDetailResponse?.restuarantResponseData?.id ?? ""
+//        ]
+//        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: modelGetRestaurantDetailResponse?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+//            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+//            if statusCode == 200 {
+//                self.modelPostFavouriteRestaurantsResponse = model
+//            }
+//        }
+    }
+    
+    var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
+        didSet {
+//            print(modelPostFavouriteDeleteResponse as Any)
+//            if let isFavourite = self.modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites {
+//                delegate.changeFavouriteStatusFromDetails(isFavourite: !isFavourite, indexPath: indexPath)
+//                modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites = !isFavourite
+//            }
+            //                self.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteDeleteResponse?.message ?? "", iconName: .iconError)
         }
     }
     
@@ -406,8 +417,12 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         }
         else if (collectionViewConnect == collectionView) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SocialConnectCell", for: indexPath) as! SocialConnectCell
-            cell.labelName.text = connectSocial?[indexPath.item].title ?? ""
-            cell.imageViewIcon.setImage(urlString: connectSocial?[indexPath.item].url ?? "", placeHolderIcon: getSocialIcon(titleName: connectSocial?[indexPath.item].title ?? "", urlString: "").0)
+            cell.labelName.text = connectSocial?[indexPath.item]?.type ?? ""
+            cell.imageViewIcon.setImage(
+                urlString: connectSocial?[indexPath.item]?.type ?? "",
+                placeHolderIcon: getSocialIcon(
+                    titleName: connectSocial?[indexPath.item]?.type ?? "", urlString: ""
+                ).0)
             
             return cell
         }
@@ -473,9 +488,9 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             }
         }
         else if collectionView == collectionViewConnect {
-            if let socialUrl = connectSocial?[indexPath.item].url {
-                if (connectSocial?[indexPath.item].title ?? "").lowercased() == "email" {
-                    let mailComposeViewController = configuredMailComposeViewController(email: connectSocial?[indexPath.item].url ?? "")
+            if let socialUrl = connectSocial?[indexPath.item]?.type {
+                if (connectSocial?[indexPath.item]?.type ?? "").lowercased() == "email" {
+                    let mailComposeViewController = configuredMailComposeViewController(email: connectSocial?[indexPath.item]?.type ?? "")
                     if MFMailComposeViewController.canSendMail() {
                         self.present(mailComposeViewController, animated: true, completion: nil)
                     } else {
@@ -483,7 +498,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
                     }
                 }
                 else {
-                    let socialData = getSocialIcon(titleName: connectSocial?[indexPath.item].title ?? "", urlString: socialUrl)
+                    let socialData = getSocialIcon(titleName: connectSocial?[indexPath.item]?.type ?? "", urlString: socialUrl)
                     
                     let urlString = socialData.1
                     if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
@@ -494,7 +509,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
                     }
                 }
             }
-            }
+        }
             else {
                 showToast(message: "there is no social link please update your profile")
             }
@@ -634,4 +649,45 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
     @objc func imagePickerController(_ picker: UIImagePickerController, pickedImage: UIImage?) {
     }
 
+}
+
+
+
+
+extension DeliveryDetailsViewController3 {
+    func getRestaurantDetail() {
+        var parameters = [String: Any]()
+        let featureRequestModel: HomeViewController.ModelFeaturedRequest = HomeViewController.ModelFeaturedRequest(
+            ids: [modelRestuarantResponseData.id ?? ""],
+            rating: nil,
+            page: nil,
+            pageSize: nil,
+            cuisine: nil,
+            meatHalalStatus: nil,
+            alcoholPolicy: nil,
+            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
+            orderBy: nil,
+            sortOrder: nil,
+            location: HomeViewController.Location(
+                distanceUnit: .kilometers,
+                latitude: userLocation?.coordinate.latitude ?? 0.0,
+                longitude: userLocation?.coordinate.longitude ?? 0.0,
+                radius: 32
+            )
+        )
+        do {
+            let jsonData = try JSONEncoder().encode(featureRequestModel)
+            if let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                parameters = jsonDict
+            }
+        } catch {
+            print("Failed to convert model to dictionary: \(error)")
+        }
+        APIs.postAPI(apiName: .search, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            var model: HomeViewController.ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                self.modelFeaturedResponse = model
+            }
+        }
+    }
 }
