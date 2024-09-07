@@ -511,7 +511,7 @@
                                                                                                 </connections>
                                                                                             </button>
                                                                                         </subviews>
-                                                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                         <constraints>
                                                                                             <constraint firstItem="lbC-qU-KE4" firstAttribute="top" secondItem="FZc-zC-nNQ" secondAttribute="top" id="BoA-MX-xzT"/>
                                                                                             <constraint firstItem="kn9-Kh-C1n" firstAttribute="top" secondItem="FZc-zC-nNQ" secondAttribute="top" id="E9X-Dd-KzV"/>

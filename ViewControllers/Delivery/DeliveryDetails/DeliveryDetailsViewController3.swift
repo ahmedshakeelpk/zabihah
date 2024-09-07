@@ -385,6 +385,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if (collectionViewCuisines == collectionView) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
+            cell.isDetailsScreen = true
             cell.labelName.text = arrayNames[indexPath.item]
             return cell
         }

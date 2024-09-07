@@ -14,6 +14,7 @@ class HomeCuisinesSubCell: UICollectionViewCell {
     @IBOutlet weak var imageViewTitle: UIImageView!
     @IBOutlet weak var viewImageViewTitleBackGround: UIView!
     @IBOutlet weak var imageViewPlaceHolder: UIImageView!
+    @IBOutlet weak var viewBottomLine: UIView!
     var selectedPlaceHolderIcon: String!
     var modelCuisine: HomeViewController.ModelCuisine? {
         didSet {
@@ -35,12 +36,15 @@ class HomeCuisinesSubCell: UICollectionViewCell {
         didSet {
             if selectedCuisine == modelCuisine?.name {
                 labelName.textColor = .colorApp
-                viewImageViewTitleBackGround.radius(radius: 8, color: .colorApp, borderWidth: 2)
+                viewBottomLine.backgroundColor = .colorApp
+//                viewImageViewTitleBackGround.radius(radius: 8, color: .colorApp, borderWidth: 2)
             }
             else {
                 labelName.textColor = .colorLabel
-                viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 2)
+                viewBottomLine.backgroundColor = .clear
+//                viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 2)
             }
+            viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 2)
         }
     }
     
