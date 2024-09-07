@@ -270,7 +270,9 @@ class DeliveryDetailsViewController3: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
         vc.stringTitle = labelRestaurantName.text!
         vc.galleryRecentPhotos = self.galleryRecentPhotos
-        vc.modelGetRestaurantDetailResponse = modelFeaturedResponse?.items?[0]
+        if modelFeaturedResponse?.items?.count ?? 0 > 0 {
+            vc.modelGetRestaurantDetailResponse = modelFeaturedResponse?.items?[0]
+        }
         vc.isPrayerPlace = isPrayerPlace
         vc.reviewPostedHandler = {
             self.getRestaurantDetail()
@@ -636,12 +638,10 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
     
 }
 
-
-
-
 extension DeliveryDetailsViewController3 {
     func getRestaurantDetail() {
         var parameters = [String: Any]()
+        let parts: [HomeViewController.PlacePart] = isPrayerPlace ? [.none] : [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos]
         let featureRequestModel: HomeViewController.ModelFeaturedRequest = HomeViewController.ModelFeaturedRequest(
             ids: [modelRestuarantResponseData.id ?? ""],
             rating: nil,
@@ -650,7 +650,7 @@ extension DeliveryDetailsViewController3 {
             cuisine: nil,
             meatHalalStatus: nil,
             alcoholPolicy: nil,
-            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos],
+            parts: parts,
             orderBy: nil,
             sortOrder: nil,
             location: HomeViewController.Location(
@@ -668,7 +668,7 @@ extension DeliveryDetailsViewController3 {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
-        APIs.postAPI(apiName: .search, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: isPrayerPlace ? .searchMosque : .searchRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: HomeViewController.ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             if statusCode == 200 {
                 self.modelFeaturedResponse = model
@@ -690,7 +690,7 @@ extension DeliveryDetailsViewController3 {
                 imageUrl
             ]
         ] as [String : Any]
-        APIs.postAPI(apiName: .uploadPhotoForRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: isPrayerPlace ? .uploadPhotoForMosque : .uploadPhotoForRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 {
                 self.getRestaurantDetail()
             }

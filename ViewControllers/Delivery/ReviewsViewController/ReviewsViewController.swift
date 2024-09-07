@@ -29,24 +29,28 @@ class ReviewsViewController: UIViewController {
     var selectedAddressIndex = 1
     var modelGetReview: RatingViewController.ModelGetReview? {
         didSet {
-            if modelGetReview?.items?.count ?? 0 > 0 {
-                tableViewReloadData()
+            DispatchQueue.main.async {
+                if self.modelGetReview?.items?.count ?? 0 > 0 {
+                    
+                }
+    //            else {
+    //                showAlertCustomPopup(title: "Error", message: modelGetByUser?.message ?? "", iconName: .iconError)
+    //            }
+                self.tableViewReloadData()
             }
-//            else {
-//                showAlertCustomPopup(title: "Error", message: modelGetByUser?.message ?? "", iconName: .iconError)
-//            }
+            
         }
     }
     
     var modelDeleteReviewResponse: ModelDeleteReviewResponse! {
         didSet {
-            if modelDeleteReviewResponse?.success ?? false {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if self.modelDeleteReviewResponse?.success ?? false {
                     self.getMyReviews()
                 }
-            }
-            else {
-                showAlertCustomPopup(title: "Error", message: modelDeleteReviewResponse?.message ?? "", iconName: .iconError)
+                else {
+//                    self.showAlertCustomPopup(title: "Error", message: self.modelDeleteReviewResponse?.message ?? "", iconName: .iconError)
+                }
             }
         }
     }
@@ -100,6 +104,8 @@ class ReviewsViewController: UIViewController {
         viewBottomLineHalalFood.isHidden = false
         imageViewHalalFood.tintColor = .colorApp
         imageViewMosque.tintColor = .clrUnselectedImage
+        self.modelGetReview = nil
+        tableView.reloadData()
         getMyReviews()
     }
     @IBAction func buttonPrayerSpaces(_ sender: Any) {
@@ -108,12 +114,14 @@ class ReviewsViewController: UIViewController {
         viewBottomLineHalalFood.isHidden = true
         imageViewHalalFood.tintColor = .clrUnselectedImage
         imageViewMosque.tintColor = .colorApp
+        self.modelGetReview = nil
+        tableView.reloadData()
         getMyReviews()
     }
   
     func getMyReviews() {
         //        Available values : None, Restaurant, Mosque
-        var parameters = [
+        let parameters = [
             "type": buttonHalalFood.tag == 1 ? "Restaurant" : "Mosque",
             "pageSize": "50",
             "page": "\(pageNumberForApi!)"
@@ -146,14 +154,14 @@ class ReviewsViewController: UIViewController {
     func deleteReview(index: Int) {
         if let reviewData = modelGetReview?.items?[index] {
             let id = reviewData.id ?? ""
-            let url = "\(APIsName.name.deletereview.rawValue)"
-            let parameters: Parameters = [
-                "type": buttonHalalFood.tag == 1 ? "rest" : "prayer",
-                "id": id,
+            let parameters = [
+                "id": id
             ]
-            APIs.deleteAPI(apiName: url, parameters: parameters, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
+            APIs.getAPI(apiName: .deleteReview, parameters: parameters, isPathParameters: true, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
                 let model: ModelDeleteReviewResponse? = APIs.decodeDataToObject(data: responseData)
-                self.modelDeleteReviewResponse = model
+                if statusCode == 200 {
+                    self.modelDeleteReviewResponse = ModelDeleteReviewResponse(success: true, message: nil, recordFound: nil, innerExceptionMessage: nil)
+                }
             }
         }
     }
@@ -275,7 +283,6 @@ extension ReviewsViewController {
         let name: String?
         let itemId: String?
     }
-    
     
     // MARK: - ModelGetUserAddressResponse
     struct ModelDeleteReviewResponse: Codable {

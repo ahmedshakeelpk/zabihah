@@ -45,7 +45,7 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
-        APIs.postAPI(apiName: .search, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             var model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             
             if self.pageNumberForApi > 1 {

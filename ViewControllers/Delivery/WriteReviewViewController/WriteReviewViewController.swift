@@ -210,8 +210,8 @@ class WriteReviewViewController: UIViewController {
 //        ] as [String : Any]
         
         let parameters = [
-            "id": reviewDatum.id ?? "",
-            "placeId": modelGetRestaurantDetailResponse?.id ?? "",
+            "id":  reviewDatum.id ?? "",
+            "placeId": reviewDatum.place?.id ?? "",
             "rating": viewStarCasmo.rating,
             "comment": textViewReview.text!,
             "willReturn": buttonRadioYes.tag == 1,
@@ -222,7 +222,8 @@ class WriteReviewViewController: UIViewController {
         APIs.postAPI(apiName: .postReview, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData)
             if statusCode == 200 {
-                self.modelPostReview = model            }
+                self.modelPostReview = ModelPostReview(rating: nil, id: "test id", createdOn: nil, updatedOn: nil, willReturn: nil, type: nil, comment: nil, isDeleted: nil, photoWebUrls: nil, createdBy: nil, updatedBy: nil, place: nil)
+            }
         }
     }
     
@@ -250,7 +251,7 @@ class WriteReviewViewController: UIViewController {
     }
     
     func getBlobToken() {
-        APIs.getAPI(apiName: .getBlobTokenForReview, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.getAPI(apiName: isPrayerPlace ? .getBlobTokenForMosque : .getBlobTokenForReview, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
             self.modelGetBlobToken = model
         }

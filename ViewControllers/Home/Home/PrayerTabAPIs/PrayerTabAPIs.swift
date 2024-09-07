@@ -45,9 +45,8 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
-        APIs.postAPI(apiName: .mosqueSearch, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .searchMosque, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             var model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
-            
             
             if self.pageNumberForApi > 1 {
                 if let record = self.modelGetPrayerPlacesResponse?.items {

@@ -44,7 +44,7 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
-        APIs.postAPI(apiName: .search, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             //            self.modelGetHomeRestaurantsResponse = nil
             self.modelGetHomeRestaurantsResponseForHome = model
@@ -87,7 +87,7 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
-        APIs.postAPI(apiName: .search, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetHalalRestaurantResponseForHomeTab = model
         }
@@ -128,7 +128,7 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
-        APIs.postAPI(apiName: .mosqueSearch, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .searchMosque, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetPrayerPlacesResponseForHomeTab = model
         }

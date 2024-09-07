@@ -20,8 +20,8 @@ struct APIsName {
         case mySelf = "User/my"
         case updateUser = "User"
         case edituseraddress = "User/address"
-        case search = "Restaurant/search"
-        case mosqueSearch = "Mosque/search"
+        case searchRestaurant = "Restaurant/search"
+        case searchMosque = "Mosque/search"
         //MARK:- Config
         case userConfiguration = "Configuration"
         //MARK:- Favorite
@@ -36,15 +36,19 @@ struct APIsName {
         case uploadPhotoForRestaurant = "Restaurant/photo"
         case getBlobTokenForRestaurant = "Restaurant/photo/generate/sas/upload"
         
-        
+        case uploadPhotoForMosque = "Mosque/photo"
+
+    
         case getBlobTokenForUser = "User/profile-picture/generate/sas/upload"
         case getBlobTokenForReview = "Review/photo/generate/sas/upload"
+        case getBlobTokenForMosque = "Mosque/photo/generate/sas/upload"
 
         //MARK:- Review
         case postReview = "Review"
         case getMyReview = "Review/my"
         case getGoogleReview = "Review/google"
         case getYelpReview = "Review/yelp"
+        case deleteReview = "Review/{id}"
 
         
         
