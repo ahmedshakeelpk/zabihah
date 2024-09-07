@@ -34,9 +34,9 @@ class RegisterationViewController: UIViewController {
             fieldVilidation()
         }
     }
-    var modelGetBlobContainer: ModelGetBlobContainer? {
-        didSet {
-            print(modelGetBlobContainer?.uri as Any)
+    var modelGetBlobToken: ModelGetBlobToken? {
+        didSet{
+            
         }
     }
     
@@ -87,6 +87,7 @@ class RegisterationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfiguration()
+        getBlobToken()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -102,7 +103,7 @@ class RegisterationViewController: UIViewController {
     }
     
     @IBAction func buttonContinue(_ sender: Any) {
-        if let token = self.modelGetBlobContainer?.uri {
+        if let token = self.modelGetBlobToken?.uri {
             if isImageUploaded {
                 self.uploadOnBlob(token: token)
             }
@@ -116,7 +117,7 @@ class RegisterationViewController: UIViewController {
         
         return()
         if isOtpVerified {
-            if let token = self.modelGetBlobContainer?.uri {
+            if let token = self.modelGetBlobToken?.uri {
                 if isImageUploaded {
                     self.uploadOnBlob(token: token)
                 }
@@ -274,12 +275,12 @@ class RegisterationViewController: UIViewController {
 //            "containerName": "profileimage"
 //        ]
 //        
-        APIs.postAPI(apiName: .getblobcontainer, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .getBlobTokenForUser, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
             
             print(responseData)
             print(success)
-            let model: ModelGetBlobContainer? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetBlobContainer = model
+            let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBlobToken = model
         }
     }
     
@@ -304,6 +305,12 @@ class RegisterationViewController: UIViewController {
         //        self.present(documentPicker, animated: true, completion: nil)
     }
 
+    func getBlobToken() {
+        APIs.getAPI(apiName: .getBlobTokenForRestaurant, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBlobToken = model
+        }
+    }
 }
 
 extension RegisterationViewController: FPNTextFieldDelegate {
@@ -367,7 +374,7 @@ extension RegisterationViewController {
         azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
             if success {
                 print("Image uploaded successfully!")
-                if let imageURL = azureBlobStorage.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
+                if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
                     print("Image URL: \(imageURL)")
                     DispatchQueue.main.async {
                         self.userSignup(imageUrl: "\(imageURL)")

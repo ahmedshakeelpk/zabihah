@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -2698,7 +2697,7 @@
                         <outlet property="buttonShare" destination="kpg-yE-sRq" id="Vqm-d7-F6h"/>
                         <outlet property="buttonTiming" destination="zPk-zC-6sS" id="mxB-S0-zGc"/>
                         <outlet property="collectionViewConnect" destination="ZBz-eH-mad" id="RuF-l3-vBO"/>
-                        <outlet property="collectionViewCountry" destination="Ecl-TG-Lfe" id="Unu-eS-MIK"/>
+                        <outlet property="collectionViewCuisines" destination="Ecl-TG-Lfe" id="Unu-eS-MIK"/>
                         <outlet property="collectionViewRecentPhoto" destination="8AB-yM-Td9" id="OUj-Hh-ZE2"/>
                         <outlet property="imageViewFavourite" destination="FBg-sc-82B" id="KQj-kl-hfL"/>
                         <outlet property="imageViewHalalSummaryDropDown" destination="cBm-Cx-nnH" id="7ke-WP-3z8"/>
@@ -2718,12 +2717,12 @@
                         <outlet property="viewAddressDevider" destination="c2a-ZC-s7c" id="95d-fb-9bU"/>
                         <outlet property="viewAmenitiesBackGround" destination="NIa-Mj-tug" id="uR3-PZ-gPe"/>
                         <outlet property="viewCallBackGround" destination="PJ6-TC-aby" id="sfr-FY-hFk"/>
+                        <outlet property="viewCuisinesBackGround" destination="4ae-8r-KTE" id="TXo-Bo-XKB"/>
                         <outlet property="viewFavouriteBackGround" destination="y9g-fK-NmW" id="Ja1-Tf-yT3"/>
                         <outlet property="viewHalalMenuBackGround" destination="YJt-II-Gc0" id="CCC-Tu-iaE"/>
                         <outlet property="viewHalalSummaryBackGround" destination="uQF-8G-htT" id="MXF-By-dTw"/>
                         <outlet property="viewHalalSummaryDetailsBackGround" destination="ZE8-2a-ocT" id="W4h-vy-RM6"/>
                         <outlet property="viewShareBackGround" destination="uwI-D3-4Nb" id="RM0-4F-1a9"/>
-                        <outlet property="viewTagBackGround" destination="4ae-8r-KTE" id="TXo-Bo-XKB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tIa-fc-q8Y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

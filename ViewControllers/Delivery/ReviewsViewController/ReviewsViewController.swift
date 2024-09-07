@@ -23,15 +23,18 @@ class ReviewsViewController: UIViewController {
     @IBOutlet weak var buttonPrayerSpaces: UIButton!
     @IBOutlet weak var stackViewButtonTabBackGround: UIStackView!
     
+    var pageNumberForApi: Int! = 1
+
+        
     var selectedAddressIndex = 1
-    var modelGetByUser: ModelGetByUser? {
+    var modelGetReview: RatingViewController.ModelGetReview? {
         didSet {
-            if modelGetByUser?.success ?? false {
+            if modelGetReview?.items?.count ?? 0 > 0 {
                 tableViewReloadData()
             }
-            else {
-                showAlertCustomPopup(title: "Error", message: modelGetByUser?.message ?? "", iconName: .iconError)
-            }
+//            else {
+//                showAlertCustomPopup(title: "Error", message: modelGetByUser?.message ?? "", iconName: .iconError)
+//            }
         }
     }
     
@@ -39,7 +42,7 @@ class ReviewsViewController: UIViewController {
         didSet {
             if modelDeleteReviewResponse?.success ?? false {
                 DispatchQueue.main.async {
-                    self.getByUser()
+                    self.getMyReviews()
                 }
             }
             else {
@@ -49,7 +52,7 @@ class ReviewsViewController: UIViewController {
     }
     
     func tableViewReloadData() {
-        if modelGetByUser?.reviewDataObj?.reviewData?.count ?? 0 > 0 {
+        if modelGetReview?.items?.count ?? 0 > 0 {
             viewBackGroundNoDataFound.isHidden = true
         }
         else {
@@ -66,7 +69,7 @@ class ReviewsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfiguration()
-        getByUser()
+        getMyReviews()
     }
     
     func setConfiguration() {
@@ -97,29 +100,43 @@ class ReviewsViewController: UIViewController {
         viewBottomLineHalalFood.isHidden = false
         imageViewHalalFood.tintColor = .colorApp
         imageViewMosque.tintColor = .clrUnselectedImage
-        getByUser()
+        getMyReviews()
     }
     @IBAction func buttonPrayerSpaces(_ sender: Any) {
         buttonHalalFood.tag = 0
-        
         viewBottomLinePrayerSpaces.isHidden = false
         viewBottomLineHalalFood.isHidden = true
         imageViewHalalFood.tintColor = .clrUnselectedImage
         imageViewMosque.tintColor = .colorApp
-        getByUser()
+        getMyReviews()
     }
-    
-    
-    func getByUser() {
-        let parameters: Parameters = [
-            "type": buttonHalalFood.tag == 1 ? "rest" : "prayer",
-            //              "reviewType": "",
-            "page": 1,
-            //              "pageSize": 0
-        ]
-        APIs.postAPI(apiName: .getbyuser, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
-            let model: ModelGetByUser? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetByUser = model
+  
+    func getMyReviews() {
+        //        Available values : None, Restaurant, Mosque
+        var parameters = [
+            "type": buttonHalalFood.tag == 1 ? "Restaurant" : "Mosque",
+            "pageSize": "50",
+            "page": "\(pageNumberForApi!)"
+        ] as [String : String]
+        
+        APIs.getAPI(
+            apiName: .getMyReview,
+            parameters: parameters,
+            isPathParameters: false,
+            methodType: .get,
+            viewController: self
+        ) { responseData, success, errorMsg, statusCode in
+            var model: RatingViewController.ModelGetReview? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                if self.pageNumberForApi > 1 {
+                    if let record = self.modelGetReview?.items {
+                        var oldModel = record
+                        oldModel.append(contentsOf: model?.items ?? [])
+                        model?.items = oldModel
+                    }
+                }
+                self.modelGetReview = model
+            }
         }
     }
     func buttonDeleteReview(index: Int) {
@@ -127,7 +144,7 @@ class ReviewsViewController: UIViewController {
     }
     
     func deleteReview(index: Int) {
-        if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[index] {
+        if let reviewData = modelGetReview?.items?[index] {
             let id = reviewData.id ?? ""
             let url = "\(APIsName.name.deletereview.rawValue)"
             let parameters: Parameters = [
@@ -149,11 +166,11 @@ class ReviewsViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
         vc.isFromEditReview = true
         vc.isPrayerPlace = buttonHalalFood.tag == 0
-        if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[index] {
+        if let reviewData = modelGetReview?.items?[index] {
             vc.reviewDatum = reviewData
         }
         vc.reviewPostedHandler = {
-            self.getByUser()
+            self.getMyReviews()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -162,8 +179,8 @@ class ReviewsViewController: UIViewController {
     }
     func navigateToAddAddressViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
-        if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[index] {
-            vc.galleryRecentPhotos = reviewData.images
+        if let reviewData = modelGetReview?.items?[index] {
+            vc.galleryRecentPhotos = reviewData.photoWebUrls
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -172,7 +189,7 @@ class ReviewsViewController: UIViewController {
     func navigateToDeleteReviewViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
         vc.stringTitle = "Delete Reviews?"
-        if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[index] {
+        if let reviewData = modelGetReview?.items?[index] {
             vc.stringSubTitle = "Are you sure you want to delete your review?         "
 //            vc.stringSubTitle = "Are you sure you want to delete \"\(reviewData.userName ?? "")\" your review?         "
         }
@@ -194,13 +211,13 @@ class ReviewsViewController: UIViewController {
 extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelGetByUser?.reviewDataObj?.reviewData?.count ?? 0
+        return modelGetReview?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewsViewControllerCell") as! ReviewsViewControllerCell
-        if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[indexPath.row] {
-            cell.reviewDatum = reviewData
+        if let reviewData = modelGetReview?.items?[indexPath.row] {
+            cell.modelGetReviewData = reviewData
         }
         cell.index = indexPath.row
         cell.buttonEditHandler = buttonEditAddress
@@ -212,7 +229,7 @@ extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
         selectedAddressIndex = indexPath.row
-        if let reviewData = modelGetByUser?.reviewDataObj?.reviewData?[indexPath.row] {
+        if let reviewData = modelGetReview?.items?[indexPath.row] {
             
         }
     }

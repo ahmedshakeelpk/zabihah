@@ -109,7 +109,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         viewItemTypeBackGround.backgroundColor = .colorGreen
         
         
-        let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? [])
+        let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? []).0
         if isClose {
             //                viewItemTypeBackGround.isHidden = !isClose
             //                labelItemType.text = "Close"

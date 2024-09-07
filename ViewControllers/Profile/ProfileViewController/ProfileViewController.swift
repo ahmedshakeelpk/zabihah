@@ -256,7 +256,7 @@ class ProfileViewController: UIViewController {
             "containerName": "profileimage"
         ]
         
-        APIs.postAPI(apiName: .getblobcontainer, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .getBlobTokenForUser, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             
             print(responseData)
             print(success)
@@ -358,7 +358,7 @@ extension ProfileViewController {
         azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
             if success {
                 print("Image uploaded successfully!")
-                if let imageURL = azureBlobStorage.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
+                if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
                     print("Image URL: \(imageURL)")
                     DispatchQueue.main.async {
                         let parameters: Parameters = [
@@ -480,6 +480,12 @@ struct AzureBlobStorage {
             }
         }
         
+        return URL(string: urlString)
+    }
+    // Function to construct the URL of the image in Azure Blob Storage
+    func getImageURL(containerURL: String, blobName: String) -> URL? {
+        // Construct the base URL
+        var urlString = "\(containerURL)/\(blobName)"
         return URL(string: urlString)
     }
 }

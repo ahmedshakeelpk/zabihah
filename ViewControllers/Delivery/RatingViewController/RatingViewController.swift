@@ -40,38 +40,45 @@ class RatingViewController: UIViewController {
     @IBOutlet weak var buttonFromGoogle: UIButton!
     
     var reviewPostedHandler: (() -> ())!
-    var modelGetRestaurantDetailResponse:  DeliveryDetailsViewController3.ModelGetRestaurantDetailResponse?
-    var galleryRecentPhotos: [String]!
+    var modelGetRestaurantDetailResponse: HomeViewController.ModelRestuarantResponseData?
+
+    var galleryRecentPhotos: [String?]?
     var isPrayerPlace: Bool = false
     var pageNumberForApi: Int! = 1 {
         didSet {
-            if pageNumberForApi > 1 {
-                if pageNumberForApi > modelGetByType?.totalPages ?? 0 {
-                    return()
+            DispatchQueue.main.async {
+                if self.pageNumberForApi > 1 {
+                    if self.pageNumberForApi > self.modelGetReview?.totalPages ?? 0 {
+                        return()
+                    }
+                    self.getMyReviews()
                 }
-                getbytype()
             }
         }
     }
-    var modelGetByType: ModelGetByType? {
+    var modelGetReview: ModelGetReview? {
         didSet {
-            tableView.reloadData()
-            
-            if let reviewDataObj = modelGetByType?.reviewDataObj {
-                viewRatingCosmo.rating = Double(reviewDataObj.avgRating ?? 0)
-                labelReview.text = "\(reviewDataObj.totalReviews ?? 0) reviews"
-                labelRating.text = "\(reviewDataObj.avgRating ?? 0)"
-                labelProgressOne.text = "\(reviewDataObj.top1 ?? 0)%"
-                labelProgressTwo.text = "\(reviewDataObj.top2 ?? 0)%"
-                labelProgressThree.text = "\(reviewDataObj.top3 ?? 0)%"
-                labelProgressFour.text = "\(reviewDataObj.top4 ?? 0)%"
-                labelProgressFive.text = "\(reviewDataObj.top5 ?? 0)%"
-                progressBarOne.progress = Float(modelGetByType?.reviewDataObj?.top1 ?? 0)/100
-                progressBarTwo.progress = Float(modelGetByType?.reviewDataObj?.top2 ?? 0)/100
-                progressBarThree.progress = Float(modelGetByType?.reviewDataObj?.top3 ?? 0)/100
-                progressBarFour.progress = Float(modelGetByType?.reviewDataObj?.top4 ?? 0)/100
-                let value = Float(modelGetByType?.reviewDataObj?.top5 ?? 0)/100
-                progressBarFive.progress = value
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                if let reviewDataObj = self.modelGetReview?.items {
+                    
+                    let rating = self.calculateRatings(for: reviewDataObj)
+                    self.labelRating.text = rating.1 ?? "0"
+                    self.viewRatingCosmo.rating = Double(rating.1 ?? "0") ?? 0.0
+                    self.labelReview.text = "\(reviewDataObj.count) reviews"
+                    self.labelProgressOne.text = "\(rating.0[0])"
+                    self.labelProgressTwo.text = "\(rating.0[1])"
+                    self.labelProgressThree.text = "\(rating.0[2])"
+                    self.labelProgressFour.text = "\(rating.0[3])"
+                    self.labelProgressFive.text = "\(rating.0[4])"
+                    
+                    
+                    self.progressBarOne.progress = (Float(rating.2[0]))/100
+                    self.progressBarTwo.progress = (Float(rating.2[1]))/100
+                    self.progressBarThree.progress = (Float(rating.2[2]))/100
+                    self.progressBarFour.progress = (Float(rating.2[3]))/100
+                    self.progressBarFive.progress = (Float(rating.2[4]))/100
+                }
             }
         }
     }
@@ -84,7 +91,7 @@ class RatingViewController: UIViewController {
         tableView.refreshControl?.tintColor = .clear
     }
     @objc func pulledRefreshControl() {
-        getbytype()
+        getMyReviews()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.pullControl.endRefreshing()
         }
@@ -95,7 +102,7 @@ class RatingViewController: UIViewController {
         
         RatingViewControllerCell.register(tableView: tableView)
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 30, right: 0)
-        getbytype()
+        getMyReviews()
         
         labelTitle.text = "Reviews of \(stringTitle)"
     }
@@ -113,8 +120,13 @@ class RatingViewController: UIViewController {
         buttonZabiha.tag = 1
         buttonYelp.tag = 0
         buttonFromGoogle.tag = 0
+        resetTableView()
+    }
+    func resetTableView() {
         pageNumberForApi = 1
-        getbytype()
+        modelGetReview = nil
+        tableView.reloadData()
+        getMyReviews()
     }
     @IBAction func buttonYelp(_ sender: Any) {
         viewLineZabiha.isHidden = true
@@ -123,8 +135,7 @@ class RatingViewController: UIViewController {
         buttonZabiha.tag = 0
         buttonYelp.tag = 1
         buttonFromGoogle.tag = 0
-        pageNumberForApi = 1
-        getbytype()
+        resetTableView()
     }
     @IBAction func buttonFromGoogle(_ sender: Any) {
         viewLineZabiha.isHidden = true
@@ -133,13 +144,12 @@ class RatingViewController: UIViewController {
         buttonZabiha.tag = 0
         buttonYelp.tag = 0
         buttonFromGoogle.tag = 1
-        pageNumberForApi = 1
-        getbytype()
+        resetTableView()
     }
     
     func navigateToAddAddressViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
-        vc.galleryRecentPhotos = modelGetByType?.reviewDataObj?.reviewData?[index]?.images ?? []
+//        vc.galleryRecentPhotos = modelGetByType?.reviewDataObj?.reviewData?[index]?.images ?? []
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -152,51 +162,74 @@ class RatingViewController: UIViewController {
     func navigateToWriteReviewViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
         vc.isPrayerPlace = isPrayerPlace
-        vc.galleryRecentPhotos = galleryRecentPhotos
+//        vc.galleryRecentPhotos = galleryRecentPhotos
         vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
         vc.reviewPostedHandler = {
-//            self.reviewPostedHandler?()
+            self.reviewPostedHandler?()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.getbytype()
+                self.resetTableView()
             }
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func getbytype() {
-        let parameters = [
-            "id": modelGetRestaurantDetailResponse?.restuarantResponseData?.id ?? "",
-            "type": isPrayerPlace ? "prayer" : "rest",
-            "reviewType": buttonZabiha.tag == 1 ? "zabiha" : buttonYelp.tag == 1 ? "yelp" : "google",
-            "page": pageNumberForApi!
-        ] as [String : Any]
+    func getMyReviews() {
+        //        Available values : None, Restaurant, Mosque
+        var parameters = [
+            "type": isPrayerPlace ? "Mosque" : "Restaurant",
+            "pageSize": "20",
+            "page": "\(pageNumberForApi!)"
+        ] as [String : String]
         
-        APIs.postAPI(apiName: .getbytype, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
-            var model: ModelGetByType? = APIs.decodeDataToObject(data: responseData)
-           
-            if self.pageNumberForApi > 1 {
-                if let record = self.modelGetByType?.reviewDataObj?.reviewData {
-                    var oldModel = record
-                    oldModel.append(contentsOf: model?.reviewDataObj?.reviewData ?? [])
-                    model?.reviewDataObj?.reviewData = oldModel
-                }
-            }
-            self.modelGetByType = model
+        if buttonFromGoogle.tag == 1 {
+            parameters["placeId"] = modelGetRestaurantDetailResponse?.id ?? ""
         }
+        
+        APIs.getAPI(
+            apiName:
+                buttonZabiha.tag == 1 ? .getMyReview :
+                buttonYelp.tag == 1 ? .getYelpReview :
+                    .getGoogleReview,
+            parameters: parameters,
+            isPathParameters: false,
+            methodType: .get,
+            viewController: self
+        ) { responseData, success, errorMsg, statusCode in
+            var model: ModelGetReview? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                if self.pageNumberForApi > 1 {
+                    if let record = self.modelGetReview?.items {
+                        var oldModel = record
+                        oldModel.append(contentsOf: model?.items ?? [])
+                        model?.items = oldModel
+                    }
+                }
+                self.modelGetReview = model
+            }
+        }
+        
+        //        let parameters = [
+        //            "id": reviewDatum.id ?? "",
+        //            "placeId": modelGetRestaurantDetailResponse?.id ?? "",
+        //            "rating": viewStarCasmo.rating,
+        //            "comment": textViewReview.text!,
+        //            "willReturn": buttonRadioYes.tag == 1,
+        //            "photoWebUrls": arrayAllUpLoadedPhotos
+        //        ] as [String : Any]
     }
 }
 
 extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelGetByType?.reviewDataObj?.reviewData?.count ?? 0
+        return modelGetReview?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RatingViewControllerCell") as! RatingViewControllerCell
         cell.index = indexPath.row
-        cell.reviewDatum = modelGetByType?.reviewDataObj?.reviewData?[indexPath.row]
-        cell.galleryRecentPhotos = modelGetByType?.reviewDataObj?.reviewData?[indexPath.row]?.images ?? []
+        cell.modelGetReviewData = modelGetReview?.items?[indexPath.row]
+        cell.galleryRecentPhotos = modelGetReview?.items?[indexPath.row]?.photoWebUrls ?? []
         cell.didSelectItemHandler = didSelectItemHandler
         cell.tapOnViewMoreHandler = tapOnViewMoreHandler
         
@@ -211,51 +244,114 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
     //Show Last Cell (for Table View)
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        if indexPath.row == ((modelGetByType?.reviewDataObj?.reviewData?.count ?? 0) - 1) {
-            print("came to last row")
-            pageNumberForApi += 1
-        }
+//        if indexPath.row == ((modelGetByType?.reviewDataObj?.reviewData?.count ?? 0) - 1) {
+//            print("came to last row")
+//            pageNumberForApi += 1
+//        }
         cell.layoutSubviews()
         cell.layoutIfNeeded()
     }
 }
 
 extension RatingViewController {
-    // MARK: - ModelGetByType
-    // MARK: - ModelGetByType
-    struct ModelGetByType: Codable {
-        let totalCounts: Int?
-        let images: [String]?
-        var reviewDataObj: ReviewDataObj?
-        let totalPages: Int?
-        let success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
-        let recordFound: Bool?
+    // MARK: - ModelGetReview
+    struct ModelGetReview: Codable {
+        let currentPage, pageSize, totalRecords, totalPages: Int?
+        let onFirstPage, onLastPage, hasNextPage, hasPreviousPage: Bool?
+        var items: [ModelGetReviewData?]?
     }
-    
-    // MARK: - ReviewDataObj
-    struct ReviewDataObj: Codable {
-        let top1, top5, top2: Int?
-        var reviewData: [ReviewDatum?]?
-        let totalReviews, top3: Int?
-        let avgRating: Double?
-        let top4: Int?
+
+    // MARK: - Item
+    struct ModelGetReviewData: Codable {
+        let id, createdBy, createdOn, updatedBy: String?
+        let updatedOn: String?
+        let isDeleted: Bool?
+        let type: String?
+        let rating: Int?
+        let comment: String?
+        let willReturn: Bool?
+        let place: Place?
+        let user: User?
+        let photoWebUrls: [String?]?
+        let photos: [HomeViewController.Photos?]?
+        var photosGallery: [String?]? {
+            return photos?.map({ model in
+                model?.photoWebUrl
+            })
+        }
     }
-    
-    // MARK: - ReviewDatum
-    struct ReviewDatum: Codable {
-        let id: String
-        let rating: Double?
-        let coverImage: String?
-        let description, period: String?
-        let createdOn: String?
-        let iconImage: String?
-        let type, userName: String?
-        let address: String?
-        let images: [String]?
-        let returning: Bool?
-        let name: String?
-        let itemId: String?
+
+    // MARK: - Place
+    struct Place: Codable {
+        let id, name, address, iconImageWebURL: String?
+    }
+
+    // MARK: - User
+    struct User: Codable {
+        let id, firstName, lastName: String?
     }
 }
+
+extension RatingViewController {
+    
+    // Calculate the rating statistics with percentage
+    func calculateRatings(for reviews: [ModelGetReviewData?]?) -> ([String], String?, [Double]) {
+        var ratingCounts = [1: 0, 2: 0, 3: 0, 4: 0, 5: 0]
+        var totalRating = 0
+
+        guard let reviews = reviews else {
+            return ([String](), "", [Double]())
+        }
+        // Count the number of each rating
+        for review in reviews {
+            if let _ = ratingCounts[review?.rating ?? 0] {
+                ratingCounts[review?.rating  ?? 0]! += 1
+            }
+            totalRating += review?.rating ?? 0
+        }
+
+        // Calculate total reviews
+        let totalReviews = reviews.count
+
+        // Calculate percentage for each rating
+        func percentage(for count: Int, total: Int) -> Double {
+            return total > 0 ? (Double(count) / Double(total)) * 100 : 0.0
+        }
+
+        let percent1Star = percentage(for: ratingCounts[1]!, total: totalReviews)
+        let percent2Star = percentage(for: ratingCounts[2]!, total: totalReviews)
+        let percent3Star = percentage(for: ratingCounts[3]!, total: totalReviews)
+        let percent4Star = percentage(for: ratingCounts[4]!, total: totalReviews)
+        let percent5Star = percentage(for: ratingCounts[5]!, total: totalReviews)
+        
+        let arrayforAllPercentagesIntValues = [
+            percent1Star,
+            percent2Star,
+            percent3Star,
+            percent4Star,
+            percent5Star
+        ]
+        let arrayforAllPercentages = [
+            "\(String(format: "%.0f", percent1Star))%",
+            "\(String(format: "%.0f", percent2Star))%",
+            "\(String(format: "%.0f", percent3Star))%",
+            "\(String(format: "%.0f", percent4Star))%",
+            "\(String(format: "%.0f", percent5Star))%"
+        ]
+
+        // Calculate the overall average rating
+        let overallAverage = totalReviews > 0 ? Double(totalRating) / Double(totalReviews) : 0.0
+
+        // Display rating percentages and overall average
+        print("1-Star: \(String(format: "%.2f", percent1Star))%")
+        print("2-Star: \(String(format: "%.2f", percent2Star))%")
+        print("3-Star: \(String(format: "%.2f", percent3Star))%")
+        print("4-Star: \(String(format: "%.2f", percent4Star))%")
+        print("5-Star: \(String(format: "%.2f", percent5Star))%")
+        print("Overall Average Rating: \(String(format: "%.2f", overallAverage))")
+        
+        return (arrayforAllPercentages, String(format: "%.2f", overallAverage), arrayforAllPercentagesIntValues)
+
+    }
+}
+

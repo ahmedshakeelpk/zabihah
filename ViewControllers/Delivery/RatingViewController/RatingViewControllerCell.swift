@@ -8,8 +8,6 @@
 import UIKit
 import Cosmos
 
-
-
 class RatingViewControllerCell: UITableViewCell {
     @IBOutlet weak var viewStarRating: CosmosView!
     @IBOutlet weak var labelTimeAgo: UILabel!
@@ -29,27 +27,28 @@ class RatingViewControllerCell: UITableViewCell {
     var tapOnViewMoreHandler: ((Int) -> ())!
 
     
-    var galleryRecentPhotos: [String]! {
+    var galleryRecentPhotos: [String?]? {
         didSet {
-            viewGalleryBackGround.isHidden = !(galleryRecentPhotos.count > 0)
+            viewGalleryBackGround.isHidden = !(galleryRecentPhotos?.count ?? 0 > 0)
             collectionView.reloadData()
         }
     }
     
-    var reviewDatum: RatingViewController.ReviewDatum? {
+    var modelGetReviewData: RatingViewController.ModelGetReviewData? {
         didSet {
-            labelTitle.text = reviewDatum?.userName ?? ""
-            labelComment.text = reviewDatum?.description ?? ""
-            labelTimeAgo.text = reviewDatum?.period ?? ""
-            viewStarRating.rating = reviewDatum?.rating ?? 0
-            galleryRecentPhotos = reviewDatum?.images ?? []
+            labelTitle.text = modelGetReviewData?.place?.name ?? ""
+            labelComment.text = modelGetReviewData?.comment ?? ""
+            let dateString = modelGetReviewData?.createdOn ?? ""
+            labelTimeAgo.text = timeAgo(from: dateString)
+            viewStarRating.rating = Double(modelGetReviewData?.rating ?? 0)
+            galleryRecentPhotos = modelGetReviewData?.photoWebUrls ?? []
 //            labelViewMore.isHidden = !(labelComment.linesCount() > 3)
             loadLabelCommentData()
         }
     }
     
     func loadLabelCommentData() {
-        labelComment.text = reviewDatum?.description ?? ""
+        labelComment.text = modelGetReviewData?.comment ?? ""
         if labelComment.linesCount() > 3 {
             updateTextInLabel()
         }
@@ -148,17 +147,17 @@ extension RatingViewControllerCell: UICollectionViewDataSource, UICollectionView
     //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (galleryRecentPhotos.count > 0) ? 45 : 0, height: (galleryRecentPhotos.count > 0) ? 45 : 0)
+        return CGSize(width: (galleryRecentPhotos?.count ?? 0 > 0) ? 45 : 0, height: (galleryRecentPhotos?.count ?? 0 > 0) ? 45 : 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return galleryRecentPhotos.count
+        return galleryRecentPhotos?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentPhotoCell", for: indexPath) as! RecentPhotoCell
         DispatchQueue.main.async {
-            cell.imageViewPhoto.setImage(urlString: self.galleryRecentPhotos[indexPath.row], placeHolderIcon: "placeHolderFoodItem")
+            cell.imageViewPhoto.setImage(urlString: self.galleryRecentPhotos?[indexPath.row] ?? "", placeHolderIcon: "placeHolderFoodItem")
         }
         return cell
     }

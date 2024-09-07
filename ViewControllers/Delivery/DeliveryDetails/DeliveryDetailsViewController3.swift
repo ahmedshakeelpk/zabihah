@@ -15,7 +15,7 @@ protocol DeliveryDetailsViewController3Delegate: AnyObject {
 
 class DeliveryDetailsViewController3: UIViewController {
     
-    @IBOutlet weak var viewTagBackGround: UIView!
+    @IBOutlet weak var viewCuisinesBackGround: UIView!
     @IBOutlet weak var viewHalalSummaryBackGround: UIView!
     @IBOutlet weak var viewHalalMenuBackGround: UIView!
     @IBOutlet weak var viewAmenitiesBackGround: UIView!
@@ -30,7 +30,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var collectionViewRecentPhoto: UICollectionView!
     @IBOutlet weak var collectionViewConnect: UICollectionView!
     @IBOutlet weak var buttonBack: UIView!
-    @IBOutlet weak var collectionViewCountry: UICollectionView!
+    @IBOutlet weak var collectionViewCuisines: UICollectionView!
     @IBOutlet weak var collectionViewType: UICollectionView!
     @IBOutlet weak var collectionViewFoodItem: UICollectionView!
     @IBOutlet weak var buttonRating: UIButton!
@@ -56,19 +56,6 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var buttonCall: UIButton!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     
-    
-    var modelAddImageUrlsToPhoto: ModelAddImageUrlsToPhoto? {
-        didSet {
-            if modelAddImageUrlsToPhoto?.success ?? false {
-                if galleryRecentPhotos == nil {
-                    galleryRecentPhotos = [String]()
-                }
-                galleryRecentPhotos?.append(modelAddImageUrlsToPhoto?.imageUrls?.first ?? "")
-                galleryRecentPhotos = galleryRecentPhotos?.reversed()
-            }
-        }
-    }
-    
     var delegate: DeliveryDetailsViewController3Delegate!
     var arrayLocalGallery: [UIImage]? {
         didSet {
@@ -88,7 +75,6 @@ class DeliveryDetailsViewController3: UIViewController {
     
     var modelFeaturedResponse: HomeViewController.ModelFeaturedResponse? {
         didSet {
-            print(modelFeaturedResponse as Any)
             DispatchQueue.main.async {
                 self.setData()
             }
@@ -125,19 +111,24 @@ class DeliveryDetailsViewController3: UIViewController {
                     self.delegate.changeFavouriteStatusFromDetails(isFavourite: !isFavourite, indexPath: self.indexPath)
                 }
                 modelFeaturedResponse?.items?[0]?.isMyFavorite = !isFavourite
-                }
+            }
         }
     }
-    
+    var modelGetBlobToken: ModelGetBlobToken? {
+        didSet{
+            
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-//        isPrayerPlace = modelRestuarantResponseData.type ?? "" != "rest"
+        //        isPrayerPlace = modelRestuarantResponseData.type ?? "" != "rest"
         setConfiguration()
         getRestaurantDetail()
         enableSwipeToPop()
+        getBlobToken()
     }
     
     @IBAction func buttonFavourite(_ sender: Any) {
@@ -148,11 +139,26 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     
     @IBAction func buttonShare(_ sender: Any) {
-        let text = modelFeaturedResponse?.items?[0]?.address ?? ""
-        let textShare = [ text ]
-        let activityViewController = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
+        let shareLink = getShareLink()
+        if shareLink.isEmpty {
+            return
+        }
+        let text = shareLink
+        let textShare = [text]
+        let activityViewController = UIActivityViewController(activityItems: textShare as [Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func getShareLink() -> String {
+        if let websiteLinks = modelFeaturedResponse?.items?[0]?.webLinks?.compactMap({ model in
+            // Check if the type is "Website" (case-insensitive)
+            return model?.type?.lowercased() == "website" ? model : nil
+        }) {
+            // You now have an array of models where type is "Website"
+            return  websiteLinks.first?.value ?? ""
+        }
+        return ""
     }
     
     @IBAction func buttonRating(_ sender: Any) {
@@ -177,50 +183,60 @@ class DeliveryDetailsViewController3: UIViewController {
     func setConfiguration() {
         viewAddressDevider.circle()
         imageViewRestaurantIcon.circle()
-        HomeFoodItemSubCuisineCell.register(collectionView: collectionViewCountry)
+        HomeFoodItemSubCuisineCell.register(collectionView: collectionViewCuisines)
         RecentPhotoCell.register(collectionView: collectionViewRecentPhoto)
         UpLoadPhotoCell.register(collectionView: collectionViewRecentPhoto)
         SocialConnectCell.register(collectionView: collectionViewConnect)
         
-//        viewFavouriteBackGround.isHidden = isFeaturedCell
-        collectionViewCountry.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
+        //        viewFavouriteBackGround.isHidden = isFeaturedCell
+        collectionViewCuisines.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
         collectionViewRecentPhoto.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
         collectionViewConnect.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 30)
     }
     func setData() {
         if let restuarantResponseData = modelFeaturedResponse?.items?.first {
-            
             labelRestaurantName.text = restuarantResponseData?.name ?? ""
             labelAddress.text = restuarantResponseData?.address ?? ""
-//            labelDistanceAway.text = "\(restuarantResponseData?.distance ?? 0)\(restuarantResponseData?.distanceUnit ?? "")"
-            imageViewRestaurantIcon.setImage(urlString: restuarantResponseData?.iconImageWebUrl ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque" : "placeholderRestaurantSubIcon")
+            
+            labelDistanceAway.text = "\(oneDecimalDistance(distance:restuarantResponseData?.distance))"
+            
+            imageViewRestaurantIcon.setImage(urlString: restuarantResponseData?.iconImageWebUrl ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque2" : "placeHolderFoodItem2")
             
             labelRestaurantDetails?.text = restuarantResponseData?.description
             labelHalalSummaryDetails.text = restuarantResponseData?.halalDescription
             viewHalalSummaryBackGround.isHidden = restuarantResponseData?.halalDescription ?? "" == ""
             viewHalalMenuBackGround.isHidden = isPrayerPlace
             
-//            labelFullHalalMenu.text = restuarantResponseData.isFullHalal ?? false ? "Full halal menu" : "NO"
-//            labelAlcohol.text = restuarantResponseData.isalcohhol ?? false ? "YES" : "No alcohol"
-            if restuarantResponseData?.timings?.count ?? 0 > 0 {
-//                labelCloseOpen.text =  restuarantResponseData?.status ?? ""
-//                labelCloseOpen.text = "Open at \(is12HourFormat ? "\(modelGetRestaurantDetailResponse?.timing?.last?.openTime ?? "")".time12String : "\(modelGetRestaurantDetailResponse?.timing?.last?.openTime ?? "")".time24String)"
+            let isHalal = ((restuarantResponseData?.meatHalalStatus ?? "").lowercased() == "Full".lowercased())
+            labelFullHalalMenu.text = isHalal ? "Full halal menu" : "NO"
+            
+            let isAlcohol = !((restuarantResponseData?.alcoholPolicy ?? "").lowercased() == "NotAllowed".lowercased())
+            
+            labelAlcohol.text = isAlcohol ? "YES" : "No alcohol"
+            
+            let restaurantTiming = isRestaurantOpen(timings: restuarantResponseData?.timings ?? [])
+            if restaurantTiming.1 != nil {
+                let isClose = !(restaurantTiming.0)
+                let openOrCloseString = isClose ? "Open at" : "Close at"
+                let openOrCloseTime = isClose ? (restaurantTiming.1?.openingTime ?? "") : (restaurantTiming.1?.closingTime ?? "")
+                let openOrCloseTimeWith12HourFormat = is12HourFormat ? (openOrCloseTime).time12String : (openOrCloseTime).time24String
+                labelCloseOpen.text = "\(openOrCloseString) \(openOrCloseTimeWith12HourFormat)"
             }
+            viewShareBackGround.isHidden = getShareLink() == ""
+            
             imageViewFavourite.image = UIImage(named: restuarantResponseData?.isMyFavorite ?? false ? "heartFavourite" : "heartMehroon")
-            labelReviews.text = "\(restuarantResponseData?.reviews?.count ?? 0) reviews"
+            labelReviews.text = "\(restuarantResponseData?.totalReviews ?? 0) reviews"
             labelReturning.text = "\(getRating(averageRating: restuarantResponseData?.willReturnPercentage)) returning"
             
             labelRating.text = "Rating: \(getRating(averageRating: restuarantResponseData?.averageRating))"
-//            viewShareBackGround.isHidden = restuarantResponseData?.shareLink ?? "" == ""
             viewCallBackGround.isHidden = restuarantResponseData?.phone ?? "" == ""
-//            viewTagBackGround.isHidden = restuarantResponseData.tags == nil || restuarantResponseData.tags == ""
-//            if var tags = restuarantResponseData.tags?.split(separator: ",").map({ String($0)}) {
-//                if tags.last == "" || tags.last == " "{
-//                    tags.removeLast()
-//                }
-//                arrayNames = tags
-//                collectionViewCountry.reloadData()
-//            }
+            viewCuisinesBackGround.isHidden = restuarantResponseData?.cuisines == nil || restuarantResponseData?.cuisines == []
+            
+            if let cuisines = restuarantResponseData?.cuisines {
+                let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
+                arrayNames = filteredCuisines
+                collectionViewCuisines.reloadData()
+            }
             
             if let timing = restuarantResponseData?.timings, timing.count > 0 {
                 timingOpenClose = timing
@@ -232,12 +248,7 @@ class DeliveryDetailsViewController3: UIViewController {
             else {
                 viewAmenitiesBackGround.isHidden = true
             }
-            if let gallery = restuarantResponseData?.photoWebUrls, gallery.count > 0 {
-                galleryRecentPhotos = gallery.reversed()
-            }
-            else {
-                collectionViewRecentPhoto.reloadData()
-            }
+            galleryRecentPhotos = restuarantResponseData?.photosGallery
             if let connect = restuarantResponseData?.webLinks, connect.count > 0 {
                 connectSocial = connect
                 stackViewConnectBackGround.isHidden = false
@@ -258,56 +269,37 @@ class DeliveryDetailsViewController3: UIViewController {
     func navigateToRatingViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
         vc.stringTitle = labelRestaurantName.text!
-////        vc.galleryRecentPhotos = self.galleryRecentPhotos
-//        vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
+        vc.galleryRecentPhotos = self.galleryRecentPhotos
+        vc.modelGetRestaurantDetailResponse = modelFeaturedResponse?.items?[0]
         vc.isPrayerPlace = isPrayerPlace
         vc.reviewPostedHandler = {
             self.getRestaurantDetail()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func getRestaurantDetail2() {
-        let parameters = [
-            "lat": userLocation?.coordinate.latitude ?? 0,
-            "long": userLocation?.coordinate.longitude ?? 0,
-            "id": modelRestuarantResponseData.id ?? "",
-//            "type": modelRestuarantResponseData.type ?? ""
-        ] as [String : Any]
-        APIs.postAPI(apiName: .getrestaurantdetail, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
-            let model: ModelGetRestaurantDetailResponse? = APIs.decodeDataToObject(data: responseData)
-//            self.modelGetRestaurantDetailResponse = model
-        }
-    }
-    
-//    func openGallary() {
-//        let imagePickerController = UIImagePickerController()
-//        imagePickerController.allowsEditing = false //If you want edit option set "true"
-//        imagePickerController.sourceType = .photoLibrary
-//        imagePickerController.delegate = self
-//        self.present(imagePickerController, animated: true, completion: nil)
-//    }
     
     
     func favouriteRestaurants() {
-//        let parameters = [
-//            "placeId": modelGetRestaurantDetailResponse?.restuarantResponseData?.id ?? ""
-//        ]
-//        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: modelGetRestaurantDetailResponse?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
-//            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-//            if statusCode == 200 {
-//                self.modelPostFavouriteRestaurantsResponse = model
-//            }
-//        }
+        let parameters = [
+            "placeId": modelFeaturedResponse?.items?.first??.id ?? ""
+        ]
+        APIs.getAPI(apiName: modelFeaturedResponse?.items?.first??.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: modelFeaturedResponse?.items?.first??.isMyFavorite ?? false == true ? .delete : .post, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
+        }
     }
     
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
-//            print(modelPostFavouriteDeleteResponse as Any)
-//            if let isFavourite = self.modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites {
-//                delegate.changeFavouriteStatusFromDetails(isFavourite: !isFavourite, indexPath: indexPath)
-//                modelGetRestaurantDetailResponse?.restuarantResponseData?.isFavorites = !isFavourite
-//            }
-            //                self.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteDeleteResponse?.message ?? "", iconName: .iconError)
+            print(modelPostFavouriteDeleteResponse as Any)
+            if let isFavourite = self.modelFeaturedResponse?.items?.first??.isMyFavorite {
+                DispatchQueue.main.async {
+                    self.delegate.changeFavouriteStatusFromDetails(isFavourite: !isFavourite, indexPath: self.indexPath)
+                }
+                modelFeaturedResponse?.items?[0]?.isMyFavorite = !isFavourite
+            }
         }
     }
     
@@ -336,20 +328,20 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if (collectionViewCountry == collectionView) {
+        if (collectionViewCuisines == collectionView) {
             let width = arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]).width + 22
-            return CGSize(width: width, height: (collectionViewCountry == collectionView) ? 22 : 28)
+            return CGSize(width: width, height: (collectionViewCuisines == collectionView) ? 22 : 28)
         }
         else if (collectionViewType == collectionView) {
             let width = arrayNames[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10)]).width + 22
-            return CGSize(width: width, height: (collectionViewCountry == collectionView) ? 22 : 28)
+            return CGSize(width: width, height: (collectionViewCuisines == collectionView) ? 22 : 28)
         }
         else if (collectionViewRecentPhoto == collectionView) {
-            let width = collectionView.frame.width / 3.4
+//            let width = collectionView.frame.width / 3.4
             return CGSize(width: 90, height: 90)
         }
         else if (collectionViewConnect == collectionView) {
-            let width = collectionView.frame.width / 3.4
+//            let width = collectionView.frame.width / 3.4
             return CGSize(width: 65, height: 65)
         }
         else {
@@ -371,8 +363,8 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         switch collectionView {
         case collectionViewConnect:
             return connectSocial?.count ?? 0
-        case collectionViewCountry:
-            return arrayNames.count ?? 0
+        case collectionViewCuisines:
+            return arrayNames.count
         case collectionViewRecentPhoto:
             if section == 0 {
                 return 1
@@ -389,7 +381,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if (collectionViewCountry == collectionView) {
+        if (collectionViewCuisines == collectionView) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
             cell.labelName.text = arrayNames[indexPath.item]
             return cell
@@ -411,7 +403,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             }
             else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentPhotoCell", for: indexPath) as! RecentPhotoCell
-                cell.imageViewPhoto.setImage(urlString: galleryRecentPhotos?[indexPath.item] ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque" : "placeholderRestaurantSubIcon")
+                cell.imageViewPhoto.setImage(urlString: galleryRecentPhotos?[indexPath.item] ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque2" : "placeHolderFoodItem2")
                 return cell
             }
         }
@@ -477,10 +469,11 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (collectionViewRecentPhoto == collectionView) {
             if indexPath.section == 0 {
-//                openGallary()
                 ImagePickerManager().pickImage(self){ image in
-                        //here is the image
-                    self.uploadImage(image: image)
+                    //here is the image
+                    if let token = self.modelGetBlobToken?.uri {
+                        self.uploadImageToBlobStorage(token: token, image: image)
+                    }
                 }
             }
             else {
@@ -510,10 +503,10 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
                 }
             }
         }
-            else {
-                showToast(message: "there is no social link please update your profile")
-            }
+        else {
+            showToast(message: "there is no social link please update your profile")
         }
+    }
     
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
@@ -521,18 +514,10 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func uploadImage(image: UIImage) {
-        let parameter = ["Id": modelRestuarantResponseData.id ?? "",
-                         "type": isPrayerPlace ? "prayer" : "rest"] as [String : Any]
-        APIs.uploadImage(apiName: .AddImageUrlsToPhoto, imagesArray: [image], imageParameter: "UploadImage", parameter: parameter) { responseData, success, errorMsg, statusCode in
-            let model: ModelAddImageUrlsToPhoto? = APIs.decodeDataToObject(data: responseData)
-            self.modelAddImageUrlsToPhoto = model
-        }
-    }
 }
 
 //extension DeliveryDetailsViewController3: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-//    
+//
 //    //Image Picker
 //    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 //        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
@@ -550,7 +535,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
 //        }
 //        self.dismiss(animated: true, completion: nil)
 //    }
-//    
+//
 //    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
 //        dismiss(animated: true, completion: nil)
 //    }
@@ -568,7 +553,7 @@ extension DeliveryDetailsViewController3: MFMailComposeViewControllerDelegate {
 import Foundation
 
 class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     var picker = UIImagePickerController();
     var alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
     var viewController: UIViewController?
@@ -587,20 +572,20 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){
             UIAlertAction in
         }
-
+        
         // Add the actions
         picker.delegate = self
         alert.addAction(cameraAction)
         alert.addAction(galleryAction)
         alert.addAction(cancelAction)
     }
-
+    
     func pickImage(_ viewController: UIViewController, _ callback: @escaping ((UIImage) -> ())) {
         pickImageCallback = callback;
         self.viewController = viewController;
-
+        
         alert.popoverPresentationController?.sourceView = self.viewController!.view
-
+        
         viewController.present(alert, animated: true, completion: nil)
     }
     func openCamera(){
@@ -623,7 +608,7 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
         picker.sourceType = .photoLibrary
         self.viewController!.present(picker, animated: true, completion: nil)
     }
-
+    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
@@ -643,12 +628,12 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
         }
         pickImageCallback?(image)
     }
-
-
-
+    
+    
+    
     @objc func imagePickerController(_ picker: UIImagePickerController, pickedImage: UIImage?) {
     }
-
+    
 }
 
 
@@ -665,7 +650,7 @@ extension DeliveryDetailsViewController3 {
             cuisine: nil,
             meatHalalStatus: nil,
             alcoholPolicy: nil,
-            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
+            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos],
             orderBy: nil,
             sortOrder: nil,
             location: HomeViewController.Location(
@@ -684,10 +669,68 @@ extension DeliveryDetailsViewController3 {
             print("Failed to convert model to dictionary: \(error)")
         }
         APIs.postAPI(apiName: .search, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
-            var model: HomeViewController.ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
+            let model: HomeViewController.ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             if statusCode == 200 {
                 self.modelFeaturedResponse = model
             }
         }
+    }
+    
+    func getBlobToken() {
+        APIs.getAPI(apiName: .getBlobTokenForRestaurant, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBlobToken = model
+        }
+    }
+    
+    func uploadPhotoForRestaurant(imageUrl: String? = "") {
+        let parameters = [
+            "placeId": modelFeaturedResponse?.items?.first??.id ?? "",
+            "photoWebUrls": [
+                imageUrl
+            ]
+        ] as [String : Any]
+        APIs.postAPI(apiName: .uploadPhotoForRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 {
+                self.getRestaurantDetail()
+            }
+        }
+    }
+}
+
+struct ModelGetBlobToken: Codable {
+    let uri: String
+}
+
+///Blob Upload Storage
+extension DeliveryDetailsViewController3 {
+    func uploadImageToBlobStorage(token: String, image: UIImage) {
+        //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
+        let currentDate1 = Date()
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        
+        let tempToken = token.components(separatedBy: "?")
+        
+        let sasToken = tempToken.last ?? ""
+        let containerURL = "\(tempToken.first ?? "")"
+        print("containerURL with SAS: \(containerURL) ")
+        
+        let azureBlobStorage = AzureBlobStorage(containerURL: containerURL, sasToken: sasToken)
+        azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
+            if success {
+                print("Image uploaded successfully!")
+                if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
+                    print("Image URL: \(imageURL)")
+                    DispatchQueue.main.async {
+                        self.uploadPhotoForRestaurant(imageUrl: "\(imageURL)")
+                    }
+                } else {
+                    print("Failed to construct image URL")
+                }
+            } else {
+                print("Failed to upload image: \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }
+        return()
     }
 }

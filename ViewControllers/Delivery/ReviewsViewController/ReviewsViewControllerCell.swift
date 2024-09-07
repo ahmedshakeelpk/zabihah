@@ -35,25 +35,39 @@ class ReviewsViewControllerCell: UITableViewCell {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var galleryRecentPhotos: [String]! {
+    var galleryRecentPhotos: [String?]! {
         didSet {
             viewGalleryBackGround.isHidden = !(galleryRecentPhotos.count > 0)
             collectionView.reloadData()
         }
     }
     
-    var reviewDatum: ReviewsViewController.ReviewDatum? {
+    var modelGetReviewData: RatingViewController.ModelGetReviewData? {
         didSet {
-            labelTitle.text = reviewDatum?.userName ?? ""
-            labelAddress.text = reviewDatum?.address ?? ""
-            labelTimeAgo.text = reviewDatum?.period ?? ""
-
+            labelTitle.text = modelGetReviewData?.place?.name ?? ""
+            labelAddress.text = modelGetReviewData?.place?.address ?? ""
+            labelComment.text = modelGetReviewData?.comment ?? ""
+            let dateString = modelGetReviewData?.createdOn ?? ""
+            labelTimeAgo.text = timeAgo(from: dateString)
+            viewStarRating.rating = Double(modelGetReviewData?.rating ?? 0)
+            galleryRecentPhotos = modelGetReviewData?.photosGallery ?? [] 
+//            labelViewMore.isHidden = !(labelComment.linesCount() > 3)
             loadLabelCommentData()
-            viewStarRating.rating = reviewDatum?.rating ?? 0
-            imageViewRestaurant.setImage(urlString: reviewDatum?.iconImage ?? "", placeHolderIcon: "placeholderRestaurantSubIcon")
-            galleryRecentPhotos = reviewDatum?.images ?? []
         }
     }
+    
+//    var reviewDatum: ReviewsViewController.ModelDeleteReviewResponse? {
+//        didSet {
+//            labelTitle.text = modelGetReviewData?.place?.name ?? ""
+//            labelAddress.text = reviewDatum?.address ?? ""
+//            labelTimeAgo.text = reviewDatum?.period ?? ""
+//
+//            loadLabelCommentData()
+//            viewStarRating.rating = reviewDatum?.rating ?? 0
+//            imageViewRestaurant.setImage(urlString: reviewDatum?.iconImage ?? "", placeHolderIcon: "placeholderRestaurantSubIcon")
+//            galleryRecentPhotos = reviewDatum?.images ?? []
+//        }
+//    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -86,10 +100,8 @@ class ReviewsViewControllerCell: UITableViewCell {
         buttonCheckHandler?(index)
     }
     
-    
-    
     func loadLabelCommentData() {
-        labelComment.text = reviewDatum?.description ?? ""
+//        labelComment.text = reviewDatum?.description ?? ""
         if labelComment.linesCount() > 3 {
             updateTextInLabel()
         }
@@ -169,17 +181,17 @@ extension ReviewsViewControllerCell: UICollectionViewDataSource, UICollectionVie
     //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (galleryRecentPhotos.count > 0) ? 60 : 0, height: (galleryRecentPhotos.count > 0) ? 60 : 0)
+        return CGSize(width: (galleryRecentPhotos?.count ?? 0 > 0) ? 45 : 0, height: (galleryRecentPhotos?.count ?? 0 > 0) ? 45 : 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return galleryRecentPhotos.count
+        return galleryRecentPhotos?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentPhotoCell", for: indexPath) as! RecentPhotoCell
         DispatchQueue.main.async {
-            cell.imageViewPhoto.setImage(urlString: self.galleryRecentPhotos[indexPath.row], placeHolderIcon: "placeHolderFoodItem")
+            cell.imageViewPhoto.setImage(urlString: self.galleryRecentPhotos[indexPath.row] ?? "", placeHolderIcon: "placeHolderFoodItem")
         }
         return cell
     }

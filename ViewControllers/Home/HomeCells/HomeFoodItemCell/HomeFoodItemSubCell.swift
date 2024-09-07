@@ -132,7 +132,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             viewItemTypeBackGround.backgroundColor = .colorGreen
             
             
-            let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? [])
+            let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? []).0
             if isClose {
                 //                viewItemTypeBackGround.isHidden = !isClose
                 //                labelItemType.text = "Close"
@@ -247,7 +247,7 @@ func ifNewRestaurent(createdOn: String) -> String {
 }
 
 // Function to check if the restaurant is open
-func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> Bool {
+func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> (Bool, HomeViewController.Timing?) {
     // Get the current day and time
     let currentDate = Date()
     let calendar = Calendar.current
@@ -259,7 +259,7 @@ func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> Bool {
     
     // Find the opening and closing times for the current day
     guard let todayTiming = timings?.first(where: { $0?.dayOfWeek == currentDayOfWeek }) else {
-        return false // If no matching day is found, return closed
+        return (false, nil) // If no matching day is found, return closed
     }
     
     // Create DateFormatter for time comparison
@@ -269,14 +269,14 @@ func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> Bool {
     // Parse the opening and closing times
     guard let openingTime = timeFormatter.date(from: todayTiming?.openingTime ?? ""),
           let closingTime = timeFormatter.date(from: todayTiming?.closingTime ?? "") else {
-        return false
+        return (false, todayTiming)
     }
     
     // Get the current time as a Date object
     let currentTime = timeFormatter.date(from: timeFormatter.string(from: currentDate))!
     
     // Check if the current time is within the opening and closing times
-    return currentTime >= openingTime && currentTime <= closingTime
+    return (currentTime >= openingTime && currentTime <= closingTime, todayTiming)
 }
 
 func getAllUniqueCuisines(items: [HomeViewController.ModelRestuarantResponseData?]?) -> [ HomeViewController.ModelCuisine] {
@@ -296,3 +296,28 @@ func getAllUniqueCuisines(items: [HomeViewController.ModelRestuarantResponseData
 }
 
 
+
+import Foundation
+
+func timeAgo(from dateString: String) -> String {
+    // Define the date formatter
+    let dateFormatter = ISO8601DateFormatter()
+    dateFormatter.formatOptions = [.withInternetDateTime]
+    
+    // Convert the string to a Date object
+    guard let date = dateFormatter.date(from: dateString) else {
+        return "Invalid date"
+    }
+    
+    // Calculate the time interval from now
+    let timeInterval = Date().timeIntervalSince(date)
+    
+    // Use DateComponentsFormatter to calculate the time difference
+    let formatter = DateComponentsFormatter()
+    formatter.unitsStyle = .full
+    formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
+    formatter.maximumUnitCount = 1  // Show only the largest unit
+    
+    // Return the formatted time difference as a string
+    return formatter.string(from: timeInterval) ?? "Just now"
+}

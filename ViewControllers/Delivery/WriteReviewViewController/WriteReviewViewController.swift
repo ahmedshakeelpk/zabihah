@@ -23,6 +23,8 @@ class WriteReviewViewController: UIViewController {
     @IBOutlet weak var imageViewNo: UIImageView!
     @IBOutlet weak var buttonSubmitYourReview: UIButton!
     
+    var arrayAllUpLoadedPhotos = [String]()
+    
     var textViewCount = 0 {
         didSet {
             if textViewReview.text == placeholderText {
@@ -34,15 +36,15 @@ class WriteReviewViewController: UIViewController {
             viewButtonSubmitYourReviewBackGround?.backgroundColor = textViewCount <= 0 ? .clrDisableButton : .clrLightBlue
         }
     }
-    var modelGetRestaurantDetailResponse:  DeliveryDetailsViewController3.ModelGetRestaurantDetailResponse?
-    var reviewDatum: ReviewsViewController.ReviewDatum!
+    var modelGetRestaurantDetailResponse:  HomeViewController.ModelRestuarantResponseData?
+    var reviewDatum: RatingViewController.ModelGetReviewData!
     
     var isPrayerPlace: Bool = false
     
     var isFromEditReview: Bool = false
     let placeholderText = "Write..."
-    var galleryRecentPhotos: [String]!
-    var arrayDeletePhotos: [String]!
+    var galleryRecentPhotos: [String?]?
+    var arrayDeletePhotos: [String?]?
     var arrayLocalGallery: [UIImage]? {
         didSet {
             DispatchQueue.main.async {
@@ -55,12 +57,18 @@ class WriteReviewViewController: UIViewController {
     
     var modelPostReview: ModelPostReview! {
         didSet {
-            if modelPostReview.success ?? false {
+            if modelPostReview.id != "" {
                 popViewController(animated: true)
                 DispatchQueue.main.async {
                     self.reviewPostedHandler?()
                 }
             }
+        }
+    }
+    
+    var modelGetBlobToken: ModelGetBlobToken? {
+        didSet{
+            
         }
     }
     
@@ -85,6 +93,7 @@ class WriteReviewViewController: UIViewController {
             setData()
         }
         textViewCount = 0
+        getBlobToken()
     }
     func getStarRating() {
         viewStarCasmo.didTouchCosmos = { [self] rating in
@@ -110,19 +119,50 @@ class WriteReviewViewController: UIViewController {
         if textViewReview.text == "" {
             return
         }
-        if isFromEditReview {
-            editReview()
-        }
+        if arrayLocalGallery?.count ?? 0 > 0{
+            if let token = self.modelGetBlobToken?.uri {
+                for image in arrayLocalGallery ?? [] {
+                    self.uploadImageToBlobStorage(token: token, image: image)
+                }
+            }
+            else {
+                getBlobToken()
+            }
+        } 
         else {
-            postReview()
+            if isFromEditReview {
+                editReview()
+            }
+            else {
+                postReview()
+            }
         }
+        
+//        if isFromEditReview {
+//            editReview()
+//        }
+//        else {
+//            if arrayLocalGallery?.count ?? 0 > 0{
+//                if let token = self.modelGetBlobToken?.uri {
+//                    for image in arrayLocalGallery ?? [] {
+//                        self.uploadImageToBlobStorage(token: token, image: image)
+//                    }
+//                }
+//                else {
+//                    getBlobToken()
+//                }
+//            }
+//            else {
+//                postReview()
+//            }
+//        }
     }
     
     func setData() {
         textViewReview.textColor = .black
-        viewStarCasmo.rating = reviewDatum.rating ?? 0
-        textViewReview.text = reviewDatum.description
-        if reviewDatum.returning ?? false {
+        viewStarCasmo.rating = Double(reviewDatum.rating ?? 0)
+        textViewReview.text = reviewDatum.comment
+        if reviewDatum.willReturn ?? false {
             imageViewYes.image = UIImage(named: "radioCheck")
             imageViewNo.image = UIImage(named: "radioUnCheck")
             buttonRadioYes.tag = 1
@@ -132,7 +172,7 @@ class WriteReviewViewController: UIViewController {
             imageViewNo.image = UIImage(named: "radioCheck")
             buttonRadioYes.tag = 0
         }
-        galleryRecentPhotos = reviewDatum.images
+        galleryRecentPhotos = reviewDatum.photoWebUrls
     }
     
     func navigateToAddAddressViewController() {
@@ -143,40 +183,46 @@ class WriteReviewViewController: UIViewController {
     
     func postReview() {
         let parameters = [
-            "ItemId": modelGetRestaurantDetailResponse?.restuarantResponseData?.id ?? "",
-            "Type": isPrayerPlace ? "prayer" : "rest",
-            "Rating": viewStarCasmo.rating,
-            "IsReturning": buttonRadioYes.tag == 1,
-            "Description": textViewReview.text!
-            //            "Images": isPrayerPlace ? "prayer" : "rest"
+            "placeId": modelGetRestaurantDetailResponse?.id ?? "",
+            "rating": viewStarCasmo.rating,
+            "comment": textViewReview.text!,
+            "willReturn": buttonRadioYes.tag == 1,
+            "photoWebUrls": arrayAllUpLoadedPhotos
         ] as [String : Any]
         
-        APIs.uploadImage(apiName: .postreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "Images", parameter: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.postAPI(apiName: .postReview, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData)
-            DispatchQueue.main.async {
-                self.modelPostReview = model
+            if statusCode == 200 {
+                self.modelPostReview = model  
             }
         }
     }
     
     func editReview() {
+//        let parameters = [
+//            "id": reviewDatum.id ?? "",
+//            "ItemId": reviewDatum.itemId ?? "",
+//            "DeleteImages": arrayDeletePhotos ?? [],
+//            "Rating": viewStarCasmo.rating,
+//            "IsReturning": buttonRadioYes.tag == 1,
+//            "Description": textViewReview.text!
+//            //            "newImages": arrayLocalGallery,
+//        ] as [String : Any]
+        
         let parameters = [
             "id": reviewDatum.id ?? "",
-            "ItemId": reviewDatum.itemId ?? "",
-            "DeleteImages": arrayDeletePhotos ?? [],
-            "Type": isPrayerPlace ? "prayer" : "rest",
-            "Rating": viewStarCasmo.rating,
-            "IsReturning": buttonRadioYes.tag == 1,
-            "Description": textViewReview.text!
-            //            "newImages": arrayLocalGallery,
+            "placeId": modelGetRestaurantDetailResponse?.id ?? "",
+            "rating": viewStarCasmo.rating,
+            "comment": textViewReview.text!,
+            "willReturn": buttonRadioYes.tag == 1,
+            "photoWebUrls": arrayAllUpLoadedPhotos
         ] as [String : Any]
         
-        APIs.uploadImage(apiName: .editreview, imagesArray: arrayLocalGallery ?? [], imageParameter: "newImages", parameter: parameters, requestType: "PUT", viewController: self) { responseData, success, errorMsg, statusCode in
-            if let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData) {
-                DispatchQueue.main.async {
-                    self.modelPostReview = model
-                }
-            }
+        
+        APIs.postAPI(apiName: .postReview, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                self.modelPostReview = model            }
         }
     }
     
@@ -190,8 +236,8 @@ class WriteReviewViewController: UIViewController {
             if arrayDeletePhotos == nil {
                 arrayDeletePhotos = [String]()
             }
-            arrayDeletePhotos.append(galleryRecentPhotos[indexPath.item])
-            galleryRecentPhotos.remove(at: indexPath.item)
+            arrayDeletePhotos?.append(galleryRecentPhotos?[indexPath.item] ?? "")
+            galleryRecentPhotos?.remove(at: indexPath.item)
         }
         self.reviewButtonHandler()
         collectionView.reloadData()
@@ -201,6 +247,13 @@ class WriteReviewViewController: UIViewController {
         let completeText = "\((textViewReview.text ?? ""))"
         self.labelTextViewCount.text = "\(completeText.count)/500"
         self.textViewCount = textViewReview.text.count
+    }
+    
+    func getBlobToken() {
+        APIs.getAPI(apiName: .getBlobTokenForReview, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBlobToken = model
+        }
     }
 }
 
@@ -352,11 +405,68 @@ extension WriteReviewViewController: UICollectionViewDataSource, UICollectionVie
 extension WriteReviewViewController {
     // MARK: - ModelPostReview
     struct ModelPostReview: Codable {
-        let recordFound, success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
-        let totalCounts, totalPages: Int?
-        let images: [String]?
-        //        let reviewDataObj: JSONNull?
+        let rating: Int?
+        let id: String?
+        let createdOn, updatedOn: String?
+        let willReturn: Bool?
+        let type, comment: String?
+        let isDeleted: Bool?
+        let photoWebUrls: [String]?
+        let createdBy, updatedBy: String?
+        let place: Place?
+    }
+
+    // MARK: - Place
+    struct Place: Codable {
+        let id: String?
+        let iconImageWebUrl: String?
+        let name, address: String?
+    }
+}
+
+///Blob Upload Storage
+extension WriteReviewViewController {
+    func uploadImageToBlobStorage(token: String, image: UIImage) {
+        //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
+        let currentDate1 = Date()
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        
+        let tempToken = token.components(separatedBy: "?")
+        
+        let sasToken = tempToken.last ?? ""
+        let containerURL = "\(tempToken.first ?? "")"
+        print("containerURL with SAS: \(containerURL) ")
+        
+        let azureBlobStorage = AzureBlobStorage(containerURL: containerURL, sasToken: sasToken)
+        azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
+            if success {
+                print("Image uploaded successfully!")
+                if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
+                    print("Image URL: \(imageURL)")
+                    DispatchQueue.main.async {
+                        self.arrayAllUpLoadedPhotos.append("\(imageURL)")
+                        self.allPhotosUploaded()
+                    }
+                } else {
+                    print("Failed to construct image URL")
+                }
+            } else {
+                print("Failed to upload image: \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }
+        return()
+    }
+    
+    func allPhotosUploaded() {
+        if self.arrayAllUpLoadedPhotos.count == self.arrayLocalGallery?.count {
+            galleryRecentPhotos?.append(contentsOf: arrayAllUpLoadedPhotos)
+            arrayAllUpLoadedPhotos = galleryRecentPhotos?.compactMap { $0 } ?? []
+            if isFromEditReview {
+                self.editReview()
+            }
+            else {
+                self.postReview()
+            }
+        }
     }
 }

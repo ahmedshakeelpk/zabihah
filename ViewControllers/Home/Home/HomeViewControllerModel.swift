@@ -67,6 +67,7 @@ extension HomeViewController {
         case reviews = "Reviews"
         case cuisines = "Cuisines"
         case timings = "Timings"
+        case photos = "Photos"
     }
     enum DistanceUnit: String, Codable {
         case none = "None"
@@ -259,13 +260,25 @@ extension HomeViewController {
         let createdOn: String?
         var isFavorites: Bool?
         var totalPhotos: Int?
-        
+        let photos: [Photos?]?
         let photoWebUrls: [String?]?
         var isMyFavorite: Bool?
         let iconImageWebUrl: String?
         let coverImageWebUrl: String?
+        
+        var photosGallery: [String?]? {
+            return photos?.map({ model in
+                model?.photoWebUrl
+            })
+        }
     }
+    
+    
 
+    // MARK: - Photo
+    struct Photos: Codable {
+        let photoWebUrl: String?
+    }
     enum Rating: Codable {
         case int(Int)
         case string(String)

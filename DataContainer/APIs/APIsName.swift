@@ -32,14 +32,26 @@ struct APIsName {
         //MARK:- Faq
         case faq = "Faq"
 
+        //MARK:- Blob
+        case uploadPhotoForRestaurant = "Restaurant/photo"
+        case getBlobTokenForRestaurant = "Restaurant/photo/generate/sas/upload"
+        
+        
+        case getBlobTokenForUser = "User/profile-picture/generate/sas/upload"
+        case getBlobTokenForReview = "Review/photo/generate/sas/upload"
+
+        //MARK:- Review
+        case postReview = "Review"
+        case getMyReview = "Review/my"
+        case getGoogleReview = "Review/google"
+        case getYelpReview = "Review/yelp"
+
         
         
         
         
         
         
-        
-        case getblobcontainer = "User/profile-picture/generate/sas/upload"
         
         //MARK:- Restaurant
         case gethomerestaurants = "api/Restaurant/gethomerestaurants"
@@ -66,7 +78,6 @@ struct APIsName {
         case AddImageUrlsToPhoto = "api/Blob/AddImageUrlsToPhoto"
         
         //MARK:- Review
-        case postreview = "api/Review/postreview"
         case editreview = "api/Review/editreview"
         case getbytype = "api/Review/getbytype"
         case getbyuser = "api/Review/getbyuser"
