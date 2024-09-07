@@ -127,8 +127,8 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
-        imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
-        imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
+        imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeholderMosque2")
+        imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
         imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
         viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
 //        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
@@ -257,6 +257,7 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         vc.indexPath = indexPath
         vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
         vc.userLocation = (viewController as? HomeViewController)?.userLocation
+        vc.isPrayerPlace = true
         var modelData: HomeViewController.ModelRestuarantResponseData!
 
         if let modelMosqueResponseData = restuarentResponseModel {
@@ -265,7 +266,6 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         }
         if actionType == "viewdetails" {
             viewController.navigationController?.pushViewController(vc, animated: true)
-
         }
         else if actionType == "mapdirection" {
             OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationName: modelData?.address ?? "")

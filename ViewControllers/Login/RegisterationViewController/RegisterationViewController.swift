@@ -112,7 +112,7 @@ class RegisterationViewController: UIViewController {
             }
         }
         else {
-            getblobcontainer()
+            getBlobToken()
         }
         
         return()
@@ -126,7 +126,7 @@ class RegisterationViewController: UIViewController {
                 }
             }
             else {
-                getblobcontainer()
+                getBlobToken()
             }
         }
         else {
@@ -158,7 +158,7 @@ class RegisterationViewController: UIViewController {
             textFieldPhoneNumber.text = stringPhoneEmail
             stackViewPhoneNumber.isHidden = true
         }
-        getblobcontainer()
+        getBlobToken()
     }
     @objc
     func tapFunctionOnLabel(sender:UITapGestureRecognizer) {
@@ -270,20 +270,6 @@ class RegisterationViewController: UIViewController {
         }
     }
     
-    func getblobcontainer() {
-//        let parameters: Parameters = [
-//            "containerName": "profileimage"
-//        ]
-//        
-        APIs.postAPI(apiName: .getBlobTokenForUser, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
-            
-            print(responseData)
-            print(success)
-            let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetBlobToken = model
-        }
-    }
-    
     func openDocumentPicker() {
         //        let types: [String] = [
         //            kUTTypeJPEG as String,
@@ -306,7 +292,7 @@ class RegisterationViewController: UIViewController {
     }
 
     func getBlobToken() {
-        APIs.getAPI(apiName: .getBlobTokenForRestaurant, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.getAPI(apiName: .getBlobTokenForUser, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
             self.modelGetBlobToken = model
         }

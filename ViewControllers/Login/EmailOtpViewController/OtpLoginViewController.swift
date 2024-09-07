@@ -183,7 +183,7 @@ class OtpLoginViewController: UIViewController{
             }
         }
     }
-    func sendnotification() {
+    func sendnotification2() {
         let parameters: Parameters = [
             "phone": isFromEmail ? "" : stringPhoneEmail,
             "email": isFromEmail ? stringPhoneEmail : "",
@@ -194,6 +194,26 @@ class OtpLoginViewController: UIViewController{
             
             let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelSendnotificationResponse = model
+        }
+    }
+    func sendnotification() {
+        kAccessToken = ""
+        let parameters: Parameters = [
+            "phone": isFromEmail ? "" : stringPhoneEmail,
+            "email": isFromEmail ? stringPhoneEmail : "",
+            "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
+        ]
+        
+        APIs.postAPI(apiName: .request, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode  in
+
+            if statusCode == 200 && responseData == nil {
+                let responseModel =  LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                self.modelSendnotificationResponse = responseModel
+            }
+            else {
+                let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSendnotificationResponse = model
+            }
         }
     }
 }

@@ -26,11 +26,7 @@ class LoginViewController: UIViewController {
             kModelUserConfigurationResponse = modelUserConfigurationResponse
         }
     }
-    override func viewDidAppear(_ animated: Bool) {
-        if kAccessToken != "" {
-            navigateToRootHomeViewController()
-        }
-    }
+   
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if #available(iOS 13.0, *) {
             return .lightContent
@@ -53,6 +49,9 @@ class LoginViewController: UIViewController {
         viewBackGroundApple.radius(radius: 8, color: .colorBorder, borderWidth: 1)
         
         userConfiguration()
+        if kAccessToken != "" {
+            getUser()
+        }
     }
     
     @IBAction func buttonEmailLogin(_ sender: Any) {
@@ -147,5 +146,27 @@ class LoginViewController: UIViewController {
     
     func getCurrentTimeZone() -> String {
         TimeZone.current.identifier
-    }    
+    }   
+    
+    var modelGetUserResponseLocal: HomeViewController.ModelGetUserProfileResponse? {
+        didSet {
+            DispatchQueue.main.async {
+                if self.modelGetUserResponseLocal?.isEmailVerified ?? false,
+                   self.modelGetUserResponseLocal?.isPhoneVerified ?? false {
+                    self.navigateToRootHomeViewController()
+                }
+                else {
+                    self.navigateToLoginWithEmailOrPhoneViewController(isFromEmail: !(self.modelGetUserResponseLocal?.isEmailVerified ?? false))
+                }
+            }
+        }
+    }
+    func getUser() {
+        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+            print(responseData ?? "")
+            print(success)
+            let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserResponseLocal = model
+        }
+    }
 }

@@ -464,7 +464,7 @@ extension HomeViewController {
                 let allUniqueCuisines = getAllUniqueCuisines(items: modelGetPrayerPlacesResponse?.items)
                 cuisine = allUniqueCuisines
                 sectionName = "prayer spaces near you"
-                selectedPlaceHolderIcon = "markerPrayerPlacesSelected"
+                selectedPlaceHolderIcon = "placeholderMosque2"
             }
             print(indexOf)
             let recordCount = cuisine.count

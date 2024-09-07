@@ -14,8 +14,8 @@ class HomeFoodItemSubCuisineCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.viewBackGroundName.radius(color: .clrGreen2nd, borderWidth: 2)
-        self.viewBackGroundName.backgroundColor = .clrLightGreen
+        self.viewBackGroundName.radius(color: .colorRed2, borderWidth: 1)
+        self.viewBackGroundName.backgroundColor = .clrLightRed2
         DispatchQueue.main.async {
             self.viewBackGroundName.circle()
             

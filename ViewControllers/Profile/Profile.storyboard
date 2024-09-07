@@ -1255,7 +1255,7 @@
                                                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2wH-Gk-fxO">
                                                                                                 <rect key="frame" x="9" y="19.666666666666742" width="51" height="31"/>
                                                                                                 <connections>
-                                                                                                    <action selector="switchEvents:" destination="42d-wH-NAp" eventType="valueChanged" id="L0B-x3-tEd"/>
+                                                                                                    <action selector="switchHalalEvents:" destination="42d-wH-NAp" eventType="valueChanged" id="L0B-x3-tEd"/>
                                                                                                 </connections>
                                                                                             </switch>
                                                                                         </subviews>
@@ -1499,7 +1499,7 @@
                         <outlet property="stackViewNewAndUpdate" destination="hya-1X-1Kb" id="Jym-yr-LmC"/>
                         <outlet property="stackViewPhone" destination="JZD-CH-Nf4" id="SRh-hJ-hgd"/>
                         <outlet property="stackViewSocialLogin" destination="L9r-s0-Eev" id="5Mc-oG-dUM"/>
-                        <outlet property="switchEvents" destination="2wH-Gk-fxO" id="Bwc-vj-viS"/>
+                        <outlet property="switchHalalEvents" destination="2wH-Gk-fxO" id="Bwc-vj-viS"/>
                         <outlet property="switchOffers" destination="LCW-3e-6Eb" id="H4j-Ho-ZTm"/>
                         <outlet property="textFieldEmail" destination="GXt-BH-FmX" id="3CA-Xg-RyI"/>
                         <outlet property="textFieldName" destination="GCA-02-YJR" id="Le6-Il-zZr"/>

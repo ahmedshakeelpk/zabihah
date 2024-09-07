@@ -129,6 +129,7 @@ class RatingViewController: UIViewController {
         getMyReviews()
     }
     @IBAction func buttonYelp(_ sender: Any) {
+        return()
         viewLineZabiha.isHidden = true
         viewLineYelp.isHidden = false
         viewLineFromGoogle.isHidden = true

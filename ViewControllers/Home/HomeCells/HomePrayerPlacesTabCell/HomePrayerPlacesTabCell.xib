@@ -505,7 +505,7 @@
                                                                                                 </connections>
                                                                                             </button>
                                                                                         </subviews>
-                                                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                         <constraints>
                                                                                             <constraint firstAttribute="trailing" secondItem="0uf-n5-Sak" secondAttribute="trailing" id="Ej9-XK-gZI"/>
                                                                                             <constraint firstAttribute="trailing" secondItem="uu8-bw-Izm" secondAttribute="trailing" id="KOl-7S-Kjz"/>

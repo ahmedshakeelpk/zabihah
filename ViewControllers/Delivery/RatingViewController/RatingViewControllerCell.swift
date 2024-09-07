@@ -41,7 +41,7 @@ class RatingViewControllerCell: UITableViewCell {
             let dateString = modelGetReviewData?.createdOn ?? ""
             labelTimeAgo.text = timeAgo(from: dateString)
             viewStarRating.rating = Double(modelGetReviewData?.rating ?? 0)
-            galleryRecentPhotos = modelGetReviewData?.photoWebUrls ?? []
+            galleryRecentPhotos = modelGetReviewData?.photosGallery ?? []
 //            labelViewMore.isHidden = !(labelComment.linesCount() > 3)
             loadLabelCommentData()
         }

@@ -75,7 +75,6 @@ struct APIsName {
         
         //MARK:- V1
         case getuser = "v1/User/getuser"
-        case editprofile = "v1/User/editprofile"
         
         
         //MARK:- Blob

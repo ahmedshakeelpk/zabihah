@@ -34,6 +34,8 @@ extension UIColor {
     
     static let colorOrange = UIColor(hexString: "F19434")
     static let clrLightRed = UIColor(hexString: "EE6266")
+    static let clrLightRed2 = UIColor(hexString: "#FEF3F2")
+    static let colorRed2 = UIColor(hexString: "F04438")
     static let clrLightGray = UIColor(hexString: "E5E5E5")
     static let clrBlack = UIColor(hexString: "202734")
     static let colorGreen = UIColor(hexString: "00CC96")

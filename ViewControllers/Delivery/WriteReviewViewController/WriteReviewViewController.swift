@@ -460,6 +460,9 @@ extension WriteReviewViewController {
     
     func allPhotosUploaded() {
         if self.arrayAllUpLoadedPhotos.count == self.arrayLocalGallery?.count {
+            if galleryRecentPhotos == nil {
+                galleryRecentPhotos = [String]()
+            }
             galleryRecentPhotos?.append(contentsOf: arrayAllUpLoadedPhotos)
             arrayAllUpLoadedPhotos = galleryRecentPhotos?.compactMap { $0 } ?? []
             if isFromEditReview {

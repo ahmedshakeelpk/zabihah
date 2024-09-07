@@ -54,30 +54,20 @@ class ProfileViewController: UIViewController {
             switchOffers.onTintColor = .colorApp
         }
     }
-    @IBOutlet weak var switchEvents: UISwitch!{
+    @IBOutlet weak var switchHalalEvents: UISwitch!{
         didSet{
-            switchEvents.onTintColor = .colorApp
+            switchHalalEvents.onTintColor = .colorApp
         }
     }
     @IBOutlet weak var viewTextFieldNameMainBackGround: UIView!
     @IBOutlet weak var viewTextFieldEmailMainBackGround: UIView!
     @IBOutlet weak var viewTextFieldPhoneNumberMainBackGround: UIView!
     
-    var modelGetBlobContainer: RegisterationViewController.ModelGetBlobContainer? {
-        didSet {
-            print(modelGetBlobContainer?.uri as Any)
-        }
-    }
+    
     var isUserImageUpdateCall: Bool? = false
     var modelEditProfileResponse: EditNameViewController.ModelEditProfileResponse? {
         didSet {
-            modelGetUserResponseLocal?.isSubscribedToHalalEventsNewsletter = switchEvents.isOn
-            modelGetUserResponseLocal?.isSubscribedToHalalOffersNotification = switchOffers.isOn
-            
-            if isUserImageUpdateCall ?? false {
-                isUserImageUpdateCall = false
-                getuser()
-            }
+            getuser()
         }
     }
     
@@ -99,7 +89,13 @@ class ProfileViewController: UIViewController {
     var modelGetUserResponseLocal: HomeViewController.ModelGetUserProfileResponse? {
         didSet {
             kModelGetUserProfileResponse = modelGetUserResponseLocal
-//            setData()
+            setData()
+        }
+    }
+    
+    var modelGetBlobToken: ModelGetBlobToken? {
+        didSet{
+            
         }
     }
     
@@ -112,7 +108,6 @@ class ProfileViewController: UIViewController {
         viewTextFieldNameMainBackGround.isHidden = true
         viewTextFieldEmailMainBackGround.isHidden = true
         viewTextFieldPhoneNumberMainBackGround.isHidden = true
-        setData()
         viewLabelNameBackGround.radius(radius: 6)
         viewTextFieldNameBackGround.radius(radius: 6)
         viewLabelEmailBackGround.radius(radius: 6)
@@ -127,11 +122,12 @@ class ProfileViewController: UIViewController {
         viewButtonEditBackGround.radius(radius: 8, color: .lightGray, borderWidth: 1)
 
         imageViewProfile.circle()
-        getblobcontainer()
+        setData()
+        getBlobToken()
     }
     @IBAction func buttonEditProfilePhoto(_ sender: Any) {
-        if modelGetBlobContainer == nil {
-            getblobcontainer()
+        if modelGetBlobToken == nil {
+            getBlobToken()
         }
         
         ImagePickerManager().pickImage(self){ image in
@@ -139,23 +135,17 @@ class ProfileViewController: UIViewController {
             self.imageViewProfile.image = image
             if let imageData = image.jpegData(compressionQuality: 0.75) {
                 //                let fileData = imageData
-                let token = self.modelGetBlobContainer?.uri ?? ""
+                let token = self.modelGetBlobToken?.uri ?? ""
                 self.uploadImageToBlobStorage(token: token, image: image)
             }
         }
     }
     
     @IBAction func switchOffers(_ sender: Any) {
-        let parameters: Parameters = [
-            "isUpdateSubcription": switchOffers.isOn,
-        ]
-        editprofile(parameters: parameters)
+        updateProfile(isSubscribedToHalalOffersNotification: switchOffers.isOn)
     }
-    @IBAction func switchEvents(_ sender: Any) {
-        let parameters: Parameters = [
-            "isNewsLetterSubcription": switchEvents.isOn
-        ]
-        editprofile(parameters: parameters)
+    @IBAction func switchHalalEvents(_ sender: Any) {
+        updateProfile(isSubscribedToHalalEventsNewsletter: switchOffers.isOn)
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -201,7 +191,7 @@ class ProfileViewController: UIViewController {
         textFieldPhone.text = kModelGetUserProfileResponse?.phone
         imageViewProfile.setImage(urlString: kModelGetUserProfileResponse?.profilePictureWebUrl ?? "", placeHolderIcon: "placeHolderUser")
         switchOffers.isOn = kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? false
-        switchEvents.isOn = kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? false
+        switchHalalEvents.isOn = kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? false
     }
     
     func removeCacheData() {
@@ -251,20 +241,6 @@ class ProfileViewController: UIViewController {
         }
     }
         
-    func getblobcontainer() {
-        let parameters: Parameters = [
-            "containerName": "profileimage"
-        ]
-        
-        APIs.postAPI(apiName: .getBlobTokenForUser, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
-            
-            print(responseData)
-            print(success)
-            let model: RegisterationViewController.ModelGetBlobContainer? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetBlobContainer = model
-        }
-    }
-    
     func openDocumentPicker() {
         //        let types: [String] = [
         //            kUTTypeJPEG as String,
@@ -321,12 +297,11 @@ class ProfileViewController: UIViewController {
 //        print("Action Sheet call")
 //        self.present(myActionSheet, animated: true, completion: nil)
 //    }
-         
-    func editprofile(parameters: Parameters, isUserImageUpdateCall: Bool? = false) {
-        self.isUserImageUpdateCall = isUserImageUpdateCall
-        APIs.postAPI(apiName: .editprofile, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
-            let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelEditProfileResponse = model
+    
+    func getBlobToken() {
+        APIs.getAPI(apiName: .getBlobTokenForMosque, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBlobToken = model
         }
     }
 }
@@ -361,10 +336,7 @@ extension ProfileViewController {
                 if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
                     print("Image URL: \(imageURL)")
                     DispatchQueue.main.async {
-                        let parameters: Parameters = [
-                            "photo": "\(imageURL)"
-                        ]
-                        self.editprofile(parameters: parameters, isUserImageUpdateCall: true)
+                        self.updateProfile(imageUrl: "\(imageURL)")
                     }
                 } else {
                     print("Failed to construct image URL")
@@ -374,6 +346,60 @@ extension ProfileViewController {
             }
         }
         return()
+    }
+    
+    func updateProfile2(
+        imageUrl: URL? = nil,
+        isSubscribedToHalalOffersNotification: Bool? = nil,
+        isSubscribedToHalalEventsNewsletter: Bool? = nil
+    ) {
+        let parameters: Parameters = [
+            "firstname": kModelGetUserProfileResponse?.firstName ?? "",
+            "lastName": kModelGetUserProfileResponse?.lastName ?? "",
+            "email": kModelGetUserProfileResponse?.email ?? "",
+            "phone": kModelGetUserProfileResponse?.phone ?? "",
+            "profilePictureWebUrl": imageUrl == nil ? kModelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
+            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == nil ? kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" : isSubscribedToHalalOffersNotification!,
+            "isSubscribedToHalalEventsNewsletter":
+                isSubscribedToHalalEventsNewsletter == nil ?
+            kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" :
+                isSubscribedToHalalEventsNewsletter!
+        ]
+        
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
+//            self.modelEditProfileResponse = model
+            self.getuser()
+        }
+    }
+    
+    func updateProfile(
+        imageUrl: String? = nil,
+        isSubscribedToHalalOffersNotification: Bool? = nil,
+        isSubscribedToHalalEventsNewsletter: Bool? = nil
+    ) {
+        let parameters: Parameters = [
+            "firstname": kModelGetUserProfileResponse?.firstName ?? "",
+            "lastName": kModelGetUserProfileResponse?.lastName ?? "",
+            "email": kModelGetUserProfileResponse?.email ?? "",
+            "phone": kModelGetUserProfileResponse?.phone ?? "",
+            "profilePictureWebUrl": imageUrl == nil ? kModelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
+            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == nil ? kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" : isSubscribedToHalalOffersNotification!,
+            "isSubscribedToHalalEventsNewsletter":
+                isSubscribedToHalalEventsNewsletter == nil ?
+            kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" :
+                isSubscribedToHalalEventsNewsletter!
+        ]
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let model = EditNameViewController.ModelEditProfileResponse(success: true, message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
+                self.modelEditProfileResponse = model
+            }
+            else {
+                let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelEditProfileResponse = model
+            }
+        }
     }
 }
 

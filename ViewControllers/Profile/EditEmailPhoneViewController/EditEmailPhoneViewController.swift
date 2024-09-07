@@ -62,7 +62,7 @@ class EditEmailPhoneViewController: UIViewController {
                 return()
             }
         }
-        sendnotification()
+        editprofile()
     }
     
     func setConfiguration() {
@@ -107,7 +107,11 @@ class EditEmailPhoneViewController: UIViewController {
         vc.isFromEmail = isFromEmail
         vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
         vc.isOtpSuccessFullHandler = {
-            self.editprofile()
+            self.popViewController(animated: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.editProfileResponseHandler?()
+            }
+//            self.editprofile()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -134,13 +138,14 @@ class EditEmailPhoneViewController: UIViewController {
     var modelEditProfileResponse: EditNameViewController.ModelEditProfileResponse? {
         didSet {
             if modelEditProfileResponse?.success ?? false {
-                if self.isFromEmail {
-                    kModelGetUserProfileResponse?.email = self.textFieldEmail.text!
-                }
-                else {
-                    kModelGetUserProfileResponse?.phone = self.textFieldPhoneNumber.getCompletePhoneNumber()
-                }
-                self.popViewController(animated: true)
+                sendnotification()
+//                if self.isFromEmail {
+//                    kModelGetUserProfileResponse?.email = self.textFieldEmail.text!
+//                }
+//                else {
+//                    kModelGetUserProfileResponse?.phone = self.textFieldPhoneNumber.getCompletePhoneNumber()
+//                }
+//                self.popViewController(animated: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.editProfileResponseHandler?()
                 }
@@ -162,7 +167,7 @@ class EditEmailPhoneViewController: UIViewController {
             "isSubscribedToHalalEventsNewsletter": kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? ""
         ]
         APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
-            if statusCode == 0 && responseData == nil {
+            if statusCode == 200 && responseData == nil {
                 let model = EditNameViewController.ModelEditProfileResponse(success: true, message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
                 self.modelEditProfileResponse = model
             }

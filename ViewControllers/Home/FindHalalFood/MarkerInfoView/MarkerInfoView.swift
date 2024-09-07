@@ -39,11 +39,15 @@ class MarkerInfoView: UIView {
         viewRestaurantBackGround.isHidden = false
         labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
         labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
-//        labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
-//        labelImages.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
-//        labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"
-//        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
-//        
+        labelRating.text = getRating(averageRating: modelFeaturedRestuarantResponseData?.averageRating)
+        labelImages.text = "\(modelFeaturedRestuarantResponseData?.totalPhotos ?? 0)"
+        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))"
+        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
+        
+        imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
+        imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
+
+        
 //        if let iconImage = modelFeaturedRestuarantResponseData?.iconImage {
 //            if iconImage == "" {
 //                imageViewItem.image = UIImage(named: "placeHolderRestaurant")

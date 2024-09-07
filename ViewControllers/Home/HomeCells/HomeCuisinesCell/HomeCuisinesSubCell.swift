@@ -20,14 +20,14 @@ class HomeCuisinesSubCell: UICollectionViewCell {
             labelName.text = modelCuisine?.name
             imageViewTitle.setImage(urlString: modelCuisine?.iconImageWebUrl ?? "", placeHolderIcon: selectedPlaceHolderIcon) {
                 image in
-                if image == nil {
-                    self.imageViewTitle.isHidden = true
-                    self.imageViewPlaceHolder.image = UIImage(named: self.selectedPlaceHolderIcon)
-                }
-                else {
-                    self.imageViewTitle.isHidden = false
-                    self.imageViewPlaceHolder.isHidden = true
-                }
+//                if image == nil {
+//                    self.imageViewTitle.isHidden = true
+//                    self.imageViewPlaceHolder.image = UIImage(named: self.selectedPlaceHolderIcon)
+//                }
+//                else {
+//                    self.imageViewTitle.isHidden = false
+//                    self.imageViewPlaceHolder.isHidden = true
+//                }
             }
         }
     }

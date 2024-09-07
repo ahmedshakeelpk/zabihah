@@ -641,7 +641,7 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
 extension DeliveryDetailsViewController3 {
     func getRestaurantDetail() {
         var parameters = [String: Any]()
-        let parts: [HomeViewController.PlacePart] = isPrayerPlace ? [.none] : [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos]
+        let parts: [HomeViewController.PlacePart] = isPrayerPlace ? [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos] : [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos]
         let featureRequestModel: HomeViewController.ModelFeaturedRequest = HomeViewController.ModelFeaturedRequest(
             ids: [modelRestuarantResponseData.id ?? ""],
             rating: nil,

@@ -29,7 +29,7 @@
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cla-Mp-6YC">
                                                 <rect key="frame" x="0.0" y="0.0" width="79" height="75"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="markerPrayerPlacesSelected" translatesAutoresizingMaskIntoConstraints="NO" id="B7n-FT-G7h">
+                                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="markerPrayerPlacesSelected" translatesAutoresizingMaskIntoConstraints="NO" id="B7n-FT-G7h">
                                                         <rect key="frame" x="26.666666666666671" y="21.666666666666671" width="26" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="26" id="msW-Vg-M6F"/>
