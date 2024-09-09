@@ -34,14 +34,14 @@ class RatingViewControllerCell: UITableViewCell {
         }
     }
     
-    var modelGetReviewData: HomeViewController.Review? {
+    var modelGetReviewData: RatingViewController.ModelGetReviewData? {
         didSet {
-            labelTitle.text = "\(modelGetReviewData?.user?.firstName ?? "") \(modelGetReviewData?.user?.lastName ?? "")"
+            labelTitle.text = modelGetReviewData?.place?.name ?? ""
             labelComment.text = modelGetReviewData?.comment ?? ""
             let dateString = modelGetReviewData?.createdOn ?? ""
             labelTimeAgo.text = timeAgo(from: dateString)
             viewStarRating.rating = Double(modelGetReviewData?.rating ?? 0)
-            galleryRecentPhotos = modelGetReviewData?.photoWebUrls ?? []
+            galleryRecentPhotos = modelGetReviewData?.photosGallery ?? []
 //            labelViewMore.isHidden = !(labelComment.linesCount() > 3)
             loadLabelCommentData()
         }
