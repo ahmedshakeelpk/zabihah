@@ -200,10 +200,10 @@ func getRating(averageRating: HomeViewController.Rating?) -> String {
         case .string(let stringValue):
             return stringValue
         case .none:
-            return ""
+            return "0"
         }
     } else {
-        return ""
+        return "0"
     }
 }
 

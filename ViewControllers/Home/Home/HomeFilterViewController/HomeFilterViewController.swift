@@ -69,8 +69,9 @@ class HomeFilterViewController: UIViewController {
         getStarRating()
         setSliderRange()
         if filterParametersHome != nil {
+            let km = (kModelUserConfigurationResponse.distance?.unit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "ml"
             if let radius = filterParametersHome.radius {
-                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distance?.unit ?? "ml")"
+                labelRangeEnd.text = "\(radius)\(km)"
                 
                 sliderRange.value = Float(radius) ?? 0
             }

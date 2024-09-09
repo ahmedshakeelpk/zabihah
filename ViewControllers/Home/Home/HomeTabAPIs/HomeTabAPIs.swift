@@ -22,7 +22,7 @@ extension HomeViewController {
             ids: nil,
             rating: filterParametersHome?.rating,
             page: 1,
-            pageSize: 32,
+            pageSize: 20,
             cuisine: nil,
             meatHalalStatus: filterParametersHome?.isHalal ?? false ? [.full] : nil,
             alcoholPolicy: filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
@@ -30,7 +30,7 @@ extension HomeViewController {
             orderBy: .ratingAndLocation,
             sortOrder: .descending,
             location: Location(
-                distanceUnit: DistanceUnit.miles,
+                distanceUnit: DistanceUnit.kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
@@ -64,7 +64,7 @@ extension HomeViewController {
             ids: nil,
             rating: filterParametersHome?.rating,
             page: 1,
-            pageSize: 32,
+            pageSize: 20,
             cuisine: nil,
             meatHalalStatus: filterParametersHome?.isHalal ?? false ? [.full] : nil,
             alcoholPolicy: filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],

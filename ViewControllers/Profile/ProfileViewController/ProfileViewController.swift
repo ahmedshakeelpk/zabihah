@@ -145,7 +145,7 @@ class ProfileViewController: UIViewController {
         updateProfile(isSubscribedToHalalOffersNotification: switchOffers.isOn)
     }
     @IBAction func switchHalalEvents(_ sender: Any) {
-        updateProfile(isSubscribedToHalalEventsNewsletter: switchOffers.isOn)
+        updateProfile(isSubscribedToHalalEventsNewsletter: switchHalalEvents.isOn)
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -221,7 +221,12 @@ class ProfileViewController: UIViewController {
     func deleteuser() {
         APIs.postAPI(apiName: .mySelf, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetDeleteUserResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetDeleteUserResponse = model
+            if statusCode == 200 && responseData == nil {
+                self.modelGetDeleteUserResponse =             ModelGetDeleteUserResponse(success: true, message: nil, recordFound: nil, innerExceptionMessage: nil)
+            }
+            else {
+                self.modelGetDeleteUserResponse = model
+            }
         }
     }
 
@@ -321,7 +326,7 @@ extension ProfileViewController {
     func uploadImageToBlobStorage(token: String, image: UIImage) {
         //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
         let currentDate1 = Date()
-        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".png"
         
         let tempToken = token.components(separatedBy: "?")
         
@@ -511,7 +516,7 @@ struct AzureBlobStorage {
     // Function to construct the URL of the image in Azure Blob Storage
     func getImageURL(containerURL: String, blobName: String) -> URL? {
         // Construct the base URL
-        var urlString = "\(containerURL)/\(blobName)"
+        let urlString = "\(containerURL)/\(blobName)"
         return URL(string: urlString)
     }
 }

@@ -34,6 +34,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var collectionViewType: UICollectionView!
     @IBOutlet weak var collectionViewFoodItem: UICollectionView!
     @IBOutlet weak var buttonRating: UIButton!
+    @IBOutlet weak var buttonOpenDirectionMap: UIButton!
     
     @IBOutlet weak var labelRestaurantDetails: UILabel!
     @IBOutlet weak var buttonAmenities: UIButton!
@@ -318,6 +319,10 @@ class DeliveryDetailsViewController3: UIViewController {
     
     func showSendMailErrorAlert() {
         self.showAlertCustomPopup(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", iconName: .iconError)
+    }
+    
+    @IBAction func buttonOpenDirectionMap(_ sender: Any) {
+        OpenMapDirections.present(in: self, sourceView: buttonOpenDirectionMap, latitude: modelFeaturedResponse?.items?.first??.latitude ?? 0, longitude: modelFeaturedResponse?.items?.first??.longitude ?? 0, locationName: modelFeaturedResponse?.items?.first??.address ?? "")
     }
 }
 
@@ -641,8 +646,9 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
 
 extension DeliveryDetailsViewController3 {
     func getRestaurantDetail() {
+        
         var parameters = [String: Any]()
-        let parts: [HomeViewController.PlacePart] = isPrayerPlace ? [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos] : [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos]
+        let parts: [HomeViewController.PlacePart] = [.amenities, .cuisines, .reviews, .timings, .webLinks, .photos]
         let featureRequestModel: HomeViewController.ModelFeaturedRequest = HomeViewController.ModelFeaturedRequest(
             ids: [modelRestuarantResponseData.id ?? ""],
             rating: nil,
@@ -656,8 +662,8 @@ extension DeliveryDetailsViewController3 {
             sortOrder: nil,
             location: HomeViewController.Location(
                 distanceUnit: .kilometers,
-                latitude: userLocation?.coordinate.latitude ?? 0.0,
-                longitude: userLocation?.coordinate.longitude ?? 0.0,
+                latitude: userLocation?.coordinate.latitude ?? kUserCurrentLocation?.coordinate.latitude ?? 0.0,
+                longitude: userLocation?.coordinate.longitude ?? kUserCurrentLocation?.coordinate.longitude ?? 0.0,
                 radius: 32
             )
         )
@@ -708,7 +714,7 @@ extension DeliveryDetailsViewController3 {
     func uploadImageToBlobStorage(token: String, image: UIImage) {
         //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
         let currentDate1 = Date()
-        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".png"
         
         let tempToken = token.components(separatedBy: "?")
         

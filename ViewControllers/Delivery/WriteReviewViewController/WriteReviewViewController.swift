@@ -430,7 +430,7 @@ extension WriteReviewViewController {
     func uploadImageToBlobStorage(token: String, image: UIImage) {
         //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
         let currentDate1 = Date()
-        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".png"
         
         let tempToken = token.components(separatedBy: "?")
         

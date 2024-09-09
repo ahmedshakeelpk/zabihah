@@ -199,6 +199,15 @@ extension HomeViewController {
         let distance: Int?
         let unit: String?
     }
+    // MARK: - Place
+    struct Place: Codable {
+        var id, name, address, iconImageWebURL: String
+
+        enum CodingKeys: String, CodingKey {
+            case id, name, address
+            case iconImageWebURL = "iconImageWebUrl"
+        }
+    }
 //    // MARK: - ModelGetConfigurationResponse
 //    struct ModelUserConfigurationResponse: Codable {
 //        let distanceValue: Int?
@@ -242,7 +251,7 @@ extension HomeViewController {
         let state: String?
         let totalReviews: Int?
         let amenities: [Amenity]?
-        let id: String?
+        var id: String?
         let cuisines: [ModelCuisine?]?
         let webLinks: [WebLink?]?
         let longitude: Double?
@@ -265,6 +274,8 @@ extension HomeViewController {
         var isMyFavorite: Bool?
         let iconImageWebUrl: String?
         let coverImageWebUrl: String?
+        var place: Place?
+
         
         var photosGallery: [String?]? {
             return photos?.map({ model in

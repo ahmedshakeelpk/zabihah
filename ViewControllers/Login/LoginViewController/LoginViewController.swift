@@ -166,7 +166,30 @@ class LoginViewController: UIViewController {
             print(responseData ?? "")
             print(success)
             let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetUserResponseLocal = model
+            if statusCode == 200 && responseData == nil {
+                self.modelGetUserResponseLocal =  HomeViewController.ModelGetUserProfileResponse(
+                    id: nil,
+                    lastName: nil,
+                    firstName: nil,
+                    phone:nil,
+                    isSubscribedToHalalEventsNewsletter: nil,
+                    addresses: nil,
+                    isEmailVerified: nil,
+                    createdOn: nil, 
+                    updatedOn: nil,
+                    isPhoneVerified: nil,
+                    isDeleted: nil,
+                    isSubscribedToHalalOffersNotification: nil,
+                    createdBy: nil, 
+                    profilePictureWebUrl: nil,
+                    updatedBy: nil,
+                    email: nil
+                )
+            }
+            else {
+                self.modelGetUserResponseLocal = model
+
+            }
         }
     }
 }

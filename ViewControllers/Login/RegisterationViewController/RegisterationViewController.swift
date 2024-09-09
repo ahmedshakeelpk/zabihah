@@ -231,7 +231,6 @@ class RegisterationViewController: UIViewController {
             "email": isFromEmail ? stringPhoneEmail : textFieldEmail.text!,
             "phone": isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : stringPhoneEmail,
             "profilePictureWebUrl": imageUrl!,
-            //            "photo": "https://zabihahblob.blob.core.windows.net/profileimage/742473352.835877.jpg",
             "isSubscribedToHalalOffersNotification": true,
             "isSubscribedToHalalEventsNewsletter": true,
         ]
@@ -348,7 +347,7 @@ extension RegisterationViewController {
     func uploadImageToBlobStorage(token: String, image: UIImage) {
         //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
         let currentDate1 = Date()
-        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".png"
         
         let tempToken = token.components(separatedBy: "?")
         

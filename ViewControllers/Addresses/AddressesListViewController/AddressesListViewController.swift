@@ -89,7 +89,7 @@ class AddressesListViewController: UIViewController {
     
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        vc.newAddressAddedHandler = {
+        vc.newAddressAddedHandler = { (address, location) in
             self.getUserAddress()
         }
         self.navigationController?.pushViewController(vc, animated: true)

@@ -234,10 +234,10 @@ class EditAddressViewController: UIViewController {
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         vc.modelUserAddressesResponseData = modelUserAddressesResponseData
-        vc.newAddressAddedHandler = {
+        vc.newAddressAddedHandler = { (address, location) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.popViewController(animated: true)
-                self.buttonContinueHandler?(self.labelAddress.text!, self.location!)
+                self.buttonContinueHandler?(address, location)
             }
         }
         vc.newAddress = labelAddress.text!

@@ -50,7 +50,7 @@ extension MyFavouritesViewController {
     struct ModelGetFavouriteResponse: Codable {
         let currentPage, pageSize, totalRecords, totalPages: Int?
         let onFirstPage, onLastPage, hasNextPage, hasPreviousPage: Bool?
-        let items: [ModelGetFavouriteResponseData?]?
+        var items: [HomeViewController.ModelRestuarantResponseData?]?
     }
     // MARK: - Item
     struct ModelGetFavouriteResponseData: Codable {

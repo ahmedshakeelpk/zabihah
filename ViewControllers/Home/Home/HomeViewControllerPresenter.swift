@@ -13,9 +13,11 @@ extension HomeViewController {
     
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        
-        vc.newAddressAddedHandler = {
-            self.getUserAddress()
+        vc.isFromHomeScreen = true
+        vc.newAddressAddedHandler = { (address, location) in
+            self.textFieldSearchLocation.text = address
+            self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
+//            self.getUserAddress()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }

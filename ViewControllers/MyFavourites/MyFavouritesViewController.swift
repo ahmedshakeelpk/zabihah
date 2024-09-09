@@ -121,10 +121,10 @@ class MyFavouritesViewController: UIViewController {
     @IBAction func buttonBack(_ sender: Any) {
         popViewController(animated: true)
     }
-    
+
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        vc.newAddressAddedHandler = {
+        vc.newAddressAddedHandler = { (address, location) in
             self.getFavourite()
         }
         self.navigationController?.pushViewController(vc, animated: true)
@@ -149,7 +149,7 @@ class MyFavouritesViewController: UIViewController {
     
     func deleteFavouritePlaces(index: Int) {
         let parameters = [
-            "placeId": modelGetFavouriteResponse?.items?[index]?.place.id ?? "0"
+            "placeId": modelGetFavouriteResponse?.items?[index]?.place?.id ?? "0"
         ]
         APIs.getAPI(apiName: .favouriteDelete, parameters: parameters, isPathParameters: true, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
@@ -183,7 +183,7 @@ class MyFavouritesViewController: UIViewController {
     func navigateToProfileDeleteViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
         vc.stringTitle = "Delete Favourite!"
-        let recordModel: ModelGetFavouriteResponseData!
+        let recordModel: HomeViewController.ModelRestuarantResponseData!
 
         if buttonRestaurant.tag == 1 {
             recordModel = modelGetFavouriteResponse?.items?[index]
@@ -192,7 +192,7 @@ class MyFavouritesViewController: UIViewController {
             recordModel = modelGetFavouriteResponse?.items?[index]
         }
         
-        vc.stringSubTitle = "Are you sure you want to delete \"\(recordModel?.place.name ?? "")\" from favourite places?         "
+        vc.stringSubTitle = "Are you sure you want to delete \"\(recordModel?.place?.name ?? "")\" from favourite places?         "
         vc.stringDescription = ""
         vc.stringButtonDelete = "Yes, Delete"
         vc.stringButtonCancel = "Cancel"
@@ -250,7 +250,7 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyFavouriteCell") as! MyFavouriteCell
         
-        var recordModel: MyFavouritesViewController.ModelGetFavouriteResponseData!
+        var recordModel: HomeViewController.ModelRestuarantResponseData!
         recordModel = modelGetFavouriteResponse?.items?[indexPath.row]
         
         cell.selectedIndex = buttonRestaurant.tag == 1 ? 0 : 1
@@ -265,8 +265,6 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
-        let recordModel = modelGetFavouriteResponse?.items?[indexPath.row]
-        
         selectedIndex = indexPath.row
         navigateToDeliveryDetailsViewController(indexPath: indexPath)
     }
@@ -276,11 +274,11 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
         
         vc.selectedMenuCell = 0
         vc.userLocation = kUserCurrentLocation
-        if buttonRestaurant.tag == 1 {
-//            vc.modelRestuarantResponseData = modelGetFavouriteResponse?.items?[indexPath.row]
-        }
-        else {
-//            vc.modelRestuarantResponseData = modelGetFavouriteResponse?.items?[indexPath.row]
+        var recordModel = modelGetFavouriteResponse?.items?[indexPath.row]
+        modelGetFavouriteResponse?.items?[indexPath.row]?.id = recordModel?.place?.id ?? ""
+        vc.modelRestuarantResponseData = modelGetFavouriteResponse?.items?[indexPath.row]
+        if buttonPrayerPlaces.tag == 1 {
+            vc.isPrayerPlace = true
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }

@@ -38,6 +38,7 @@ class AddAddressViewController: UIViewController {
     let arrayNamesIconMehroon = ["houseMehroon", "briefcaseMehroon", "userMehroon", "addCircleMehroon"]
     let arrayNamesIconWhite = ["houseWhite", "briefcaseWhite", "userWhite", "addCircleWhite"]
 
+    var isFromHomeScreen = false
     var isEditAddress = false
     var newAddress = String()
     var location: CLLocationCoordinate2D? {
@@ -88,14 +89,14 @@ class AddAddressViewController: UIViewController {
     
     var locationId: String!
     var selectedCell: Int! = 0
-    var newAddressAddedHandler: (() -> ())!
+    var newAddressAddedHandler: ((String, CLLocationCoordinate2D?) -> ())!
     var addressEditHandler: ((CLLocationCoordinate2D) -> ())!
 
     var modelAddUserAddressResponse: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
             if !(modelAddUserAddressResponse?.id ?? "").isEmpty {
                 self.popViewController(animated: true)
-                self.newAddressAddedHandler?()
+                self.newAddressAddedHandler?(textFieldAddress.text!, location)
             }
             else {
                 showAlertCustomPopup(title: "Error", message: "", iconName: .iconError)

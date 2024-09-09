@@ -27,7 +27,7 @@ class MyFavouriteCell: UITableViewCell {
             
         }
     }
-    var modelGetFavouriteResponseData: MyFavouritesViewController.ModelGetFavouriteResponseData? {
+    var modelGetFavouriteResponseData: HomeViewController.ModelRestuarantResponseData? {
         didSet {
             DispatchQueue.main.async {
                 self.setData()
@@ -37,9 +37,9 @@ class MyFavouriteCell: UITableViewCell {
     
     func setData() {
         if modelGetFavouriteResponseData != nil {
-            labelTitle.text = modelGetFavouriteResponseData?.place.name ?? ""
-            labelAddress.text = modelGetFavouriteResponseData?.place.address ?? ""
-            imageViewRestaurant.setImage(urlString: modelGetFavouriteResponseData?.place.iconImageWebURL ?? "", placeHolderIcon: selectedIndex == 0 ? "placeHolderRestaurant" : "placeholderMosque2")
+            labelTitle.text = modelGetFavouriteResponseData?.place?.name ?? ""
+            labelAddress.text = modelGetFavouriteResponseData?.place?.address ?? ""
+            imageViewRestaurant.setImage(urlString: modelGetFavouriteResponseData?.place?.iconImageWebURL ?? "", placeHolderIcon: selectedIndex == 0 ? "placeHolderRestaurant" : "placeholderMosque2")
         }
     }
     
