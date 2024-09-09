@@ -13,6 +13,7 @@ extension HomeViewController {
         let ids: [String]?
         let rating: Int?
         let page: Int?
+        let keyword: String?
         let pageSize: Int?
         let cuisine: [String]?
         let meatHalalStatus: [HalalStatus]?

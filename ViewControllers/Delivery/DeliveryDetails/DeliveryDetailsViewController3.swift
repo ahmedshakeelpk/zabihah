@@ -210,6 +210,9 @@ class DeliveryDetailsViewController3: UIViewController {
             imageViewRestaurantIcon.setImage(urlString: restuarantResponseData?.iconImageWebUrl ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque2" : "placeHolderFoodItem2")
             
             labelRestaurantDetails?.text = restuarantResponseData?.description
+            if labelRestaurantDetails.linesCount() > 3 {
+                setLabelTextInThreeLine(text: restuarantResponseData?.description ?? "", label: labelRestaurantDetails)
+            }
             labelHalalSummaryDetails.text = restuarantResponseData?.halalDescription
             viewHalalSummaryBackGround.isHidden = restuarantResponseData?.halalDescription ?? "" == ""
             viewHalalMenuBackGround.isHidden = isPrayerPlace
@@ -329,6 +332,37 @@ class DeliveryDetailsViewController3: UIViewController {
     
     @IBAction func buttonOpenDirectionMap(_ sender: Any) {
         OpenMapDirections.present(in: self, sourceView: buttonOpenDirectionMap, latitude: modelFeaturedResponse?.items?.first??.latitude ?? 0, longitude: modelFeaturedResponse?.items?.first??.longitude ?? 0, locationName: modelFeaturedResponse?.items?.first??.address ?? "")
+    }
+    
+    func setLabelTextInThreeLine(text: String, label: UILabel) {
+        labelRestaurantDetails.numberOfLines = 3
+        let fullText = text
+        let moreText = "… More"
+        
+        let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, 150)))
+        
+        let attributedString = NSMutableAttributedString(string: truncatedText)
+        let moreAttributedString = NSMutableAttributedString(string: moreText, attributes: [.foregroundColor: UIColor.colorApp, .font: UIFont.systemFont(ofSize: 12, weight: .bold)])
+        
+        attributedString.append(moreAttributedString)
+        
+        label.attributedText = attributedString
+        
+        // Enable user interaction for tap gesture
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(moreTapped(_:)))
+        labelRestaurantDetails.isUserInteractionEnabled = true
+        labelRestaurantDetails.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func moreTapped(_ sender: UITapGestureRecognizer) {
+        // Retrieve the associated text
+        if let restuarantResponseData = modelFeaturedResponse?.items?.first {
+            print("More tapped with text: \(restuarantResponseData?.description ?? "")")
+            
+            // Expanding the label and setting the full text
+            labelRestaurantDetails.numberOfLines = 0
+            labelRestaurantDetails.text = restuarantResponseData?.description ?? ""
+        }
     }
 }
 
@@ -659,6 +693,7 @@ extension DeliveryDetailsViewController3 {
             ids: [modelRestuarantResponseData.id ?? ""],
             rating: nil,
             page: nil,
+            keyword: nil,
             pageSize: nil,
             cuisine: nil,
             meatHalalStatus: nil,

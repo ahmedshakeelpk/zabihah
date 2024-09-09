@@ -11,7 +11,7 @@ import GoogleMaps
 import GooglePlaces
 import CoreLocation
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var viewItemCountOnMapViewBackGround: UIView!
     @IBOutlet weak var labelItemCountOnMapView: UILabel!
@@ -331,11 +331,24 @@ class HomeViewController: UIViewController {
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
-        
+
+        textFieldFilterResult.addTarget(self, action: #selector(searchTextFieldFilterResult), for: .editingChanged)
         
         userConfiguration()
         setZoomButtons()
 //        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
+    }
+    
+    var isFilterSearch = false
+    @objc func searchTextFieldFilterResult() {
+        if isFilterSearch {
+            return()
+        }
+        isFilterSearch = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+            self.isFilterSearch = false
+            self.selectedMenuCell = self.itself(self.selectedMenuCell)
+        }
     }
     
     @IBAction func buttonFilters(_ sender: Any) {

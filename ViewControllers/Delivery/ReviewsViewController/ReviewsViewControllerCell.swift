@@ -24,6 +24,8 @@ class ReviewsViewControllerCell: UITableViewCell {
     @IBOutlet weak var labelComment: UILabel!
     @IBOutlet weak var viewGalleryBackGround: UIView!
     
+    var didTapOnViewMoreOrViewLess: ((Int) -> ())!
+    
     var isShowCompleteText = false
 
     var index: Int!
@@ -31,7 +33,6 @@ class ReviewsViewControllerCell: UITableViewCell {
     var buttonEditHandler: ((Int) -> ())!
     var buttonCheckHandler: ((Int) -> ())!
     var didSelectItemHandler: ((Int) -> ())!
-    var tapOnViewMoreHandler: ((Int) -> ())!
 
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -101,77 +102,66 @@ class ReviewsViewControllerCell: UITableViewCell {
     }
     
     func loadLabelCommentData() {
-//        labelComment.text = reviewDatum?.description ?? ""
+        labelComment.text = modelGetReviewData?.comment ?? ""
         if labelComment.linesCount() > 3 {
-            updateTextInLabel()
+            setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
         }
     }
     
-    func setLabelFontSize(completeText: String, changeText: String) {
-        let text = NSMutableAttributedString(
-            string: completeText
-        )
-        let range = text.mutableString.range(of: "View More")
-
-        if range.location != NSNotFound {
-            text.addAttribute(.font,
-                              value: UIFont.systemFont(ofSize: 14),
-                              range: range)
-        }
+    func setLabelTextInThreeLine(text: String, label: UILabel) {
+        label.numberOfLines = 3
+        let fullText = text
+        let moreText = "… View More"
+        
+        let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, 150)))
+        
+        let attributedString = NSMutableAttributedString(string: truncatedText)
+        let moreAttributedString = NSMutableAttributedString(string: moreText, attributes: [.foregroundColor: UIColor.colorApp, .font: UIFont.systemFont(ofSize: 12, weight: .bold)])
+        
+        attributedString.append(moreAttributedString)
+        
+        label.attributedText = attributedString
+        
+        // Enable user interaction for tap gesture
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewMoreTapped(_:)))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tapGesture)
     }
     
-    private func updateTextInLabel() {
-        let fullText = labelComment.text!
-        let truncatedText = truncateTextToThreeLines(text: fullText)
+    
+    @objc func viewMoreTapped(_ sender: UITapGestureRecognizer) {
+        print("More tapped with text: \(modelGetReviewData?.comment ?? "")")
+        // Expanding the label and setting the full text
+//        labelComment.text = modelGetReviewData?.comment ?? ""
+        setLabelTextInFullText(text: modelGetReviewData?.comment ?? "", label: labelComment)
+        didTapOnViewMoreOrViewLess(index)
+    }
+    func setLabelTextInFullText(text: String, label: UILabel) {
+        labelComment.numberOfLines = 0
+        let fullText = text
+        let moreText = "… View Less"
         
-        let viewMoreText =  isShowCompleteText ? " ... View Less" : "... View More"
+        let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, fullText.count)))
         
-        let fullString = NSMutableAttributedString(string: truncatedText)
-        let viewMoreAttributedString = NSAttributedString(
-            string: viewMoreText,
-            attributes: [
-                .foregroundColor: UIColor.colorApp,
-                .font: UIFont.systemFont(ofSize: 12, weight: .heavy)
-            ]
-        )
-        fullString.append(viewMoreAttributedString)
+        let attributedString = NSMutableAttributedString(string: truncatedText)
+        let moreAttributedString = NSMutableAttributedString(string: moreText, attributes: [.foregroundColor: UIColor.colorApp, .font: UIFont.systemFont(ofSize: 12, weight: .bold)])
         
-        let range = fullString.mutableString.range(of: "... View More")
-
-        if range.location != NSNotFound {
-            fullString.addAttribute(.font,
-                              value: UIFont.systemFont(ofSize: 12, weight: .heavy),
-                              range: range)
-        }
+        attributedString.append(moreAttributedString)
         
-        labelComment.attributedText = fullString
-        labelComment.isUserInteractionEnabled = true
-        labelComment.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewMoreTapped)))
+        label.attributedText = attributedString
+        
+        // Enable user interaction for tap gesture
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewLessTapped(_:)))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tapGesture)
     }
     
-    @objc func viewMoreTapped() {
-        // Handle the "View More" tap, e.g., expand the label or navigate to a detailed view
-        print("View More tapped")
-        isShowCompleteText.toggle()
-        loadLabelCommentData()
-        tapOnViewMoreHandler?(index)
+    @objc func viewLessTapped(_ sender: UITapGestureRecognizer) {
+        print("More tapped with text: \(modelGetReviewData?.comment ?? "")")
+        setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
+        
+        didTapOnViewMoreOrViewLess(index)
     }
-    private func truncateTextToThreeLines(text: String) -> String {
-        let maxLines = isShowCompleteText ? 10 : 2.8
-        let font = labelComment.font
-        let lineHeight = font?.lineHeight
-        let maxHeight = (lineHeight ?? 11) * CGFloat(maxLines)
-        
-        let size = CGSize(width: bounds.width, height: CGFloat.greatestFiniteMagnitude)
-        var truncatedText = text
-        
-        while truncatedText.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: [.font: font as Any], context: nil).height > maxHeight && truncatedText.count > 0 {
-            truncatedText = String(truncatedText.dropLast())
-        }
-        
-        return truncatedText.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    
 }
 
 extension ReviewsViewControllerCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

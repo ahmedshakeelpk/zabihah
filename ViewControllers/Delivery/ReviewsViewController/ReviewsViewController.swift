@@ -211,8 +211,8 @@ class ReviewsViewController: UIViewController {
         self.present(vc, animated: true)
     }
     
-    func tapOnViewMoreHandler(index: Int) {
-        tableView.reloadRows(at: [IndexPath(row: index, section: 1)], with: .bottom)
+    func didTapOnViewMoreOrViewLess(index: Int) {
+        tableView.reloadRows(at: [IndexPath(row: index, section: 1)], with: .none)
     }
 }
 
@@ -231,6 +231,7 @@ extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.buttonEditHandler = buttonEditAddress
         cell.buttonDeleteHandler = buttonDeleteReview
         cell.didSelectItemHandler = didSelectItemHandler
+        cell.didTapOnViewMoreOrViewLess = didTapOnViewMoreOrViewLess
         return cell
     }
     

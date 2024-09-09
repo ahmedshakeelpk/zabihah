@@ -75,7 +75,7 @@ class RatingViewController: UIViewController {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                if let reviewDataObj = self.modelGetReview?.items {
+                if let reviewDataObj = self.modelReview {
                     
                     let rating = self.calculateRatings(for: reviewDataObj)
                     self.labelRating.text = rating.1 ?? "0"
@@ -142,8 +142,12 @@ class RatingViewController: UIViewController {
         pageNumberForApi = 1
         modelGetReview = nil
         tableView.reloadData()
-        getMyReviews()
-        getRestaurantDetail()
+        if buttonZabiha.tag == 1 {
+            getRestaurantDetail()
+        }
+        else {
+            getMyReviews()
+        }
     }
     @IBAction func buttonYelp(_ sender: Any) {
         return()
@@ -171,9 +175,7 @@ class RatingViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func tapOnViewMoreHandler(index: Int) {
-        tableView.reloadRows(at: [IndexPath(row: index, section: 1)], with: .bottom)
-    }
+    
     func didSelectItemHandler(index: Int) {
         navigateToAddAddressViewController(index: index)
     }
@@ -243,6 +245,7 @@ class RatingViewController: UIViewController {
             ids: [modelGetRestaurantDetailResponse?.id ?? ""],
             rating: nil,
             page: nil,
+            keyword: nil,
             pageSize: nil,
             cuisine: nil,
             meatHalalStatus: nil,
@@ -267,22 +270,26 @@ class RatingViewController: UIViewController {
             }
         }
     }
+    
+    func didTapOnViewMoreOrViewLess(index: Int) {
+        tableView.reloadRows(at: [IndexPath(row: index, section: 1)], with: .none)
+    }
 }
 
 extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelGetReview?.items?.count ?? 0
+        return modelReview?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RatingViewControllerCell") as! RatingViewControllerCell
         cell.index = indexPath.row
-        cell.modelGetReviewData = modelGetReview?.items?[indexPath.row]
-        cell.galleryRecentPhotos = modelGetReview?.items?[indexPath.row]?.photoWebUrls ?? []
+        cell.modelGetReviewData = modelReview?[indexPath.row]
+        cell.galleryRecentPhotos = modelReview?[indexPath.row]?.photoWebUrls ?? []
         cell.didSelectItemHandler = didSelectItemHandler
-        cell.tapOnViewMoreHandler = tapOnViewMoreHandler
-        
+        cell.didTapOnViewMoreOrViewLess = didTapOnViewMoreOrViewLess
+
         return cell
     }
     

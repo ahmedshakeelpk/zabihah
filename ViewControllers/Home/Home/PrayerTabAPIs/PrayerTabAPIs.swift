@@ -22,6 +22,7 @@ extension HomeViewController {
             ids: nil,
             rating: filterParametersHome?.rating,
             page: 1,
+            keyword: textFieldFilterResult.text!,
             pageSize: 20,
             cuisine: nil,
             meatHalalStatus: nil,
