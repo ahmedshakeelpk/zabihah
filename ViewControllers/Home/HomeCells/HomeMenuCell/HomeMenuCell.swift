@@ -34,6 +34,7 @@ class HomeMenuCell: UICollectionViewCell {
         if indexPath.item == selectedMenuCell {
             viewSelectedMenuBackGround.backgroundColor = .colorApp
             imageViewTitle.tintColor = .colorApp
+            labelName.textColor = .colorApp
         }
         else {
             viewSelectedMenuBackGround.backgroundColor = .white

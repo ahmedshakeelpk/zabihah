@@ -305,7 +305,7 @@ class HomeViewController: UIViewController {
         stackViewSearchNearLocationBackGround.radius(radius: 8)
         stackViewSearchNTextFieldNearLocationBackGround.radius(radius: 8)
         viewSettingBackGround.radius(radius: 8)
-        setStatusBarTopColor(color: .clrMehroonStatusBar)
+        setStatusBarTopColor(color: .colorApp)
         textFieldSearchLocation.placeHolderColor(color: .white)
         
         HomeMenuCell.register(collectionView: collectionView)
@@ -318,7 +318,7 @@ class HomeViewController: UIViewController {
         HomePrayerPlacesTabCell.register(tableView: tableView)
         
         //MARK: - Add Extra spacing in tableView
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
 
         if #available(iOS 15.0, *) {

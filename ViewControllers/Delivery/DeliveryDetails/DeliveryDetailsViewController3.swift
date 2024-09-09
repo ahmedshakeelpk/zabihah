@@ -35,6 +35,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var collectionViewFoodItem: UICollectionView!
     @IBOutlet weak var buttonRating: UIButton!
     @IBOutlet weak var buttonOpenDirectionMap: UIButton!
+    @IBOutlet weak var labelConnectWith: UILabel!
     
     @IBOutlet weak var labelRestaurantDetails: UILabel!
     @IBOutlet weak var buttonAmenities: UIButton!
@@ -178,7 +179,11 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBAction func buttonHalalSummary(_ sender: Any) {
         buttonHalalSummary.tag = buttonHalalSummary.tag == 0 ? 1 : 0
         viewHalalSummaryDetailsBackGround.isHidden = buttonHalalSummary.tag == 0
-        self.imageViewHalalSummaryDropDown.image = UIImage(named: buttonHalalSummary.tag == 0 ? "upArrowGray" : "forwardArrowGray")
+        let imageName = buttonHalalSummary.tag == 0 ? "downArrowGray" : "forwardArrowGray"
+        self.imageViewHalalSummaryDropDown.image = nil
+        DispatchQueue.main.async {
+            self.imageViewHalalSummaryDropDown.image = UIImage(named: imageName)
+        }
     }
     
     func setConfiguration() {
@@ -197,9 +202,10 @@ class DeliveryDetailsViewController3: UIViewController {
     func setData() {
         if let restuarantResponseData = modelFeaturedResponse?.items?.first {
             labelRestaurantName.text = restuarantResponseData?.name ?? ""
-            labelAddress.text = restuarantResponseData?.address ?? ""
+            labelConnectWith.text = "Connect With \(restuarantResponseData?.name ?? "")"
+            labelAddress.text = "\(restuarantResponseData?.address ?? ""), \(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "")"
             
-            labelDistanceAway.text = "\(oneDecimalDistance(distance:restuarantResponseData?.distance))"
+            labelDistanceAway.text = "\(oneDecimalDistance(distance:restuarantResponseData?.distance)) away"
             
             imageViewRestaurantIcon.setImage(urlString: restuarantResponseData?.iconImageWebUrl ?? "", placeHolderIcon: isPrayerPlace ? "placeholderMosque2" : "placeHolderFoodItem2")
             
@@ -218,7 +224,7 @@ class DeliveryDetailsViewController3: UIViewController {
             let restaurantTiming = isRestaurantOpen(timings: restuarantResponseData?.timings ?? [])
             if restaurantTiming.1 != nil {
                 let isClose = !(restaurantTiming.0)
-                let openOrCloseString = isClose ? "Open at" : "Close at"
+                let openOrCloseString = isClose ? "Opens at" : "Closes at"
                 let openOrCloseTime = isClose ? (restaurantTiming.1?.openingTime ?? "") : (restaurantTiming.1?.closingTime ?? "")
                 let openOrCloseTimeWith12HourFormat = is12HourFormat ? (openOrCloseTime).time12String : (openOrCloseTime).time24String
                 labelCloseOpen.text = "\(openOrCloseString) \(openOrCloseTimeWith12HourFormat)"
@@ -227,9 +233,9 @@ class DeliveryDetailsViewController3: UIViewController {
             
             imageViewFavourite.image = UIImage(named: restuarantResponseData?.isMyFavorite ?? false ? "heartFavourite" : "heartMehroon")
             labelReviews.text = "\(restuarantResponseData?.totalReviews ?? 0) reviews"
-            labelReturning.text = "\(getRating(averageRating: restuarantResponseData?.willReturnPercentage)) returning"
+            labelReturning.text = "\(getRating(averageRating: restuarantResponseData?.willReturnPercentage))% returning"
             
-            labelRating.text = "Rating: \(getRating(averageRating: restuarantResponseData?.averageRating))"
+            labelRating.text = "Avg. Rating: \(getRating(averageRating: restuarantResponseData?.averageRating))"
             viewCallBackGround.isHidden = restuarantResponseData?.phone ?? "" == ""
             viewCuisinesBackGround.isHidden = restuarantResponseData?.cuisines == nil || restuarantResponseData?.cuisines == []
             

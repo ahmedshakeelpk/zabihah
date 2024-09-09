@@ -38,19 +38,19 @@
                                                         </constraints>
                                                     </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TmH-hV-gxe">
-                                                        <rect key="frame" x="1" y="1" width="77" height="73"/>
+                                                        <rect key="frame" x="10" y="10" width="59" height="55"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </imageView>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.8901960784313725" green="0.90980392156862744" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="B7n-FT-G7h" firstAttribute="centerY" secondItem="cla-Mp-6YC" secondAttribute="centerY" id="4Be-ZP-33H"/>
-                                                    <constraint firstItem="TmH-hV-gxe" firstAttribute="leading" secondItem="cla-Mp-6YC" secondAttribute="leading" constant="1" id="4Hc-bG-ZJi"/>
+                                                    <constraint firstItem="TmH-hV-gxe" firstAttribute="leading" secondItem="cla-Mp-6YC" secondAttribute="leading" constant="10" id="4Hc-bG-ZJi"/>
                                                     <constraint firstAttribute="height" constant="75" id="8dx-OF-753"/>
                                                     <constraint firstItem="B7n-FT-G7h" firstAttribute="centerX" secondItem="cla-Mp-6YC" secondAttribute="centerX" id="QQq-k8-UId"/>
-                                                    <constraint firstItem="TmH-hV-gxe" firstAttribute="top" secondItem="cla-Mp-6YC" secondAttribute="top" constant="1" id="cbZ-De-Z30"/>
-                                                    <constraint firstAttribute="trailing" secondItem="TmH-hV-gxe" secondAttribute="trailing" constant="1" id="fpf-W7-PcK"/>
-                                                    <constraint firstAttribute="bottom" secondItem="TmH-hV-gxe" secondAttribute="bottom" constant="1" id="lBU-zN-8GR"/>
+                                                    <constraint firstItem="TmH-hV-gxe" firstAttribute="top" secondItem="cla-Mp-6YC" secondAttribute="top" constant="10" id="cbZ-De-Z30"/>
+                                                    <constraint firstAttribute="trailing" secondItem="TmH-hV-gxe" secondAttribute="trailing" constant="10" id="fpf-W7-PcK"/>
+                                                    <constraint firstAttribute="bottom" secondItem="TmH-hV-gxe" secondAttribute="bottom" constant="10" id="lBU-zN-8GR"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
