@@ -162,7 +162,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if titleForHeader == "" {
             return 8
         }
-        return 50
+        return 60
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -459,13 +459,13 @@ extension HomeViewController {
             else if selectedMenuCell == 1 {
                 let allUniqueCuisines = getAllUniqueCuisines(items: modelGetHalalRestaurantResponse?.items)
                 cuisine = allUniqueCuisines
-                sectionName = "halal places near you"
+                sectionName = "\(selectedCuisine == "" ? "halal" : selectedCuisine) places near you"
                 selectedPlaceHolderIcon = "placeholderHalalFood"
             }
             else if selectedMenuCell == 3 {
                 let allUniqueCuisines = getAllUniqueCuisines(items: modelGetPrayerPlacesResponse?.items)
                 cuisine = allUniqueCuisines
-                sectionName = "prayer spaces near you"
+                sectionName = "\(selectedCuisine == "" ? "" : selectedCuisine + " ")prayer spaces near you"
                 selectedPlaceHolderIcon = "placeholderMosque2"
             }
             print(indexOf)

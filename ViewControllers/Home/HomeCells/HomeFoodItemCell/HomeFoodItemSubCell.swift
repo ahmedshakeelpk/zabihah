@@ -140,6 +140,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             }
             //            viewItemTypeBackGround.backgroundColor = .colorOrange
         }
+        viewItemTypeBackGround.isHidden = true
     }
     
     func favouriteRestaurants() {

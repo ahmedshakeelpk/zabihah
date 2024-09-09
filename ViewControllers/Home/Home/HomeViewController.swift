@@ -272,7 +272,11 @@ class HomeViewController: UIViewController {
         tableView.refreshControl?.tintColor = .clear
     }
     @objc func pulledRefreshControl() {
-        selectedMenuCell = itself(selectedMenuCell)
+        
+        textFieldSearchLocation.text = "Searching around your current location"
+        locationManager.delegate = self
+        checkLocationServices()
+//        selectedMenuCell = itself(selectedMenuCell)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.pullControl.endRefreshing()
         }

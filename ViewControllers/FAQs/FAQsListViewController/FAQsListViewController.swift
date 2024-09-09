@@ -27,16 +27,25 @@ class FAQsListViewController: UIViewController {
             DispatchQueue.main.async {
                 if let faqs = self.modelGetFAQsResponse, faqs.count > 0 {
                     self.imageViewNoAddressFound.isHidden = true
+
+                    // Get unique categories while preserving the order
+                    var uniqueCategoriesDict = [String: Bool]() // Dictionary to track unique categories
                     
-                    // Get unique categories
-                    let uniqueCategoriesSet = Set(faqs.compactMap { $0?.category }) // Unwrap and collect non-nil categories
-                    
-                    // Convert to an array if needed
-                    self.uniqueCategoriesArray = Array(uniqueCategoriesSet)
-                }
-                else {
+                    // Iterate through FAQs and add categories in order if not already added
+                    let uniqueCategoriesArray = faqs.compactMap { faq -> String? in
+                        guard let category = faq?.category else { return nil }
+                        if uniqueCategoriesDict[category] == nil {
+                            uniqueCategoriesDict[category] = true // Mark category as added
+                            return category
+                        }
+                        return nil
+                    }
+
+                    self.uniqueCategoriesArray = uniqueCategoriesArray
+                } else {
                     self.imageViewNoAddressFound.isHidden = false
                 }
+
                 
                 self.tableView.reloadData()
             }

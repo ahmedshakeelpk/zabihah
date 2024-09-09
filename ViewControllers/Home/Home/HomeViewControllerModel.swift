@@ -357,17 +357,26 @@ extension HomeViewController {
         let unit: String?
     }
 
-    // MARK: - Review
+    // MARK: - Item
     struct Review: Codable {
-        let rating: Int?
+        let id, createdBy, createdOn, updatedBy: String?
+        let updatedOn: String?
         let isDeleted: Bool?
-        let updatedOn, createdOn: String?
-        let createdBy: String?
+        let type: String?
+        let rating: Int?
         let comment: String?
-        let user: User?
         let willReturn: Bool?
-        var photoWebUrls: [String?]?
+        let place: Place?
+        let user: User?
+        let photoWebUrls: [String?]?
+        let photos: [HomeViewController.Photos?]?
+        var photosGallery: [String?]? {
+            return photos?.map({ model in
+                model?.photoWebUrl
+            })
+        }
     }
+    
     // MARK: - User
     struct User: Codable {
         let id, firstName, lastName: String?

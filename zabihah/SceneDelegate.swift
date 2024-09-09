@@ -25,6 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window.windowScene = windowScene
         IQKeyboardManager.shared().isEnabled = true
+        IQKeyboardManager.shared().shouldShowToolbarPlaceholder = false
+        
+        
         GMSServices.provideAPIKey(GOOGLE_API_KEY)
         GMSPlacesClient.provideAPIKey(GOOGLE_API_KEY)
         GMSServices.provideAPIKey(GOOGLE_API_KEY)

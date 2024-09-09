@@ -62,16 +62,20 @@ class HomeFilterViewController: UIViewController {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        viewBackGround.roundCorners(corners: [.topRight, .topLeft], radius: 20)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         viewTitleGrayImage.circle()
-        viewBackGround.roundCorners(corners: [.topRight, .topLeft], radius: 20)
+        
         getStarRating()
         setSliderRange()
+        let km = (kModelUserConfigurationResponse.distance?.unit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "ml"
         if filterParametersHome != nil {
-            let km = (kModelUserConfigurationResponse.distance?.unit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "ml"
+            
             if let radius = filterParametersHome.radius {
-                labelRangeEnd.text = "\(radius)\(km)"
+                labelRangeEnd.text = "\(radius) \(km)"
                 
                 sliderRange.value = Float(radius) ?? 0
             }
@@ -118,7 +122,8 @@ class HomeFilterViewController: UIViewController {
         if kModelUserConfigurationResponse != nil {
             sliderRange.maximumValue = Float(Double(kModelUserConfigurationResponse?.distance?.distance ?? 0))
             sliderRange.value = sliderRange.maximumValue
-            labelRangeEnd.text = "\(Int(sliderRange.value))\(kModelUserConfigurationResponse.distance?.unit ?? "ml")"
+            let km = (kModelUserConfigurationResponse.distance?.unit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "ml"
+            labelRangeEnd.text = "\(Int(sliderRange.value)) \(km)"
         }
     }
     

@@ -23,7 +23,7 @@ class SideMenuView: UIView {
 
     var arrayTitle = ["Your profile", "Your addresses","Your payment methods"]
     var arrayTitleIcon = ["placeHolderUser", "locationSideMenu","paymentSideMenu"]
-    var arrayOther = ["Your reviews", "Your favorite places","Buy it again", "Logout"]
+    var arrayOther = ["Your reviews", "Your favorite places","Buy it again", "Log out"]
     var arrayOtherIcon = ["reviewSideMenu", "favouriteSideMenu","buySideMenu", "logoutSideMenu"]
     var buttonBackHandler: (() -> ())!
     

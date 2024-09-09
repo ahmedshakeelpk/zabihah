@@ -37,7 +37,7 @@ class WriteReviewViewController: UIViewController {
         }
     }
     var modelGetRestaurantDetailResponse:  HomeViewController.ModelRestuarantResponseData?
-    var reviewDatum: RatingViewController.ModelGetReviewData!
+    var reviewDatum: HomeViewController.Review!
     
     var isPrayerPlace: Bool = false
     

@@ -41,6 +41,15 @@ class RatingViewController: UIViewController {
     
     var reviewPostedHandler: (() -> ())!
     var modelGetRestaurantDetailResponse: HomeViewController.ModelRestuarantResponseData?
+    var modelFeaturedResponse: HomeViewController.ModelFeaturedResponse? {
+        didSet {
+            if modelFeaturedResponse?.items?.count ?? 0 > 0 {
+                if let reviews = modelFeaturedResponse?.items?[0]?.reviews {
+                    modelReview = reviews
+                }
+            }
+        }
+    }
 
     var galleryRecentPhotos: [String?]?
     var isPrayerPlace: Bool = false
@@ -56,7 +65,13 @@ class RatingViewController: UIViewController {
             }
         }
     }
+    
     var modelGetReview: ModelGetReview? {
+        didSet {
+            modelReview = modelGetReview?.items
+        }
+    }
+    var modelReview: [HomeViewController.Review?]? {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -102,9 +117,10 @@ class RatingViewController: UIViewController {
         
         RatingViewControllerCell.register(tableView: tableView)
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 30, right: 0)
-        getMyReviews()
         
         labelTitle.text = "Reviews of \(stringTitle)"
+        
+        resetTableView()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -127,6 +143,7 @@ class RatingViewController: UIViewController {
         modelGetReview = nil
         tableView.reloadData()
         getMyReviews()
+        getRestaurantDetail()
     }
     @IBAction func buttonYelp(_ sender: Any) {
         return()
@@ -218,6 +235,38 @@ class RatingViewController: UIViewController {
         //            "photoWebUrls": arrayAllUpLoadedPhotos
         //        ] as [String : Any]
     }
+    
+    func getRestaurantDetail() {
+        var parameters = [String: Any]()
+        let parts: [HomeViewController.PlacePart] = [.reviews]
+        let featureRequestModel: HomeViewController.ModelFeaturedRequest = HomeViewController.ModelFeaturedRequest(
+            ids: [modelGetRestaurantDetailResponse?.id ?? ""],
+            rating: nil,
+            page: nil,
+            pageSize: nil,
+            cuisine: nil,
+            meatHalalStatus: nil,
+            alcoholPolicy: nil,
+            parts: parts,
+            orderBy: nil,
+            sortOrder: nil,
+            location: nil
+        )
+        do {
+            let jsonData = try JSONEncoder().encode(featureRequestModel)
+            if let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                parameters = jsonDict
+            }
+        } catch {
+            print("Failed to convert model to dictionary: \(error)")
+        }
+        APIs.postAPI(apiName: isPrayerPlace ? .searchMosque : .searchRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: HomeViewController.ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                self.modelFeaturedResponse = model
+            }
+        }
+    }
 }
 
 extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
@@ -259,28 +308,28 @@ extension RatingViewController {
     struct ModelGetReview: Codable {
         let currentPage, pageSize, totalRecords, totalPages: Int?
         let onFirstPage, onLastPage, hasNextPage, hasPreviousPage: Bool?
-        var items: [ModelGetReviewData?]?
+        var items: [HomeViewController.Review?]?
     }
 
-    // MARK: - Item
-    struct ModelGetReviewData: Codable {
-        let id, createdBy, createdOn, updatedBy: String?
-        let updatedOn: String?
-        let isDeleted: Bool?
-        let type: String?
-        let rating: Int?
-        let comment: String?
-        let willReturn: Bool?
-        let place: Place?
-        let user: User?
-        let photoWebUrls: [String?]?
-        let photos: [HomeViewController.Photos?]?
-        var photosGallery: [String?]? {
-            return photos?.map({ model in
-                model?.photoWebUrl
-            })
-        }
-    }
+//    // MARK: - Item
+//    struct ModelGetReviewData: Codable {
+//        let id, createdBy, createdOn, updatedBy: String?
+//        let updatedOn: String?
+//        let isDeleted: Bool?
+//        let type: String?
+//        let rating: Int?
+//        let comment: String?
+//        let willReturn: Bool?
+//        let place: Place?
+//        let user: User?
+//        let photoWebUrls: [String?]?
+//        let photos: [HomeViewController.Photos?]?
+//        var photosGallery: [String?]? {
+//            return photos?.map({ model in
+//                model?.photoWebUrl
+//            })
+//        }
+//    }
 
     // MARK: - Place
     struct Place: Codable {
@@ -296,7 +345,7 @@ extension RatingViewController {
 extension RatingViewController {
     
     // Calculate the rating statistics with percentage
-    func calculateRatings(for reviews: [ModelGetReviewData?]?) -> ([String], String?, [Double]) {
+    func calculateRatings(for reviews: [HomeViewController.Review?]?) -> ([String], String?, [Double]) {
         var ratingCounts = [1: 0, 2: 0, 3: 0, 4: 0, 5: 0]
         var totalRating = 0
 

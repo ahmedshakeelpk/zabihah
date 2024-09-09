@@ -10,6 +10,7 @@ import Cosmos
 
 class RatingViewControllerCell: UITableViewCell {
     @IBOutlet weak var viewStarRating: CosmosView!
+    @IBOutlet weak var labelAddress: UILabel!
     @IBOutlet weak var labelTimeAgo: UILabel!
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var viewButtonDeleteBackGround: UIView!
@@ -34,9 +35,11 @@ class RatingViewControllerCell: UITableViewCell {
         }
     }
     
-    var modelGetReviewData: RatingViewController.ModelGetReviewData? {
+    var modelGetReviewData: HomeViewController.Review? {
         didSet {
-            labelTitle.text = modelGetReviewData?.place?.name ?? ""
+            labelTitle.text = "\(modelGetReviewData?.user?.firstName ?? "") \(modelGetReviewData?.user?.lastName ?? "")"
+            labelAddress.text = modelGetReviewData?.place?.address ?? ""
+            labelAddress.isHidden = true
             labelComment.text = modelGetReviewData?.comment ?? ""
             let dateString = modelGetReviewData?.createdOn ?? ""
             labelTimeAgo.text = timeAgo(from: dateString)

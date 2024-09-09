@@ -44,6 +44,9 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
 //        textFieldPhoneNumber.text = "+923115284424"
         
         setConfiguration()
+        
+        textFieldPhoneNumber.autocorrectionType = .no
+        textFieldEmail.autocorrectionType = .no
     }
 
     @IBAction func buttonBack(_ sender: Any) {

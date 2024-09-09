@@ -42,7 +42,7 @@ class ReviewsViewControllerCell: UITableViewCell {
         }
     }
     
-    var modelGetReviewData: RatingViewController.ModelGetReviewData? {
+    var modelGetReviewData: HomeViewController.Review? {
         didSet {
             labelTitle.text = modelGetReviewData?.place?.name ?? ""
             labelAddress.text = modelGetReviewData?.place?.address ?? ""

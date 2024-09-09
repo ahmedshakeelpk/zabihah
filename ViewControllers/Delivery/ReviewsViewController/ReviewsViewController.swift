@@ -236,10 +236,29 @@ extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
+        if buttonHalalFood.tag != 1 {
+            return()
+        }
         selectedAddressIndex = indexPath.row
         if let reviewData = modelGetReview?.items?[indexPath.row] {
-            
+            navigateToRatingViewController(review: reviewData)
         }
+    }
+    
+    func navigateToRatingViewController(review: HomeViewController.Review) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
+        
+        var modelGetRestaurantDetailResponse = HomeViewController.ModelRestuarantResponseData(halalDescription: nil, averageRating: nil, isDeleted: nil, zip: nil, country: nil, timings: nil, offersDelivery: nil, region: nil, subRegion: nil, restaurantType: nil, latitude: nil, city: nil, name: nil, reviews: nil, type: nil, state: nil, totalReviews: nil, amenities: nil, id: review.place?.id, cuisines: nil, webLinks: nil, longitude: nil, mobile: nil, phone: nil, distance: nil, willReturnPercentage: nil, approvalState: nil, address: nil, description: nil, alcoholPolicy: nil, meatHalalStatus: nil, createdOn: nil, photos: nil, photoWebUrls: nil, iconImageWebUrl: nil, coverImageWebUrl: nil)
+        
+        vc.stringTitle = review.place?.name ?? ""
+        vc.galleryRecentPhotos = review.photosGallery
+        vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
+
+        vc.isPrayerPlace = buttonHalalFood.tag != 1
+        vc.reviewPostedHandler = {
+            self.getMyReviews()
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
