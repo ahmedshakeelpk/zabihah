@@ -62,7 +62,7 @@
                                                                 </userDefinedRuntimeAttributes>
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wkL-J2-Jji">
-                                                                <rect key="frame" x="92" y="1.6666666666666714" width="152" height="12"/>
+                                                                <rect key="frame" x="92" y="1.6666666666666572" width="152" height="12"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                                 <color key="textColor" red="0.12549019610000001" green="0.16078431369999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -90,16 +90,15 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                            </stackView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cA2-4o-pt2">
-                                                <rect key="frame" x="0.0" y="82" width="264" height="65"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="4" id="6sd-uR-FFu"/>
+                                                    <constraint firstAttribute="bottom" secondItem="o4W-BM-U8q" secondAttribute="bottom" id="UaZ-1b-dmw"/>
+                                                    <constraint firstItem="o4W-BM-U8q" firstAttribute="leading" secondItem="anZ-0J-uL5" secondAttribute="leading" id="goS-WN-2cR"/>
+                                                    <constraint firstItem="o4W-BM-U8q" firstAttribute="top" secondItem="anZ-0J-uL5" secondAttribute="top" id="oFD-Ky-QSl"/>
+                                                    <constraint firstAttribute="trailing" secondItem="o4W-BM-U8q" secondAttribute="trailing" id="xMX-2a-T0T"/>
                                                 </constraints>
-                                            </view>
+                                            </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qbe-ks-chN">
-                                                <rect key="frame" x="0.0" y="86" width="264" height="45"/>
+                                                <rect key="frame" x="0.0" y="102" width="264" height="45"/>
                                                 <subviews>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="05y-7A-pBY">
                                                         <rect key="frame" x="0.0" y="0.0" width="264" height="45"/>
@@ -110,6 +109,10 @@
                                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="-1" id="iCv-El-oFg"/>
+                                                            <outlet property="delegate" destination="-1" id="hfJ-ZL-bjJ"/>
+                                                        </connections>
                                                     </collectionView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -123,10 +126,6 @@
                                             </view>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="cA2-4o-pt2" firstAttribute="leading" secondItem="411-Ev-4TR" secondAttribute="leading" id="eSg-BO-Qav"/>
-                                            <constraint firstAttribute="bottom" secondItem="cA2-4o-pt2" secondAttribute="bottom" id="ku4-ee-3Q9"/>
-                                            <constraint firstAttribute="trailing" secondItem="cA2-4o-pt2" secondAttribute="trailing" id="nPW-wh-KSA"/>
-                                            <constraint firstItem="cA2-4o-pt2" firstAttribute="top" secondItem="anZ-0J-uL5" secondAttribute="bottom" id="qCm-eV-jwB"/>
                                             <constraint firstItem="qbe-ks-chN" firstAttribute="top" secondItem="anZ-0J-uL5" secondAttribute="bottom" constant="4" id="trh-7h-bMC"/>
                                         </constraints>
                                     </stackView>

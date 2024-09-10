@@ -158,10 +158,10 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     
     func favouriteRestaurants() {
         let parameters = [
-            "placeId": restuarentResponseModel.id ?? ""
+            "placeId": restuarentResponseModel?.id ?? ""
         ]
         
-        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, methodType: .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: restuarentResponseModel?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
             let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
             if statusCode == 200 {
                 self.modelPostFavouriteRestaurantsResponse = model

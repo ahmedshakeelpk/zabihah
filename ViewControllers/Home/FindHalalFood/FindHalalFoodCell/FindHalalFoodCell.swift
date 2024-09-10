@@ -52,17 +52,13 @@ class FindHalalFoodCell: HomeBaseCell {
     var dataRecord: HomeBaseCell.HomeListItem!
     var delegate: FindHalalFoodCellDelegate!
     
-    var modelPostFavouriteDeleteResponse: ModelPostFavouriteDeleteResponse? {
+    var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
-            print(modelPostFavouriteDeleteResponse as Any)
-            if modelPostFavouriteDeleteResponse?.success ?? false {
-//                if let isFavourite = self.halalRestuarantResponseData?.isFavorites {
-//                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: FindHalalFoodCell())
-////                    halalRestuarantResponseData?.isFavorites = !(isFavourite)
-//                }
-            }
-            else {
-                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteDeleteResponse?.message ?? "", iconName: .iconError)
+            if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
+                DispatchQueue.main.async {
+                    self.delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: self.indexPath, cellType: FindHalalFoodCell())
+                }
+                restuarentResponseModel?.isMyFavorite = !(isFavourite)
             }
         }
     }
@@ -186,9 +182,11 @@ class FindHalalFoodCell: HomeBaseCell {
             "placeId": restuarentResponseModel?.id ?? ""
         ]
         
-        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, methodType: .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
-            let model: ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteDeleteResponse = model
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: restuarentResponseModel?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
         }
     }
     

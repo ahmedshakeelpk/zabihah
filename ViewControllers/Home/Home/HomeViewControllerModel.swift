@@ -290,6 +290,7 @@ extension HomeViewController {
     // MARK: - Photo
     struct Photos: Codable {
         let photoWebUrl: String?
+        let photoWebUrls: String?
     }
     enum Rating: Codable {
         case int(Int)

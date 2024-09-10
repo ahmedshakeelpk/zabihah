@@ -74,7 +74,6 @@ class RatingViewController: UIViewController {
     var modelReview: [HomeViewController.Review?]? {
         didSet {
             DispatchQueue.main.async {
-                self.tableView.reloadData()
                 if let reviewDataObj = self.modelReview {
                     
                     let rating = self.calculateRatings(for: reviewDataObj)
@@ -94,6 +93,7 @@ class RatingViewController: UIViewController {
                     self.progressBarFour.progress = (Float(rating.2[3]))/100
                     self.progressBarFive.progress = (Float(rating.2[4]))/100
                 }
+                self.tableView.reloadData()
             }
         }
     }
@@ -106,7 +106,7 @@ class RatingViewController: UIViewController {
         tableView.refreshControl?.tintColor = .clear
     }
     @objc func pulledRefreshControl() {
-        getMyReviews()
+        resetTableView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.pullControl.endRefreshing()
         }
@@ -183,7 +183,7 @@ class RatingViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
         vc.isPrayerPlace = isPrayerPlace
 //        vc.galleryRecentPhotos = galleryRecentPhotos
-        vc.modelGetRestaurantDetailResponse = modelGetRestaurantDetailResponse
+        vc.modelGetRestaurantDetailResponse = modelFeaturedResponse?.items?[0]
         vc.reviewPostedHandler = {
             self.reviewPostedHandler?()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -286,7 +286,7 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RatingViewControllerCell") as! RatingViewControllerCell
         cell.index = indexPath.row
         cell.modelGetReviewData = modelReview?[indexPath.row]
-        cell.galleryRecentPhotos = modelReview?[indexPath.row]?.photoWebUrls ?? []
+//        cell.galleryRecentPhotos = modelReview?[indexPath.row]?.photoWebUrls ?? []
         cell.didSelectItemHandler = didSelectItemHandler
         cell.didTapOnViewMoreOrViewLess = didTapOnViewMoreOrViewLess
 

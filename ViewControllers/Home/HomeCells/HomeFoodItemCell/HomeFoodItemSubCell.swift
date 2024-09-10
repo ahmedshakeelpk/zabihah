@@ -52,6 +52,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     var indexPath: IndexPath! = nil
     var arrayNames = [String]()
     //    var isFavourite = false
+
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
             if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
@@ -62,6 +63,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             }
         }
     }
+    
     var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData! {
         didSet {
             DispatchQueue.main.async {
