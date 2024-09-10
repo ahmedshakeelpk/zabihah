@@ -305,6 +305,9 @@ extension RatingViewController: UITableViewDataSource, UITableViewDelegate {
 //            print("came to last row")
 //            pageNumberForApi += 1
 //        }
+        
+        tableView.reloadRows(at: [indexPath], with: .none)
+        
         cell.layoutSubviews()
         cell.layoutIfNeeded()
     }

@@ -221,7 +221,9 @@ extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return modelGetReview?.items?.count ?? 0
     }
-    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        tableView.reloadRows(at: [indexPath], with: .none)
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewsViewControllerCell") as! ReviewsViewControllerCell
         if let reviewData = modelGetReview?.items?[indexPath.row] {

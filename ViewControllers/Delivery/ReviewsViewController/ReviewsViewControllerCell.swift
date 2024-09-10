@@ -102,6 +102,7 @@ class ReviewsViewControllerCell: UITableViewCell {
     }
     
     func loadLabelCommentData() {
+        labelComment.numberOfLines = 0
         labelComment.text = modelGetReviewData?.comment ?? ""
         if labelComment.linesCount() > 3 {
             setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
