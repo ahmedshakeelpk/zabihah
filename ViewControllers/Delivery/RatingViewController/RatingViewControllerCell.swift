@@ -30,7 +30,7 @@ class RatingViewControllerCell: UITableViewCell {
     
     var galleryRecentPhotos: [String?]? {
         didSet {
-//            viewGalleryBackGround.isHidden = !(galleryRecentPhotos?.count ?? 0 > 0)
+            viewGalleryBackGround.isHidden = !(galleryRecentPhotos?.count ?? 0 > 0)
             collectionView.reloadData()
         }
     }
@@ -76,7 +76,10 @@ class RatingViewControllerCell: UITableViewCell {
     func loadLabelCommentData() {
         labelComment.text = modelGetReviewData?.comment ?? ""
         if labelComment.linesCount() > 3 {
-//            setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
+            setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
+        }
+        else {
+            labelComment.text = modelGetReviewData?.comment ?? ""
         }
     }
     
