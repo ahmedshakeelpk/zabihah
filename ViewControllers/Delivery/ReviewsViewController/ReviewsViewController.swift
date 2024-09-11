@@ -239,9 +239,9 @@ extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
-        if buttonHalalFood.tag != 1 {
-            return()
-        }
+//        if buttonHalalFood.tag != 1 {
+//            return()
+//        }
         selectedAddressIndex = indexPath.row
         if let reviewData = modelGetReview?.items?[indexPath.row] {
             navigateToRatingViewController(review: reviewData)

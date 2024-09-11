@@ -41,7 +41,7 @@ class RatingViewControllerCell: UITableViewCell {
             labelAddress.text = modelGetReviewData?.place?.address ?? ""
             labelAddress.isHidden = true
             labelComment.text = modelGetReviewData?.comment ?? ""
-            let dateString = modelGetReviewData?.createdOn ?? ""
+            let dateString = modelGetReviewData?.updatedOn ?? ""
             labelTimeAgo.text = timeAgo(from: dateString)
             viewStarRating.rating = Double(modelGetReviewData?.rating ?? 0)
             loadLabelCommentData()

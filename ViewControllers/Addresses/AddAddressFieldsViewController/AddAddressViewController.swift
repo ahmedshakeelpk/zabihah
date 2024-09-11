@@ -74,7 +74,7 @@ class AddAddressViewController: UIViewController {
                 self.location = CLLocationCoordinate2D(latitude: (modelUserAddressesResponseData?.latitude)!, longitude: (modelUserAddressesResponseData?.longitude)!)
                 self.setLocation(latitude: modelUserAddressesResponseData?.latitude, longitude: self.modelUserAddressesResponseData?.longitude)
                 self.textFieldDeliveryInstruction.text = modelUserAddressesResponseData?.deliveryInstructions
-                self.textFieldLocationInstructionOptional.text = modelUserAddressesResponseData?.locationInstruction
+                self.textFieldLocationInstructionOptional.text = modelUserAddressesResponseData?.locationInstructions
                 self.switchDefaultAddress.isOn = modelUserAddressesResponseData?.isDefault ?? false
                 if let indexOf = arrayNames.firstIndex(where: { name in
                     name == modelUserAddressesResponseData?.name

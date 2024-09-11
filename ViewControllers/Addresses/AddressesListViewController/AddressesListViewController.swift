@@ -183,11 +183,24 @@ class AddressesListViewController: UIViewController {
     func editUserAddress(index: Int) {
         let parameters: Parameters = [
             "id": modelGetUserAddressResponse?[index].id ?? "",
+            "title": modelGetUserAddressResponse?[index].name ?? "",
+            "physicalAddress": modelGetUserAddressResponse?[index].physicalAddress ?? "",
+            "name": modelGetUserAddressResponse?[index].name ?? "",
+            "label": modelGetUserAddressResponse?[index].label ?? "",
+            "latitude": modelGetUserAddressResponse?[index].latitude ?? "",
+            "longitude": modelGetUserAddressResponse?[index].longitude ?? "",
+            "deliveryInstructions": modelGetUserAddressResponse?[index].deliveryInstructions ?? "",
+            "locationInstructions": modelGetUserAddressResponse?[index].locationInstructions ?? "",
             "isDefault": true
         ]
         APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
-            let model: AddAddressViewController.ModelEditUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelEditUserAddressResponse = model
+            if statusCode == 200 && responseData == nil {
+                self.getUserAddress()
+            }
+            else {
+//                let model: AddressesListViewController.ModelUserAddressesResponseData? = APIs.decodeDataToObject(data: responseData)
+//                self.modelEditUserAddressResponse = model
+            }
         }
     }
 }

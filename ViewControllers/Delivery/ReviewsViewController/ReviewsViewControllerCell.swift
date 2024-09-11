@@ -48,7 +48,7 @@ class ReviewsViewControllerCell: UITableViewCell {
             labelTitle.text = modelGetReviewData?.place?.name ?? ""
             labelAddress.text = modelGetReviewData?.place?.address ?? ""
             labelComment.text = modelGetReviewData?.comment ?? ""
-            let dateString = modelGetReviewData?.createdOn ?? ""
+            let dateString = modelGetReviewData?.updatedOn ?? ""
             labelTimeAgo.text = timeAgo(from: dateString)
             viewStarRating.rating = Double(modelGetReviewData?.rating ?? 0)
             galleryRecentPhotos = modelGetReviewData?.photoWebUrls ?? []

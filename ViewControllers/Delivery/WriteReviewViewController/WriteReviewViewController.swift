@@ -438,9 +438,13 @@ extension WriteReviewViewController {
         let containerURL = "\(tempToken.first ?? "")"
         print("containerURL with SAS: \(containerURL) ")
         
+        self.showActivityIndicator2()
         let azureBlobStorage = AzureBlobStorage(containerURL: containerURL, sasToken: sasToken)
         azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
             if success {
+                DispatchQueue.main.async {
+                    self.hideActivityIndicator2()
+                }
                 print("Image uploaded successfully!")
                 if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
                     print("Image URL: \(imageURL)")
