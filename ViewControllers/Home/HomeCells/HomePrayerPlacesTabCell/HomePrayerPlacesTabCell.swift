@@ -112,7 +112,8 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     }
     
     @IBAction func buttonOpenDirectionMap(_ sender: Any) {
-        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationName: restuarentResponseModel?.address ?? "")
+        let completeAddress = "\(restuarentResponseModel?.name ?? "") \(restuarentResponseModel?.address ?? "") \(restuarentResponseModel?.city ?? "") \(restuarentResponseModel?.state ?? "") \(restuarentResponseModel?.country ?? "")"
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationAddress: completeAddress)
     }
     
     @IBAction func buttonCall(_ sender: Any) {
@@ -126,7 +127,9 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     
     func setData() {
         labelRestaurantName.text = restuarentResponseModel?.name
-        labelRestaurantAddress.text = restuarentResponseModel?.address
+        let completeAddress = "\(restuarentResponseModel?.address ?? "") \(restuarentResponseModel?.city ?? "") \(restuarentResponseModel?.state ?? "")"
+
+        labelRestaurantAddress.text = completeAddress
         labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
         
         labelReuse.text = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) + "%"
@@ -284,7 +287,8 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
             viewController.navigationController?.pushViewController(vc, animated: true)
         }
         else if actionType == "mapdirection" {
-            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationName: modelData?.address ?? "")
+            let completeAddress = "\(modelData?.name ?? "") \(modelData?.address ?? "") \(modelData?.city ?? "") \(modelData?.state ?? "") \(modelData?.country ?? "")"
+            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationAddress: completeAddress)
         }
     }
 

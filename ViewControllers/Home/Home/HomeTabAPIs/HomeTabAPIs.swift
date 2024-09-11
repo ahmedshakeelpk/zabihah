@@ -47,7 +47,7 @@ extension HomeViewController {
         }
         APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
-            //            self.modelGetHomeRestaurantsResponse = nil
+            self.modelGetHomeRestaurantsResponseForHome = nil
             self.modelGetHomeRestaurantsResponseForHome = model
         }
     }
@@ -91,6 +91,7 @@ extension HomeViewController {
         }
         APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetHalalRestaurantResponseForHomeTab = nil
             self.modelGetHalalRestaurantResponseForHomeTab = model
         }
     }
@@ -133,6 +134,7 @@ extension HomeViewController {
         }
         APIs.postAPI(apiName: .searchMosque, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetPrayerPlacesResponseForHomeTab = nil
             self.modelGetPrayerPlacesResponseForHomeTab = model
         }
     }

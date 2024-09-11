@@ -235,7 +235,7 @@ class DeliveryDetailsViewController3: UIViewController {
             viewShareBackGround.isHidden = getShareLink() == ""
             
             imageViewFavourite.image = UIImage(named: restuarantResponseData?.isMyFavorite ?? false ? "heartFavourite" : "heartMehroon")
-            labelReviews.text = "\(restuarantResponseData?.totalReviews ?? 0) reviews"
+            labelReviews.text = "\(restuarantResponseData?.totalReviews ?? 0) \((restuarantResponseData?.totalReviews ?? 0 > 1) ? "reviews" : "review")"
             labelReturning.text = "\(getRating(averageRating: restuarantResponseData?.willReturnPercentage))% returning"
             
             labelRating.text = "Avg. Rating: \(getRating(averageRating: restuarantResponseData?.averageRating))"
@@ -307,8 +307,10 @@ class DeliveryDetailsViewController3: UIViewController {
         didSet {
             print(modelPostFavouriteDeleteResponse as Any)
             if let isFavourite = self.modelFeaturedResponse?.items?.first??.isMyFavorite {
+                
                 DispatchQueue.main.async {
-                    self.delegate.changeFavouriteStatusFromDetails(isFavourite: !isFavourite, indexPath: self.indexPath)
+                    self.modelFeaturedResponse?.items?[0]?.isMyFavorite = !isFavourite
+//                    self.delegate?.changeFavouriteStatusFromDetails(isFavourite: !isFavourite, indexPath: self.indexPath)
                 }
                 modelFeaturedResponse?.items?[0]?.isMyFavorite = !isFavourite
             }
@@ -331,7 +333,8 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     
     @IBAction func buttonOpenDirectionMap(_ sender: Any) {
-        OpenMapDirections.present(in: self, sourceView: buttonOpenDirectionMap, latitude: modelFeaturedResponse?.items?.first??.latitude ?? 0, longitude: modelFeaturedResponse?.items?.first??.longitude ?? 0, locationName: modelFeaturedResponse?.items?.first??.address ?? "")
+        let completeAddress = "\(modelFeaturedResponse?.items?.first??.address ?? "") \(modelFeaturedResponse?.items?.first??.city ?? "") \(modelFeaturedResponse?.items?.first??.state ?? "") \(modelFeaturedResponse?.items?.first??.country ?? "")"
+        OpenMapDirections.present(in: self, sourceView: buttonOpenDirectionMap, latitude: modelFeaturedResponse?.items?.first??.latitude ?? 0, longitude: modelFeaturedResponse?.items?.first??.longitude ?? 0, locationAddress: completeAddress)
     }
     
     func setLabelTextInThreeLine(text: String, label: UILabel) {

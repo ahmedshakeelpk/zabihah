@@ -10,6 +10,7 @@ import Alamofire
 import GooglePlaces
 
 class MyFavouritesViewController: UIViewController {
+    
     @IBOutlet weak var viewButtonTabBackGround: UIView!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
     @IBOutlet weak var imageViewMosque: UIImageView!
@@ -102,6 +103,7 @@ class MyFavouritesViewController: UIViewController {
         viewBottomLinePrayerPlaces.isHidden = true
         viewBottomLineRestaurants.isHidden = false
         buttonRestaurant.tag = 1
+        buttonPrayerPlaces.tag = 0
         imageViewRestaurant.tintColor = .colorApp
         imageViewMosque.tintColor = .clrUnselectedImage
 //        tableViewReload()
@@ -112,6 +114,7 @@ class MyFavouritesViewController: UIViewController {
         viewBottomLinePrayerPlaces.isHidden = false
         viewBottomLineRestaurants.isHidden = true
         buttonRestaurant.tag = 0
+        buttonPrayerPlaces.tag = 1
         imageViewRestaurant.tintColor = .clrUnselectedImage
         imageViewMosque.tintColor = .colorApp
 //        tableViewReload()
@@ -270,8 +273,9 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
     }
     func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
-//        vc.delegate = self
+        vc.delegate = self
         
+        vc.isPrayerPlace = buttonPrayerPlaces.tag == 1
         vc.selectedMenuCell = 0
         vc.userLocation = kUserCurrentLocation
         var recordModel = modelGetFavouriteResponse?.items?[indexPath.row]
@@ -281,5 +285,11 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
             vc.isPrayerPlace = true
         }
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension MyFavouritesViewController: DeliveryDetailsViewController3Delegate {
+    func changeFavouriteStatusFromDetails(isFavourite: Bool, indexPath: IndexPath) {
+        
     }
 }

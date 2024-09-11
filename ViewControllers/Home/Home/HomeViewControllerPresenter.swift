@@ -229,7 +229,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                         cuisineCount = "\(modelGetHomeRestaurantsResponseForHome?.totalRecords ?? 0)"
                     }
                     else if section == 3 {
-                        cuisineCount = "\(modelGetHalalRestaurantResponseForHomeTab?.totalRecords ?? 0)"
+                        cuisineCount = "\(modelGetPrayerPlacesResponseForHomeTab?.totalRecords ?? 0)"
                     }
                 }
                 else if selectedMenuCell == 1 {
@@ -285,7 +285,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         else if actionType == "mapdirection" {
-            OpenMapDirections.present(in: self, sourceView: buttonCart, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationName: modelData?.address ?? "")
+            let completeAddress = "\(modelData?.address ?? "") \(modelData?.city ?? "") \(modelData?.state ?? "") \(modelData?.country ?? "")"
+            OpenMapDirections.present(in: self, sourceView: buttonCart, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationAddress: completeAddress)
         }
     }
 }

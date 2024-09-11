@@ -94,7 +94,8 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     }
     
     @IBAction func buttonOpenDirectionMap(_ sender: Any) {
-        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationName: restuarentResponseModel?.address ?? "")
+        let completeAddress = "\(restuarentResponseModel?.name ?? "") \(restuarentResponseModel?.address ?? "") \(restuarentResponseModel?.city ?? "") \(restuarentResponseModel?.state ?? "") \(restuarentResponseModel?.country ?? "")"
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationAddress: completeAddress)
     }
     @IBAction func buttonCall(_ sender: Any) {
         self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
@@ -106,7 +107,10 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     
     func setData() {
         labelRestaurantName.text = restuarentResponseModel?.name
-        labelRestaurantAddress.text = restuarentResponseModel?.address
+        let completeAddress = "\(restuarentResponseModel?.address ?? "") \(restuarentResponseModel?.city ?? "") \(restuarentResponseModel?.state ?? "")"
+        
+        labelRestaurantAddress.text = completeAddress
+
         labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
         
         labelReuse.text = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) + "%"
