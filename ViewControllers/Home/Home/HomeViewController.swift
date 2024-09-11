@@ -274,11 +274,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func pulledRefreshControl() {
-        
-        textFieldSearchLocation.text = "Searching around your current location"
-        locationManager.delegate = self
-        checkLocationServices()
-//        selectedMenuCell = itself(selectedMenuCell)
+        if textFieldSearchLocation.text?.lowercased() == "Searching around your current location".lowercased() {
+            locationManager.delegate = self
+            checkLocationServices()
+        }
+        else {
+            selectedMenuCell = itself(selectedMenuCell)
+        }
+//        textFieldSearchLocation.text = "Searching around your current location"
+       
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.pullControl.endRefreshing()
         }
