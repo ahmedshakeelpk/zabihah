@@ -51,7 +51,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     var locationManager = CLLocationManager()
     var selectedCuisine: String = "" {
         didSet {
-//            pageNumberHalalFood = 1
+            //            pageNumberHalalFood = 1
         }
     }
     
@@ -108,10 +108,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             self.selectedMenuCell = itself(selectedMenuCell)
         }
     }
-
+    
     var dontTriggerModelGetHomeRestaurantsResponseObservers:Bool = false
     var dontTriggerModelGetHalalRestaurantResponseObservers:Bool = false
-
+    
     var modelGetUserAddressResponse: [AddressesListViewController.ModelUserAddressesResponseData]? {
         didSet {
             if modelGetUserAddressResponse?.count ?? 0 > 0 {
@@ -288,17 +288,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             kModelGetUserProfileResponse = modelGetUserResponseLocal
         }
     }
-
+    
     private var sideMenu: SideMenu!
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
     var listItems: [HomeBaseCell.HomeListItem]!
     
     var pullControl = UIRefreshControl()
-
+    
     override func viewDidAppear(_ animated: Bool) {
         pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-           pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
-           tableView.addSubview(pullControl) // not
+        pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
+        tableView.addSubview(pullControl) // not
         tableView.refreshControl?.tintColor = .clear
         setStatusBarTopColor(color: .tempColor)
     }
@@ -311,8 +311,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         else {
             selectedMenuCell = itself(selectedMenuCell)
         }
-//        textFieldSearchLocation.text = "Searching around your current location"
-       
+        //        textFieldSearchLocation.text = "Searching around your current location"
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.pullControl.endRefreshing()
         }
@@ -355,7 +355,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         //MARK: - Add Extra spacing in tableView
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
-
+        
         if #available(iOS 15.0, *) {
             self.tableView.sectionHeaderTopPadding = 0
         }
@@ -366,12 +366,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
         NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.post(name: Notification.Name("kGetUser"), object: nil)
-
+        
         textFieldFilterResult.addTarget(self, action: #selector(searchTextFieldFilterResult), for: .editingChanged)
         
         userConfiguration()
         setZoomButtons()
-//        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
+        //        userLocation = CLLocation(latitude: 37.8690971, longitude: -122.2930876)
     }
     
     var isFilterSearch = false
@@ -439,15 +439,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func zoomIn() {
-            let zoom = mapView.camera.zoom + 1
-            mapView.animate(toZoom: zoom)
-        }
-
-        @objc func zoomOut() {
-            let zoom = mapView.camera.zoom - 1
-            mapView.animate(toZoom: zoom)
-            pageNumberForApi += 1
-        }
+        let zoom = mapView.camera.zoom + 1
+        mapView.animate(toZoom: zoom)
+    }
+    
+    @objc func zoomOut() {
+        let zoom = mapView.camera.zoom - 1
+        mapView.animate(toZoom: zoom)
+        pageNumberForApi += 1
+    }
     
     func tableViewReload() {
         tableView.reloadData()
@@ -471,16 +471,16 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 labelNoRecordFound.text = "No Restaurant Found"
             }
             else {
-//                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
-//                    viewNoDataFound.isHidden = false
-//                    tableView.isHidden = true
-//                    imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
-//                    labelNoRecordFound.text = "No Restaurant Found"
-//                }
-//                else {
-//                    viewNoDataFound.isHidden = true
-//                    tableView.isHidden = false
-//                }
+                //                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
+                //                    viewNoDataFound.isHidden = false
+                //                    tableView.isHidden = true
+                //                    imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
+                //                    labelNoRecordFound.text = "No Restaurant Found"
+                //                }
+                //                else {
+                //                    viewNoDataFound.isHidden = true
+                //                    tableView.isHidden = false
+                //                }
             }
         }
         else if selectedMenuCell == 1 {
@@ -491,16 +491,16 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 labelNoRecordFound.text = "No Restaurant Found"
             }
             else {
-//                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
-//                    viewNoDataFound.isHidden = false
-//                    tableView.isHidden = true
-//                    imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
-//                    labelNoRecordFound.text = "No Restaurant Found"
-//                }
-//                else {
-//                    viewNoDataFound.isHidden = true
-//                    tableView.isHidden = false
-//                }
+                //                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
+                //                    viewNoDataFound.isHidden = false
+                //                    tableView.isHidden = true
+                //                    imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
+                //                    labelNoRecordFound.text = "No Restaurant Found"
+                //                }
+                //                else {
+                //                    viewNoDataFound.isHidden = true
+                //                    tableView.isHidden = false
+                //                }
             }
         }
         else if selectedMenuCell == 2 {
@@ -516,32 +516,32 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         self.getHalalRestaurantsForHomeTab()
         self.getPrayerPlacesForHomeTab()
         
-//        let dispatchGroup = DispatchGroup()
-//        // Dispatch function1
-//        dispatchGroup.enter()
-//        DispatchQueue.global().async {
-//            self.getFeaturedRestaurantsForHomeTab()
-//            dispatchGroup.leave()
-//        }
-//
-//        // Dispatch function2
-//        dispatchGroup.enter()
-//        DispatchQueue.global().async {
-//            self.getHalalRestaurantsForHomeTab()
-//            dispatchGroup.leave()
-//        }
-//
-//        // Dispatch function3
-//        dispatchGroup.enter()
-//        DispatchQueue.global().async {
-//            self.getPrayerPlacesForHomeTab()
-//            dispatchGroup.leave()
-//        }
-//
-//        // Notify when all functions are done
-//        dispatchGroup.notify(queue: DispatchQueue.main) {
-//            print("All functions are done")
-//        }
+        //        let dispatchGroup = DispatchGroup()
+        //        // Dispatch function1
+        //        dispatchGroup.enter()
+        //        DispatchQueue.global().async {
+        //            self.getFeaturedRestaurantsForHomeTab()
+        //            dispatchGroup.leave()
+        //        }
+        //
+        //        // Dispatch function2
+        //        dispatchGroup.enter()
+        //        DispatchQueue.global().async {
+        //            self.getHalalRestaurantsForHomeTab()
+        //            dispatchGroup.leave()
+        //        }
+        //
+        //        // Dispatch function3
+        //        dispatchGroup.enter()
+        //        DispatchQueue.global().async {
+        //            self.getPrayerPlacesForHomeTab()
+        //            dispatchGroup.leave()
+        //        }
+        //
+        //        // Notify when all functions are done
+        //        dispatchGroup.notify(queue: DispatchQueue.main) {
+        //            print("All functions are done")
+        //        }
     }
     func handleMenuTap() {
         mapView.clear()
@@ -630,12 +630,12 @@ extension HomeViewController: HomeCuisinesCellDelegate {
 }
 
 extension HomeViewController : CLLocationManagerDelegate {
-
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-         print("error:: \(error.localizedDescription)")
+        print("error:: \(error.localizedDescription)")
         getUserAddress()
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
@@ -659,7 +659,7 @@ extension HomeViewController : CLLocationManagerDelegate {
             break
         }
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             locationManager.stopUpdatingHeading()

@@ -253,6 +253,7 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         let infoView = Bundle.loadView(fromNib: "MarkerInfoView", withType: MarkerInfoView.self)
         view.addSubview(infoView)
         if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
+//            restuarentResponseModel = modelData
             infoView.marker = marker
             infoView.isPrayerPlace = true
             infoView.modelRestuarantResponseData = modelData
@@ -265,30 +266,33 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
             self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
-                self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath, actionType: actionType ?? "viewdetails")
+                if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
+                    self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath, actionType: actionType ?? "viewdetails", dataModel: modelData)
+                }
                 print(actionType)
             }
         }
     }
-    func navigateToDeliveryDetailsViewController(indexPath: IndexPath, actionType: String) {
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath, actionType: String, dataModel: HomeViewController.ModelRestuarantResponseData) {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         vc.delegate = viewController as? any DeliveryDetailsViewController3Delegate
         vc.indexPath = indexPath
         vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
         vc.userLocation = (viewController as? HomeViewController)?.userLocation
         vc.isPrayerPlace = true
-        var modelData: HomeViewController.ModelRestuarantResponseData!
-
+        let modelData =  dataModel
         if let modelMosqueResponseData = restuarentResponseModel {
+            
             vc.modelRestuarantResponseData = modelMosqueResponseData
-            modelData = modelMosqueResponseData
+//            modelData = modelMosqueResponseData
         }
         if actionType == "viewdetails" {
+            vc.modelRestuarantResponseData = dataModel
             viewController.navigationController?.pushViewController(vc, animated: true)
         }
         else if actionType == "mapdirection" {
-            let completeAddress = "\(modelData?.name ?? "") \(modelData?.address ?? "") \(modelData?.city ?? "") \(modelData?.state ?? "") \(modelData?.country ?? "")"
-            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationAddress: completeAddress)
+            let completeAddress = "\(modelData.name ?? "") \(modelData.address ?? "") \(modelData.city ?? "") \(modelData.state ?? "") \(modelData.country ?? "")"
+            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData.latitude ?? 0, longitude: modelData.longitude ?? 0, locationAddress: completeAddress)
         }
     }
 

@@ -44,12 +44,13 @@ class MarkerInfoView: UIView {
         stackViewPhotosBackGround.isHidden = !(modelRestuarantResponseData?.totalPhotos ?? 0 > 0)
         labelDistance.text = "\(oneDecimalDistance(distance:modelRestuarantResponseData?.distance))"
         viewCallMainBackGround.isHidden = modelRestuarantResponseData?.phone ?? "" == ""
-        
+        self.marker.userData = modelRestuarantResponseData
         imageViewItem.setImage(urlString: modelRestuarantResponseData?.iconImageWebUrl ?? "", placeHolderIcon: isPrayerPlace ?? false ? "placeHolderPrayerPlaces" : "placeHolderFoodItem") {_ in
-            self.marker.tracksInfoWindowChanges = true
+            
+            self.marker?.tracksInfoWindowChanges = true
         }
         imageViewRestaurant.setImage(urlString: modelRestuarantResponseData?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant") {_ in
-            self.marker.tracksInfoWindowChanges = true
+            self.marker?.tracksInfoWindowChanges = true
         }
         viewRestaurantBackGround.isHidden = isPrayerPlace ?? false
     }

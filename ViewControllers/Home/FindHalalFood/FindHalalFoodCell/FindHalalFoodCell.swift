@@ -263,32 +263,35 @@ extension FindHalalFoodCell: GMSMapViewDelegate {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
             self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { [self] actionType in
-                navigateToDeliveryDetailsViewController(indexPath: indexPath, actionType: actionType ?? "viewdetails")
+                if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
+                    navigateToDeliveryDetailsViewController(indexPath: indexPath, actionType: actionType ?? "viewdetails", dataModel: modelData)
+                }
             }
         }
     }
     
-    func navigateToDeliveryDetailsViewController(indexPath: IndexPath, actionType: String) {
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath, actionType: String, dataModel: HomeViewController.ModelRestuarantResponseData) {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         vc.delegate = viewController as? any DeliveryDetailsViewController3Delegate
         vc.indexPath = indexPath
         vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
         vc.userLocation = (viewController as? HomeViewController)?.userLocation
         
-        var modelData: HomeViewController.ModelRestuarantResponseData!
-
+        var modelData = dataModel
         if let halalRestuarantResponseData = restuarentResponseModel {
-            vc.modelRestuarantResponseData = halalRestuarantResponseData
-            modelData = halalRestuarantResponseData
+            
+//            vc.modelRestuarantResponseData = halalRestuarantResponseData
+//            modelData = halalRestuarantResponseData
         }
         
         if actionType == "viewdetails" {
+            vc.modelRestuarantResponseData = dataModel
             viewController.navigationController?.pushViewController(vc, animated: true)
 
         }
         else if actionType == "mapdirection" {
-            let completeAddress = "\(modelData?.name ?? "") \(modelData?.address ?? "") \(modelData?.city ?? "") \(modelData?.state ?? "") \(modelData?.country ?? "")"
-            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData?.latitude ?? 0, longitude: modelData?.longitude ?? 0, locationAddress: completeAddress)
+            let completeAddress = "\(modelData.name ?? "") \(modelData.address ?? "") \(modelData.city ?? "") \(modelData.state ?? "") \(modelData.country ?? "")"
+            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData.latitude ?? 0, longitude: modelData.longitude ?? 0, locationAddress: completeAddress)
         }
     }
     

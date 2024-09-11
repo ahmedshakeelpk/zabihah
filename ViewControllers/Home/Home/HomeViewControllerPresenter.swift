@@ -560,7 +560,7 @@ extension HomeViewController {
                 let places = modelGetPrayerPlacesResponse?.totalRecords ?? 0 > 1 ? "spaces" : "space"
                 
                 sectionName =  address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(places) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(places) near \(address)"
-                selectedPlaceHolderIcon = "placeholderMosque"
+                selectedPlaceHolderIcon = "placeholderMosque3"
 
             }
             print(indexOf)

@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 import CoreLocation
 
-let GOOGLE_API_KEY = "AIzaSyBk8U2DYsEn3sWykNHXBL8A8ORjCiaLeRA"
+let GOOGLE_API_KEY = "AIzaSyClWqdvljOC6yPv4LkxJXRsmldaJZwbciI"
+//let GOOGLE_API_KEY = "AIzaSyBk8U2DYsEn3sWykNHXBL8A8ORjCiaLeRA"
 //let GOOGLE_API_KEY = ""
 var kAccessToken = ""
 var kRefreshToken = ""

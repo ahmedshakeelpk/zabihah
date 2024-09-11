@@ -27,7 +27,7 @@ extension HomeViewController {
             pageSize: 20,
             cuisine: selectedCuisine == "" ? nil : [selectedCuisine],
             meatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
+            alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
             parts: [.cuisines, .timings],
             //            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
             orderBy: .location,
@@ -82,7 +82,7 @@ extension HomeViewController {
             ),
             placeRating: filterParametersHome?.rating,
             placeMeatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            placeAlcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
+            placeAlcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
             orderBy: .location,
             sortOrder: .ascending)
         do {

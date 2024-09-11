@@ -79,9 +79,9 @@ class HomeFilterViewController: UIViewController {
                 
                 sliderRange.value = Float(radius) ?? 0
             }
-            if let rating = filterParametersHome.radius {
-                labelStarRating.text = rating
-                starRatingView.rating = Double(rating) ?? 0
+            if let rating = filterParametersHome.rating {
+                labelStarRating.text = "\(rating)"
+                starRatingView.rating = Double(rating)
             }
             if let isAlCoholic = filterParametersHome.isalcoholic {
                 switchHideAlcoholPlaces.isOn = isAlCoholic
