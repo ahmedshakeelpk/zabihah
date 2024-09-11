@@ -57,10 +57,12 @@ class WriteReviewViewController: UIViewController {
     
     var modelPostReview: ModelPostReview! {
         didSet {
-            if modelPostReview.id != "" {
-                popViewController(animated: true)
-                DispatchQueue.main.async {
-                    self.reviewPostedHandler?()
+            DispatchQueue.main.async {
+                if self.modelPostReview.id != "" {
+                    self.popViewController(animated: true)
+                    DispatchQueue.main.async {
+                        self.reviewPostedHandler?()
+                    }
                 }
             }
         }
