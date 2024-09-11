@@ -222,7 +222,7 @@ extension AddressesListViewController: UITableViewDelegate, UITableViewDataSourc
         for controller in self.navigationController!.viewControllers as Array {
             if controller.isKind(of: HomeViewController.self) {
                 if let targetViewController = controller as? HomeViewController {
-                    targetViewController.getuser()
+//                    targetViewController.getuser()
                     if let model = modelGetUserAddressResponse?[indexPath.row] {
                         targetViewController.selectedAddress(modelUserAddressesResponseData: model)
                     }

@@ -79,7 +79,11 @@ class RatingViewController: UIViewController {
                     let rating = self.calculateRatings(for: reviewDataObj)
                     self.labelRating.text = rating.1 ?? "0"
                     self.viewRatingCosmo.rating = Double(rating.1 ?? "0") ?? 0.0
-                    self.labelReview.text = "\(reviewDataObj.count) reviews"
+                   
+                    
+                    let review = reviewDataObj.count > 1 ? "reviews" : "review"
+                    
+                    self.labelReview.text = "\(reviewDataObj.count) \(review)"
                     self.labelProgressOne.text = "\(rating.0[0])"
                     self.labelProgressTwo.text = "\(rating.0[1])"
                     self.labelProgressThree.text = "\(rating.0[2])"
@@ -410,7 +414,7 @@ extension RatingViewController {
         print("5-Star: \(String(format: "%.2f", percent5Star))%")
         print("Overall Average Rating: \(String(format: "%.2f", overallAverage))")
         
-        return (arrayforAllPercentages, String(format: "%.2f", overallAverage), arrayforAllPercentagesIntValues)
+        return (arrayforAllPercentages, String(format: "%.1f", overallAverage), arrayforAllPercentagesIntValues)
 
     }
 }

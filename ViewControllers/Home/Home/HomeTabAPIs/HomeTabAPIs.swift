@@ -22,11 +22,11 @@ extension HomeViewController {
             ids: nil,
             rating: filterParametersHome?.rating,
             page: 1, 
-            keyword: textFieldFilterResult.text!,
+            keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             pageSize: 20,
             cuisine: nil,
-            meatHalalStatus: filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            alcoholPolicy: filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
+            meatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
+            alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
             parts: [.cuisines, .timings],
             orderBy: .ratingAndLocation,
             sortOrder: .descending,
@@ -65,11 +65,12 @@ extension HomeViewController {
             ids: nil,
             rating: filterParametersHome?.rating,
             page: 1,
-            keyword: textFieldFilterResult.text!,
+            keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             pageSize: 20,
             cuisine: nil,
-            meatHalalStatus: filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            alcoholPolicy: filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
+            meatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
+            alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
+                
             parts: [.cuisines, .timings],
             //            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
             orderBy: .location,
@@ -89,6 +90,7 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
+        print("getHalalRestaurantsForHomeTab \(parameters)")
         APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetHalalRestaurantResponseForHomeTab = nil
@@ -108,7 +110,7 @@ extension HomeViewController {
             ids: nil,
             rating: filterParametersHome?.rating,
             page: 1,
-            keyword: textFieldFilterResult.text!,
+            keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             pageSize: 20,
             cuisine: nil,
             meatHalalStatus: nil,

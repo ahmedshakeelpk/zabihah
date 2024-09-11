@@ -22,6 +22,10 @@ struct APIsName {
         case edituseraddress = "User/address"
         case searchRestaurant = "Restaurant/search"
         case searchMosque = "Mosque/search"
+        
+        case searchCuisineRestaurant = "Restaurant/cuisine/search"
+        case searchCuisineMosque = "Mosque/cuisine/search"
+        
         //MARK:- Config
         case userConfiguration = "Configuration"
         //MARK:- Favorite

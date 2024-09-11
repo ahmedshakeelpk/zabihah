@@ -14,6 +14,13 @@ protocol DeliveryDetailsViewController3Delegate: AnyObject {
 }
 
 class DeliveryDetailsViewController3: UIViewController {
+    @IBOutlet weak var viewRatingBackGround: ViewRadius6!
+    @IBOutlet weak var viewReturningBackGround: ViewRadius6!
+    @IBOutlet weak var viewReviewBackGround: ViewRadius6!
+    @IBOutlet weak var viewAlcoholBackGround: ViewRadius6!
+    
+    
+    
     
     @IBOutlet weak var viewCuisinesBackGround: UIView!
     @IBOutlet weak var viewHalalSummaryBackGround: UIView!
@@ -58,6 +65,8 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var buttonCall: UIButton!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     
+    @IBOutlet weak var tileWidthConstrant: NSLayoutConstraint!
+    @IBOutlet weak var tileWidthConstrant2ndTiles: NSLayoutConstraint!
     var delegate: DeliveryDetailsViewController3Delegate!
     var arrayLocalGallery: [UIImage]? {
         didSet {
@@ -122,6 +131,11 @@ class DeliveryDetailsViewController3: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        let width = (self.view.frame.width - 40) / 3
+        tileWidthConstrant.constant = width
+        tileWidthConstrant2ndTiles.constant = width
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -218,11 +232,12 @@ class DeliveryDetailsViewController3: UIViewController {
             viewHalalMenuBackGround.isHidden = isPrayerPlace
             
             let isHalal = ((restuarantResponseData?.meatHalalStatus ?? "").lowercased() == "Full".lowercased())
-            labelFullHalalMenu.text = isHalal ? "Full halal menu" : "NO"
+            labelFullHalalMenu.text = isHalal ? "Full halal menu" : "Partial halal menu"
             
             let isAlcohol = !((restuarantResponseData?.alcoholPolicy ?? "").lowercased() == "NotAllowed".lowercased())
             
             labelAlcohol.text = isAlcohol ? "YES" : "No alcohol"
+            viewAlcoholBackGround.isHidden = isAlcohol
             
             let restaurantTiming = isRestaurantOpen(timings: restuarantResponseData?.timings ?? [])
             if restaurantTiming.1 != nil {
@@ -236,9 +251,15 @@ class DeliveryDetailsViewController3: UIViewController {
             
             imageViewFavourite.image = UIImage(named: restuarantResponseData?.isMyFavorite ?? false ? "heartFavourite" : "heartMehroon")
             labelReviews.text = "\(restuarantResponseData?.totalReviews ?? 0) \((restuarantResponseData?.totalReviews ?? 0 > 1) ? "reviews" : "review")"
-            labelReturning.text = "\(getRating(averageRating: restuarantResponseData?.willReturnPercentage))% returning"
+//            viewReviewBackGround.isHidden = restuarantResponseData?.totalReviews ?? 0 == 0
+            
+            let reviewCount = getRatingEnum(averageRating: restuarantResponseData?.willReturnPercentage)
+            labelReturning.text = "\(reviewCount)% returning"
+            viewReturningBackGround.isHidden = reviewCount == "0"
+            
             
             labelRating.text = "Avg. Rating: \(getRating(averageRating: restuarantResponseData?.averageRating))"
+            
             viewCallBackGround.isHidden = restuarantResponseData?.phone ?? "" == ""
             viewCuisinesBackGround.isHidden = restuarantResponseData?.cuisines == nil || restuarantResponseData?.cuisines == []
             
@@ -340,7 +361,7 @@ class DeliveryDetailsViewController3: UIViewController {
     func setLabelTextInThreeLine(text: String, label: UILabel) {
         labelRestaurantDetails.numberOfLines = 3
         let fullText = text
-        let moreText = "… More"
+        let moreText = "… more"
         
         let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, 150)))
         

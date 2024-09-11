@@ -24,7 +24,7 @@ extension HomeViewController {
             page: 1,
             keyword: textFieldFilterResult.text!,
             pageSize: 20,
-            cuisine: nil,
+            cuisine: selectedCuisine == "" ? nil : [selectedCuisine],
             meatHalalStatus: nil,
             alcoholPolicy: nil,
             parts: [.cuisines, .timings],

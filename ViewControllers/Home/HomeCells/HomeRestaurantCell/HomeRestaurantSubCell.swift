@@ -98,7 +98,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
         
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
-        stackViewComments.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        stackViewComments.isHidden = (restuarentResponseModel?.totalReviews ?? 0) == 0
         
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
         stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
@@ -133,7 +133,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
             //                viewItemTypeBackGround.backgroundColor = .colorRed
         }
         //            viewItemTypeBackGround.backgroundColor = .colorOrange
-        
+        viewBackGroundDelivery.isHidden = true
     }
     
     

@@ -270,7 +270,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
            pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
            tableView.addSubview(pullControl) // not
         tableView.refreshControl?.tintColor = .clear
+        setStatusBarTopColor(color: .tempColor)
     }
+    
     @objc func pulledRefreshControl() {
         
         textFieldSearchLocation.text = "Searching around your current location"
@@ -305,7 +307,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         stackViewSearchNearLocationBackGround.radius(radius: 8)
         stackViewSearchNTextFieldNearLocationBackGround.radius(radius: 8)
         viewSettingBackGround.radius(radius: 8)
-        setStatusBarTopColor(color: .colorApp)
         textFieldSearchLocation.placeHolderColor(color: .white)
         
         HomeMenuCell.register(collectionView: collectionView)

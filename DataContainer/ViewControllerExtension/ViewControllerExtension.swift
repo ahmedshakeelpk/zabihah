@@ -14,6 +14,7 @@ extension UIViewController {
      view.addSubview(colouredTopBlack)
      colouredTopBlack.translatesAutoresizingMaskIntoConstraints = false
      colouredTopBlack.backgroundColor = color
+        colouredTopBlack.tintColor = color
 
      NSLayoutConstraint.activate([
         colouredTopBlack.topAnchor.constraint(equalTo: view.topAnchor),
@@ -22,6 +23,24 @@ extension UIViewController {
     ])
   }
 }
+//extension UIViewController {
+//    func setStatusBarTopColor(color: UIColor) {
+//        // Add a view for the status bar background color
+//        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
+//        statusBarView.backgroundColor = color
+//        view.addSubview(statusBarView)
+//
+//        // Change the navigation bar color
+//        if let navController = navigationController {
+//            let appearance = UINavigationBarAppearance()
+//            appearance.configureWithOpaqueBackground()
+//            appearance.backgroundColor = color
+//            appearance.shadowColor = .clear // Remove the shadow for a uniform look
+//            navController.navigationBar.standardAppearance = appearance
+//            navController.navigationBar.scrollEdgeAppearance = appearance
+//        }
+//    }
+//}
 
 extension UIViewController {
 //    func pushViewController(toStoryboard: StoryBoard.name, toViewController: T) {

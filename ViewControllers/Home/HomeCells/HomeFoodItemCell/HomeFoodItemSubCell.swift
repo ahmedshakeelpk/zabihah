@@ -117,7 +117,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
         
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
-        stackViewComments.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        stackViewComments.isHidden = (restuarentResponseModel?.totalReviews ?? 0) == 0
         
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
         stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
@@ -158,6 +158,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
             //            viewItemTypeBackGround.backgroundColor = .colorOrange
         }
         viewItemTypeBackGround.isHidden = true
+        viewBackGroundDelivery.isHidden = true
     }
     
     func favouriteRestaurants() {
@@ -248,7 +249,7 @@ func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
     if let distance = distance?.distance {
         let distanceInMeters: Double = distance  // Example distance in meters
         let distanceInKilometers = distanceInMeters / 1000
-        let distanceInKilometersFormatted = String(format: "%.2f", distanceInKilometers)
+        let distanceInKilometersFormatted = String(format: "%.1f", distanceInKilometers)
         return "\(distanceInKilometersFormatted) km"
     } else {
         print("0.00") // or labelDistance.text = "0.00"
@@ -316,45 +317,95 @@ func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> (Bool, HomeView
     return (currentTime >= openingTime && currentTime <= closingTime, todayTiming)
 }
 
-func getAllUniqueCuisines(items: [HomeViewController.ModelRestuarantResponseData?]?) -> [ HomeViewController.ModelCuisine] {
-    if let items = items {
-        // Flatten the cuisines arrays into a single array
-        let allCuisines = items.compactMap { $0?.cuisines }.flatMap { $0 }
 
-        // Use a Set to filter out duplicate cuisines based on name
-        let uniqueCuisines = Array(Set(allCuisines.compactMap { $0 }.filter { $0.name != nil }))
-        
-        // Return unique cuisines
-        return uniqueCuisines
-    } else {
+//With Sorting
+//func getAllUniqueCuisines2(items: [HomeViewController.ModelRestuarantResponseData?]?) -> [ HomeViewController.ModelCuisine] {
+//    if let items = items {
+//        // Flatten the cuisines arrays into a single array
+//        let allCuisines = items.compactMap { $0?.cuisines }.flatMap { $0 }
+//
+//        // Use a Set to filter out duplicate cuisines based on name
+//        let uniqueCuisines = Array(Set(allCuisines.compactMap { $0 }.filter { $0.name != nil }))
+//        
+//        // Sort unique cuisines alphabetically by name
+//        let sortedCuisines = uniqueCuisines.sorted(by: { ($0.name ?? "").localizedCaseInsensitiveCompare($1.name ?? "") == .orderedAscending })
+//
+//        // Return unique cuisines
+//        return sortedCuisines
+//    } else {
+//        print("No items available")
+//        return [] // Return an empty array if no items are available
+//    }
+//}
+
+func getAllUniqueCuisines(items: [HomeViewController.ModelRestuarantResponseData?]?) -> [HomeViewController.ModelCuisine] {
+    guard let items = items else {
         print("No items available")
         return [] // Return an empty array if no items are available
     }
+    
+    // Flatten the cuisines arrays into a single array
+    let allCuisines = items.compactMap { $0?.cuisines }.flatMap { $0 }
+
+    // To maintain order while filtering out duplicates
+    var seenNames = Set<String>()
+    var uniqueCuisines: [HomeViewController.ModelCuisine] = []
+    
+    for cuisine in allCuisines {
+        if let name = cuisine?.name, !seenNames.contains(name) {
+            seenNames.insert(name)
+            uniqueCuisines.append(cuisine!)
+        }
+    }
+    return uniqueCuisines
 }
+
 
 
 
 import Foundation
 
 func timeAgo(from dateString: String) -> String {
-    // Define the date formatter
-    let dateFormatter = ISO8601DateFormatter()
-    dateFormatter.formatOptions = [.withInternetDateTime]
-    
-    // Convert the string to a Date object
-    guard let date = dateFormatter.date(from: dateString) else {
-        return "Invalid date"
+    let dateTimeString = dateString
+    if !dateTimeString.isEmpty {
+        // Define the date-time format for ISO-8601 (UTC format)
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+
+        
+        // Parse the string into a Date object
+        guard let dateTime = formatter.date(from: dateTimeString) else {
+            return ""
+        }
+        
+        // Get the current date and time
+        let now = Date()
+        
+        // Calculate the difference in various units
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: dateTime, to: now)
+        
+        if let years = components.year, years > 0 {
+            return "\(years) year\(years > 1 ? "s" : "") ago"
+        }
+        if let months = components.month, months > 0 {
+            return "\(months) month\(months > 1 ? "s" : "") ago"
+        }
+        if let days = components.day, days > 0 {
+            return "\(days) day\(days > 1 ? "s" : "") ago"
+        }
+        if let hours = components.hour, hours > 0 {
+            return "\(hours) hour\(hours > 1 ? "s" : "") ago"
+        }
+        if let minutes = components.minute, minutes > 0 {
+            return "\(minutes) minute\(minutes > 1 ? "s" : "") ago"
+        }
+        if let seconds = components.second, seconds > 10 {
+            return "\(seconds) seconds ago"
+        } else {
+            return "just now"
+        }
+    } else {
+        return ""
     }
-    
-    // Calculate the time interval from now
-    let timeInterval = Date().timeIntervalSince(date)
-    
-    // Use DateComponentsFormatter to calculate the time difference
-    let formatter = DateComponentsFormatter()
-    formatter.unitsStyle = .full
-    formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
-    formatter.maximumUnitCount = 1  // Show only the largest unit
-    
-    // Return the formatted time difference as a string
-    return formatter.string(from: timeInterval) ?? "Just now"
 }

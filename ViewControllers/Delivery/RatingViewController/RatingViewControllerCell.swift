@@ -76,24 +76,44 @@ class RatingViewControllerCell: UITableViewCell {
     func loadLabelCommentData() {
         labelComment.numberOfLines = 0
         labelComment.text = modelGetReviewData?.comment ?? ""
+        if isSelectedCell {
+            return()
+        }
         if labelComment.linesCount() > 3 {
             setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
         }
-        
     }
     
     func setLabelTextInThreeLine(text: String, label: UILabel) {
         label.numberOfLines = 3
         let fullText = text
-        let moreText = "… View More"
+        let ellipsisText = "… " // Ellipsis part that should not be underlined
+        let moreText = "more" // The "more" part to be underlined
         
+        // Truncate the text to a maximum length
         let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, 150)))
         
+        // Create attributed string with truncated text
         let attributedString = NSMutableAttributedString(string: truncatedText)
-        let moreAttributedString = NSMutableAttributedString(string: moreText, attributes: [.foregroundColor: UIColor.colorApp, .font: UIFont.systemFont(ofSize: 12, weight: .bold)])
         
+        // Create attributed string for the "…" part (no underline)
+        let ellipsisAttributedString = NSAttributedString(string: ellipsisText)
+        
+        // Create attributed string for the "more" text with underline
+        let moreAttributedString = NSMutableAttributedString(
+            string: moreText,
+            attributes: [
+                .foregroundColor: UIColor.colorApp, // Custom color
+                .font: UIFont.systemFont(ofSize: 12, weight: .bold), // Custom font
+                .underlineStyle: NSUnderlineStyle.single.rawValue // Underline only the "more" text
+            ]
+        )
+        
+        // Append the "…" and "more" attributed strings to the truncated text
+        attributedString.append(ellipsisAttributedString)
         attributedString.append(moreAttributedString)
         
+        // Set the final attributed text to the label
         label.attributedText = attributedString
         
         // Enable user interaction for tap gesture
@@ -101,9 +121,10 @@ class RatingViewControllerCell: UITableViewCell {
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tapGesture)
     }
-    
-    
+
+    var isSelectedCell = false
     @objc func viewMoreTapped(_ sender: UITapGestureRecognizer) {
+        isSelectedCell = true
         print("More tapped with text: \(modelGetReviewData?.comment ?? "")")
         // Expanding the label and setting the full text
 //        labelComment.text = modelGetReviewData?.comment ?? ""
@@ -113,7 +134,8 @@ class RatingViewControllerCell: UITableViewCell {
     func setLabelTextInFullText(text: String, label: UILabel) {
         labelComment.numberOfLines = 0
         let fullText = text
-        let moreText = "… View Less"
+//        let moreText = "… View Less"
+        let moreText = ""
         
         let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, fullText.count)))
         
@@ -131,6 +153,7 @@ class RatingViewControllerCell: UITableViewCell {
     }
     
     @objc func viewLessTapped(_ sender: UITapGestureRecognizer) {
+        return()
         print("More tapped with text: \(modelGetReviewData?.comment ?? "")")
         setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
         

@@ -41,7 +41,7 @@ extension HomeViewController {
     enum PlaceOrderBy: String, Codable {
         case none = "None"
         case rating = "Rating"
-        case location = "Location"
+        case location = "location"
         case ratingAndLocation = "RatingAndLocation"
     }
     enum HalalStatus: String, Codable {
@@ -330,7 +330,6 @@ extension HomeViewController {
 
 
     
-    // MARK: - Cuisine
     // MARK: - Cuisine
     struct ModelCuisine: Codable, Hashable {
         let name: String?
