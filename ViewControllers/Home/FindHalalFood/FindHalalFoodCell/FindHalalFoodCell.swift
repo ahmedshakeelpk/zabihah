@@ -14,6 +14,10 @@ protocol FindHalalFoodCellDelegate: AnyObject {
 }
 
 class FindHalalFoodCell: HomeBaseCell {
+    @IBOutlet weak var stackViewComments: UIStackView!
+    @IBOutlet weak var stackViewReturning: UIStackView!
+    @IBOutlet weak var stackViewPhotos: UIStackView!
+    
     
     @IBOutlet weak var buttonCall: UIButton!
     struct ModelPostFavouriteRestaurantsResponse: Codable {
@@ -143,9 +147,17 @@ class FindHalalFoodCell: HomeBaseCell {
         labelRestaurantName.text = restuarentResponseModel?.name
         labelRestaurantAddress.text = restuarentResponseModel?.address
         labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
-        labelReuse.text = getRating(averageRating: restuarentResponseModel?.willReturnPercentage)
+        
+        labelReuse.text = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) + "%"
+        stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
+        
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        stackViewComments.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
+        stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
+        
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
@@ -233,12 +245,12 @@ extension FindHalalFoodCell: UICollectionViewDataSource, UICollectionViewDelegat
 
 extension FindHalalFoodCell: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, markerInfoContents marker: GMSMarker) -> UIView? {
-        
         let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 170, height: 135))
         let infoView = Bundle.loadView(fromNib: "MarkerInfoView", withType: MarkerInfoView.self)
         view.addSubview(infoView)
         if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            infoView.modelFeaturedRestuarantResponseData = modelData
+            infoView.marker = marker
+            infoView.modelRestuarantResponseData = modelData
         }
         return view
     }

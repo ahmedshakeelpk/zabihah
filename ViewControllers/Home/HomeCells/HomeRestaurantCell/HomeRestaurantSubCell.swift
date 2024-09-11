@@ -12,6 +12,10 @@ protocol HomeRestaurantSubCellDelegate: AnyObject {
 }
 
 class HomeRestaurantSubCell: UICollectionViewCell {
+    @IBOutlet weak var stackViewComments: UIStackView!
+    @IBOutlet weak var stackViewReturning: UIStackView!
+    @IBOutlet weak var stackViewPhotos: UIStackView!
+    
     @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
     @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var viewBackGroundDelivery: UIView!
@@ -84,9 +88,18 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         labelRestaurantName.text = restuarentResponseModel?.name
         labelRestaurantAddress.text = restuarentResponseModel?.address
         labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
-        labelReuse.text = getRating(averageRating: restuarentResponseModel?.willReturnPercentage)
+        
+      
+        labelReuse.text = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) + "%"
+        stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
+        
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        stackViewComments.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
+        stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
+        
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")

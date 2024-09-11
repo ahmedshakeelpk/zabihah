@@ -22,6 +22,12 @@ protocol HomePrayerPlacesTabCellDelegate: AnyObject {
 }
 
 class HomePrayerPlacesTabCell: HomeBaseCell {
+    
+    @IBOutlet weak var stackViewComments: UIStackView!
+    @IBOutlet weak var stackViewReturning: UIStackView!
+    @IBOutlet weak var stackViewPhotos: UIStackView!
+    
+    
     @IBOutlet weak var buttonOpenDirectionMap: UIButton!
 
     @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
@@ -122,9 +128,17 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         labelRestaurantName.text = restuarentResponseModel?.name
         labelRestaurantAddress.text = restuarentResponseModel?.address
         labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
-        labelReuse.text = getRating(averageRating: restuarentResponseModel?.willReturnPercentage)
+        
+        labelReuse.text = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) + "%"
+        stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
+        
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        stackViewComments.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
+        stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
+        
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeholderMosque2")
@@ -236,7 +250,9 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         let infoView = Bundle.loadView(fromNib: "MarkerInfoView", withType: MarkerInfoView.self)
         view.addSubview(infoView)
         if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            infoView.modelGetPrayerPlacesResponseData = modelData
+            infoView.marker = marker
+            infoView.isPrayerPlace = true
+            infoView.modelRestuarantResponseData = modelData
         }
         marker.icon = UIImage(named: "markerPrayerPlacesSelected")
         return view

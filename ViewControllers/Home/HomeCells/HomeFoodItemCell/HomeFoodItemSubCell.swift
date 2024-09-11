@@ -21,6 +21,10 @@ extension HomeFoodItemSubCell {
     }
 }
 class HomeFoodItemSubCell: UICollectionViewCell {
+    @IBOutlet weak var stackViewReturning: UIStackView!
+    @IBOutlet weak var stackViewPhotos: UIStackView!
+    @IBOutlet weak var stackViewComments: UIStackView!
+    
     @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
     @IBOutlet weak var buttonOpenDirectionMap: UIButton!
     @IBOutlet weak var buttonCall: UIView!
@@ -104,9 +108,16 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         labelRestaurantName.text = restuarentResponseModel?.name
         labelRestaurantAddress.text = restuarentResponseModel?.address
         labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
-        labelReuse.text = getRating(averageRating: restuarentResponseModel?.willReturnPercentage)
+        
+        labelReuse.text = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) + "%"
+        stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
+        
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        stackViewComments.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
+        stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
         //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
@@ -197,9 +208,28 @@ func getRating(averageRating: HomeViewController.Rating?) -> String {
     if let rating = averageRating {
         switch rating {
         case .int(let intValue):
+            return intValue == 0 ? "--" : "\(intValue)"
+        case .double(let doubleValue):
+            return doubleValue == 0 ? "--" : String(format: "%.1f", doubleValue)
+              // or "\(doubleValue)" if you want the full double
+        case .string(let stringValue):
+            return stringValue
+        case .none:
+            return "--"
+        }
+    } else {
+        return "--"
+    }
+}
+
+func getRatingEnum(averageRating: HomeViewController.Rating?) -> String {
+    if let rating = averageRating {
+        switch rating {
+        case .int(let intValue):
             return "\(intValue)"
         case .double(let doubleValue):
-            return String(format: "%.1f", doubleValue) // or "\(doubleValue)" if you want the full double
+            return String(format: "%.1f", doubleValue)
+              // or "\(doubleValue)" if you want the full double
         case .string(let stringValue):
             return stringValue
         case .none:
@@ -212,10 +242,10 @@ func getRating(averageRating: HomeViewController.Rating?) -> String {
 
 func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
     if let distance = distance?.distance {
-        let distanceInMeters: Double = 1500  // Example distance in meters
+        let distanceInMeters: Double = distance  // Example distance in meters
         let distanceInKilometers = distanceInMeters / 1000
         let distanceInKilometersFormatted = String(format: "%.2f", distanceInKilometers)
-        return "\(distanceInKilometersFormatted)km"
+        return "\(distanceInKilometersFormatted) km"
     } else {
         print("0.00") // or labelDistance.text = "0.00"
         return "0"

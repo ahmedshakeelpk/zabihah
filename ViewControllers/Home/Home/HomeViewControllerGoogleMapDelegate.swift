@@ -16,7 +16,7 @@ extension HomeViewController: GMSMapViewDelegate {
         let infoView = Bundle.loadView(fromNib: "MarkerInfoView", withType: MarkerInfoView.self)
         view.addSubview(infoView)
         if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            infoView.modelFeaturedRestuarantResponseData = modelData
+            infoView.modelRestuarantResponseData = modelData
         }
         return view
     }
