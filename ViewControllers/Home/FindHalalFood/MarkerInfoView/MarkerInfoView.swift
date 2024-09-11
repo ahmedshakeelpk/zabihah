@@ -11,6 +11,7 @@ import GoogleMaps
 
 class MarkerInfoView: UIView {
 
+    @IBOutlet weak var stackViewPhotosBackGround: UIStackView!
     @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var buttonTapOnView: UIButton!
     @IBOutlet weak var viewRatingBackGround: UIView!
@@ -40,6 +41,7 @@ class MarkerInfoView: UIView {
         labelRestaurantAddress.text = modelRestuarantResponseData?.address
         labelRating.text = getRating(averageRating: modelRestuarantResponseData?.averageRating)
         labelImages.text = "\(modelRestuarantResponseData?.totalPhotos ?? 0)"
+        stackViewPhotosBackGround.isHidden = !(modelRestuarantResponseData?.totalPhotos ?? 0 > 0)
         labelDistance.text = "\(oneDecimalDistance(distance:modelRestuarantResponseData?.distance))"
         viewCallMainBackGround.isHidden = modelRestuarantResponseData?.phone ?? "" == ""
         

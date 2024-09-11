@@ -153,7 +153,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             if let modelData = modelGetPrayerPlacesResponse?.items {
                 for (index, model) in modelData.enumerated() {
                     if let model = model {
-                        drawMarkerOnMap(modelRestuarantResponseData: model, index: index)
+                        drawMarkerOnMapPrayerPlaces(modelRestuarantResponseData: model, index: index)
                     }
                 }
             }

@@ -67,16 +67,16 @@ extension HomeViewController {
         }
     }
     
-    func drawMarkerOnMap(modelGetPrayerPlacesResponseData: ModelRestuarantResponseData) {
+    func drawMarkerOnMapPrayerPlaces(modelRestuarantResponseData: HomeViewController.ModelRestuarantResponseData?, index: Int) {
         /// Marker - Google Place marker
         let marker: GMSMarker = GMSMarker() // Allocating Marker
-        marker.title = modelGetPrayerPlacesResponseData.name // Setting title
-        marker.snippet = modelGetPrayerPlacesResponseData.address // Setting sub title
+        marker.title = modelRestuarantResponseData?.name // Setting title
+        marker.snippet = modelRestuarantResponseData?.address // Setting sub title
         marker.icon = UIImage(named: "markerPrayerPlaces") // Marker icon
         marker.appearAnimation = .pop // Appearing animation. default
-        marker.userData = modelGetPrayerPlacesResponseData
+        marker.userData = modelRestuarantResponseData
         
-        let location = CLLocationCoordinate2D(latitude: modelGetPrayerPlacesResponseData.latitude ?? 0, longitude: modelGetPrayerPlacesResponseData.longitude ?? 0)
+        let location = CLLocationCoordinate2D(latitude: modelRestuarantResponseData?.latitude ?? 0, longitude: modelRestuarantResponseData?.longitude ?? 0)
         marker.position = location
         marker.map = self.mapView // Setting marker on Mapview
         

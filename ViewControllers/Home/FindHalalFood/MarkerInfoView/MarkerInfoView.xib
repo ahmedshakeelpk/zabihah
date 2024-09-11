@@ -316,6 +316,7 @@
                 <outlet property="labelRating" destination="aV1-2x-7K0" id="qlt-K7-EWb"/>
                 <outlet property="labelRestaurantAddress" destination="ewN-FH-kRK" id="dus-Jc-66b"/>
                 <outlet property="labelRestaurantName" destination="aUu-os-6pU" id="j47-DJ-pC4"/>
+                <outlet property="stackViewPhotosBackGround" destination="Xh6-34-PHx" id="niB-fU-kOD"/>
                 <outlet property="viewCallMainBackGround" destination="z2f-Nq-2B2" id="EKj-Qf-Jqy"/>
                 <outlet property="viewRatingBackGround" destination="7st-VS-xIr" id="qtk-d9-chq"/>
                 <outlet property="viewRestaurantBackGround" destination="ZbO-qE-Jgm" id="VYD-aS-58X"/>

@@ -433,8 +433,9 @@ extension HomeViewController {
                         print("The array does not contain enough elements.")
                     }
                 }
+                let space = modelGetPrayerPlacesResponseForHomeTab?.totalRecords ?? 0 > 1 ? "spaces" : "space"
+                let sectionName =  address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine) \(space) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine) \(space) near \(address)"
                 
-                let sectionName =  address == "" ? "prayer spaces near you" : address
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }
@@ -525,7 +526,8 @@ extension HomeViewController {
                     }
                 }
                 
-                sectionName =  address == "" ? "\(selectedCuisine == "" ? "halal" : selectedCuisine) places near you" : "\(selectedCuisine == "" ? "halal" : selectedCuisine) places near \(address)"
+                let places = modelGetHalalRestaurantResponse?.totalRecords ?? 0 > 1 ? "places" : "place"
+                sectionName =  address == "" ? "\(selectedCuisine == "" ? "halal" : selectedCuisine) \(places) near you" : "halal \(selectedCuisine == "" ? "\(places)" : selectedCuisine) near \(address)"
                 
                 selectedPlaceHolderIcon = "placeholderHalalFood"
             }
@@ -550,11 +552,12 @@ extension HomeViewController {
                     }
                 }
                 
-                sectionName =  address == "" ? "\(selectedCuisine == "" ? "halal" : selectedCuisine) places near you" : "\(selectedCuisine == "" ? "halal" : selectedCuisine) places near \(address)"
+                let places = modelGetPrayerPlacesResponse?.totalRecords ?? 0 > 1 ? "spaces" : "space"
+                
+                sectionName =  address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine) \(places) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine) \(places) near \(address)"
                 selectedPlaceHolderIcon = "placeholderMosque"
 
             }
-            cuisine
             print(indexOf)
             let recordCount = cuisine.count
             if recordCount > 0 {
