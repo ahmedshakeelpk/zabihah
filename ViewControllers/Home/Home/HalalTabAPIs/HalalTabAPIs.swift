@@ -10,6 +10,7 @@ import Alamofire
 
 extension HomeViewController {
     func getHalalRestaurants(pageSize: Int, cuisine: String) {
+        getHalalCuisines()
         var useRadius = 32
         if let radius = kModelUserConfigurationResponse?.distance?.distance {
             useRadius = radius
@@ -32,7 +33,7 @@ extension HomeViewController {
             orderBy: .location,
             sortOrder: .ascending,
             location: Location(
-                distanceUnit: .kilometers,
+                distanceUnit: (kModelUserConfigurationResponse.distance?.unit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
@@ -61,7 +62,7 @@ extension HomeViewController {
     }
     
     
-    func getHalalCuisines(pageSize: Int, cuisine: String) {
+    func getHalalCuisines() {
         var useRadius = 32
         if let radius = kModelUserConfigurationResponse?.distance?.distance {
             useRadius = radius
@@ -70,28 +71,22 @@ extension HomeViewController {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
         var parameters = [String: Any]()
-        let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
+        let modelCuisineRequest: ModelCuisineRequest = ModelCuisineRequest(
             ids: nil,
-            rating: filterParametersHome?.rating,
-            page: pageSize,
-            keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
-            pageSize: 20,
-            cuisine: selectedCuisine == "" ? nil : [selectedCuisine],
-            meatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
-            parts: [.cuisines, .timings],
-            //            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
-            orderBy: .location,
-            sortOrder: .ascending,
-            location: Location(
-                distanceUnit: .kilometers,
+            placeKeyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
+            placeLocation: Location(
+                distanceUnit: (kModelUserConfigurationResponse.distance?.unit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
-            )
-        )
+            ),
+            placeRating: filterParametersHome?.rating,
+            placeMeatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
+            placeAlcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
+            orderBy: .location,
+            sortOrder: .ascending)
         do {
-            let jsonData = try JSONEncoder().encode(featureRequestModel)
+            let jsonData = try JSONEncoder().encode(modelCuisineRequest)
             if let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
                 parameters = jsonDict
             }
@@ -99,16 +94,8 @@ extension HomeViewController {
             print("Failed to convert model to dictionary: \(error)")
         }
         APIs.postAPI(apiName: .searchCuisineRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
-            var model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
-            
-            if self.pageNumberForApi > 1 {
-                if let record = self.modelGetHalalRestaurantResponse?.items {
-                    var oldModel = record
-                    oldModel.append(contentsOf: model?.items ?? [])
-                    model?.items = oldModel
-                }
-            }
-            self.modelGetHalalRestaurantResponse = model
+            let model: [ModelCuisine]? = APIs.decodeDataToObject(data: responseData) ?? []
+            self.modelCuisinesHalal = model
         }
     }
 }

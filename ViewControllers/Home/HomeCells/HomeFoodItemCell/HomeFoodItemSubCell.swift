@@ -245,17 +245,62 @@ func getRatingEnum(averageRating: HomeViewController.Rating?) -> String {
     }
 }
 
+//func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
+//    if let distance = distance?.distance {
+//        let distanceInMeters: Double = distance  // Example distance in meters
+//        let distanceInKilometers = distanceInMeters / 1000
+//        let distanceInKilometersFormatted = String(format: "%.1f", distanceInKilometers)
+//        return "\(distanceInKilometersFormatted) km"
+//    } else {
+//        print("0.00") // or labelDistance.text = "0.00"
+//        return "0"
+//    }
+//}
+
 func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
-    if let distance = distance?.distance {
-        let distanceInMeters: Double = distance  // Example distance in meters
-        let distanceInKilometers = distanceInMeters / 1000
-        let distanceInKilometersFormatted = String(format: "%.1f", distanceInKilometers)
-        return "\(distanceInKilometersFormatted) km"
+    if let distanceInMeters = distance?.distance {
+        switch kModelUserConfigurationResponse.distance?.unit?.lowercased() {
+        case "miles":
+            // Convert distance to feet
+            let distanceInFeet = distanceInMeters * 3.28084
+            if distanceInFeet < 5280 {
+                // If distance is less than 1 mile, show in feet
+                let distanceInFeetFormatted = String(format: "%.0f", distanceInFeet)
+                return "\(distanceInFeetFormatted) ft"
+            } else {
+                // If distance is 1 mile or more, show in miles
+                let distanceInMiles = distanceInFeet / 5280
+                let distanceInMilesFormatted = String(format: "%.1f", distanceInMiles)
+                return "\(distanceInMilesFormatted) mi"
+            }
+
+        case "kilometers":
+            // If unit is kilometers, handle meters and kilometers
+            if distanceInMeters < 1000 {
+                let distanceInMetersFormatted = String(format: "%.0f", distanceInMeters)
+                return "\(distanceInMetersFormatted) m"
+            } else {
+                let distanceInKilometers = distanceInMeters / 1000
+                let distanceInKilometersFormatted = String(format: "%.1f", distanceInKilometers)
+                return "\(distanceInKilometersFormatted) km"
+            }
+
+        default:
+            // Default to kilometers
+            if distanceInMeters < 1000 {
+                let distanceInMetersFormatted = String(format: "%.0f", distanceInMeters)
+                return "\(distanceInMetersFormatted) m"
+            } else {
+                let distanceInKilometers = distanceInMeters / 1000
+                let distanceInKilometersFormatted = String(format: "%.1f", distanceInKilometers)
+                return "\(distanceInKilometersFormatted) km"
+            }
+        }
     } else {
-        print("0.00") // or labelDistance.text = "0.00"
         return "0"
     }
 }
+
 
 func ifNewRestaurent(createdOn: String) -> String {
     let createdOnString = createdOn //"2024-08-28T14:20:00Z" // Example ISO 8601 date string
@@ -359,11 +404,6 @@ func getAllUniqueCuisines(items: [HomeViewController.ModelRestuarantResponseData
     }
     return uniqueCuisines
 }
-
-
-
-
-
 
 func timeAgo(from dateString: String) -> String {
     let dateTimeString = dateString

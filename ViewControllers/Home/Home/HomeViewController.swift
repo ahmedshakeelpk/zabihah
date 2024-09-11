@@ -34,7 +34,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var viewSettingBackGround: UIView!
     @IBOutlet weak var stackViewFilterResultBackGround: UIStackView!
     @IBOutlet weak var textFieldFilterResult: UITextField!
-    @IBOutlet weak var textFieldSearchLocation: UITextField!
+    @IBOutlet weak var textFieldSearchLocation: UITextField! {
+        didSet {
+        }
+    }
+    @IBOutlet weak var labelSearchLocation: UILabel!
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var viewZoomInBackGround: UIView!
     @IBOutlet weak var buttonSearchLocation: UIButton!
@@ -133,6 +138,18 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    var modelCuisinesPrayerPlaces: [ModelCuisine]? {
+        didSet {
+            if selectedMenuCell != 1 {
+                return()
+            }
+            let recordCuisineCell = addCuisineCell()
+            listItems[0] = recordCuisineCell.0
+            let recordFindHalalFoodCell = addFindHalalFoodCell()
+            listItems[1] = recordFindHalalFoodCell.0
+            tableViewReload()
+        }
+    }
     var modelGetPrayerPlacesResponse: ModelFeaturedResponse? {
         didSet {
             if dontTriggerModelGetHomeRestaurantsResponseObservers {
@@ -224,6 +241,19 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    var modelCuisinesHalal: [ModelCuisine]? {
+        didSet {
+            if selectedMenuCell != 1 {
+                return()
+            }
+            let recordCuisineCell = addCuisineCell()
+            listItems[0] = recordCuisineCell.0
+            let recordFindHalalFoodCell = addFindHalalFoodCell()
+            listItems[1] = recordFindHalalFoodCell.0
+            tableViewReload()
+        }
+    }
+    
     var modelGetHalalRestaurantResponse: ModelFeaturedResponse? {
         didSet {
             if modelGetHalalRestaurantResponse == nil {
@@ -311,7 +341,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         stackViewSearchNearLocationBackGround.radius(radius: 8)
         stackViewSearchNTextFieldNearLocationBackGround.radius(radius: 8)
         viewSettingBackGround.radius(radius: 8)
-        textFieldSearchLocation.placeHolderColor(color: .white)
+        textFieldSearchLocation.placeHolderColor(color: .clear)
         
         HomeMenuCell.register(collectionView: collectionView)
         HomeFoodItemCell.register(tableView: tableView)

@@ -16,6 +16,8 @@ extension HomeViewController {
         vc.isFromHomeScreen = true
         vc.newAddressAddedHandler = { (address, location) in
             self.textFieldSearchLocation.text = address
+            self.labelSearchLocation.text! = self.textFieldSearchLocation.text!
+
             self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
 //            self.getUserAddress()
         }
@@ -29,6 +31,7 @@ extension HomeViewController {
         vc.buttonContinueHandler = { (address, location) in
             print(location as Any)
             self.textFieldSearchLocation.text = address
+            self.labelSearchLocation.text! = self.textFieldSearchLocation.text!
             self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
         }
         self.navigationController?.pushViewController(vc, animated: true)
@@ -71,6 +74,7 @@ extension HomeViewController {
         let model = modelUserAddressesResponseData
         self.userLocation = CLLocation(latitude: model.latitude ?? 0, longitude: model.longitude ?? 0)
         self.textFieldSearchLocation.text = modelUserAddressesResponseData.physicalAddress
+        labelSearchLocation.text! = textFieldSearchLocation.text!
     }
     
     func setMapList() {
@@ -434,7 +438,8 @@ extension HomeViewController {
                     }
                 }
                 let space = modelGetPrayerPlacesResponseForHomeTab?.totalRecords ?? 0 > 1 ? "spaces" : "space"
-                let sectionName =  address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine) \(space) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine) \(space) near \(address)"
+                let sectionName =  address == "" ? 
+                "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(space) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine  + " prayer") \(space) near \(address)"
                 
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
@@ -508,8 +513,8 @@ extension HomeViewController {
                 selectedPlaceHolderIcon = "placeHolderSubCuisine"
             }
             else if selectedMenuCell == 1 {
-                let allUniqueCuisines = getAllUniqueCuisines(items: modelGetHalalRestaurantResponse?.items)
-                cuisine = allUniqueCuisines
+                let allUniqueCuisines = modelCuisinesHalal
+                cuisine = allUniqueCuisines ?? []
                 var address = ""
                 if textFieldSearchLocation.text != "" {
                     let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
@@ -533,7 +538,7 @@ extension HomeViewController {
             }
             else if selectedMenuCell == 3 {
                 let allUniqueCuisines = getAllUniqueCuisines(items: modelGetPrayerPlacesResponse?.items)
-                cuisine = allUniqueCuisines
+                cuisine = modelCuisinesPrayerPlaces ?? []
 //                sectionName = "\(selectedCuisine == "" ? "" : selectedCuisine + " ")prayer spaces near you"
                 
                 var address = ""
@@ -554,7 +559,7 @@ extension HomeViewController {
                 
                 let places = modelGetPrayerPlacesResponse?.totalRecords ?? 0 > 1 ? "spaces" : "space"
                 
-                sectionName =  address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine) \(places) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine) \(places) near \(address)"
+                sectionName =  address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(places) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(places) near \(address)"
                 selectedPlaceHolderIcon = "placeholderMosque"
 
             }

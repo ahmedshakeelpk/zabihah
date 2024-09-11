@@ -159,7 +159,8 @@ class ProfileViewController: UIViewController {
     @IBAction func buttonEditName(_ sender: Any) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditNameViewController") as! EditNameViewController
         vc.editProfileResponseHandler = {
-            self.setData()
+//            self.setData()
+            self.getuser()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -167,7 +168,8 @@ class ProfileViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditEmailPhoneViewController") as! EditEmailPhoneViewController
         vc.isFromEmail = true
         vc.editProfileResponseHandler = {
-            self.setData()
+//            self.setData()
+            self.getuser()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -175,7 +177,8 @@ class ProfileViewController: UIViewController {
     @IBAction func buttonEditPhoneNumber(_ sender: Any) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditEmailPhoneViewController") as! EditEmailPhoneViewController
         vc.editProfileResponseHandler = {
-            self.setData()
+//            self.setData()
+            self.getuser()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }

@@ -24,6 +24,20 @@ extension HomeViewController {
         let location: Location?
     }
     
+    
+
+    // MARK: - ModelCuisineRequest
+    struct ModelCuisineRequest: Codable {
+        let ids: [String]?
+        let placeKeyword: String?
+        let placeLocation: Location?
+        let placeRating: Int?
+        let placeMeatHalalStatus: [HalalStatus]?
+        let placeAlcoholPolicy: [AlcoholPolicy]?
+        let orderBy: PlaceOrderBy?
+        let sortOrder: SortOrder?
+    }
+    
     // MARK: - Location
     struct Location: Codable {
         let distanceUnit: DistanceUnit

@@ -354,7 +354,7 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     
     @IBAction func buttonOpenDirectionMap(_ sender: Any) {
-        let completeAddress = "\(modelFeaturedResponse?.items?.first??.address ?? "") \(modelFeaturedResponse?.items?.first??.city ?? "") \(modelFeaturedResponse?.items?.first??.state ?? "") \(modelFeaturedResponse?.items?.first??.country ?? "")"
+        let completeAddress = "\(modelFeaturedResponse?.items?.first??.name ?? "") \(modelFeaturedResponse?.items?.first??.address ?? "") \(modelFeaturedResponse?.items?.first??.city ?? "") \(modelFeaturedResponse?.items?.first??.state ?? "") \(modelFeaturedResponse?.items?.first??.country ?? "")"
         OpenMapDirections.present(in: self, sourceView: buttonOpenDirectionMap, latitude: modelFeaturedResponse?.items?.first??.latitude ?? 0, longitude: modelFeaturedResponse?.items?.first??.longitude ?? 0, locationAddress: completeAddress)
     }
     

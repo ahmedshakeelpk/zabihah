@@ -38,6 +38,7 @@ class HomeCuisinesCell: HomeBaseCell {
         dataRecord = data as? HomeBaseCell.HomeListItem
         modelCuisineResponse = (dataRecord.data as? [String : Any])?["data"] as? [HomeViewController.ModelCuisine]
         selectedCuisine =  (dataRecord.data as? [String : Any])?["selectedCuisine"] as? String
+        
         selectedPlaceHolderIcon =  (dataRecord.data as? [String : Any])?["selectedPlaceHolderIcon"] as? String
         delegate = viewController as? any HomeCuisinesCellDelegate
         collectionView.reloadData()
@@ -56,7 +57,7 @@ extension HomeCuisinesCell: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        let width = collectionView.frame.width/4.5
-        return CGSize(width: 91, height: 110)
+        return CGSize(width: 100, height: 110)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
