@@ -12,7 +12,7 @@ import MapKit
 class OpenMapDirections {
     // If you are calling the coordinate from a Model, don't forgot to pass it in the function parenthesis.
     static func present(in viewController: UIViewController, sourceView: UIView, latitude: Double, longitude: Double, locationAddress: String) {
-        let actionSheet = UIAlertController(title: "Open Location", message: "Choose an app to open direction", preferredStyle: .actionSheet)
+        let actionSheet = UIAlertController(title: "Get directions", message: "Select your preferred map app", preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Google Maps", style: .default, handler: { _ in
             //MARK: - With Complete Address
             if UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!) {

@@ -12,8 +12,8 @@ extension HomeViewController {
     func getPrayerPlaces(pageSize: Int) {
         getPrayerCuisines()
         var useRadius = 32
-        if let radius = kModelUserConfigurationResponse?.distance?.distance {
-            useRadius = radius
+        if let radius = kModelUserConfigurationResponse?.distance?.readableDistance {
+            useRadius = Int(radius)
         }
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
@@ -33,7 +33,7 @@ extension HomeViewController {
             orderBy: .location,
             sortOrder: .ascending,
             location: Location(
-                distanceUnit: (kModelUserConfigurationResponse.distance?.unit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
+                distanceUnit: (kModelUserConfigurationResponse.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
@@ -63,8 +63,8 @@ extension HomeViewController {
     
     func getPrayerCuisines() {
         var useRadius = 32
-        if let radius = kModelUserConfigurationResponse?.distance?.distance {
-            useRadius = radius
+        if let radius = kModelUserConfigurationResponse?.distance?.readableDistance {
+            useRadius = Int(radius)
         }
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
@@ -74,7 +74,7 @@ extension HomeViewController {
             ids: nil,
             placeKeyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             placeLocation: Location(
-                distanceUnit: (kModelUserConfigurationResponse.distance?.unit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
+                distanceUnit: (kModelUserConfigurationResponse.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius

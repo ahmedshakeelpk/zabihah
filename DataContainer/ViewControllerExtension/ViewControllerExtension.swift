@@ -254,18 +254,18 @@ extension UIViewController {
     }
     //Mark:- Choose Action Sheet
     func actionSheetForCall(number : String, completion: ((String?) -> Void)? = nil) {
-        var myActionSheet = UIAlertController(title: "Details!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
+        var myActionSheet = UIAlertController(title: "Options!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
-        let callAction = UIAlertAction(title: "Call", style: .destructive, handler: {
+        let callAction = UIAlertAction(title: "“Call this place", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             self.callNow(number: number)
         })
-        let viewDetailsAction = UIAlertAction(title: "View Details", style: .destructive, handler: {
+        let viewDetailsAction = UIAlertAction(title: "View details", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             completion?("viewdetails")
         })
         
-        let viewMapDirectionAction = UIAlertAction(title: "Map Direction", style: .destructive, handler: {
+        let viewMapDirectionAction = UIAlertAction(title: "Get directions", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             completion?("mapdirection")
         })

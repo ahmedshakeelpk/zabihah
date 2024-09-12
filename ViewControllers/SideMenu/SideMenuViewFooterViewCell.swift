@@ -22,7 +22,7 @@ class SideMenuViewFooterViewCell: UITableViewHeaderFooterView {
         super.awakeFromNib()
         // Initialization code
         if labelVersion != nil {
-            labelVersion.text = "Zabiha for iOS: \(Bundle.main.appVersionLong) (\(Bundle.main.appBuild)) "
+            labelVersion.text = "Zabihah for iOS: \(Bundle.main.appVersionLong) (\(Bundle.main.appBuild)) "
         }
         
     }

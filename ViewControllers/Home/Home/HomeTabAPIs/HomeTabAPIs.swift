@@ -11,8 +11,8 @@ import Alamofire
 extension HomeViewController {
     func getFeaturedRestaurantsForHomeTab() {
         var useRadius = 32
-        if let radius = kModelUserConfigurationResponse?.distance?.distance {
-            useRadius = radius
+        if let radius = kModelUserConfigurationResponse?.distance?.readableDistance {
+            useRadius = Int(radius)
         }
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
@@ -34,7 +34,7 @@ extension HomeViewController {
             orderBy: .ratingAndLocation,
             sortOrder: .descending,
             location: Location(
-                distanceUnit: (kModelUserConfigurationResponse.distance?.unit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
+                distanceUnit: (kModelUserConfigurationResponse.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
@@ -57,8 +57,8 @@ extension HomeViewController {
     
     func getHalalRestaurantsForHomeTab() {
         var useRadius = 32
-        if let radius = kModelUserConfigurationResponse?.distance?.distance {
-            useRadius = radius
+        if let radius = kModelUserConfigurationResponse?.distance?.readableDistance {
+            useRadius = Int(radius)
         }
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
@@ -81,7 +81,7 @@ extension HomeViewController {
             orderBy: .location,
             sortOrder: .ascending,
             location: Location(
-                distanceUnit: (kModelUserConfigurationResponse.distance?.unit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
+                distanceUnit: (kModelUserConfigurationResponse.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
@@ -104,8 +104,8 @@ extension HomeViewController {
     }
     func getPrayerPlacesForHomeTab() {
         var useRadius = 32
-        if let radius = kModelUserConfigurationResponse?.distance?.distance {
-            useRadius = radius
+        if let radius = kModelUserConfigurationResponse?.distance?.readableDistance {
+            useRadius = Int(radius)
         }
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
@@ -125,7 +125,7 @@ extension HomeViewController {
             orderBy: .location,
             sortOrder: .ascending,
             location: Location(
-                distanceUnit: (kModelUserConfigurationResponse.distance?.unit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
+                distanceUnit: (kModelUserConfigurationResponse.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius

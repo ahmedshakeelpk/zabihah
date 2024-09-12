@@ -20,6 +20,9 @@ let IPAD = UIDevice.current.userInterfaceIdiom == .pad
 let kDefaults = UserDefaults.standard
 
 
+var kCountryName = ""
+
+
 
 let accountNameForStorage = "zabihahblob"
 let containerName = "profileimage"

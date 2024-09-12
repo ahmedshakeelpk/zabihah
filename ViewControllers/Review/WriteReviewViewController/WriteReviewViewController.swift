@@ -58,16 +58,11 @@ class WriteReviewViewController: UIViewController {
     var modelPostReview: ModelPostReview! {
         didSet {
             DispatchQueue.main.async {
-                if self.modelPostReview.id != "" {
-                    self.popViewController(animated: true)
-                    DispatchQueue.main.async {
-                        self.reviewPostedHandler?()
-                    }
-                }
+                self.navigateToSuccessPopUpViewController()
             }
         }
     }
-    
+
     var modelGetBlobToken: ModelGetBlobToken? {
         didSet{
             
@@ -139,26 +134,8 @@ class WriteReviewViewController: UIViewController {
                 postReview()
             }
         }
-        
-//        if isFromEditReview {
-//            editReview()
-//        }
-//        else {
-//            if arrayLocalGallery?.count ?? 0 > 0{
-//                if let token = self.modelGetBlobToken?.uri {
-//                    for image in arrayLocalGallery ?? [] {
-//                        self.uploadImageToBlobStorage(token: token, image: image)
-//                    }
-//                }
-//                else {
-//                    getBlobToken()
-//                }
-//            }
-//            else {
-//                postReview()
-//            }
-//        }
     }
+    
     
     func setData() {
         textViewReview.textColor = .black
@@ -258,6 +235,21 @@ class WriteReviewViewController: UIViewController {
             self.modelGetBlobToken = model
         }
     }
+    
+    func navigateToSuccessPopUpViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.alertPopup.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ReviewSuccessPopUpViewController") as! ReviewSuccessPopUpViewController
+        vc.isReview = true
+        vc.arrayGalleryImages = arrayAllUpLoadedPhotos
+        vc.didCloseTappedHandler = {
+            if self.modelPostReview.id != "" {
+                self.popViewController(animated: true)
+                DispatchQueue.main.async {
+                    self.reviewPostedHandler?()
+                }
+            }
+        }
+        self.present(vc, animated: true)
+    }
 }
 
 
@@ -306,8 +298,7 @@ extension WriteReviewViewController: UICollectionViewDataSource, UICollectionVie
         return 3
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width / 3.4
-        return CGSize(width: 90, height: 90)
+        return CGSize(width: 80, height: 80)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -29,7 +29,6 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var stackViewConnectBackGround: UIStackView!
     @IBOutlet weak var viewFavouriteBackGround: UIView!
     
-    @IBOutlet weak var viewAddressDevider: UIView!
     @IBOutlet weak var imageViewRestaurantIcon: UIImageView!
     @IBOutlet weak var labelRestaurantName: UILabel!
     @IBOutlet weak var labelAddress: UILabel!
@@ -201,7 +200,6 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     
     func setConfiguration() {
-        viewAddressDevider.circle()
         imageViewRestaurantIcon.circle()
         HomeFoodItemSubCuisineCell.register(collectionView: collectionViewCuisines)
         RecentPhotoCell.register(collectionView: collectionViewRecentPhoto)
@@ -231,13 +229,23 @@ class DeliveryDetailsViewController3: UIViewController {
             viewHalalSummaryBackGround.isHidden = restuarantResponseData?.halalDescription ?? "" == ""
             viewHalalMenuBackGround.isHidden = isPrayerPlace
             
-            let isHalal = ((restuarantResponseData?.meatHalalStatus ?? "").lowercased() == "Full".lowercased())
-            labelFullHalalMenu.text = isHalal ? "Full halal menu" : "Partial halal menu"
             
-            let isAlcohol = !((restuarantResponseData?.alcoholPolicy ?? "").lowercased() == "NotAllowed".lowercased())
+            let halalStatus = (restuarantResponseData?.meatHalalStatus ?? "").lowercased()
+            let halal = (halalStatus == "full") ? "Full halal menu"
+            :
+            (halalStatus == "partial") ? "Partial halal menu"
+            :
+            "Halal unknown"
+            labelFullHalalMenu.text = halal
             
-            labelAlcohol.text = isAlcohol ? "YES" : "No alcohol"
-            viewAlcoholBackGround.isHidden = isAlcohol
+            
+            let alcoholPolicy = (restuarantResponseData?.alcoholPolicy ?? "").lowercased()
+            let alcohol = (alcoholPolicy == "NotAllowed".lowercased()) ? "No alcohol"
+            :
+            (alcoholPolicy == "Served".lowercased()) ? "Alcohol served"
+            :
+            "Alcohol allowed"
+            labelAlcohol.text = alcohol
             
             let restaurantTiming = isRestaurantOpen(timings: restuarantResponseData?.timings ?? [])
             if restaurantTiming.1 != nil {
@@ -250,7 +258,11 @@ class DeliveryDetailsViewController3: UIViewController {
             viewShareBackGround.isHidden = getShareLink() == ""
             
             imageViewFavourite.image = UIImage(named: restuarantResponseData?.isMyFavorite ?? false ? "heartFavourite" : "heartMehroon")
-            labelReviews.text = "\(restuarantResponseData?.totalReviews ?? 0) \((restuarantResponseData?.totalReviews ?? 0 > 1) ? "reviews" : "review")"
+            
+            let review = restuarantResponseData?.totalReviews ?? 0
+            let reviews = (review > 1) ? "\(review) reviews" : "No review"
+            labelReviews.text = reviews
+            
 //            viewReviewBackGround.isHidden = restuarantResponseData?.totalReviews ?? 0 == 0
             
             let reviewCount = getRatingEnum(averageRating: restuarantResponseData?.willReturnPercentage)
@@ -258,7 +270,8 @@ class DeliveryDetailsViewController3: UIViewController {
             viewReturningBackGround.isHidden = reviewCount == "0"
             
             
-            labelRating.text = "Avg. Rating: \(getRating(averageRating: restuarantResponseData?.averageRating))"
+            let rating = getRating(averageRating: restuarantResponseData?.averageRating) == "--" ? "No" : getRating(averageRating: restuarantResponseData?.averageRating)
+            labelRating.text = "\(rating) rating"
             
             viewCallBackGround.isHidden = restuarantResponseData?.phone ?? "" == ""
             viewCuisinesBackGround.isHidden = restuarantResponseData?.cuisines == nil || restuarantResponseData?.cuisines == []
@@ -517,7 +530,8 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             urlStringLocal = "http://twitter.com/\(urlString ?? "")"
         }
         else if titleName.lowercased() == "tiktok" {
-            placeHolder = "https://www.tiktok.com/tiktokGray\(urlString ?? "")"
+            placeHolder = "https://www.tiktok.com/@\(urlString ?? "")"
+//            placeHolder = "https://www.tiktok.com/tiktokGray\(urlString ?? "")"
         }
         else if titleName.lowercased() == "youtube" {
             placeHolder = "\(urlString ?? "")"
@@ -553,9 +567,10 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             }
         }
         else if collectionView == collectionViewConnect {
-            if let socialUrl = connectSocial?[indexPath.item]?.type {
-                if (connectSocial?[indexPath.item]?.type ?? "").lowercased() == "email" {
-                    let mailComposeViewController = configuredMailComposeViewController(email: connectSocial?[indexPath.item]?.type ?? "")
+            let connectSocial = connectSocial?[indexPath.item]
+            if let socialType = connectSocial?.type {
+                if socialType.lowercased() == "email" {
+                    let mailComposeViewController = configuredMailComposeViewController(email: socialType)
                     if MFMailComposeViewController.canSendMail() {
                         self.present(mailComposeViewController, animated: true, completion: nil)
                     } else {
@@ -563,7 +578,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
                     }
                 }
                 else {
-                    let socialData = getSocialIcon(titleName: connectSocial?[indexPath.item]?.type ?? "", urlString: socialUrl)
+                    let socialData = getSocialIcon(titleName: socialType, urlString: connectSocial?.value)
                     
                     let urlString = socialData.1
                     if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
@@ -627,13 +642,13 @@ import Foundation
 class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var picker = UIImagePickerController();
-    var alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+    var alert = UIAlertController(title: "Choose an avatar", message: nil, preferredStyle: .actionSheet)
     var viewController: UIViewController?
     var pickImageCallback : ((UIImage) -> ())?;
     
     override init(){
         super.init()
-        let cameraAction = UIAlertAction(title: "Camera", style: .default){
+        let cameraAction = UIAlertAction(title: "Use camera", style: .default){
             UIAlertAction in
             self.openCamera()
         }
@@ -765,8 +780,19 @@ extension DeliveryDetailsViewController3 {
         APIs.postAPI(apiName: isPrayerPlace ? .uploadPhotoForMosque : .uploadPhotoForRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 {
                 self.getRestaurantDetail()
+                self.navigateToSuccessPopUpViewController(imageUrl: imageUrl!)
             }
         }
+    }
+    
+    func navigateToSuccessPopUpViewController(imageUrl: String) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.alertPopup.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ReviewSuccessPopUpViewController") as! ReviewSuccessPopUpViewController
+        
+        vc.arrayGalleryImages = [imageUrl]
+        vc.didCloseTappedHandler = {
+            
+        }
+        self.present(vc, animated: true)
     }
 }
 

@@ -509,7 +509,7 @@ extension HomeViewController {
                     }
                 }
                 
-                sectionName =  address == "" ? "Restaurants near you" : "\(selectedCuisine == "" ? "halal" : selectedCuisine) places near \(address)"
+                sectionName =  address == "" ? "restaurants near you" : "\(selectedCuisine == "" ? "halal" : selectedCuisine) places near \(address)"
                 selectedPlaceHolderIcon = "placeHolderSubCuisine"
             }
             else if selectedMenuCell == 1 {

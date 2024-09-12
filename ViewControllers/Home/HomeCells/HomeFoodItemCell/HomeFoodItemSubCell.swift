@@ -123,7 +123,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
 
         labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
-        //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.unit ?? "")"
+        //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.readableUnit ?? "")"
         imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
         imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderFoodItem")
         imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
@@ -259,11 +259,11 @@ func getRatingEnum(averageRating: HomeViewController.Rating?) -> String {
 
 func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
     if let distanceInMeters = distance?.distance {
-        switch kModelUserConfigurationResponse.distance?.unit?.lowercased() {
+        switch kModelUserConfigurationResponse.distance?.readableUnit?.lowercased() {
         case "miles":
             // Convert distance to feet
             let distanceInFeet = distanceInMeters * 3.28084
-            if distanceInFeet < 5280 {
+            if distanceInFeet < 528 {
                 // If distance is less than 1 mile, show in feet
                 let distanceInFeetFormatted = String(format: "%.0f", distanceInFeet)
                 return "\(distanceInFeetFormatted) ft"
@@ -447,5 +447,32 @@ func timeAgo(from dateString: String) -> String {
         }
     } else {
         return ""
+    }
+}
+
+import CoreLocation
+
+func getCountryFromCoordinates(latitude: Double, longitude: Double, completion: @escaping (String?) -> Void) {
+    let geocoder = CLGeocoder()
+    let location = CLLocation(latitude: latitude, longitude: longitude)
+    
+    geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+        if let error = error {
+            print("Reverse geocoding failed with error: \(error.localizedDescription)")
+            completion(nil)
+            return
+        }
+        
+        guard let placemark = placemarks?.first else {
+            print("No placemarks found")
+            completion(nil)
+            return
+        }
+        
+        if let country = placemark.country {
+            completion(country)
+        } else {
+            completion(nil)
+        }
     }
 }

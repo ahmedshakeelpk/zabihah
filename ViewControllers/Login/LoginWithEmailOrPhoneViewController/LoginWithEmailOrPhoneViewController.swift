@@ -77,12 +77,14 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         viewBackGroundButtonSendVerificationCode.radius(radius: 8)
         
         if isFromEmail {
+            textFieldEmail.text = ""
             labelTitle.text = "Sign in with email"
             stackViewPhoneNumber.isHidden = true
             stackViewEmail.isHidden = false
             imageViewTitleType.image = UIImage(named: "smsLogin")
         }
         else {
+            textFieldPhoneNumber.text = ""
             labelTitle.text = "Sign in with phone"
             stackViewEmail.isHidden = true
             stackViewPhoneNumber.isHidden = false
@@ -162,6 +164,14 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
                 kDefaults.set(kAccessToken, forKey: "kAccessToken")
                 kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
                 self.navigateToRootHomeViewController()
+            }
+            else if modelGetUserProfileResponse?.isEmailVerified == false {
+                isFromEmail = true
+                setConfiguration()
+            }
+            else if modelGetUserProfileResponse?.isPhoneVerified == false {
+                isFromEmail = false
+                setConfiguration()
             }
             else {
                 self.navigateToRegisterationViewController()

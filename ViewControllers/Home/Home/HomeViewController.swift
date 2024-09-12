@@ -666,6 +666,16 @@ extension HomeViewController : CLLocationManagerDelegate {
             locationManager.delegate = nil
             self.userLocation = location
             kUserCurrentLocation = location
+             
+            getCountryFromCoordinates(latitude: kUserCurrentLocation.coordinate.latitude, longitude: kUserCurrentLocation.coordinate.longitude, completion: {
+                countryName in
+                if countryName?.lowercased() == "United States".lowercased() {
+                    kCountryName = "us"
+                }
+                else {
+                    kCountryName = countryName ?? ""
+                }
+            })
             print(" Lat \(location.coordinate.latitude) ,  Longitude \(location.coordinate.longitude)")
         }
         if locations.first != nil {

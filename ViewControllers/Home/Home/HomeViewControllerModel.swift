@@ -213,6 +213,19 @@ extension HomeViewController {
     struct ModelUserConfigurationResponseData: Codable {
         let distance: Int?
         let unit: String?
+        
+        var readableUnit: String? {
+            if kCountryName.lowercased() == "us" {
+                return "miles"
+            }
+            return "kilometers"
+        }
+        var readableDistance: Double {
+            if readableUnit == "miles" {
+                return Double(Double(distance ?? 0) / 1609.344)
+            }
+            return Double((distance ?? 0) / 1000)
+        }
     }
     // MARK: - Place
     struct Place: Codable {
