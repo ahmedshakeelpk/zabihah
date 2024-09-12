@@ -65,6 +65,7 @@
 		6A62693B2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6269392C3D3F1E00DA844F /* HomePrayerSpacesSubCell.swift */; };
 		6A62693C2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A62693A2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.xib */; };
 		6A69C6152C9373BC0060E284 /* ReviewSuccessPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A69C6142C9373BC0060E284 /* ReviewSuccessPopUpViewController.swift */; };
+		6A69C6182C937D3E0060E284 /* DeliveryDetailsPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A69C6172C937D3E0060E284 /* DeliveryDetailsPopUpViewController.swift */; };
 		6A6FC3FC2C3572000050B6B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6FC3FB2C3572000050B6B2 /* AppDelegate.swift */; };
 		6A6FC3FE2C3572000050B6B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6FC3FD2C3572000050B6B2 /* SceneDelegate.swift */; };
 		6A6FC4002C3572000050B6B2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6FC3FF2C3572000050B6B2 /* LoginViewController.swift */; };
@@ -217,6 +218,7 @@
 		6A6269392C3D3F1E00DA844F /* HomePrayerSpacesSubCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePrayerSpacesSubCell.swift; sourceTree = "<group>"; };
 		6A62693A2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomePrayerSpacesSubCell.xib; sourceTree = "<group>"; };
 		6A69C6142C9373BC0060E284 /* ReviewSuccessPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSuccessPopUpViewController.swift; sourceTree = "<group>"; };
+		6A69C6172C937D3E0060E284 /* DeliveryDetailsPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryDetailsPopUpViewController.swift; sourceTree = "<group>"; };
 		6A6FC3F82C3572000050B6B2 /* zabihah.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zabihah.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6FC3FB2C3572000050B6B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A6FC3FD2C3572000050B6B2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -710,6 +712,14 @@
 			path = ReviewSuccessPopUp;
 			sourceTree = "<group>";
 		};
+		6A69C6162C937D2D0060E284 /* DeliveryDetailsPopUp */ = {
+			isa = PBXGroup;
+			children = (
+				6A69C6172C937D3E0060E284 /* DeliveryDetailsPopUpViewController.swift */,
+			);
+			path = DeliveryDetailsPopUp;
+			sourceTree = "<group>";
+		};
 		6A6FC3EF2C3572000050B6B2 = {
 			isa = PBXGroup;
 			children = (
@@ -893,6 +903,7 @@
 		6ACA06582C5665A200EE8F43 /* Delivery */ = {
 			isa = PBXGroup;
 			children = (
+				6A69C6162C937D2D0060E284 /* DeliveryDetailsPopUp */,
 				6ACA06592C5665AC00EE8F43 /* Delivery.storyboard */,
 				6ACA065B2C56696000EE8F43 /* DeliveryDetails */,
 			);
@@ -1305,6 +1316,7 @@
 				6AC092B62C709E65003AB07D /* FAQsViewControllerCell.swift in Sources */,
 				6A6FC4002C3572000050B6B2 /* LoginViewController.swift in Sources */,
 				6A3AB59E2C3A80470030F016 /* AddressesCell.swift in Sources */,
+				6A69C6182C937D3E0060E284 /* DeliveryDetailsPopUpViewController.swift in Sources */,
 				6A6FC4112C357D490050B6B2 /* AppColorsExtension.swift in Sources */,
 				6AABF4F42C899ECC00918CD4 /* HalalTabAPIs.swift in Sources */,
 				6A3AB58F2C39E2DC0030F016 /* SideMenuViewHeaderViewCell.swift in Sources */,
