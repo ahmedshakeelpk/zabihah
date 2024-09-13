@@ -38,8 +38,10 @@ class MyFavouriteCell: UITableViewCell {
     func setData() {
         if modelGetFavouriteResponseData != nil {
             labelTitle.text = modelGetFavouriteResponseData?.place?.name ?? ""
-            labelAddress.text = modelGetFavouriteResponseData?.place?.address ?? ""
-            imageViewRestaurant.setImage(urlString: modelGetFavouriteResponseData?.place?.iconImageWebURL ?? "", placeHolderIcon: selectedIndex == 0 ? "placeHolderRestaurant" : "placeholderMosque2")
+            let completeAddress = "\(modelGetFavouriteResponseData?.place?.address ?? ""), \(modelGetFavouriteResponseData?.place?.city ?? ""), \(modelGetFavouriteResponseData?.place?.state ?? ""), \(modelGetFavouriteResponseData?.place?.country ?? "")"
+            
+            labelAddress.text = completeAddress
+            imageViewRestaurant.setImage(urlString: modelGetFavouriteResponseData?.place?.iconImageWebUrl ?? "", placeHolderIcon: selectedIndex == 0 ? "placeHolderRestaurant" : "placeholderMosque2")
         }
     }
     

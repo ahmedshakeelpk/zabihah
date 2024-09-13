@@ -97,7 +97,7 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationAddress: completeAddress)
     }
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
+        self.viewController.dialNumber(isPrayerPlaces: false, name: "", number: restuarentResponseModel?.phone ?? "")
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeFoodItemSubCellDelegate

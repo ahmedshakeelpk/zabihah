@@ -229,12 +229,8 @@ extension HomeViewController {
     }
     // MARK: - Place
     struct Place: Codable {
-        var id, name, address, iconImageWebURL: String
-
-        enum CodingKeys: String, CodingKey {
-            case id, name, address
-            case iconImageWebURL = "iconImageWebUrl"
-        }
+        var id, name, address, iconImageWebUrl: String?
+        var city, country, region, state, subRegion, zip: String?
     }
 //    // MARK: - ModelGetConfigurationResponse
 //    struct ModelUserConfigurationResponse: Codable {

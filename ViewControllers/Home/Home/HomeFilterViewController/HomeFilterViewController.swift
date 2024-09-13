@@ -25,8 +25,8 @@ class HomeFilterViewController: UIViewController {
 //            labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))ml"
 //            
 //            if kModelUserConfigurationResponse != nil {
-//                rangeSlider.maximumValue = Double(kModelUserConfigurationResponse.distanceValue ?? 0)
-//                labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+//                rangeSlider.maximumValue = Double(kModelUserConfigurationResponse?.distanceValue ?? 0)
+//                labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))\(kModelUserConfigurationResponse?.distanceUnit ?? "ml")"
 //            }
 //        }
 //    }
@@ -71,7 +71,7 @@ class HomeFilterViewController: UIViewController {
         
         getStarRating()
         setSliderRange()
-        let km = (kModelUserConfigurationResponse.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
+        let km = (kModelUserConfigurationResponse?.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
         if filterParametersHome != nil {
             
             if let radius = filterParametersHome.radius {
@@ -91,7 +91,7 @@ class HomeFilterViewController: UIViewController {
             }
                 
 //            if let radius = filterParametersHome["radius"] as? String {
-//                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distanceUnit ?? "mi")"
+//                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse?.distanceUnit ?? "mi")"
 //
 //                sliderRange.value = Float(radius) ?? 0
 //            }
@@ -122,7 +122,7 @@ class HomeFilterViewController: UIViewController {
         if kModelUserConfigurationResponse != nil {
             sliderRange.maximumValue = Float(Double(kModelUserConfigurationResponse?.distance?.readableDistance ?? 0))
             sliderRange.value = sliderRange.maximumValue
-            let km = (kModelUserConfigurationResponse.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
+            let km = (kModelUserConfigurationResponse?.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
             labelRangeEnd.text = "\(Int(sliderRange.value)) \(km)"
         }
     }
@@ -133,7 +133,7 @@ class HomeFilterViewController: UIViewController {
         }
     }
     @IBAction func sliderRange(_ sender: UISlider) {
-        let km = (kModelUserConfigurationResponse.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
+        let km = (kModelUserConfigurationResponse?.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
         labelRangeEnd.text = "\(Int(sender.value)) \(km)"
     }
     @IBAction func buttonFilter(_ sender: Any) {

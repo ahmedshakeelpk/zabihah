@@ -15,7 +15,7 @@ let GOOGLE_API_KEY = "AIzaSyClWqdvljOC6yPv4LkxJXRsmldaJZwbciI"
 var kAccessToken = ""
 var kRefreshToken = ""
 var kUserCurrentLocation: CLLocation!
-var kModelUserConfigurationResponse: HomeViewController.ModelUserConfigurationResponse!
+var kModelUserConfigurationResponse: HomeViewController.ModelUserConfigurationResponse?
 let IPAD = UIDevice.current.userInterfaceIdiom == .pad
 let kDefaults = UserDefaults.standard
 

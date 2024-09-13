@@ -33,7 +33,7 @@ extension HomeViewController {
             orderBy: .location,
             sortOrder: .ascending,
             location: Location(
-                distanceUnit: (kModelUserConfigurationResponse.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
+                distanceUnit: (kModelUserConfigurationResponse?.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
@@ -75,7 +75,7 @@ extension HomeViewController {
             ids: nil,
             placeKeyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             placeLocation: Location(
-                distanceUnit: (kModelUserConfigurationResponse.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
+                distanceUnit: (kModelUserConfigurationResponse?.distance?.readableUnit ?? "Kilometers").lowercased() == "miles" ? .miles : .kilometers,
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius

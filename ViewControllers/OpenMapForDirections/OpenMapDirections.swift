@@ -36,16 +36,52 @@ class OpenMapDirections {
                 }
             }
         }))
-//        actionSheet.addAction(UIAlertAction(title: "Apple Maps", style: .default, handler: { _ in
-//            // Pass the coordinate that you want here
-//            let coordinate = CLLocationCoordinate2DMake(latitude,longitude)
-//            let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
-//            mapItem.name = locationAddress //"Destination"
-//            mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
-//        }))
+        actionSheet.addAction(UIAlertAction(title: "Apple Maps", style: .default, handler: { _ in
+            
+            openAppleMapsDirections(toAddress: locationAddress, latitude: latitude, longitude: longitude, locationAddress: locationAddress)
+
+        }))
         actionSheet.popoverPresentationController?.sourceRect = sourceView.bounds
         actionSheet.popoverPresentationController?.sourceView = sourceView
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         viewController.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    
+    static func openAppleMapsDirections(toAddress address: String, latitude: Double, longitude: Double, locationAddress: String) {
+        let geocoder = CLGeocoder()
+        
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if let error = error {
+                print("Geocoding failed with error: \(error.localizedDescription)")
+                openAppleMapViaCoordinates(locationAddress: locationAddress, latitude: latitude, longitude: longitude)
+                return
+            }
+            
+            guard let placemark = placemarks?.first, let location = placemark.location else {
+                openAppleMapViaCoordinates(locationAddress: locationAddress, latitude: latitude, longitude: longitude)
+                print("No valid placemark found")
+                return
+            }
+            
+            // Create an MKPlacemark from the CLPlacemark
+            let destinationPlacemark = MKPlacemark(coordinate: location.coordinate)
+            let mapItem = MKMapItem(placemark: destinationPlacemark)
+            
+            // Create launch options to open Apple Maps
+            let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+            
+            // Open Apple Maps with directions to the destination
+            mapItem.openInMaps(launchOptions: launchOptions)
+        }
+    }
+    
+    static func openAppleMapViaCoordinates(locationAddress: String, latitude: Double, longitude: Double) {
+        // Pass the coordinate that you want here
+            let coordinate = CLLocationCoordinate2DMake(latitude,longitude)
+            let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
+
+            mapItem.name = locationAddress //"Destination"
+            mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
     }
 }

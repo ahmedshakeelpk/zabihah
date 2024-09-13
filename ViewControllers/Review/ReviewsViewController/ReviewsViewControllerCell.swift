@@ -46,7 +46,8 @@ class ReviewsViewControllerCell: UITableViewCell {
     var modelGetReviewData: HomeViewController.Review? {
         didSet {
             labelTitle.text = modelGetReviewData?.place?.name ?? ""
-            labelAddress.text = modelGetReviewData?.place?.address ?? ""
+            let completeAddress = "\(modelGetReviewData?.place?.address ?? ""), \(modelGetReviewData?.place?.city ?? ""), \(modelGetReviewData?.place?.state ?? ""), \(modelGetReviewData?.place?.country ?? "")"
+            labelAddress.text = completeAddress
             labelComment.text = modelGetReviewData?.comment ?? ""
             let dateString = modelGetReviewData?.updatedOn ?? ""
             labelTimeAgo.text = timeAgo(from: dateString)

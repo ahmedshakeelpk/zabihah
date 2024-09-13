@@ -215,9 +215,10 @@ extension UIViewController {
         return value
     }
     
-    func dialNumber(number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
+    func dialNumber(isPrayerPlaces: Bool, name: String, number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
         if isActionSheet ?? false {
-            actionSheetForCall(number: number) {clickOn in
+            
+            actionSheetForCall(isPrayerPlaces: isPrayerPlaces, name: name, number: number) { clickOn in
                 completion?(clickOn)
             }
 //            if number == "" {
@@ -253,7 +254,12 @@ extension UIViewController {
         }
     }
     //Mark:- Choose Action Sheet
-    func actionSheetForCall(number : String, completion: ((String?) -> Void)? = nil) {
+    func actionSheetForCall(isPrayerPlaces: Bool, name: String, number : String, completion: ((String?) -> Void)? = nil) {
+        navigateToDeliveryDetailsPopUpViewController(isPrayerPlaces: isPrayerPlaces, name: name, number: number) { clickOn in
+            completion?(clickOn)
+        }
+        
+        return
         var myActionSheet = UIAlertController(title: "Options!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
         let callAction = UIAlertAction(title: "“Call this place", style: .destructive, handler: {
@@ -284,7 +290,31 @@ extension UIViewController {
         myActionSheet.addAction(viewMapDirectionAction)
         myActionSheet.addAction(cancelAction)
         self.present(myActionSheet, animated: true, completion: nil)
+        
     }
+    
+    func navigateToDeliveryDetailsPopUpViewController(isPrayerPlaces: Bool? = false, name: String, number: String, completion: ((String?) -> Void)? = nil) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsPopUpViewController") as! DeliveryDetailsPopUpViewController
+        
+        vc.titleName = name
+        if isPrayerPlaces ?? false {
+            
+        }
+        vc.isRestaurantIcon = !(isPrayerPlaces ?? false)
+        vc.isMosqueIcon = isPrayerPlaces ?? false
+        
+        vc.tappedOnCallHandler = {
+            self.callNow(number: number)
+        }
+        vc.tappedOnDetailViewHandler = {
+            completion?("viewdetails")
+        }
+        vc.tappedOnMapHandler = {
+            completion?("mapdirection")
+        }
+        self.present(vc, animated: true)
+    }
+    
 }
 
 extension UIViewController {

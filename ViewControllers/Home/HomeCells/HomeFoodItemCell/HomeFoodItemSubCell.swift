@@ -98,7 +98,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationAddress: completeAddress)
     }
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
+        self.viewController.dialNumber(isPrayerPlaces: false, name: "", number: restuarentResponseModel?.phone ?? "")
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeFoodItemSubCellDelegate
@@ -259,7 +259,7 @@ func getRatingEnum(averageRating: HomeViewController.Rating?) -> String {
 
 func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
     if let distanceInMeters = distance?.distance {
-        switch kModelUserConfigurationResponse.distance?.readableUnit?.lowercased() {
+        switch kModelUserConfigurationResponse?.distance?.readableUnit?.lowercased() {
         case "miles":
             // Convert distance to feet
             let distanceInFeet = distanceInMeters * 3.28084

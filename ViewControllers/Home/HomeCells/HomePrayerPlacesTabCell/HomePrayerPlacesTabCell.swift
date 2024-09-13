@@ -117,7 +117,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     }
     
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
+        self.viewController.dialNumber(isPrayerPlaces: true, name: "", number: restuarentResponseModel?.phone ?? "")
     }
     
     @IBAction func buttonFavourite(_ sender: Any) {
@@ -265,7 +265,7 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
+            self.viewController.dialNumber(isPrayerPlaces: true, name: userData.name ?? "", number: userData.phone ?? "", isActionSheet: true) { actionType in
                 if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
                     self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath, actionType: actionType ?? "viewdetails", dataModel: modelData)
                 }

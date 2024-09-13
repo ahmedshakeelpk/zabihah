@@ -25,6 +25,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var stackViewPhoneNumber: UIView!
     
     var isFromEmail: Bool = false
+    var isUpdateEmailOrPhoneNoCase: Bool = false
 
     var modelSendnotificationResponse: ModelSendnotificationResponse? {
         didSet {
@@ -78,14 +79,14 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         
         if isFromEmail {
             textFieldEmail.text = ""
-            labelTitle.text = "Sign in with email"
+            labelTitle.text = isUpdateEmailOrPhoneNoCase ? "Verify email address" : "Sign in with email"
             stackViewPhoneNumber.isHidden = true
             stackViewEmail.isHidden = false
             imageViewTitleType.image = UIImage(named: "smsLogin")
         }
         else {
             textFieldPhoneNumber.text = ""
-            labelTitle.text = "Sign in with phone"
+            labelTitle.text = isUpdateEmailOrPhoneNoCase ? "Verify phone number" : "Sign in with phone"
             stackViewEmail.isHidden = true
             stackViewPhoneNumber.isHidden = false
             imageViewTitleType.image = UIImage(named: "phoneLogo")
@@ -156,9 +157,13 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
             }
         }
     }
-    
+
     var modelGetUserProfileResponse : HomeViewController.ModelGetUserProfileResponse! {
         didSet {
+            if isUpdateEmailOrPhoneNoCase {
+                updateProfile()
+                return
+            }
             if modelGetUserProfileResponse?.isEmailVerified ?? false,
                modelGetUserProfileResponse?.isPhoneVerified ?? false {
                 kDefaults.set(kAccessToken, forKey: "kAccessToken")
@@ -166,10 +171,16 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
                 self.navigateToRootHomeViewController()
             }
             else if modelGetUserProfileResponse?.isEmailVerified == false {
+                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                isUpdateEmailOrPhoneNoCase = true
                 isFromEmail = true
                 setConfiguration()
             }
             else if modelGetUserProfileResponse?.isPhoneVerified == false {
+                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                isUpdateEmailOrPhoneNoCase = true
                 isFromEmail = false
                 setConfiguration()
             }
@@ -191,6 +202,34 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     func userAlreadyExistFromRegistration() {
         isFromEmail = !isFromEmail
         setConfiguration()
+    }
+    
+    func updateProfile(
+        imageUrl: String? = nil,
+        isSubscribedToHalalOffersNotification: Bool? = nil,
+        isSubscribedToHalalEventsNewsletter: Bool? = nil
+    ) {
+        let parameters: Parameters = [
+            "firstname": modelGetUserProfileResponse?.firstName ?? "",
+            "lastName": modelGetUserProfileResponse?.lastName ?? "",
+            "email": modelGetUserProfileResponse?.email ?? "",
+            "phone": modelGetUserProfileResponse?.phone ?? "",
+            "profilePictureWebUrl": imageUrl == nil ? modelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
+            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == nil ? modelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" : isSubscribedToHalalOffersNotification!,
+            "isSubscribedToHalalEventsNewsletter":
+                isSubscribedToHalalEventsNewsletter == nil ?
+            modelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" :
+                isSubscribedToHalalEventsNewsletter!
+        ]
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                self.isUpdateEmailOrPhoneNoCase = false
+                self.mySelf()
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error", message: "", iconName: .iconError)
+            }
+        }
     }
 }
 

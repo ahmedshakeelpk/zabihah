@@ -150,7 +150,7 @@ class DeliveryDetailsViewController3: UIViewController {
         favouriteRestaurants()
     }
     @IBAction func buttonCall(_ sender: Any) {
-        dialNumber(number: modelFeaturedResponse?.items?[0]?.phone ?? "")
+        dialNumber(isPrayerPlaces: isPrayerPlace, name: "", number: modelFeaturedResponse?.items?[0]?.phone ?? "")
     }
     
     @IBAction func buttonShare(_ sender: Any) {

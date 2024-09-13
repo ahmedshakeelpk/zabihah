@@ -80,7 +80,7 @@ class HomeRestaurantSubCell: UICollectionViewCell {
         favouriteRestaurants()
     }
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
+        self.viewController.dialNumber(isPrayerPlaces: false, name: "", number: restuarentResponseModel?.phone ?? "")
     }
     
    

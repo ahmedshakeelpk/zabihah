@@ -113,7 +113,7 @@ class FindHalalFoodCell: HomeBaseCell {
     }
     
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: restuarentResponseModel?.phone ?? "")
+        self.viewController.dialNumber(isPrayerPlaces: false, name: "", number: restuarentResponseModel?.phone ?? "")
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any FindHalalFoodCellDelegate
@@ -262,7 +262,7 @@ extension FindHalalFoodCell: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { [self] actionType in
+            self.viewController.dialNumber(isPrayerPlaces: false, name: userData.name ?? "", number: userData.phone ?? "", isActionSheet: true) { [self] actionType in
                 if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
                     navigateToDeliveryDetailsViewController(indexPath: indexPath, actionType: actionType ?? "viewdetails", dataModel: modelData)
                 }
