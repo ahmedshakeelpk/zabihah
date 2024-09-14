@@ -57,10 +57,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var modelUserConfigurationResponse: ModelUserConfigurationResponse? {
         didSet {
+            DispatchQueue.main.async {
+                kModelUserConfigurationResponse = self.modelUserConfigurationResponse
+                self.locationManager.delegate = self
+                self.checkLocationServices()
+            }
             //Location Services
-            kModelUserConfigurationResponse = modelUserConfigurationResponse
-            locationManager.delegate = self
-            checkLocationServices()
         }
     }
     
@@ -68,44 +70,51 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var selectedMenuCell: Int = 0 {
         didSet {
-            addCellInList()
-            handleMenuTap()
+            DispatchQueue.main.async {
+                self.addCellInList()
+                self.handleMenuTap()
+            }
         }
     }
     var pageNumberForApi: Int! = 1 {
         didSet {
-            if selectedMenuCell == 0 {
+            DispatchQueue.main.async {
                 
-            }
-            else if selectedMenuCell == 1 {
-                if pageNumberForApi == 0 {
-                    return
+                if self.selectedMenuCell == 0 {
+                    
                 }
-                if pageNumberForApi > 1 {
-                    if pageNumberForApi > modelGetHalalRestaurantResponse?.totalPages ?? 0 {
-                        return()
+                else if self.selectedMenuCell == 1 {
+                    if self.pageNumberForApi == 0 {
+                        return
                     }
-                }
-                getHalalRestaurants(pageSize: pageNumberForApi, cuisine: selectedCuisine)
-            }
-            else if selectedMenuCell == 3 {
-                if pageNumberForApi == 0 {
-                    return
-                }
-                if pageNumberForApi > 1 {
-                    if pageNumberForApi > modelGetPrayerPlacesResponse?.totalPages ?? 0 {
-                        return()
+                    if self.pageNumberForApi > 1 {
+                        if self.pageNumberForApi > self.modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                            return()
+                        }
                     }
+                    self.getHalalRestaurants(pageSize: self.pageNumberForApi, cuisine: self.selectedCuisine)
                 }
-                getPrayerPlaces(pageSize: pageNumberForApi)
+                else if self.selectedMenuCell == 3 {
+                    if self.pageNumberForApi == 0 {
+                        return
+                    }
+                    if self.pageNumberForApi > 1 {
+                        if self.pageNumberForApi > self.modelGetPrayerPlacesResponse?.totalPages ?? 0 {
+                            return()
+                        }
+                    }
+                    self.getPrayerPlaces(pageSize: self.pageNumberForApi)
+                }
             }
         }
     }
     
     var userLocation: CLLocation! {
         didSet {
-            filterParametersHome = nil
-            self.selectedMenuCell = itself(selectedMenuCell)
+            DispatchQueue.main.async {
+                self.filterParametersHome = nil
+                self.self.selectedMenuCell = self.itself(self.selectedMenuCell)
+            }
         }
     }
     
@@ -114,25 +123,27 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var modelGetUserAddressResponse: [AddressesListViewController.ModelUserAddressesResponseData]? {
         didSet {
-            if modelGetUserAddressResponse?.count ?? 0 > 0 {
-                if let defaultAddressIndex = modelGetUserAddressResponse?.firstIndex(where: { model in
-                    model.isDefault ?? false
-                }) {
-                    let latitude = modelGetUserAddressResponse?[defaultAddressIndex].latitude ?? 0
-                    
-                    let longitude = modelGetUserAddressResponse?[defaultAddressIndex].longitude ?? 0
-                    
-                    userLocation = CLLocation(latitude: latitude, longitude: longitude)
+            DispatchQueue.main.async {
+                if self.modelGetUserAddressResponse?.count ?? 0 > 0 {
+                    if let defaultAddressIndex = self.modelGetUserAddressResponse?.firstIndex(where: { model in
+                        model.isDefault ?? false
+                    }) {
+                        let latitude = self.modelGetUserAddressResponse?[defaultAddressIndex].latitude ?? 0
+                        
+                        let longitude = self.modelGetUserAddressResponse?[defaultAddressIndex].longitude ?? 0
+                        
+                        self.userLocation = CLLocation(latitude: latitude, longitude: longitude)
+                    }
+                    else {
+                        print("No default address found.")
+                    }
+                    self.tableViewReload()
                 }
                 else {
-                    print("No default address found.")
-                }
-                tableViewReload()
-            }
-            else {
-                print("User have No address in list.")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.navigateToAddAddressViewController()
+                    print("User have No address in list.")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.navigateToAddAddressViewController()
+                    }
                 }
             }
         }
@@ -140,37 +151,40 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var modelCuisinesPrayerPlaces: [ModelCuisine]? {
         didSet {
-            if selectedMenuCell != 1 {
-                return()
+            DispatchQueue.main.async {
+                if self.selectedMenuCell != 1 {
+                    return()
+                }
+                let recordCuisineCell = self.addCuisineCell()
+                self.listItems[0] = recordCuisineCell.0
+                let recordFindHalalFoodCell = self.addFindHalalFoodCell()
+                self.listItems[1] = recordFindHalalFoodCell.0
+                self.tableViewReload()
             }
-            let recordCuisineCell = addCuisineCell()
-            listItems[0] = recordCuisineCell.0
-            let recordFindHalalFoodCell = addFindHalalFoodCell()
-            listItems[1] = recordFindHalalFoodCell.0
-            tableViewReload()
         }
     }
     var modelGetPrayerPlacesResponse: ModelFeaturedResponse? {
         didSet {
-            if dontTriggerModelGetHomeRestaurantsResponseObservers {
-                dontTriggerModelGetHomeRestaurantsResponseObservers = false
-                return
-            }
-            if selectedMenuCell != 3 {
-                return()
-            }
-            
-            let recordCuisineCell = addCuisineCell()
-            listItems[0] = recordCuisineCell.0
-            let recordPrayerPlacesTabCell = addHomePrayerPlacesTabCell()
-            listItems[1] = recordPrayerPlacesTabCell.0
-            
-            tableViewReload()
-            mapView.clear()
-            if let modelData = modelGetPrayerPlacesResponse?.items {
-                for (index, model) in modelData.enumerated() {
-                    if let model = model {
-                        drawMarkerOnMapPrayerPlaces(modelRestuarantResponseData: model, index: index)
+            DispatchQueue.main.async {
+                if self.dontTriggerModelGetHomeRestaurantsResponseObservers {
+                    self.dontTriggerModelGetHomeRestaurantsResponseObservers = false
+                    return
+                }
+                if self.selectedMenuCell != 3 {
+                    return()
+                }
+                
+                let recordCuisineCell = self.addCuisineCell()
+                self.listItems[0] = recordCuisineCell.0
+                let recordPrayerPlacesTabCell = self.addHomePrayerPlacesTabCell()
+                self.listItems[1] = recordPrayerPlacesTabCell.0
+                self.tableViewReload()
+                self.mapView.clear()
+                if let modelData = self.modelGetPrayerPlacesResponse?.items {
+                    for (index, model) in modelData.enumerated() {
+                        if let model = model {
+                            self.drawMarkerOnMapPrayerPlaces(modelRestuarantResponseData: model, index: index)
+                        }
                     }
                 }
             }
@@ -180,35 +194,38 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var modelGetHomeRestaurantsResponseForHome: ModelFeaturedResponse? {
         didSet {
-            if modelGetHomeRestaurantsResponseForHome == nil {
-                self.tableViewReload()
-                return
+            DispatchQueue.main.async {
+                if self.modelGetHomeRestaurantsResponseForHome == nil {
+                    self.tableViewReload()
+                    return
+                }
+                if self.dontTriggerModelGetHomeRestaurantsResponseObservers {
+                    self.dontTriggerModelGetHomeRestaurantsResponseObservers = false
+                    return
+                }
+                if self.selectedMenuCell != 0 {
+                    return()
+                }
+                self.setDataForHomeTab()
             }
-            if dontTriggerModelGetHomeRestaurantsResponseObservers {
-                dontTriggerModelGetHomeRestaurantsResponseObservers = false
-                return
-            }
-            if selectedMenuCell != 0 {
-                return()
-            }
-            setDataForHomeTab()
         }
     }
     var modelGetHalalRestaurantResponseForHomeTab: ModelFeaturedResponse? {
         didSet {
-            if modelGetHalalRestaurantResponseForHomeTab == nil {
-                self.tableViewReload()
-                return
+            DispatchQueue.main.async {
+                if self.modelGetHalalRestaurantResponseForHomeTab == nil {
+                    self.tableViewReload()
+                    return
+                }
+                if self.dontTriggerModelGetHalalRestaurantResponseObservers {
+                    self.dontTriggerModelGetHalalRestaurantResponseObservers = false
+                    return
+                }
+                if self.selectedMenuCell != 0 {
+                    return()
+                }
+                self.setDataForHomeTab()
             }
-            if dontTriggerModelGetHalalRestaurantResponseObservers {
-                dontTriggerModelGetHalalRestaurantResponseObservers = false
-                return
-            }
-            if selectedMenuCell != 0 {
-                return()
-            }
-            
-            setDataForHomeTab()
         }
     }
     
@@ -226,56 +243,62 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var modelGetPrayerPlacesResponseForHomeTab: ModelFeaturedResponse? {
         didSet {
-            if modelGetPrayerPlacesResponseForHomeTab == nil {
-                self.tableViewReload()
-                return
+            DispatchQueue.main.async {
+                if self.modelGetPrayerPlacesResponseForHomeTab == nil {
+                    self.tableViewReload()
+                    return
+                }
+                if self.dontTriggerModelGetHomeRestaurantsResponseObservers {
+                    self.dontTriggerModelGetHomeRestaurantsResponseObservers = false
+                    return
+                }
+                if self.selectedMenuCell != 3 {
+                    return()
+                }
+                self.setDataForHomeTab()
             }
-            if dontTriggerModelGetHomeRestaurantsResponseObservers {
-                dontTriggerModelGetHomeRestaurantsResponseObservers = false
-                return
-            }
-            if selectedMenuCell != 3 {
-                return()
-            }
-            setDataForHomeTab()
         }
     }
     
     var modelCuisinesHalal: [ModelCuisine]? {
         didSet {
-            if selectedMenuCell != 1 {
-                return()
+            DispatchQueue.main.async {
+                if self.selectedMenuCell != 1 {
+                    return()
+                }
+                let recordCuisineCell = self.addCuisineCell()
+                self.listItems[0] = recordCuisineCell.0
+                let recordFindHalalFoodCell = self.addFindHalalFoodCell()
+                self.listItems[1] = recordFindHalalFoodCell.0
+                self.tableViewReload()
             }
-            let recordCuisineCell = addCuisineCell()
-            listItems[0] = recordCuisineCell.0
-            let recordFindHalalFoodCell = addFindHalalFoodCell()
-            listItems[1] = recordFindHalalFoodCell.0
-            tableViewReload()
         }
     }
     
     var modelGetHalalRestaurantResponse: ModelFeaturedResponse? {
         didSet {
-            if modelGetHalalRestaurantResponse == nil {
+            DispatchQueue.main.async {
+                if self.modelGetHalalRestaurantResponse == nil {
+                    self.tableViewReload()
+                    return
+                }
+                if self.dontTriggerModelGetHalalRestaurantResponseObservers {
+                    self.dontTriggerModelGetHalalRestaurantResponseObservers = false
+                    return
+                }
+                if self.selectedMenuCell != 1 {
+                    return()
+                }
+                let recordCuisineCell = self.addCuisineCell()
+                self.listItems[0] = recordCuisineCell.0
+                let recordFindHalalFoodCell = self.addFindHalalFoodCell()
+                self.listItems[1] = recordFindHalalFoodCell.0
                 self.tableViewReload()
-                return
-            }
-            if dontTriggerModelGetHalalRestaurantResponseObservers {
-                dontTriggerModelGetHalalRestaurantResponseObservers = false
-                return
-            }
-            if selectedMenuCell != 1 {
-                return()
-            }
-            let recordCuisineCell = addCuisineCell()
-            listItems[0] = recordCuisineCell.0
-            let recordFindHalalFoodCell = addFindHalalFoodCell()
-            listItems[1] = recordFindHalalFoodCell.0
-            tableViewReload()
-            mapView.clear()
-            if let modelData = modelGetHalalRestaurantResponse?.items {
-                for (index, model) in modelData.enumerated() {
-                    drawMarkerOnMap(modelRestuarantResponseData: model!, index: index)
+                self.mapView.clear()
+                if let modelData = self.modelGetHalalRestaurantResponse?.items {
+                    for (index, model) in modelData.enumerated() {
+                        self.drawMarkerOnMap(modelRestuarantResponseData: model!, index: index)
+                    }
                 }
             }
         }
@@ -284,8 +307,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
         didSet {
-            sideMenuSetup()
-            kModelGetUserProfileResponse = modelGetUserResponseLocal
+            DispatchQueue.main.async {
+                self.sideMenuSetup()
+                kModelGetUserProfileResponse = self.modelGetUserResponseLocal
+            }
         }
     }
     

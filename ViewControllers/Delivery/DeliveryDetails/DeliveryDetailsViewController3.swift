@@ -215,7 +215,7 @@ class DeliveryDetailsViewController3: UIViewController {
         if let restuarantResponseData = modelFeaturedResponse?.items?.first {
             labelRestaurantName.text = restuarantResponseData?.name ?? ""
             labelConnectWith.text = "Connect With \(restuarantResponseData?.name ?? "")"
-            labelAddress.text = "\(restuarantResponseData?.address ?? ""), \(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "")"
+            labelAddress.text = "\(restuarantResponseData?.address ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "")"
             
             labelDistanceAway.text = "\(oneDecimalDistance(distance:restuarantResponseData?.distance)) away"
             
@@ -260,7 +260,11 @@ class DeliveryDetailsViewController3: UIViewController {
             imageViewFavourite.image = UIImage(named: restuarantResponseData?.isMyFavorite ?? false ? "heartFavourite" : "heartMehroon")
             
             let review = restuarantResponseData?.totalReviews ?? 0
-            let reviews = (review > 1) ? "\(review) reviews" : "No review"
+            let reviews = (review == 1) ? "\(review) review"
+            :
+            (review > 1) ? "\(review) reviews"
+            :
+            "No reviews"
             labelReviews.text = reviews
             
 //            viewReviewBackGround.isHidden = restuarantResponseData?.totalReviews ?? 0 == 0

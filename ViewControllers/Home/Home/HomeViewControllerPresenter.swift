@@ -141,6 +141,17 @@ extension HomeViewController {
     func getCurrentTimeZone() -> String {
         TimeZone.current.identifier
     }
+    
+    func textFieldLocationText() -> String {
+        let stringWithouTAnyWhitespace = textFieldSearchLocation.text?.filter {!$0.isWhitespace}.lowercased()
+        let searchStringPlaceHolder = "Searching around your current location".filter {!$0.isWhitespace}.lowercased()
+
+        if stringWithouTAnyWhitespace != "" &&
+            stringWithouTAnyWhitespace != searchStringPlaceHolder {
+            return textFieldSearchLocation.text!
+        }
+        return ""
+    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
@@ -371,11 +382,16 @@ extension HomeViewController {
                 let rowHeight = 224
                 let identifier = HomeFoodItemCell.nibName()
                 var address = ""
-                if textFieldSearchLocation.text != "" {
+                if textFieldLocationText() != "" {
                     let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
-                        address = "\(array[0]) \(array[1])"
+                        if array.count > 3 {
+                            address = "\(array[0]) \(array[1])"
+                        }
+                        else {
+                            address = "\(array[0])"
+                        }
                         print(address)  // This will print the concatenated address
                     } 
                     else if array.count > 0 {
@@ -423,11 +439,16 @@ extension HomeViewController {
                 let rowHeight = 224
                 let identifier = HomePrayerPlacesCell.nibName()
                 var address = ""
-                if textFieldSearchLocation.text != "" {
+                if textFieldLocationText() != "" {
                     let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
-                        address = "\(array[0]) \(array[1])"
+                        if array.count > 3 {
+                            address = "\(array[0]) \(array[1])"
+                        }
+                        else {
+                            address = "\(array[0])"
+                        }
                         print(address)  // This will print the concatenated address
                     }
                     else if array.count > 0 {
@@ -494,11 +515,16 @@ extension HomeViewController {
                 let allUniqueCuisines = getAllUniqueCuisines(items: modelGetHalalRestaurantResponseForHomeTab?.items)
                 cuisine = allUniqueCuisines
                 var address = ""
-                if textFieldSearchLocation.text != "" {
+                if textFieldLocationText() != "" {
                     let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
-                        address = "\(array[0]) \(array[1])"
+                        if array.count > 3 {
+                            address = "\(array[0]) \(array[1])"
+                        }
+                        else {
+                            address = "\(array[0])"
+                        }
                         print(address)  // This will print the concatenated address
                     }
                     else if array.count > 0 {
@@ -516,11 +542,16 @@ extension HomeViewController {
                 let allUniqueCuisines = modelCuisinesHalal
                 cuisine = allUniqueCuisines ?? []
                 var address = ""
-                if textFieldSearchLocation.text != "" {
+                if textFieldLocationText() != "" {
                     let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
-                        address = "\(array[0]) \(array[1])"
+                        if array.count > 3 {
+                            address = "\(array[0]) \(array[1])"
+                        }
+                        else {
+                            address = "\(array[0])"
+                        }
                         print(address)  // This will print the concatenated address
                     }
                     else if array.count > 0 {
@@ -542,11 +573,16 @@ extension HomeViewController {
 //                sectionName = "\(selectedCuisine == "" ? "" : selectedCuisine + " ")prayer spaces near you"
                 
                 var address = ""
-                if textFieldSearchLocation.text != "" {
+                if textFieldLocationText() != "" {
                     let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
-                        address = "\(array[0]) \(array[1])"
+                        if array.count > 3 {
+                            address = "\(array[0]) \(array[1])"
+                        }
+                        else {
+                            address = "\(array[0])"
+                        }
                         print(address)  // This will print the concatenated address
                     }
                     else if array.count > 0 {

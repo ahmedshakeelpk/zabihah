@@ -57,7 +57,7 @@ extension HomeCuisinesCell: UICollectionViewDataSource, UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        let width = collectionView.frame.width/4.5
-        return CGSize(width: 100, height: 110)
+        return CGSize(width: 90, height: 110)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

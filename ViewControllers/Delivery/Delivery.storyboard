@@ -4992,13 +4992,25 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BjU-Jb-ZMY">
                                                         <rect key="frame" x="0.0" y="0.0" width="40" height="50"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chefHatDetails" translatesAutoresizingMaskIntoConstraints="NO" id="ceU-yZ-2tW">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uMz-bO-FNR" customClass="ViewRadius10" customModule="zabihah" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="10" width="30" height="30"/>
+                                                                <subviews>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chefHatDetails" translatesAutoresizingMaskIntoConstraints="NO" id="ceU-yZ-2tW">
+                                                                        <rect key="frame" x="0.0" y="7.5" width="30" height="15"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="30" id="FYm-GG-IbS"/>
+                                                                            <constraint firstAttribute="height" constant="15" id="kac-kv-pih"/>
+                                                                        </constraints>
+                                                                    </imageView>
+                                                                </subviews>
+                                                                <color key="backgroundColor" red="0.50588235290000005" green="0.031372549020000001" blue="0.035294117649999998" alpha="0.070000000000000007" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="30" id="FYm-GG-IbS"/>
-                                                                    <constraint firstAttribute="height" constant="30" id="kac-kv-pih"/>
+                                                                    <constraint firstItem="ceU-yZ-2tW" firstAttribute="centerY" secondItem="uMz-bO-FNR" secondAttribute="centerY" id="2iX-YU-e2M"/>
+                                                                    <constraint firstAttribute="height" constant="30" id="6Me-z4-bVg"/>
+                                                                    <constraint firstAttribute="width" constant="30" id="MaY-VZ-Stz"/>
+                                                                    <constraint firstItem="ceU-yZ-2tW" firstAttribute="leading" secondItem="uMz-bO-FNR" secondAttribute="leading" id="lOM-2i-tnI"/>
                                                                 </constraints>
-                                                            </imageView>
+                                                            </view>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dhZ-i0-3M1">
                                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="50"/>
                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -5009,8 +5021,8 @@
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
-                                                            <constraint firstItem="ceU-yZ-2tW" firstAttribute="centerY" secondItem="BjU-Jb-ZMY" secondAttribute="centerY" id="68j-hr-tvX"/>
-                                                            <constraint firstItem="ceU-yZ-2tW" firstAttribute="leading" secondItem="BjU-Jb-ZMY" secondAttribute="leading" id="7dG-6S-Hcg"/>
+                                                            <constraint firstItem="uMz-bO-FNR" firstAttribute="leading" secondItem="BjU-Jb-ZMY" secondAttribute="leading" id="5ip-X9-Ar6"/>
+                                                            <constraint firstItem="uMz-bO-FNR" firstAttribute="centerY" secondItem="BjU-Jb-ZMY" secondAttribute="centerY" id="OP6-oU-kcj"/>
                                                             <constraint firstAttribute="trailing" secondItem="dhZ-i0-3M1" secondAttribute="trailing" id="YBD-fN-Rkr"/>
                                                             <constraint firstAttribute="bottom" secondItem="dhZ-i0-3M1" secondAttribute="bottom" id="lB6-a6-pRG"/>
                                                             <constraint firstItem="dhZ-i0-3M1" firstAttribute="leading" secondItem="BjU-Jb-ZMY" secondAttribute="leading" id="qNc-Yh-gfy"/>
@@ -5021,7 +5033,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Phu-S8-gCN">
                                                         <rect key="frame" x="40" y="0.0" width="302" height="50"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restaurant details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWa-k5-BLT">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Place details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWa-k5-BLT">
                                                                 <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.29411764709999999" green="0.33333333329999998" blue="0.39607843139999999" alpha="1" colorSpace="calibratedRGB"/>
