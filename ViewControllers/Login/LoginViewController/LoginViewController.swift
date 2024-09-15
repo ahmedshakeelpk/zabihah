@@ -78,8 +78,9 @@ class LoginViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func navigateToLoginWithEmailOrPhoneViewController(isFromEmail: Bool) {
+    func navigateToLoginWithEmailOrPhoneViewController(isFromEmail: Bool, isUpdateEmailOrPhoneNoCase: Bool? = false) {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "LoginWithEmailOrPhoneViewController") as! LoginWithEmailOrPhoneViewController
+        vc.isUpdateEmailOrPhoneNoCase = isUpdateEmailOrPhoneNoCase!
         vc.isFromEmail = isFromEmail
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -155,8 +156,13 @@ class LoginViewController: UIViewController {
                    self.modelGetUserResponseLocal?.isPhoneVerified ?? false {
                     self.navigateToRootHomeViewController()
                 }
+                if self.modelGetUserResponseLocal?.phone == nil ||
+                   self.modelGetUserResponseLocal?.email == nil {
+                    
+                }
                 else {
-                    self.navigateToLoginWithEmailOrPhoneViewController(isFromEmail: !(self.modelGetUserResponseLocal?.isEmailVerified ?? false))
+                    
+                    self.navigateToLoginWithEmailOrPhoneViewController(isFromEmail: !(self.modelGetUserResponseLocal?.isEmailVerified ?? false), isUpdateEmailOrPhoneNoCase: true)
                 }
             }
         }

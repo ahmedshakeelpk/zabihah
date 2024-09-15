@@ -27,6 +27,7 @@ class OtpLoginViewController: UIViewController{
     var isFromEmail: Bool = false
     var isFromRegistrationViewController: Bool = false
     var stringPhoneEmail = ""
+    var isUpdateEmailOrPhoneNoCase: Bool = false
     
     var isOtpSuccessFullHandler: (() -> ())!
     
@@ -61,8 +62,10 @@ class OtpLoginViewController: UIViewController{
                     }
                 }
                 else {
-                    kAccessToken = modelOtpResponse?.token ?? ""
-                    kRefreshToken = modelOtpResponse?.refreshToken ?? ""
+                    if !isUpdateEmailOrPhoneNoCase {
+                        kAccessToken = modelOtpResponse?.token ?? ""
+                        kRefreshToken = modelOtpResponse?.refreshToken ?? ""
+                    }
                     popViewController(animated: false)
                     DispatchQueue.main.async {
                         self.isOtpSuccessFullHandler?()
@@ -169,7 +172,11 @@ class OtpLoginViewController: UIViewController{
     func verifyOtp() {
         let parameters: Parameters = [
             "code": otpString ?? "",
-            "createJwt": isFromRegistrationViewController ? false : true
+            "createJwt": isUpdateEmailOrPhoneNoCase ? false 
+            :
+                isFromRegistrationViewController ? false
+            :
+                true
         ]
         
         APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
@@ -197,7 +204,9 @@ class OtpLoginViewController: UIViewController{
         }
     }
     func sendnotification() {
-        kAccessToken = ""
+        if !isUpdateEmailOrPhoneNoCase {
+            kAccessToken = ""
+        }
         let parameters: Parameters = [
             "phone": isFromEmail ? "" : stringPhoneEmail,
             "email": isFromEmail ? stringPhoneEmail : "",

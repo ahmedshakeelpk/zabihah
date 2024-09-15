@@ -95,6 +95,7 @@ class SideMenuView: UIView {
     
     func removeCacheData() {
         kAccessToken = ""
+        kDefaults.setValue(nil, forKey: "kAccessToken")
         let dictionary = kDefaults.dictionaryRepresentation()
         dictionary.keys.forEach { key in
             kDefaults.removeObject(forKey: key)
@@ -108,7 +109,9 @@ class SideMenuView: UIView {
         let galleryAction = UIAlertAction(title: "Logout", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             self.removeCacheData()
-            self.navigateToRootLoginViewController()
+            DispatchQueue.main.async {
+                self.navigateToRootLoginViewController()
+            }
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {

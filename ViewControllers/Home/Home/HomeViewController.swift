@@ -141,7 +141,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 }
                 else {
                     print("User have No address in list.")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                         self.navigateToAddAddressViewController()
                     }
                 }

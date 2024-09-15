@@ -116,6 +116,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     func navigateToOtpLoginViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
         vc.isFromEmail = isFromEmail
+        vc.isUpdateEmailOrPhoneNoCase = isUpdateEmailOrPhoneNoCase
         vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
         vc.isOtpSuccessFullHandler = {
             self.mySelf()
@@ -138,7 +139,9 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     }
     
     func request() {
-        kAccessToken = ""
+        if !isUpdateEmailOrPhoneNoCase {
+            kAccessToken = ""
+        }
         let parameters: Parameters = [
             "phone": textFieldPhoneNumber.getCompletePhoneNumber(),
             "email": textFieldEmail.text!,
@@ -169,6 +172,9 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
                 kDefaults.set(kAccessToken, forKey: "kAccessToken")
                 kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
                 self.navigateToRootHomeViewController()
+            }
+            else if modelGetUserProfileResponse.phone == nil || modelGetUserProfileResponse.email == nil {
+                self.navigateToRegisterationViewController()
             }
             else if modelGetUserProfileResponse?.isEmailVerified == false {
                 kDefaults.set(kAccessToken, forKey: "kAccessToken")
@@ -206,8 +212,8 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     
     func updateProfile(
         imageUrl: String? = nil,
-        isSubscribedToHalalOffersNotification: Bool? = nil,
-        isSubscribedToHalalEventsNewsletter: Bool? = nil
+        isSubscribedToHalalOffersNotification: Bool? = false,
+        isSubscribedToHalalEventsNewsletter: Bool? = false
     ) {
         let parameters: Parameters = [
             "firstname": modelGetUserProfileResponse?.firstName ?? "",
@@ -215,7 +221,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
             "email": modelGetUserProfileResponse?.email ?? "",
             "phone": modelGetUserProfileResponse?.phone ?? "",
             "profilePictureWebUrl": imageUrl == nil ? modelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
-            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == nil ? modelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" : isSubscribedToHalalOffersNotification!,
+            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == true ? modelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" : isSubscribedToHalalOffersNotification!,
             "isSubscribedToHalalEventsNewsletter":
                 isSubscribedToHalalEventsNewsletter == nil ?
             modelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" :
