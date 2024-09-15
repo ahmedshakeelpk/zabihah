@@ -11,8 +11,10 @@ import FlagPhoneNumber
 extension FPNTextField {
     func getCompletePhoneNumber() -> String {
         let countryCode = (self.selectedCountry?.phoneCode)!
-        let phoneNumber = self.text!.replacingOccurrences(of: " ", with: "")
+        var phoneNumber = self.text!.replacingOccurrences(of: " ", with: "")
+        phoneNumber = phoneNumber.getIntegerValue()
         let completePhoneNumber = "\(countryCode)\(phoneNumber)"
         return completePhoneNumber
     }
 }
+
