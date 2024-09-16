@@ -44,7 +44,7 @@ class HomeCuisinesSubCell: UICollectionViewCell {
                 viewBottomLine.backgroundColor = .clear
 //                viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 2)
             }
-            viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 2)
+            viewImageViewTitleBackGround.radius(radius: 25, color: .white, borderWidth: 2)
         }
     }
     

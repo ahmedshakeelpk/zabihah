@@ -60,7 +60,9 @@ class OtpEmailViewController: UIViewController{
                 }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelOtpResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelOtpResponse?.title ?? "")
+
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -140,7 +142,7 @@ class OtpEmailViewController: UIViewController{
         
         APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let responseModel = OtpLoginViewController.ModelOtpResponse(message: "", token: "test token", refreshToken: "")
+                let responseModel = OtpLoginViewController.ModelOtpResponse(title: "", message: "", token: "test token", refreshToken: "")
                 self.modelOtpResponse = responseModel
             }
             else {

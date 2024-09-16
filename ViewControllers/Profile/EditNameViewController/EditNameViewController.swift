@@ -95,7 +95,7 @@ class EditNameViewController: UIViewController {
         ]
         APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let model = ModelEditProfileResponse(success: true, message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
+                let model = ModelEditProfileResponse(success: true, title: "", message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
                 self.modelEditProfileResponse = model
             }
             else {
@@ -110,6 +110,7 @@ extension EditNameViewController {
     // MARK: - ModelEditProfileResponse
     struct ModelEditProfileResponse: Codable {
         let success: Bool?
+        let title: String?
         let message: String?
         let recordFound: Bool?
         let innerExceptionMessage: String?

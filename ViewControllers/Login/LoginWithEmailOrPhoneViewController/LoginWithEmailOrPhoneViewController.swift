@@ -33,7 +33,8 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
                 navigateToOtpLoginViewController()
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelSendnotificationResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -151,7 +152,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         APIs.postAPI(apiName: .request, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode  in
 
             if statusCode == 200 && responseData == nil {
-                let responseModel = ModelSendnotificationResponse(recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                let responseModel = ModelSendnotificationResponse(title: "", recordFound: true, success: true, message: "", innerExceptionMessage: "")
                 self.modelSendnotificationResponse = responseModel
             }
             else {
@@ -173,7 +174,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
                 kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
                 self.navigateToRootHomeViewController()
             }
-            else if modelGetUserProfileResponse.phone == nil || modelGetUserProfileResponse.email == nil {
+            else if modelGetUserProfileResponse.isPhoneVerified == nil || modelGetUserProfileResponse.isEmailVerified == nil || modelGetUserProfileResponse.firstName == nil {
                 self.navigateToRegisterationViewController()
             }
             else if modelGetUserProfileResponse?.isEmailVerified == false {

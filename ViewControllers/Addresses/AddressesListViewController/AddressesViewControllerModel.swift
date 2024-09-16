@@ -11,6 +11,7 @@ import Foundation
 extension AddressesListViewController {
     // MARK: - ModelGetUserAddressResponse
     struct ModelDeleteUserAddressResponse: Codable {
+        let title: String?
         let success: Bool?
         let message: String?
         let recordFound: Bool?
@@ -44,6 +45,5 @@ extension AddressesListViewController {
         var userId, createdBy: String?
         let isDeleted: Bool?
         var name, locationInstruction: String?
-
     }
 }

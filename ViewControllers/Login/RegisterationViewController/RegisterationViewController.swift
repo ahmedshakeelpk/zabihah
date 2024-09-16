@@ -46,7 +46,8 @@ class RegisterationViewController: UIViewController {
                 navigateToOtpLoginViewController()
             }
             else {
-                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError, buttonNames: [
+                let errorMessage = getErrorMessage(errorMessage: modelSendnotificationResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error!", message: errorMessage, iconName: .iconError, buttonNames: [
                     [
                         "buttonName": "Cancel",
                         "buttonBackGroundColor": UIColor.white,
@@ -79,7 +80,8 @@ class RegisterationViewController: UIViewController {
                 sendnotification()
             }
             else {
-                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelSignUpResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error!", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -238,7 +240,7 @@ class RegisterationViewController: UIViewController {
         APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
             
             if statusCode ==  200 && responseData == nil {
-                let responseModel = ModelSignUpResponse(success: true, message: "", userResponseData: nil, recordFound: true, innerExceptionMessage: "",  token: "")
+                let responseModel = ModelSignUpResponse(success: true, title: "", message: "", userResponseData: nil, recordFound: true, innerExceptionMessage: "",  token: "")
                 self.modelSignUpResponse = responseModel
             }
             else {
@@ -258,7 +260,7 @@ class RegisterationViewController: UIViewController {
         APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             
             if statusCode ==  200 && responseData == nil {
-                let responseModel = LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                let responseModel = LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(title: "", recordFound: true, success: true, message: "", innerExceptionMessage: "")
                 self.modelSendnotificationResponse = responseModel
             }
             else {

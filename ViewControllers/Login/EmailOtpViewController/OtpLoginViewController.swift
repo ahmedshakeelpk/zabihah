@@ -57,9 +57,7 @@ class OtpLoginViewController: UIViewController{
             if !(modelOtpResponse?.token ?? "").isEmpty {
                 if isFromRegistrationViewController {
                     popViewController(animated: false)
-                    DispatchQueue.main.async {
-                        self.isOtpSuccessFullHandler?()
-                    }
+                    self.isOtpSuccessFullHandler?()
                 }
                 else {
                     if !isUpdateEmailOrPhoneNoCase {
@@ -67,13 +65,12 @@ class OtpLoginViewController: UIViewController{
                         kRefreshToken = modelOtpResponse?.refreshToken ?? ""
                     }
                     popViewController(animated: false)
-                    DispatchQueue.main.async {
-                        self.isOtpSuccessFullHandler?()
-                    }
+                    self.isOtpSuccessFullHandler?()
                 }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelOtpResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelOtpResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -84,7 +81,8 @@ class OtpLoginViewController: UIViewController{
                 startOtpTimer()
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelSendnotificationResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -181,7 +179,7 @@ class OtpLoginViewController: UIViewController{
         
         APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let responseModel = ModelOtpResponse(message: "", token: "testToken", refreshToken: "")
+                let responseModel = ModelOtpResponse(title: "", message: "", token: "testToken", refreshToken: "")
                 self.modelOtpResponse = responseModel
             }
             else {
@@ -216,7 +214,7 @@ class OtpLoginViewController: UIViewController{
         APIs.postAPI(apiName: .request, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode  in
 
             if statusCode == 200 && responseData == nil {
-                let responseModel =  LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                let responseModel =  LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(title: "", recordFound: true, success: true, message: "", innerExceptionMessage: "")
                 self.modelSendnotificationResponse = responseModel
             }
             else {

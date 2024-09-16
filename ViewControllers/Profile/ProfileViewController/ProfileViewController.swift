@@ -81,7 +81,8 @@ class ProfileViewController: UIViewController {
 //                }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelGetDeleteUserResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelGetDeleteUserResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -225,7 +226,7 @@ class ProfileViewController: UIViewController {
         APIs.postAPI(apiName: .mySelf, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetDeleteUserResponse? = APIs.decodeDataToObject(data: responseData)
             if statusCode == 200 && responseData == nil {
-                self.modelGetDeleteUserResponse =             ModelGetDeleteUserResponse(success: true, message: nil, recordFound: nil, innerExceptionMessage: nil)
+                self.modelGetDeleteUserResponse =             ModelGetDeleteUserResponse(title: "", success: true, message: nil, recordFound: nil, innerExceptionMessage: nil)
             }
             else {
                 self.modelGetDeleteUserResponse = model
@@ -316,6 +317,7 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController {
     struct ModelGetDeleteUserResponse: Codable {
+        let title: String?
         let success: Bool?
         let message: String?
         let recordFound: Bool?
@@ -400,7 +402,7 @@ extension ProfileViewController {
         ]
         APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let model = EditNameViewController.ModelEditProfileResponse(success: true, message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
+                let model = EditNameViewController.ModelEditProfileResponse(success: true, title: "", message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
                 self.modelEditProfileResponse = model
             }
             else {

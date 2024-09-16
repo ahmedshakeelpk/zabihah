@@ -115,7 +115,7 @@ class AddressesListViewController: UIViewController {
         let url = "\(APIsName.name.edituseraddress.rawValue)/\(id)"
         APIs.deleteAPI(apiName: url, parameters: nil, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let model = ModelDeleteUserAddressResponse(success: true, message: nil, recordFound: nil, innerExceptionMessage: nil)
+                let model = ModelDeleteUserAddressResponse(title: "", success: true, message: nil, recordFound: nil, innerExceptionMessage: nil)
                 self.modelDeleteUserAddressResponse = model
             }
             else {

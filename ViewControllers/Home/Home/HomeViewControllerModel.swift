@@ -249,6 +249,8 @@ extension HomeViewController {
 extension HomeViewController {
     // MARK: - ModelFeaturedRequest
     struct ModelFeaturedResponse: Codable {
+        let title: String?
+        let message: String?
         let currentPageIndex, pageSize, totalRecords: Int?
         let onFirstPage: Bool?
         let currentPage, totalPages: Int?

@@ -178,8 +178,8 @@
                                                                     <constraint firstAttribute="height" constant="30" id="a6V-WW-Ces"/>
                                                                 </constraints>
                                                             </view>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Halal Places" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILp-v8-q70">
-                                                                <rect key="frame" x="58.333333333333329" y="38" width="64" height="13.333333333333336"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Halal places" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILp-v8-q70">
+                                                                <rect key="frame" x="58.333333333333329" y="38" width="63.666666666666671" height="13.333333333333336"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                                 <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -236,8 +236,8 @@
                                                                     <constraint firstItem="9Xf-SD-kff" firstAttribute="centerY" secondItem="qTX-tl-7lE" secondAttribute="centerY" id="z7U-yc-kSc"/>
                                                                 </constraints>
                                                             </view>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prayer Spaces" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6GL-tW-Jzh">
-                                                                <rect key="frame" x="52.333333333333336" y="38" width="75.333333333333314" height="13.333333333333336"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prayer spaces" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6GL-tW-Jzh">
+                                                                <rect key="frame" x="53" y="38" width="74" height="13.333333333333336"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>

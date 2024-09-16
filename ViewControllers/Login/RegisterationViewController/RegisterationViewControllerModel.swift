@@ -17,6 +17,7 @@ extension RegisterationViewController {
     
     struct ModelSignUpResponse: Codable {
         let success: Bool?
+        let title: String?
         let message: String?
         let userResponseData: UserResponseData?
         let recordFound: Bool?

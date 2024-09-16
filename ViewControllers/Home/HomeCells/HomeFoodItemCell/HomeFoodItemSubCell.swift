@@ -476,3 +476,38 @@ func getCountryFromCoordinates(latitude: Double, longitude: Double, completion: 
         }
     }
 }
+
+
+func getErrorMessage(errorMessage: String) -> String {
+    
+    switch errorMessage.lowercased() {
+    case "AddressNotFoundException".lowercased():
+        return "Address could not be found"
+    case "EmailAlreadyExistsException".lowercased():
+        return "Email is already registered"
+    case "FavoritiesNotFoundException".lowercased():
+        return "No favorites found"
+    case "OtpExpiredException".lowercased():
+        return "OTP has expired, please request a new one"
+    case "OtpNotFoundException".lowercased():
+        return "OTP not found, please check your code"
+    case "PhoneAlreadyExistsException".lowercased():
+        return "Phone number is already associated with an account"
+    case "PlaceAlreadyMarkedAsFavoritesException".lowercased():
+        return "This place is already marked as a favorite"
+    case "PlaceAlreadyMarkedAsFavoriteException".lowercased():
+        return "This place is already added to your favorites"
+    case "PlaceNotFoundException".lowercased():
+        return "Place could not be locate"
+    case "ProfilePictureNotFoundException".lowercased():
+        return "Profile picture is missing"
+    case "RefreshAccessTokenFailedException".lowercased():
+        return "Unable to refresh access token, please try again"
+    case "ReviewNotFoundException".lowercased():
+        return "Review could not be found"
+    case "UserReviewsNotFoundException".lowercased():
+        return "No user reviews available"
+    default:
+        return  errorMessage
+    }
+}

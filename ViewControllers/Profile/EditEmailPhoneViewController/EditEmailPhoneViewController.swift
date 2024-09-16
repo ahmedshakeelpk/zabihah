@@ -32,7 +32,9 @@ class EditEmailPhoneViewController: UIViewController {
                 navigateToOtpEmailViewController()
             }
             else {
-                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelSendnotificationResponse?.title ?? "")
+
+                showAlertCustomPopup(title: "Error!", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -125,7 +127,7 @@ class EditEmailPhoneViewController: UIViewController {
         
         APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let model = LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(recordFound: nil, success: true, message: "", innerExceptionMessage: nil)
+                let model = LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(title: "", recordFound: nil, success: true, message: "", innerExceptionMessage: nil)
                 self.modelSendnotificationResponse = model
             }
             else {
@@ -151,7 +153,8 @@ class EditEmailPhoneViewController: UIViewController {
                 }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelEditProfileResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelEditProfileResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -161,14 +164,14 @@ class EditEmailPhoneViewController: UIViewController {
             "firstname": kModelGetUserProfileResponse?.firstName ?? "",
             "lastName": kModelGetUserProfileResponse?.lastName! ?? "",
             "email": isFromEmail ? textFieldEmail.text! : kModelGetUserProfileResponse?.email ?? "",
-            "phone": isFromEmail ? kModelGetUserProfileResponse?.phone ?? "": textFieldEmail.text! ,
+            "phone": isFromEmail ? kModelGetUserProfileResponse?.phone ?? "": textFieldPhoneNumber.getCompletePhoneNumber(),
             "profilePictureWebUrl": kModelGetUserProfileResponse?.profilePictureWebUrl ?? "",
             "isSubscribedToHalalOffersNotification": kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "",
             "isSubscribedToHalalEventsNewsletter": kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? ""
         ]
         APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let model = EditNameViewController.ModelEditProfileResponse(success: true, message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
+                let model = EditNameViewController.ModelEditProfileResponse(success: true, title: "", message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
                 self.modelEditProfileResponse = model
             }
             else {

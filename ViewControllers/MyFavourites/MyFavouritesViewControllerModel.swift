@@ -10,6 +10,7 @@ import Foundation
 extension MyFavouritesViewController {
     // MARK: - ModelGetUserAddressResponse
     struct ModelDeleteUserAddressResponse: Codable {
+        let title: String?
         let success: Bool?
         let message: String?
         let recordFound: Bool?

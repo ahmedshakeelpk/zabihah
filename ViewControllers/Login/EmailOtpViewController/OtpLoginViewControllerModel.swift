@@ -11,6 +11,7 @@ extension OtpLoginViewController {
     // MARK: - ModelOtpResponse
     struct ModelOtpResponse: Codable {
 //        let success: Bool?
+        let title: String?
         let message: String?
 //        let userResponseData: ModelOtpResponseData?
 //        let recordFound: Bool?

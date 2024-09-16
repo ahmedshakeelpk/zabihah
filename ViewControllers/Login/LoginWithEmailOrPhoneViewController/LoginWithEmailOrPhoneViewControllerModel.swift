@@ -10,6 +10,7 @@ import Foundation
 extension LoginWithEmailOrPhoneViewController {
     // MARK: - ModelGenericResponse
     struct ModelSendnotificationResponse: Codable {
+        let title: String?
         let recordFound, success: Bool?
         let message, innerExceptionMessage: String?
     }
