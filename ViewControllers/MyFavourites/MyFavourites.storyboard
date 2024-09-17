@@ -20,7 +20,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Br2-gZ-kn2">
                                 <rect key="frame" x="8" y="59" width="377" height="160"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addressesTitleBackGround" translatesAutoresizingMaskIntoConstraints="NO" id="rbz-2m-wq9">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rbz-2m-wq9">
                                         <rect key="frame" x="0.0" y="0.0" width="377" height="160"/>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="309-PV-yKz">
@@ -386,7 +386,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="addressesTitleBackGround" width="344" height="160"/>
         <image name="backWhiteMisc" width="20" height="20"/>
         <image name="chefHatMehroon" width="24" height="24"/>
         <image name="favouriteTitleIcon" width="52" height="64"/>

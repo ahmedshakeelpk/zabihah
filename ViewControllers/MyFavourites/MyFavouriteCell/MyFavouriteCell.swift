@@ -38,7 +38,7 @@ class MyFavouriteCell: UITableViewCell {
     func setData() {
         if modelGetFavouriteResponseData != nil {
             labelTitle.text = modelGetFavouriteResponseData?.place?.name ?? ""
-            let completeAddress = "\(modelGetFavouriteResponseData?.place?.address ?? ""), \(modelGetFavouriteResponseData?.place?.city ?? ""), \(modelGetFavouriteResponseData?.place?.state ?? ""), \(modelGetFavouriteResponseData?.place?.country ?? "")"
+            let completeAddress = "\(modelGetFavouriteResponseData?.place?.address ?? "")\n\(modelGetFavouriteResponseData?.place?.city ?? ""), \(modelGetFavouriteResponseData?.place?.state ?? "")"
             
             labelAddress.text = completeAddress
             imageViewRestaurant.setImage(urlString: modelGetFavouriteResponseData?.place?.iconImageWebUrl ?? "", placeHolderIcon: selectedIndex == 0 ? "placeHolderRestaurant" : "placeholderMosque2")

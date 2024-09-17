@@ -77,6 +77,7 @@ class ReviewsViewController: UIViewController {
     }
     
     func setConfiguration() {
+        viewTitle.backgroundColor = .colorApp
         viewTitle.radius(radius: 12)
         viewBackGroundNoDataFound.isHidden = true
         ReviewsViewControllerCell.register(tableView: tableView)

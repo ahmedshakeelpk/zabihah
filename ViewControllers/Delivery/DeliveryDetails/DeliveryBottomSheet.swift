@@ -65,10 +65,29 @@ extension DeliveryBottomSheet: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func getAmenityType(name: String) -> String {
+        if "prayerspace".lowercased() == name.lowercased() {
+            return "Prayer space available"
+        }
+        else if "restroom".lowercased() == name.lowercased() {
+            return "Restrooms available"
+        }
+        else if "parkingspace".lowercased() == name.lowercased() {
+            return "Parking available"
+        }
+        else if "togo".lowercased() == name.lowercased() {
+            return "Takeout available"
+        }
+        else {
+            return name
+        }
+     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isAmenities {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DeliveryAmenitiesCell") as! DeliveryAmenitiesCell
-            cell.labelTitle.text = amenitiesData?[indexPath.row]?.type
+            cell.labelTitle.text = getAmenityType(name: amenitiesData?[indexPath.row]?.type ?? "")
+            
+            
             cell.imageViewIcon.setImage(urlString: amenitiesData?[indexPath.row]?.iconImageWebUrl ?? "", placeHolderIcon: "amenitiesPlaceHolder")
             
             return cell

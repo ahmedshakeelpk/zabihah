@@ -77,13 +77,22 @@ class RatingViewController: UIViewController {
                 if let reviewDataObj = self.modelReview {
                     
                     let rating = self.calculateRatings(for: reviewDataObj)
-                    self.labelRating.text = rating.1 ?? "0"
+                    if rating.1 == "0.0" {
+                        self.labelRating.text = "--"
+                    }
+                    else {
+                        self.labelRating.text = rating.1 ?? "0"
+                    }
                     self.viewRatingCosmo.rating = Double(rating.1 ?? "0") ?? 0.0
                    
+                    let review = reviewDataObj.count
+                    let reviews = (review == 1) ? "\(review) review"
+                    :
+                    (review > 1) ? "\(review) reviews"
+                    :
+                    "No reviews"
                     
-                    let review = reviewDataObj.count > 1 ? "reviews" : "review"
-                    
-                    self.labelReview.text = "\(reviewDataObj.count) \(review)"
+                    self.labelReview.text = "\(reviews)"
                     self.labelProgressOne.text = "\(rating.0[0])"
                     self.labelProgressTwo.text = "\(rating.0[1])"
                     self.labelProgressThree.text = "\(rating.0[2])"

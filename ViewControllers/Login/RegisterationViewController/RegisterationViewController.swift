@@ -93,11 +93,12 @@ class RegisterationViewController: UIViewController {
     }
     
     @IBAction func buttonBack(_ sender: Any) {
-        popViewController(animated: true)
+//        popViewController(animated: true)
+        let _ = popToViewController(viewController: LoginWithEmailOrPhoneViewController.self)
     }
     
     @IBAction func buttonEdit(_ sender: Any) {
-        ImagePickerManager().pickImage(self){ image in
+        ImagePickerManager().pickImage(isProfileImage: true, self){ image in
                 //here is the image
             self.imageViewUser.image = image
             self.isImageUploaded = true
@@ -193,7 +194,7 @@ class RegisterationViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
         vc.isFromRegistrationViewController = true
         vc.stringPhoneEmail = isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : textFieldEmail.text!
-        vc.isOtpSuccessFullHandler = {
+        vc.isOtpSuccessFullHandler = { first, second in
             kDefaults.set(kAccessToken, forKey: "kAccessToken")
             kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
             self.navigateToRootHomeViewController()

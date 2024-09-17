@@ -77,6 +77,7 @@ class MyFavouritesViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewTitle.backgroundColor = .colorApp
         viewNoDataFoundBackGround.isHidden = true
         MyFavouriteCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)

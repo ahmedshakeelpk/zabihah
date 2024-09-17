@@ -21,7 +21,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LJS-Ql-3CA">
                                 <rect key="frame" x="8" y="48" width="398" height="160"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addressesTitleBackGround" translatesAutoresizingMaskIntoConstraints="NO" id="23I-mY-PLO">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="23I-mY-PLO">
                                         <rect key="frame" x="0.0" y="0.0" width="398" height="160"/>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JL3-0o-xRl">
@@ -1364,7 +1364,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="addressesTitleBackGround" width="344" height="160"/>
         <image name="backGrayMisc" width="20" height="20"/>
         <image name="backWhiteMisc" width="20" height="20"/>
         <image name="editMehroonAddresses" width="20" height="20"/>

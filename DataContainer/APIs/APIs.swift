@@ -340,6 +340,7 @@ print(str)
                 case 200:
                     // Successful response
                     do {
+                        
                         if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
                             print("Response JSON: \(jsonResponse)")
                             // Call the completion handler with the response data

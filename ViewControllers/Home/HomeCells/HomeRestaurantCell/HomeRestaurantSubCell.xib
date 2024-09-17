@@ -471,11 +471,26 @@
                                                                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCh-eu-GpF">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="26"/>
                                                                                                 <subviews>
-                                                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="routingMehroonHome" translatesAutoresizingMaskIntoConstraints="NO" id="npe-3l-37Q">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="7" height="26"/>
-                                                                                                    </imageView>
+                                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DAp-H3-UmZ">
+                                                                                                        <rect key="frame" x="0.0" y="0.0" width="14" height="26"/>
+                                                                                                        <subviews>
+                                                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="routingMehroonHome" translatesAutoresizingMaskIntoConstraints="NO" id="e6I-bK-JJo">
+                                                                                                                <rect key="frame" x="0.0" y="7" width="12" height="12"/>
+                                                                                                                <constraints>
+                                                                                                                    <constraint firstAttribute="height" constant="12" id="HFG-m0-MjR"/>
+                                                                                                                    <constraint firstAttribute="width" constant="12" id="cvJ-Rh-e6C"/>
+                                                                                                                </constraints>
+                                                                                                            </imageView>
+                                                                                                        </subviews>
+                                                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                                        <constraints>
+                                                                                                            <constraint firstAttribute="trailing" secondItem="e6I-bK-JJo" secondAttribute="trailing" constant="2" id="4VS-Of-BOL"/>
+                                                                                                            <constraint firstItem="e6I-bK-JJo" firstAttribute="leading" secondItem="DAp-H3-UmZ" secondAttribute="leading" id="QJD-eS-0wL"/>
+                                                                                                            <constraint firstItem="e6I-bK-JJo" firstAttribute="centerY" secondItem="DAp-H3-UmZ" secondAttribute="centerY" id="gs0-qU-zVZ"/>
+                                                                                                        </constraints>
+                                                                                                    </view>
                                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10.54 km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4bx-L2-2cI">
-                                                                                                        <rect key="frame" x="7" y="0.0" width="43" height="26"/>
+                                                                                                        <rect key="frame" x="14" y="0.0" width="36" height="26"/>
                                                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="9"/>
                                                                                                         <color key="textColor" red="0.59999999999999998" green="0.0" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <nil key="highlightedColor"/>

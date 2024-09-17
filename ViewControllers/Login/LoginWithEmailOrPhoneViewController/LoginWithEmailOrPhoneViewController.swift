@@ -119,8 +119,11 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         vc.isFromEmail = isFromEmail
         vc.isUpdateEmailOrPhoneNoCase = isUpdateEmailOrPhoneNoCase
         vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
-        vc.isOtpSuccessFullHandler = {
-            self.mySelf()
+        vc.isOtpSuccessFullHandler = { isFromEmail, isUpdateEmailOrPhoneNoCase in
+            self.isFromEmail = isFromEmail
+            self.isUpdateEmailOrPhoneNoCase = isUpdateEmailOrPhoneNoCase
+            self.setConfiguration()
+//            self.mySelf()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -162,82 +165,16 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         }
     }
 
-    var modelGetUserProfileResponse : HomeViewController.ModelGetUserProfileResponse! {
-        didSet {
-            if isUpdateEmailOrPhoneNoCase {
-                updateProfile()
-                return
-            }
-            if modelGetUserProfileResponse?.isEmailVerified ?? false,
-               modelGetUserProfileResponse?.isPhoneVerified ?? false {
-                kDefaults.set(kAccessToken, forKey: "kAccessToken")
-                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
-                self.navigateToRootHomeViewController()
-            }
-            else if modelGetUserProfileResponse.isPhoneVerified == nil || modelGetUserProfileResponse.isEmailVerified == nil || modelGetUserProfileResponse.firstName == nil {
-                self.navigateToRegisterationViewController()
-            }
-            else if modelGetUserProfileResponse?.isEmailVerified == false {
-                kDefaults.set(kAccessToken, forKey: "kAccessToken")
-                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
-                isUpdateEmailOrPhoneNoCase = true
-                isFromEmail = true
-                setConfiguration()
-            }
-            else if modelGetUserProfileResponse?.isPhoneVerified == false {
-                kDefaults.set(kAccessToken, forKey: "kAccessToken")
-                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
-                isUpdateEmailOrPhoneNoCase = true
-                isFromEmail = false
-                setConfiguration()
-            }
-            else {
-                self.navigateToRegisterationViewController()
-            }
-        }
-    }
     
-    func mySelf() {
-        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
-            print(responseData ?? "")
-            print(success)
-            let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetUserProfileResponse = model
-        }
-    }
+    
+    
     
     func userAlreadyExistFromRegistration() {
         isFromEmail = !isFromEmail
         setConfiguration()
     }
     
-    func updateProfile(
-        imageUrl: String? = nil,
-        isSubscribedToHalalOffersNotification: Bool? = false,
-        isSubscribedToHalalEventsNewsletter: Bool? = false
-    ) {
-        let parameters: Parameters = [
-            "firstname": modelGetUserProfileResponse?.firstName ?? "",
-            "lastName": modelGetUserProfileResponse?.lastName ?? "",
-            "email": modelGetUserProfileResponse?.email ?? "",
-            "phone": modelGetUserProfileResponse?.phone ?? "",
-            "profilePictureWebUrl": imageUrl == nil ? modelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
-            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == true ? modelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" : isSubscribedToHalalOffersNotification!,
-            "isSubscribedToHalalEventsNewsletter":
-                isSubscribedToHalalEventsNewsletter == nil ?
-            modelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" :
-                isSubscribedToHalalEventsNewsletter!
-        ]
-        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
-            if statusCode == 200 && responseData == nil {
-                self.isUpdateEmailOrPhoneNoCase = false
-                self.mySelf()
-            }
-            else {
-                self.showAlertCustomPopup(title: "Error", message: "", iconName: .iconError)
-            }
-        }
-    }
+    
 }
 
 extension LoginWithEmailOrPhoneViewController: FPNTextFieldDelegate {

@@ -649,9 +649,16 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
     var alert = UIAlertController(title: "Choose an avatar", message: nil, preferredStyle: .actionSheet)
     var viewController: UIViewController?
     var pickImageCallback : ((UIImage) -> ())?;
+    var isProfileImage: Bool? = false
     
     override init(){
         super.init()
+        
+    }
+    
+    func setCameraConfiguration() {
+        alert = UIAlertController(title: isProfileImage! ? "Choose an avatar" : "Upload photo", message: nil, preferredStyle: .actionSheet)
+        
         let cameraAction = UIAlertAction(title: "Use camera", style: .default){
             UIAlertAction in
             self.openCamera()
@@ -671,12 +678,12 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
         alert.addAction(cancelAction)
     }
     
-    func pickImage(_ viewController: UIViewController, _ callback: @escaping ((UIImage) -> ())) {
+    func pickImage(isProfileImage: Bool? = false, _ viewController: UIViewController, _ callback: @escaping ((UIImage) -> ())) {
         pickImageCallback = callback;
         self.viewController = viewController;
-        
+        self.isProfileImage = isProfileImage
         alert.popoverPresentationController?.sourceView = self.viewController!.view
-        
+        setCameraConfiguration()
         viewController.present(alert, animated: true, completion: nil)
     }
     func openCamera(){
@@ -784,19 +791,24 @@ extension DeliveryDetailsViewController3 {
         APIs.postAPI(apiName: isPrayerPlace ? .uploadPhotoForMosque : .uploadPhotoForRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 {
                 self.getRestaurantDetail()
-                self.navigateToSuccessPopUpViewController(imageUrl: imageUrl!)
+                self.navigateToSuccessPopUpViewController(imageUrl: imageUrl!, isShowPopUp: false)
             }
         }
     }
     
-    func navigateToSuccessPopUpViewController(imageUrl: String) {
-        let vc = UIStoryboard.init(name: StoryBoard.name.alertPopup.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ReviewSuccessPopUpViewController") as! ReviewSuccessPopUpViewController
-        
-        vc.arrayGalleryImages = [imageUrl]
-        vc.didCloseTappedHandler = {
+    func navigateToSuccessPopUpViewController(imageUrl: String, isShowPopUp: Bool? = true) {
+        if isShowPopUp ?? true {
+            let vc = UIStoryboard.init(name: StoryBoard.name.alertPopup.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ReviewSuccessPopUpViewController") as! ReviewSuccessPopUpViewController
             
+            vc.arrayGalleryImages = [imageUrl]
+            vc.didCloseTappedHandler = {
+                
+            }
+            self.present(vc, animated: true)
         }
-        self.present(vc, animated: true)
+        else {
+            galleryRecentPhotos?.append(imageUrl)
+        }
     }
 }
 

@@ -58,7 +58,7 @@ class WriteReviewViewController: UIViewController {
     var modelPostReview: ModelPostReview! {
         didSet {
             DispatchQueue.main.async {
-                self.navigateToSuccessPopUpViewController()
+                self.navigateToSuccessPopUpViewController(isShowPopUp: false)
             }
         }
     }
@@ -76,7 +76,7 @@ class WriteReviewViewController: UIViewController {
         super.viewDidLoad()
         
         textViewReview.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-
+//        viewStarCasmo.tintColor = .colorApp
         
         RecentPhotoCell.register(collectionView: collectionView)
         UpLoadPhotoCell.register(collectionView: collectionView)
@@ -236,19 +236,28 @@ class WriteReviewViewController: UIViewController {
         }
     }
     
-    func navigateToSuccessPopUpViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.alertPopup.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ReviewSuccessPopUpViewController") as! ReviewSuccessPopUpViewController
-        vc.isReview = true
-        vc.arrayGalleryImages = arrayAllUpLoadedPhotos
-        vc.didCloseTappedHandler = {
-            if self.modelPostReview.id != "" {
-                self.popViewController(animated: true)
-                DispatchQueue.main.async {
-                    self.reviewPostedHandler?()
+    func navigateToSuccessPopUpViewController(isShowPopUp: Bool? = true) {
+        if isShowPopUp ?? false {
+            let vc = UIStoryboard.init(name: StoryBoard.name.alertPopup.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ReviewSuccessPopUpViewController") as! ReviewSuccessPopUpViewController
+            vc.isReview = true
+            vc.arrayGalleryImages = arrayAllUpLoadedPhotos
+            vc.didCloseTappedHandler = {
+                if self.modelPostReview.id != "" {
+                    self.popViewController(animated: true)
+                    DispatchQueue.main.async {
+                        self.reviewPostedHandler?()
+                    }
                 }
             }
+            self.present(vc, animated: true)
         }
-        self.present(vc, animated: true)
+        else{
+            self.popViewController(animated: true)
+            DispatchQueue.main.async {
+                self.reviewPostedHandler?()
+            }
+        }
+        
     }
 }
 

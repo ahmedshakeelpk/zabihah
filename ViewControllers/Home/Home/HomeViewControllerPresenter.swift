@@ -387,7 +387,7 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]) \(array[1])"
+                            address = "\(array[0]), \(array[1])"
                         }
                         else {
                             address = "\(array[0])"
@@ -444,7 +444,7 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]) \(array[1])"
+                            address = "\(array[0]), \(array[1])"
                         }
                         else {
                             address = "\(array[0])"
@@ -520,7 +520,7 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]) \(array[1])"
+                            address = "\(array[0]), \(array[1])"
                         }
                         else {
                             address = "\(array[0])"
@@ -535,7 +535,10 @@ extension HomeViewController {
                     }
                 }
                 
-                sectionName =  address == "" ? "restaurants near you" : "\(selectedCuisine == "" ? "halal" : selectedCuisine) places near \(address)"
+                sectionName =
+                address == "" ? "restaurants near you"
+                :
+                "\(selectedCuisine == "" ? "restaurants" : selectedCuisine) near \(address)"
                 selectedPlaceHolderIcon = "placeHolderSubCuisine"
             }
             else if selectedMenuCell == 1 {
@@ -547,7 +550,7 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]) \(array[1])"
+                            address = "\(array[0]), \(array[1])"
                         }
                         else {
                             address = "\(array[0])"
@@ -563,7 +566,11 @@ extension HomeViewController {
                 }
                 
                 let places = modelGetHalalRestaurantResponse?.totalRecords ?? 0 > 1 ? "places" : "place"
-                sectionName =  address == "" ? "\(selectedCuisine == "" ? "halal" : selectedCuisine) \(places) near you" : "halal \(selectedCuisine == "" ? "\(places)" : selectedCuisine) near \(address)"
+                sectionName = 
+                address == "" ?
+                "\(selectedCuisine == "" ? "halal" : selectedCuisine) \(places) near you"
+                :
+                "\(selectedCuisine == "" ? "halal \(places)" : "\(selectedCuisine) \(places)") near \(address)"
                 
                 selectedPlaceHolderIcon = "placeholderHalalFood"
             }
@@ -578,7 +585,7 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]) \(array[1])"
+                            address = "\(array[0]), \(array[1])"
                         }
                         else {
                             address = "\(array[0])"
@@ -595,7 +602,8 @@ extension HomeViewController {
                 
                 let places = modelGetPrayerPlacesResponse?.totalRecords ?? 0 > 1 ? "spaces" : "space"
                 
-                sectionName =  address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(places) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(places) near \(address)"
+                sectionName =  
+                address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine + "") \(places) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine + "") \(places) near \(address)"
                 selectedPlaceHolderIcon = "placeholderMosque3"
 
             }

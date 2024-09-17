@@ -29,7 +29,7 @@ class OtpLoginViewController: UIViewController{
     var stringPhoneEmail = ""
     var isUpdateEmailOrPhoneNoCase: Bool = false
     
-    var isOtpSuccessFullHandler: (() -> ())!
+    var isOtpSuccessFullHandler: ((Bool, Bool) -> ())!
     
     var otpEntered: Bool! = false {
         didSet {
@@ -56,16 +56,18 @@ class OtpLoginViewController: UIViewController{
         didSet {
             if !(modelOtpResponse?.token ?? "").isEmpty {
                 if isFromRegistrationViewController {
-                    popViewController(animated: false)
-                    self.isOtpSuccessFullHandler?()
+//                    popViewController(animated: false)
+//                    self.isOtpSuccessFullHandler?(<#Bool#>, <#Bool#>)
+                    self.mySelf()
                 }
                 else {
                     if !isUpdateEmailOrPhoneNoCase {
                         kAccessToken = modelOtpResponse?.token ?? ""
                         kRefreshToken = modelOtpResponse?.refreshToken ?? ""
                     }
-                    popViewController(animated: false)
-                    self.isOtpSuccessFullHandler?()
+//                    popViewController(animated: false)
+//                    self.isOtpSuccessFullHandler?()
+                    self.mySelf()
                 }
             }
             else {
@@ -221,6 +223,85 @@ class OtpLoginViewController: UIViewController{
                 let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
                 self.modelSendnotificationResponse = model
             }
+        }
+    }
+    
+    var modelGetUserProfileResponse : HomeViewController.ModelGetUserProfileResponse! {
+        didSet {
+            if isUpdateEmailOrPhoneNoCase {
+                updateProfile()
+                return
+            }
+            if modelGetUserProfileResponse?.isEmailVerified ?? false,
+               modelGetUserProfileResponse?.isPhoneVerified ?? false {
+                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                self.navigateToRootHomeViewController()
+            }
+            else if modelGetUserProfileResponse.isPhoneVerified == nil || modelGetUserProfileResponse.isEmailVerified == nil || modelGetUserProfileResponse.firstName == nil {
+                self.navigateToRegisterationViewController()
+            }
+            else if modelGetUserProfileResponse?.isEmailVerified == false {
+                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                isUpdateEmailOrPhoneNoCase = true
+                isFromEmail = true
+                self.popViewController(animated: true)
+                isOtpSuccessFullHandler(true, true)
+            }
+            else if modelGetUserProfileResponse?.isPhoneVerified == false {
+                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                isUpdateEmailOrPhoneNoCase = true
+                isFromEmail = false
+                self.popViewController(animated: true)
+                isOtpSuccessFullHandler(false, true)
+            }
+            else {
+                self.navigateToRegisterationViewController()
+            }
+        }
+    }
+    func mySelf() {
+        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+            print(responseData ?? "")
+            print(success)
+            let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserProfileResponse = model
+        }
+    }
+    
+    func updateProfile(
+        imageUrl: String? = nil,
+        isSubscribedToHalalOffersNotification: Bool? = false,
+        isSubscribedToHalalEventsNewsletter: Bool? = false
+    ) {
+        let parameters: Parameters = [
+            "firstname": modelGetUserProfileResponse?.firstName ?? "",
+            "lastName": modelGetUserProfileResponse?.lastName ?? "",
+            "email": modelGetUserProfileResponse?.email ?? "",
+            "phone": modelGetUserProfileResponse?.phone ?? "",
+            "profilePictureWebUrl": imageUrl == nil ? modelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
+            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == true ? modelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" : isSubscribedToHalalOffersNotification!,
+            "isSubscribedToHalalEventsNewsletter":
+                isSubscribedToHalalEventsNewsletter == nil ?
+            modelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" :
+                isSubscribedToHalalEventsNewsletter!
+        ]
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                self.isUpdateEmailOrPhoneNoCase = false
+                self.mySelf()
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error", message: "", iconName: .iconError)
+            }
+        }
+    }
+    func navigateToRootHomeViewController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
+        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
+            self.sceneDelegate?.window?.rootViewController = navigationController
         }
     }
 }

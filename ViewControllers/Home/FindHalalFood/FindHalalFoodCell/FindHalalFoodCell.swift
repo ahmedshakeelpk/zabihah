@@ -146,7 +146,7 @@ class FindHalalFoodCell: HomeBaseCell {
     
     func setData() {
         labelRestaurantName.text = restuarentResponseModel?.name
-        let completeAddress = "\(restuarentResponseModel?.address ?? "") \(restuarentResponseModel?.city ?? "") \(restuarentResponseModel?.state ?? "")"
+        let completeAddress = "\(restuarentResponseModel?.address ?? ""), \(restuarentResponseModel?.city ?? ""), \(restuarentResponseModel?.state ?? "")"
 
         labelRestaurantAddress.text = completeAddress
         

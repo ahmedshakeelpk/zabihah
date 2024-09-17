@@ -162,7 +162,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.50588235290000005" green="0.031372549020000001" blue="0.035294117649999998" alpha="0.070000000000000007" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="5VF-LS-5Fx" secondAttribute="trailing" id="2D8-HW-Kfg"/>
                                             <constraint firstAttribute="bottom" secondItem="5VF-LS-5Fx" secondAttribute="bottom" id="8Tq-5M-7ug"/>
@@ -256,7 +256,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="RnR-Q4-nOH" firstAttribute="leading" secondItem="GdL-ie-JK9" secondAttribute="leading" id="4nu-Hm-etE"/>
                                             <constraint firstAttribute="trailing" secondItem="hGe-yo-bJq" secondAttribute="trailing" id="FEm-9E-hIl"/>
@@ -373,7 +373,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="66" id="Bia-CB-fEe"/>
                                             <constraint firstAttribute="trailing" secondItem="fuQ-Io-41W" secondAttribute="trailing" id="HwF-oO-tBG"/>
@@ -451,6 +451,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vhu-Cv-cf2">
                                 <rect key="frame" x="0.0" y="284" width="414" height="612"/>
@@ -693,6 +694,7 @@
                         <outlet property="stackViewFilterResultBackGround" destination="O0M-b4-XDd" id="rU6-30-Lya"/>
                         <outlet property="stackViewSearchNTextFieldNearLocationBackGround" destination="YJr-Ce-f0d" id="J5y-5l-Xaw"/>
                         <outlet property="stackViewSearchNearLocationBackGround" destination="4SB-OA-hDd" id="4Yh-ay-tJC"/>
+                        <outlet property="stackViewTitleBackGround" destination="PHP-tm-IgL" id="jkx-C2-IOi"/>
                         <outlet property="tableView" destination="UJd-18-aMy" id="WSC-hZ-XLQ"/>
                         <outlet property="textFieldFilterResult" destination="4Bz-Wf-F6J" id="x0m-4F-Xf4"/>
                         <outlet property="textFieldSearchLocation" destination="GpS-77-3Qo" id="ZEh-gO-Kb1"/>
@@ -1709,7 +1711,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

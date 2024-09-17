@@ -13,6 +13,7 @@ import CoreLocation
 
 class HomeViewController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var stackViewTitleBackGround: UIStackView!
     @IBOutlet weak var viewItemCountOnMapViewBackGround: UIView!
     @IBOutlet weak var labelItemCountOnMapView: UILabel!
     @IBOutlet weak var imageViewNoRecordFound: UIImageView!
@@ -111,9 +112,20 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var userLocation: CLLocation! {
         didSet {
-            DispatchQueue.main.async {
-                self.filterParametersHome = nil
-                self.self.selectedMenuCell = self.itself(self.selectedMenuCell)
+            DispatchQueue.main.async {  
+                kUserCurrentLocation = self.userLocation
+
+                getCountryFromCoordinates(latitude: kUserCurrentLocation.coordinate.latitude, longitude: kUserCurrentLocation.coordinate.longitude, completion: {
+                    countryName in
+                    if countryName?.lowercased() == "United States".lowercased() {
+                        kCountryName = "us"
+                    }
+                    else {
+                        kCountryName = countryName ?? ""
+                    }
+                    self.filterParametersHome = nil
+                    self.self.selectedMenuCell = self.itself(self.selectedMenuCell)
+                })
             }
         }
     }
@@ -357,6 +369,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         
+        stackViewTitleBackGround.backgroundColor = .colorApp
         sideMenuSetup()
         viewZoomInBackGround.circle()
         viewZoomOutBackGround.circle()
@@ -691,16 +704,6 @@ extension HomeViewController : CLLocationManagerDelegate {
             locationManager.delegate = nil
             self.userLocation = location
             kUserCurrentLocation = location
-             
-            getCountryFromCoordinates(latitude: kUserCurrentLocation.coordinate.latitude, longitude: kUserCurrentLocation.coordinate.longitude, completion: {
-                countryName in
-                if countryName?.lowercased() == "United States".lowercased() {
-                    kCountryName = "us"
-                }
-                else {
-                    kCountryName = countryName ?? ""
-                }
-            })
             print(" Lat \(location.coordinate.latitude) ,  Longitude \(location.coordinate.longitude)")
         }
         if locations.first != nil {

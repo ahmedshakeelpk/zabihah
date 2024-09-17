@@ -107,7 +107,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     
     func setData() {
         labelRestaurantName.text = restuarentResponseModel?.name
-        let completeAddress = "\(restuarentResponseModel?.address ?? "") \(restuarentResponseModel?.city ?? "") \(restuarentResponseModel?.state ?? "")"
+        let completeAddress = "\(restuarentResponseModel?.address ?? ""), \(restuarentResponseModel?.city ?? ""), \(restuarentResponseModel?.state ?? "")"
         
         labelRestaurantAddress.text = completeAddress
 
@@ -329,16 +329,15 @@ func ifNewRestaurent(createdOn: String) -> String {
     return ""
 }
 
-// Function to check if the restaurant is open
 func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> (Bool, HomeViewController.Timing?) {
     // Get the current day and time
     let currentDate = Date()
     let calendar = Calendar.current
     
-    // Get the current day of the week as a string (e.g., Monday, Tuesday)
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "EEEE"
-    let currentDayOfWeek = dateFormatter.string(from: currentDate)
+    // Get the current day of the week (e.g., "Monday")
+    let weekdayFormatter = DateFormatter()
+    weekdayFormatter.dateFormat = "EEEE"  // Full weekday name (e.g., Monday)
+    let currentDayOfWeek = weekdayFormatter.string(from: currentDate)
     
     // Find the opening and closing times for the current day
     guard let todayTiming = timings?.first(where: { $0?.dayOfWeek == currentDayOfWeek }) else {
@@ -347,7 +346,7 @@ func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> (Bool, HomeView
     
     // Create DateFormatter for time comparison
     let timeFormatter = DateFormatter()
-    timeFormatter.dateFormat = "HH:mm:ss"
+    timeFormatter.dateFormat = "HH:mm"  // Only hour and minute for comparison
     
     // Parse the opening and closing times
     guard let openingTime = timeFormatter.date(from: todayTiming?.openingTime ?? ""),
@@ -361,6 +360,7 @@ func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> (Bool, HomeView
     // Check if the current time is within the opening and closing times
     return (currentTime >= openingTime && currentTime <= closingTime, todayTiming)
 }
+
 
 
 //With Sorting

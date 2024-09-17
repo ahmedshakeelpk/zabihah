@@ -131,7 +131,7 @@ class ProfileViewController: UIViewController {
             getBlobToken()
         }
         
-        ImagePickerManager().pickImage(self){ image in
+        ImagePickerManager().pickImage(isProfileImage: true, self){ image in
                 //here is the image
             self.imageViewProfile.image = image
             if let imageData = image.jpegData(compressionQuality: 0.75) {

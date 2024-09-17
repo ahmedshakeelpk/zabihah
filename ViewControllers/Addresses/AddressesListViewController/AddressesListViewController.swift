@@ -62,6 +62,7 @@ class AddressesListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewTitle.backgroundColor = .colorApp
         AddressesCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
         getUserAddress()
