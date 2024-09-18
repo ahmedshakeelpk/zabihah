@@ -455,14 +455,14 @@
                                                                                 </subviews>
                                                                             </stackView>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7YZ-xT-1f7">
-                                                                                <rect key="frame" x="149.66666666666666" y="0.0" width="56.333333333333343" height="28"/>
+                                                                                <rect key="frame" x="149.66666666666666" y="0.0" width="59" height="28"/>
                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             </view>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0ll-kz-mdC">
-                                                                                <rect key="frame" x="214" y="0.0" width="50" height="28"/>
+                                                                                <rect key="frame" x="216.66666666666666" y="0.0" width="47.333333333333343" height="28"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5NQ-0S-XcA">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="28"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="47.333333333333336" height="28"/>
                                                                                         <subviews>
                                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bg6-r6-Zew">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="14" height="28"/>
@@ -483,7 +483,7 @@
                                                                                                 </constraints>
                                                                                             </view>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="700Km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Erc-VR-spL">
-                                                                                                <rect key="frame" x="14" y="0.0" width="36" height="28"/>
+                                                                                                <rect key="frame" x="14.000000000000028" y="0.0" width="33.333333333333336" height="28"/>
                                                                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="9"/>
                                                                                                 <color key="textColor" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -491,7 +491,7 @@
                                                                                         </subviews>
                                                                                     </stackView>
                                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lYl-yO-WKm">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="28"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="47.333333333333336" height="28"/>
                                                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                                         <connections>
                                                                                             <action selector="buttonOpenDirectionMap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="gvQ-C3-lUi"/>

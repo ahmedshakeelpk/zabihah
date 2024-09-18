@@ -329,7 +329,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     private var sideMenu: SideMenu!
     let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
     var listItems: [HomeBaseCell.HomeListItem]!
-    
     var pullControl = UIRefreshControl()
     
     override func viewDidAppear(_ animated: Bool) {
@@ -338,6 +337,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         tableView.addSubview(pullControl) // not
         tableView.refreshControl?.tintColor = .clear
         setStatusBarTopColor(color: .tempColor)
+        mapView.isMyLocationEnabled = true
     }
     
     @objc func pulledRefreshControl() {
@@ -364,8 +364,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setConfiguration() {
-        
         mapView.delegate = self
+        
+        
         tableView.delegate = self
         tableView.dataSource = self
         

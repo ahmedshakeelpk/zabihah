@@ -84,7 +84,7 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         // Initialization code
         stackViewBackGround.radius(radius: 12)
         viewBikeBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
-        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
+        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 0)
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
         
@@ -104,7 +104,9 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         favouriteRestaurants()
     }
     
-    func setData() {
+    func setData() {        
+        labelDistance.textColor = .colorApp
+        
         labelRestaurantName.text = restuarentResponseModel?.name
         let completeAddress = "\(restuarentResponseModel?.address ?? ""), \(restuarentResponseModel?.city ?? ""), \(restuarentResponseModel?.state ?? "")"
         

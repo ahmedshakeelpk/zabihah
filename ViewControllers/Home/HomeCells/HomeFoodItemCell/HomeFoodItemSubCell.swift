@@ -81,7 +81,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         // Initialization code
         stackViewBackGround.radius(radius: 12)
         viewBikeBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
-        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
+        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 0)
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
         HomeFoodItemSubCuisineCell.register(collectionView: collectionView)
@@ -106,6 +106,8 @@ class HomeFoodItemSubCell: UICollectionViewCell {
     }
     
     func setData() {
+        labelDistance.textColor = .colorApp
+        
         labelRestaurantName.text = restuarentResponseModel?.name
         let completeAddress = "\(restuarentResponseModel?.address ?? ""), \(restuarentResponseModel?.city ?? ""), \(restuarentResponseModel?.state ?? "")"
         
@@ -117,6 +119,7 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
         
         labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        labelComments.sizeToFit()
         stackViewComments.isHidden = (restuarentResponseModel?.totalReviews ?? 0) == 0
         
         labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
@@ -329,7 +332,7 @@ func ifNewRestaurent(createdOn: String) -> String {
     return ""
 }
 
-func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> (Bool, HomeViewController.Timing?) {
+func isRestaurantOpen2(timings: [HomeViewController.Timing?]?) -> (Bool, HomeViewController.Timing?) {
     // Get the current day and time
     let currentDate = Date()
     let calendar = Calendar.current
@@ -346,19 +349,54 @@ func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> (Bool, HomeView
     
     // Create DateFormatter for time comparison
     let timeFormatter = DateFormatter()
-    timeFormatter.dateFormat = "HH:mm"  // Only hour and minute for comparison
+    timeFormatter.dateFormat = "HH:mm:ss"  // Only hour and minute for comparison
     
     // Parse the opening and closing times
     guard let openingTime = timeFormatter.date(from: todayTiming?.openingTime ?? ""),
           let closingTime = timeFormatter.date(from: todayTiming?.closingTime ?? "") else {
         return (false, todayTiming)
     }
-    
+    let currentTime1 = timeFormatter.date(from: timeFormatter.string(from: currentDate))!
+
+    timeFormatter.dateStyle = .medium
     // Get the current time as a Date object
     let currentTime = timeFormatter.date(from: timeFormatter.string(from: currentDate))!
     
     // Check if the current time is within the opening and closing times
     return (currentTime >= openingTime && currentTime <= closingTime, todayTiming)
+}
+
+func isRestaurantOpen(timings: [HomeViewController.Timing?]?) -> (Bool, HomeViewController.Timing?) {
+        // Get the current date
+        let currentDate = Date()
+        
+        // Get the current day of the week (e.g., "Monday")
+        let weekdayFormatter = DateFormatter()
+        weekdayFormatter.dateFormat = "EEEE"  // Full weekday name (e.g., Monday)
+        let currentDayOfWeek = weekdayFormatter.string(from: currentDate)
+        
+        // Find today's timing
+        guard let todayTiming = timings?.first(where: { $0?.dayOfWeek == currentDayOfWeek }) else {
+            return (false, nil) // If no matching day is found, return closed
+        }
+        
+        // Create DateFormatter for time comparison
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm:ss"  // Time format
+        
+        // Parse the opening and closing times
+    guard let openingTime = timeFormatter.date(from: (todayTiming?.openingTime)!),
+          let closingTime = timeFormatter.date(from: (todayTiming?.closingTime)!) else {
+            return (false, todayTiming)
+        }
+        
+        // Get the current time as a Date object
+        let currentTime = Date() // Use the current system time
+        
+        // Check if the current time is within the opening and closing times
+//        return currentTime >= openingTime && currentTime <= closingTime
+    return (!(currentTime >= openingTime && currentTime <= closingTime), todayTiming)
+
 }
 
 

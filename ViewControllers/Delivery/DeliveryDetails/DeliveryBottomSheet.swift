@@ -70,10 +70,10 @@ extension DeliveryBottomSheet: UITableViewDelegate, UITableViewDataSource {
             return "Prayer space available"
         }
         else if "restroom".lowercased() == name.lowercased() {
-            return "Restrooms available"
+            return "Restroom available"
         }
         else if "parkingspace".lowercased() == name.lowercased() {
-            return "Parking available"
+            return "Parking space available"
         }
         else if "togo".lowercased() == name.lowercased() {
             return "Takeout available"
@@ -95,9 +95,9 @@ extension DeliveryBottomSheet: UITableViewDelegate, UITableViewDataSource {
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DeliveryTimingCell") as! DeliveryTimingCell
             cell.labelDay.text = timingOpenClose?[indexPath.row]?.dayOfWeek
-            cell.labelTiming.text = is12HourFormat ? "\("\((timingOpenClose?[indexPath.row]?.openingTime ?? "").time12String)") \("\("\((timingOpenClose?[indexPath.row]?.closingTime ?? "").time12String)")")"
+            cell.labelTiming.text = is12HourFormat ? "\("\((timingOpenClose?[indexPath.row]?.openingTime ?? "").time12String)") to \("\("\((timingOpenClose?[indexPath.row]?.closingTime ?? "").time12String)")")"
             :
-            "\("\((timingOpenClose?[indexPath.row]?.openingTime ?? "").time24String)") \("\("\((timingOpenClose?[indexPath.row]?.closingTime ?? "").time24String)")")"
+            "\("\((timingOpenClose?[indexPath.row]?.openingTime ?? "").time24String)") to \("\("\((timingOpenClose?[indexPath.row]?.closingTime ?? "").time24String)")")"
 
             return cell
         }
@@ -135,7 +135,10 @@ extension String {
             return "Invalid Time String"
         }
         dateFormatter.dateFormat = "hh:mm a"
-        return dateFormatter.string(from: date)
+        let formattedDate = dateFormatter.string(from: date)
+        let lowercaseFormattedDate = formattedDate.lowercased()
+
+        return lowercaseFormattedDate
     }
     
     // Converts 12-hour format to 24-hour format
@@ -149,6 +152,9 @@ extension String {
             return "Invalid Time String"
         }
         dateFormatter.dateFormat = "hh:mm a"
-        return dateFormatter.string(from: date)
+        let formattedDate = dateFormatter.string(from: date)
+        let lowercaseFormattedDate = formattedDate.lowercased()
+
+        return lowercaseFormattedDate
     }
 }

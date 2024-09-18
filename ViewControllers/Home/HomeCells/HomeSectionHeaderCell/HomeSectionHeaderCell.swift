@@ -109,6 +109,8 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
         super.awakeFromNib()
         // Initialization code
         labelViewAll.underline()
+        
+        labelViewAll.textColor = .colorApp
     }
     @IBAction func buttonViewAll(_ sender: Any) {
         print(section)

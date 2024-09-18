@@ -338,6 +338,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         if arrayNames[indexPath.item].lowercased() == "Pickup & delivery".lowercased() {
             return()
         }
+        textFieldFilterResult.text = nil
         filterParametersHome = nil
         selectedCuisine = ""
         mapView.clear()
@@ -539,7 +540,8 @@ extension HomeViewController {
                 address == "" ? "restaurants near you"
                 :
                 "\(selectedCuisine == "" ? "restaurants" : selectedCuisine) near \(address)"
-                selectedPlaceHolderIcon = "placeHolderSubCuisine"
+//                selectedPlaceHolderIcon = "placeHolderSubCuisine"
+                selectedPlaceHolderIcon = "placeholderHalalFood"
             }
             else if selectedMenuCell == 1 {
                 let allUniqueCuisines = modelCuisinesHalal

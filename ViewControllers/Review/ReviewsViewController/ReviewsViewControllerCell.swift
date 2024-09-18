@@ -163,7 +163,8 @@ class ReviewsViewControllerCell: UITableViewCell {
     func setLabelTextInFullText(text: String, label: UILabel) {
         labelComment.numberOfLines = 0
         let fullText = text
-        let moreText = "… View Less"
+//        let moreText = "… View Less"
+        let moreText = ""
         
         let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, fullText.count)))
         

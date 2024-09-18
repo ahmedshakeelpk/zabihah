@@ -222,7 +222,8 @@ extension HomeViewController {
         }
         var readableDistance: Double {
             if readableUnit == "miles" {
-                return Double(Double(distance ?? 0) / 1609.344)
+                let value = Double(Double(distance ?? 0) / 1609.344)
+                return value.rounded()
             }
             return Double((distance ?? 0) / 1000)
         }

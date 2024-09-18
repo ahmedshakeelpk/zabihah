@@ -36,6 +36,8 @@ class MarkerInfoView: UIView {
     }
     
     func setModelRestuarantResponseData() {
+        labelDistance.textColor = .colorApp
+
         viewRestaurantBackGround.isHidden = false
         labelRestaurantName.text = modelRestuarantResponseData?.name
         labelRestaurantAddress.text = modelRestuarantResponseData?.address
@@ -65,5 +67,4 @@ class MarkerInfoView: UIView {
     @IBAction func buttonTapOnView(_ sender: Any) {
         buttonTapOnViewHandler?()
     }
-    
 }

@@ -182,15 +182,17 @@ class RatingViewController: UIViewController {
         resetTableView()
     }
     
-    func navigateToAddAddressViewController(index: Int) {
+    func navigateToGalleryViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
-//        vc.galleryRecentPhotos = modelGetByType?.reviewDataObj?.reviewData?[index]?.images ?? []
-        self.navigationController?.pushViewController(vc, animated: true)
+        if (modelReview?[index]?.photoWebUrls ?? []).count > 0 {
+            vc.galleryRecentPhotos = modelReview?[index]?.photoWebUrls ?? []
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     
     func didSelectItemHandler(index: Int) {
-        navigateToAddAddressViewController(index: index)
+        navigateToGalleryViewController(index: index)
     }
     func navigateToWriteReviewViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController

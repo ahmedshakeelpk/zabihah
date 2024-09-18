@@ -25,7 +25,7 @@ extension HomeViewController: GMSMapViewDelegate {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
 //            asdfasdf
-            self.dialNumber(isPrayerPlaces: false, name: userData.name ?? "", number: userData.phone ?? "", isActionSheet: true) { actionType in
+            self.dialNumber(isMapDirection: true, isPrayerPlaces: false, name: userData.name ?? "", number: userData.phone ?? "", isActionSheet: true) { actionType in
                 print(actionType)
                 let indexPath = IndexPath(row: Int(marker.zIndex), section: 1)
                 self.navigateToDeliveryDetailsViewController(indexPath: indexPath, actionType: actionType ?? "viewdetails")

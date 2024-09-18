@@ -73,9 +73,14 @@ class EditAddressViewController: UIViewController {
         }
     }
     
+    
+    var userOldLocation: CLLocationCoordinate2D?
     var isEditAddress: Bool! = false
     var location: CLLocationCoordinate2D? {
         didSet {
+            if userOldLocation == nil {
+                userOldLocation = location
+            }
             if modelUserAddressesResponseData != nil {
                 modelUserAddressesResponseData?.latitude = location?.latitude
                 modelUserAddressesResponseData?.longitude = location?.longitude
@@ -164,12 +169,27 @@ class EditAddressViewController: UIViewController {
     
     @IBAction func buttonGps(_ sender: Any) {
         gpsButtonTapped()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            self.gpsButtonTapped()
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                self.gpsButtonTapped()
+//            }
+//
+//        }
     }
     
     @objc func gpsButtonTapped() {
-        guard let location = mapView.myLocation else { return }
-        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 15.0)
-        mapView.animate(to: camera)
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        
+//        guard let location2 = mapView.myLocation else { return }
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            guard let location = self.mapView.myLocation else { return }
+//            let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 15.0)
+//            self.mapView.animate(to: camera)
+//        }
     }
     func locationConfiguration() {
         locationManager = CLLocationManager()
@@ -348,8 +368,15 @@ class EditAddressViewController: UIViewController {
     }
     
     func calculateNewAndOldLatititudeLongitude() {
-        //My location
-        var myLocation = kUserCurrentLocation
+        
+        var myLocation: CLLocation?
+        if userOldLocation == nil {
+            myLocation = CLLocation(latitude: kUserCurrentLocation.coordinate.latitude, longitude: kUserCurrentLocation.coordinate.longitude)
+        }
+        else {
+            myLocation = CLLocation(latitude: userOldLocation!.latitude, longitude: userOldLocation!.longitude)
+        }
+        
         //My Next Destination
         var myNextDestination = CLLocation(latitude: self.location?.latitude ?? 0, longitude: self.location?.longitude ?? 0)
         //Finding my distance to my next destination (in km)

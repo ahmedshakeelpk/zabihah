@@ -72,9 +72,12 @@ class MyFavouritesViewController: UIViewController {
             }
         }
     }
+    var pullControl = UIRefreshControl()
+    
     override func viewDidAppear(_ animated: Bool) {
         stackViewButtonTabBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 6)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewTitle.backgroundColor = .colorApp
@@ -96,6 +99,18 @@ class MyFavouritesViewController: UIViewController {
         imageViewMosque.tintColor = .clrUnselectedImage
         buttonRestaurant.tag = 1
         getFavourite()
+        
+        pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
+        tableView.addSubview(pullControl) // not
+        tableView.refreshControl?.tintColor = .clear
+    }
+    
+    @objc func pulledRefreshControl() {
+        getFavourite()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.pullControl.endRefreshing()
+        }
     }
 
     @IBOutlet weak var viewBottomLineRestaurants: UIView!
@@ -196,7 +211,7 @@ class MyFavouritesViewController: UIViewController {
             recordModel = modelGetFavouriteResponse?.items?[index]
         }
         
-        vc.stringSubTitle = "Are you sure you want to delete \"\(recordModel?.place?.name ?? "")\" from favourite places?         "
+        vc.stringSubTitle = "Are you sure you want to delete \"\(recordModel?.place?.name ?? "")\" from favorite places?         "
         vc.stringDescription = ""
         vc.stringButtonDelete = "Yes, Delete"
         vc.stringButtonCancel = "Cancel"
@@ -209,7 +224,7 @@ class MyFavouritesViewController: UIViewController {
     
     //Mark:- Choose Action Sheet
     func actionSheetFavouriteDelete(index: Int) {
-        var myActionSheet = UIAlertController(title: "Delete Favourite?", message: "Are you sure you want to delete favourite item?", preferredStyle: UIAlertController.Style.actionSheet)
+        var myActionSheet = UIAlertController(title: "Delete Favourite?", message: "Are you sure you want to delete favorite item?", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
         let galleryAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in

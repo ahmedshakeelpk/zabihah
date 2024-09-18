@@ -85,7 +85,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         super.awakeFromNib()
         // Initialization code
         stackViewBackGround.radius(radius: 12)
-        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
+        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 0)
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
         
@@ -125,7 +125,9 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         favouriteRestaurants()
     }
     
-    func setData() {
+    func setData() {       
+        labelDistance.textColor = .colorApp
+        
         labelRestaurantName.text = restuarentResponseModel?.name
         let completeAddress = "\(restuarentResponseModel?.address ?? ""), \(restuarentResponseModel?.city ?? ""), \(restuarentResponseModel?.state ?? "")"
 
@@ -265,7 +267,7 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            self.viewController.dialNumber(isPrayerPlaces: true, name: userData.name ?? "", number: userData.phone ?? "", isActionSheet: true) { actionType in
+            self.viewController.dialNumber(isMapDirection: true, isPrayerPlaces: true, name: userData.name ?? "", number: userData.phone ?? "", isActionSheet: true) { actionType in
                 if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
                     self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath, actionType: actionType ?? "viewdetails", dataModel: modelData)
                 }

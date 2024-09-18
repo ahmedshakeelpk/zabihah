@@ -116,7 +116,7 @@ class AddAddressViewController: UIViewController {
                 return()
             }
         }
-        labelDeliveryInstructionCount.text = "\(textFieldDeliveryInstruction.text?.count ?? 0)/300"
+        labelDeliveryInstructionCount.text = "\(textFieldDeliveryInstruction.text?.count ?? 0)/250"
     }
     
     @IBAction func buttonBack(_ sender: Any) {

@@ -152,6 +152,8 @@ class WriteReviewViewController: UIViewController {
             buttonRadioYes.tag = 0
         }
         galleryRecentPhotos = reviewDatum.photoWebUrls
+        
+        reviewButtonHandler()
     }
     
     func navigateToAddAddressViewController() {
@@ -194,7 +196,7 @@ class WriteReviewViewController: UIViewController {
             "rating": viewStarCasmo.rating,
             "comment": textViewReview.text!,
             "willReturn": buttonRadioYes.tag == 1,
-            "photoWebUrls": arrayAllUpLoadedPhotos
+            "photoWebUrls": galleryRecentPhotos ?? []
         ] as [String : Any]
         
         
@@ -469,8 +471,8 @@ extension WriteReviewViewController {
             if galleryRecentPhotos == nil {
                 galleryRecentPhotos = [String]()
             }
-            galleryRecentPhotos?.append(contentsOf: arrayAllUpLoadedPhotos)
-            arrayAllUpLoadedPhotos = galleryRecentPhotos?.compactMap { $0 } ?? []
+            let _ = getAllPhotos()
+            
             if isFromEditReview {
                 self.editReview()
             }
@@ -478,5 +480,11 @@ extension WriteReviewViewController {
                 self.postReview()
             }
         }
+    }
+    
+    func getAllPhotos() -> [String] {
+        galleryRecentPhotos?.append(contentsOf: arrayAllUpLoadedPhotos)
+        arrayAllUpLoadedPhotos = galleryRecentPhotos?.compactMap { $0 } ?? []
+        return arrayAllUpLoadedPhotos
     }
 }

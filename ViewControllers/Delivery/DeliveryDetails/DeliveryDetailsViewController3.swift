@@ -158,11 +158,21 @@ class DeliveryDetailsViewController3: UIViewController {
         if shareLink.isEmpty {
             return
         }
-        let text = shareLink
+        let text = getShareDate()
         let textShare = [text]
         let activityViewController = UIActivityViewController(activityItems: textShare as [Any], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func getShareDate() -> String {
+        if let restuarantResponseData = modelFeaturedResponse?.items?.first {
+            let shareLink = getShareLink()
+            let textData = "I wanted to let you know about this halal restaurant on Zabihah \n\n\n \(restuarantResponseData?.name ?? "")\n\(restuarantResponseData?.address ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "") \(restuarantResponseData?.zip ?? "")\n\(restuarantResponseData?.phone ?? "")\n\(shareLink)\n\n\(restuarantResponseData?.description ?? "")\n\n\(restuarantResponseData?.halalDescription ?? "")"
+            return textData
+        }
+        
+        return  getShareLink()
     }
     
     func getShareLink() -> String {
@@ -215,7 +225,7 @@ class DeliveryDetailsViewController3: UIViewController {
         if let restuarantResponseData = modelFeaturedResponse?.items?.first {
             labelRestaurantName.text = restuarantResponseData?.name ?? ""
             labelConnectWith.text = "Connect With \(restuarantResponseData?.name ?? "")"
-            labelAddress.text = "\(restuarantResponseData?.address ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "")"
+            labelAddress.text = "\(restuarantResponseData?.address ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "") \(restuarantResponseData?.zip ?? "")"
             
             labelDistanceAway.text = "\(oneDecimalDistance(distance:restuarantResponseData?.distance)) away"
             
@@ -296,7 +306,14 @@ class DeliveryDetailsViewController3: UIViewController {
             else {
                 viewAmenitiesBackGround.isHidden = true
             }
-            galleryRecentPhotos = restuarantResponseData?.photosGallery
+            if let photos = restuarantResponseData?.photosGallery, photos.count > 0 {
+                let sortedGalleryPhotos = photos
+                    .compactMap { $0 } // Remove nil values
+                    .sorted(by: >)     // Sort in descending order
+                
+                galleryRecentPhotos = sortedGalleryPhotos
+            }
+            
             if let connect = restuarantResponseData?.webLinks, connect.count > 0 {
                 connectSocial = connect
                 stackViewConnectBackGround.isHidden = false

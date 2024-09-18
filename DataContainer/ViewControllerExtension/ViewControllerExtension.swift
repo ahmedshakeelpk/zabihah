@@ -215,10 +215,10 @@ extension UIViewController {
         return value
     }
     
-    func dialNumber(isPrayerPlaces: Bool, name: String, number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
+    func dialNumber(isMapDirection: Bool? = false, isPrayerPlaces: Bool, name: String, number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
         if isActionSheet ?? false {
             
-            actionSheetForCall(isPrayerPlaces: isPrayerPlaces, name: name, number: number) { clickOn in
+            actionSheetForCall(isMapDirection: isMapDirection, isPrayerPlaces: isPrayerPlaces, name: name, number: number) { clickOn in
                 completion?(clickOn)
             }
 //            if number == "" {
@@ -254,8 +254,8 @@ extension UIViewController {
         }
     }
     //Mark:- Choose Action Sheet
-    func actionSheetForCall(isPrayerPlaces: Bool, name: String, number : String, completion: ((String?) -> Void)? = nil) {
-        navigateToDeliveryDetailsPopUpViewController(isPrayerPlaces: isPrayerPlaces, name: name, number: number) { clickOn in
+    func actionSheetForCall(isMapDirection: Bool? = false, isPrayerPlaces: Bool, name: String, number : String, completion: ((String?) -> Void)? = nil) {
+        navigateToDeliveryDetailsPopUpViewController(isMapDirection: isMapDirection, isPrayerPlaces: isPrayerPlaces, name: name, number: number) { clickOn in
             completion?(clickOn)
         }
         
@@ -293,7 +293,7 @@ extension UIViewController {
         
     }
     
-    func navigateToDeliveryDetailsPopUpViewController(isPrayerPlaces: Bool? = false, name: String, number: String, completion: ((String?) -> Void)? = nil) {
+    func navigateToDeliveryDetailsPopUpViewController(isMapDirection: Bool? = false, isPrayerPlaces: Bool? = false, name: String, number: String, completion: ((String?) -> Void)? = nil) {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsPopUpViewController") as! DeliveryDetailsPopUpViewController
         
         vc.titleName = name
@@ -302,7 +302,7 @@ extension UIViewController {
         }
         vc.isRestaurantIcon = !(isPrayerPlaces ?? false)
         vc.isMosqueIcon = isPrayerPlaces ?? false
-        vc.isMapIcon = false
+        vc.isMapIcon = isMapDirection!
         vc.tappedOnCallHandler = {
             self.callNow(number: number)
         }
