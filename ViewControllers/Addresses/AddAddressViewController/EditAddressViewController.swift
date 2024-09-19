@@ -379,8 +379,8 @@ class EditAddressViewController: UIViewController {
         let circleRadius = 0.250 * 1000 // 20 Km in meters
         let circleCenter : CLLocationCoordinate2D  = CLLocationCoordinate2DMake(kUserCurrentLocation.coordinate.latitude, kUserCurrentLocation.coordinate.longitude);
         let circ = GMSCircle(position: circleCenter, radius: circleRadius)
-        circ.fillColor = UIColor(red: 0.0, green: 0.7, blue: 0, alpha: 0.5)
-        circ.strokeColor = .colorApp
+        circ.fillColor = UIColor(red: 0.0, green: 0.7, blue: 0, alpha: 0.1)
+        circ.strokeColor = .colorAppWithOccupacy10
         circ.strokeWidth = 1
         circ.map = self.mapView
     }

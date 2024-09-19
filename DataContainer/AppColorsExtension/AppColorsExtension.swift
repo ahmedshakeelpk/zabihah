@@ -11,6 +11,7 @@ import UIKit
 extension UIColor {
     // Ma Colors
     static let colorApp = UIColor(hexString: "990001")
+    static let colorAppWithOccupacy10 = UIColor(hexString: "990001", alpha: 0.10)
     static let colorMehroon = UIColor(hexString: "810809")
 //    static let colorApp = UIColor(hexString: "FF001F")
 //    static let tempColor = UIColor(hexString: "AD0609")
