@@ -337,7 +337,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         tableView.addSubview(pullControl) // not
         tableView.refreshControl?.tintColor = .clear
         setStatusBarTopColor(color: .tempColor)
+        
         mapView.isMyLocationEnabled = true
+        mapView.isMyLocationEnabled = true
+        mapView.settings.myLocationButton = true
+        
+        mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 130, right: 8)
     }
     
     @objc func pulledRefreshControl() {

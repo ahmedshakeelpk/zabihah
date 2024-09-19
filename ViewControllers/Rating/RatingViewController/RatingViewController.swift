@@ -45,10 +45,12 @@ class RatingViewController: UIViewController {
     var averageGoogleRating: HomeViewController.Rating!
     var modelFeaturedResponse: HomeViewController.ModelFeaturedResponse? {
         didSet {
-            if modelFeaturedResponse?.items?.count ?? 0 > 0 {
-                averageGoogleRating = modelFeaturedResponse?.items?[0]?.averageGoogleRating
-                if let reviews = modelFeaturedResponse?.items?[0]?.reviews {
-                    modelReview = reviews
+            DispatchQueue.main.async {
+                if self.modelFeaturedResponse?.items?.count ?? 0 > 0 {
+                    self.averageGoogleRating = self.modelFeaturedResponse?.items?[0]?.averageGoogleRating
+                    if let reviews = self.modelFeaturedResponse?.items?[0]?.reviews {
+                        self.modelReview = reviews
+                    }
                 }
             }
         }
@@ -71,21 +73,23 @@ class RatingViewController: UIViewController {
     
     var modelGetReview: ModelGetReview? {
         didSet {
-            modelReview = modelGetReview?.items
-            let rating = self.calculateRatings(for: modelReview)
-            if self.buttonFromGoogle.tag == 1 {
-                if getRatingEnum(averageRating: modelFeaturedResponse?.items?[0]?.averageGoogleRating) == "0" {
-                    
-                    if rating.1 == "0.0" {
-                        self.labelRating.text = "--"
+            DispatchQueue.main.async {
+                self.modelReview = self.modelGetReview?.items
+                let rating = self.calculateRatings(for: self.modelReview)
+                if self.buttonFromGoogle.tag == 1 {
+                    if getRatingEnum(averageRating: self.modelFeaturedResponse?.items?[0]?.averageGoogleRating) == "0" {
+                        
+                        if rating.1 == "0.0" {
+                            self.labelRating.text = "--"
+                        }
+                        else {
+                            self.labelRating.text = rating.1 ?? "0"
+                        }
+                        self.viewRatingCosmo.rating = Double(rating.1 ?? "0") ?? 0.0
                     }
                     else {
-                        self.labelRating.text = rating.1 ?? "0"
+                        self.labelRating.text = getRatingEnum(averageRating: self.modelFeaturedResponse?.items?[0]?.averageGoogleRating)
                     }
-                    self.viewRatingCosmo.rating = Double(rating.1 ?? "0") ?? 0.0
-                }
-                else {
-                    self.labelRating.text = getRatingEnum(averageRating: modelFeaturedResponse?.items?[0]?.averageGoogleRating)
                 }
             }
         }

@@ -210,7 +210,8 @@ class ProfileViewController: UIViewController {
     func navigateToProfileDeleteViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
         
-        vc.stringTitle = "Delete my account"
+        vc.stringTitle = ""
+//        vc.stringTitle = "Delete my account"
         vc.stringSubTitle = "Are you sure you want to delete your account? "
         vc.stringDescription = "This will permanently remove your personal data, preferences, and reviews."
         vc.stringButtonDelete = "YES, DELETE MY ACCOUNT"

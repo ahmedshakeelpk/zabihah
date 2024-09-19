@@ -30,26 +30,39 @@ class GalleryViewController: UIViewController {
         viewCountBackGround.circle()
         viewLeftArrowBackGround.circle()
         viewRightArrowBackGround.circle()
+        viewLeftArrowBackGround.isHidden = true
+        if totalImages == 1 {
+            viewLeftArrowBackGround.isHidden = true
+            viewRightArrowBackGround.isHidden = true
+        }
     }
     @IBAction func buttonBack(_ sender: Any) {
         popViewController(animated: true)
     }
     
     @IBAction func buttonLeft(_ sender: Any) {
+        leftArrowTapped()
+    }
+    
+    func leftArrowTapped() {
         let visibleItems: NSArray = self.collectionView.indexPathsForVisibleItems as NSArray
-            let currentItem: IndexPath = visibleItems.object(at: 0) as! IndexPath
-            let nextItem: IndexPath = IndexPath(item: currentItem.item - 1, section: 0)
+        let currentItem: IndexPath = visibleItems.object(at: 0) as! IndexPath
+        let nextItem: IndexPath = IndexPath(item: currentItem.item - 1, section: 0)
         if nextItem.row < galleryRecentPhotos?.count ?? 0 && nextItem.row >= 0{
-                self.collectionView.scrollToItem(at: nextItem, at: .right, animated: true)
-            }
+            self.collectionView.scrollToItem(at: nextItem, at: .right, animated: true)
+        }
     }
     @IBAction func buttonRight(_ sender: Any) {
+        rightArrowTapped()
+    }
+    
+    func rightArrowTapped() {
         let visibleItems: NSArray = self.collectionView.indexPathsForVisibleItems as NSArray
-            let currentItem: IndexPath = visibleItems.object(at: 0) as! IndexPath
-            let nextItem: IndexPath = IndexPath(item: currentItem.item + 1, section: 0)
+        let currentItem: IndexPath = visibleItems.object(at: 0) as! IndexPath
+        let nextItem: IndexPath = IndexPath(item: currentItem.item + 1, section: 0)
         if nextItem.row < galleryRecentPhotos?.count ?? 0 {
-                self.collectionView.scrollToItem(at: nextItem, at: .left, animated: true)
-            }
+            self.collectionView.scrollToItem(at: nextItem, at: .left, animated: true)
+        }
     }
     
 }
@@ -90,15 +103,22 @@ extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDel
         let midY:CGFloat = scrollView.bounds.midY
         let point:CGPoint = CGPoint(x:midX, y:midY)
         
-        guard
-            
-            let indexPath:IndexPath = collectionView.indexPathForItem(at:point)
-        else
-        {
+        guard let indexPath:IndexPath = collectionView.indexPathForItem(at:point)
+        else {
             return
         }
         
         let currentPage:Int = indexPath.item
         labelImageCount.text = "\(currentPage+1)/\(totalImages)"
+        viewRightArrowBackGround.isHidden = false
+        viewLeftArrowBackGround.isHidden = false
+        if currentPage == 0 {
+            viewRightArrowBackGround.isHidden = false
+            viewLeftArrowBackGround.isHidden = true
+        }
+        if currentPage == (galleryRecentPhotos?.count ?? 0)-1 {
+            viewRightArrowBackGround.isHidden = true
+            viewLeftArrowBackGround.isHidden = false
+        }
     }
 }

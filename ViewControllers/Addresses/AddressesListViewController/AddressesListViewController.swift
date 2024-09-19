@@ -156,10 +156,11 @@ class AddressesListViewController: UIViewController {
     }
     func navigateToProfileDeleteViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
-        vc.stringTitle = "User Address"
-        vc.stringSubTitle = "Are you sure you want to delete \"\(modelGetUserAddressResponse?[index].name ?? "")\" from addresses?         "
+        vc.stringTitle = ""
+//        vc.stringTitle = "User Address"
+        vc.stringSubTitle = "Are you sure you want to delete \(modelGetUserAddressResponse?[index].name ?? "") from addresses?         "
         vc.stringDescription = ""
-        vc.stringButtonDelete = "Yes, Delete"
+        vc.stringButtonDelete = "Yes, delete"
         vc.stringButtonCancel = "Cancel"
         vc.buttonDeleteHandler = {
             print("delete button press")

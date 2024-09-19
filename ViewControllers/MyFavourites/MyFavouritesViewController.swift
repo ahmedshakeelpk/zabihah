@@ -202,7 +202,8 @@ class MyFavouritesViewController: UIViewController {
     
     func navigateToProfileDeleteViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
-        vc.stringTitle = "Delete Favourite!"
+        vc.stringTitle = ""
+//        vc.stringTitle = "Delete Favourite!"
         let recordModel: HomeViewController.ModelRestuarantResponseData!
 
         if buttonRestaurant.tag == 1 {
@@ -212,9 +213,9 @@ class MyFavouritesViewController: UIViewController {
             recordModel = modelGetFavouriteResponse?.items?[index]
         }
         
-        vc.stringSubTitle = "Are you sure you want to delete \"\(recordModel?.place?.name ?? "")\" from favorite places?         "
+        vc.stringSubTitle = "Are you sure you want to delete \(recordModel?.place?.name ?? "") from favorite places?         "
         vc.stringDescription = ""
-        vc.stringButtonDelete = "Yes, Delete"
+        vc.stringButtonDelete = "Yes, delete"
         vc.stringButtonCancel = "Cancel"
         vc.buttonDeleteHandler = {
             print("delete button press")

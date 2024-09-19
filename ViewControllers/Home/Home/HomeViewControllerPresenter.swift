@@ -100,14 +100,14 @@ extension HomeViewController {
             viewMapViewBackGround.isHidden = false
             tableView.isHidden = true
             imageViewListViewMapView.image = UIImage(named: "listViewHome")
-            labelMapViewListView.text = "List View"
+            labelMapViewListView.text = "List view"
         }
         else {
             viewMapViewBackGround.isHidden = true
             tableView.isHidden = false
             buttonMapViewListView.tag = 0
             imageViewListViewMapView.image = UIImage(named: "mapViewHome")
-            labelMapViewListView.text = "Map View"
+            labelMapViewListView.text = "Map view"
         }
     }
     

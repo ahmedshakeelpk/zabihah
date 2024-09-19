@@ -91,7 +91,7 @@ class RatingViewControllerCell: UITableViewCell {
         let moreText = "more"
 
         // Truncate the text to a maximum length, considering ellipsis and "more"
-        let maxLength = 150
+        let maxLength = 120
         let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, maxLength)))
 
         // Create attributed string with truncated text
@@ -155,10 +155,9 @@ class RatingViewControllerCell: UITableViewCell {
     
     @objc func viewLessTapped(_ sender: UITapGestureRecognizer) {
         return()
-        print("More tapped with text: \(modelGetReviewData?.comment ?? "")")
-        setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
-        
-        didTapOnViewMoreOrViewLess(index)
+        print("Less tapped with text: \(modelGetReviewData?.comment ?? "")")
+//        setLabelTextInThreeLine(text: modelGetReviewData?.comment ?? "", label: labelComment)
+//        didTapOnViewMoreOrViewLess(index)
     }
 }
 

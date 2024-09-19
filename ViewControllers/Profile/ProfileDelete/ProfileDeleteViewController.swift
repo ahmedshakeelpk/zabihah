@@ -9,6 +9,7 @@ import UIKit
 
 class ProfileDeleteViewController: UIViewController {
 
+    @IBOutlet weak var stackViewDescriptionBackGround: UIStackView!
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var labelSubTitle: UILabel!
     @IBOutlet weak var labelDescription: UILabel!
@@ -48,6 +49,10 @@ class ProfileDeleteViewController: UIViewController {
         labelDescription.text = stringDescription
         labelButtonDelete.text = stringButtonDelete
         labelButtonCancel.text = stringButtonCancel
+        
+        stackViewDescriptionBackGround.isHidden = stringDescription == ""
+        labelTitle.isHidden = stringTitle == ""
+
     }
     @IBAction func buttonDeleteMyAccount(_ sender: Any) {
         self.dismiss(animated: true) {

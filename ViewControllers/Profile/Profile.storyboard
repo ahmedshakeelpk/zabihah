@@ -2710,7 +2710,7 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KZh-YA-sIx">
-                                <rect key="frame" x="0.0" y="59" width="393" height="439"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="421"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mq8-Sy-GWG">
                                         <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
@@ -2823,7 +2823,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zte-po-6bu">
-                                <rect key="frame" x="0.0" y="498" width="393" height="320"/>
+                                <rect key="frame" x="0.0" y="480" width="393" height="338"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3D-7w-R4D">
                                         <rect key="frame" x="171.66666666666666" y="16" width="50" height="6"/>
@@ -2834,62 +2834,67 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="O3T-KB-PiC">
-                                        <rect key="frame" x="16" y="42" width="361" height="278"/>
+                                        <rect key="frame" x="16" y="42" width="361" height="296"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Delete my account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fhP-e8-OTH">
-                                                <rect key="frame" x="0.0" y="0.0" width="361" height="35.333333333333336"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete my account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fhP-e8-OTH">
+                                                <rect key="frame" x="0.0" y="0.0" width="361" height="24"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                 <color key="textColor" red="0.12549019607843137" green="0.16078431372549018" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Lh-tm-rc7">
-                                                <rect key="frame" x="0.0" y="35.333333333333371" width="361" height="16"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Lh-tm-rc7">
+                                                <rect key="frame" x="0.0" y="24" width="361" height="16"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="jFK-wV-dVd"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Are you sure you want to delete your account? " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUC-YL-W1C">
-                                                <rect key="frame" x="0.0" y="51.333333333333371" width="361" height="19.333333333333329"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure you want to delete your account? " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUC-YL-W1C">
+                                                <rect key="frame" x="0.0" y="40" width="361" height="52.666666666666657"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                 <color key="textColor" red="0.12549019607843137" green="0.16078431372549018" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xgV-QS-Dok">
-                                                <rect key="frame" x="0.0" y="70.666666666666629" width="361" height="5"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xgV-QS-Dok">
+                                                <rect key="frame" x="0.0" y="92.666666666666629" width="361" height="5"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="5" id="Hb3-iy-teE"/>
                                                 </constraints>
                                             </view>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Qk-w0-OFL">
-                                                <rect key="frame" x="0.0" y="75.666666666666629" width="361" height="0.0"/>
+                                                <rect key="frame" x="0.0" y="97.666666666666629" width="361" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                 <color key="textColor" red="0.12549019607843137" green="0.16078431372549018" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kr6-Tv-fjF">
-                                                <rect key="frame" x="0.0" y="75.666666666666629" width="361" height="12"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="12" id="GAf-lN-It0"/>
-                                                </constraints>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="This will permanently remove your personal data, preferences, and reviews." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8W3-BF-l7S">
-                                                <rect key="frame" x="0.0" y="87.666666666666629" width="361" height="38.333333333333343"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <color key="textColor" red="0.32156862745098036" green="0.32156862745098036" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="QmY-DU-q9k">
+                                                <rect key="frame" x="0.0" y="97.666666666666629" width="361" height="50.333333333333343"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kr6-Tv-fjF">
+                                                        <rect key="frame" x="0.0" y="0.0" width="361" height="12"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="12" id="GAf-lN-It0"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This will permanently remove your personal data, preferences, and reviews." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8W3-BF-l7S">
+                                                        <rect key="frame" x="0.0" y="12" width="361" height="38.333333333333336"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                        <color key="textColor" red="0.32156862745098036" green="0.32156862745098036" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wnn-tu-fBO">
-                                                <rect key="frame" x="0.0" y="126" width="361" height="20"/>
+                                                <rect key="frame" x="0.0" y="148" width="361" height="16"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="JYO-Pb-6lQ"/>
+                                                    <constraint firstAttribute="height" constant="16" id="JYO-Pb-6lQ"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="syh-SD-BQm">
-                                                <rect key="frame" x="0.0" y="146" width="361" height="50"/>
+                                                <rect key="frame" x="0.0" y="164" width="361" height="50"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HtX-dd-YWM">
                                                         <rect key="frame" x="0.0" y="0.0" width="361" height="50"/>
@@ -2931,14 +2936,14 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XDO-6w-eYu">
-                                                <rect key="frame" x="0.0" y="196" width="361" height="16"/>
+                                                <rect key="frame" x="0.0" y="214" width="361" height="16"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="yHl-iy-YnD"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wcn-sL-xj8">
-                                                <rect key="frame" x="0.0" y="212" width="361" height="50"/>
+                                                <rect key="frame" x="0.0" y="230" width="361" height="50"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AFV-JA-1xW">
                                                         <rect key="frame" x="0.0" y="0.0" width="361" height="50"/>
@@ -2980,24 +2985,19 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gpk-xh-HC0">
-                                                <rect key="frame" x="0.0" y="262" width="361" height="16"/>
+                                                <rect key="frame" x="0.0" y="280" width="361" height="16"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="AQc-1R-U3j"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="8W3-BF-l7S" firstAttribute="leading" secondItem="O3T-KB-PiC" secondAttribute="leading" id="EwG-fB-b63"/>
-                                            <constraint firstAttribute="trailing" secondItem="8W3-BF-l7S" secondAttribute="trailing" id="h7w-gR-1WM"/>
-                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="g3D-7w-R4D" firstAttribute="top" secondItem="Zte-po-6bu" secondAttribute="top" constant="16" id="NgS-OT-nrY"/>
                                     <constraint firstAttribute="trailing" secondItem="O3T-KB-PiC" secondAttribute="trailing" constant="16" id="OFU-aT-WAv"/>
-                                    <constraint firstAttribute="height" constant="320" id="SaN-5a-rmd"/>
                                     <constraint firstItem="O3T-KB-PiC" firstAttribute="top" secondItem="g3D-7w-R4D" secondAttribute="bottom" constant="20" id="lsx-jV-517"/>
                                     <constraint firstItem="g3D-7w-R4D" firstAttribute="centerX" secondItem="Zte-po-6bu" secondAttribute="centerX" id="mN1-GU-ROw"/>
                                     <constraint firstAttribute="bottom" secondItem="O3T-KB-PiC" secondAttribute="bottom" id="yRF-qg-B1m"/>
@@ -3028,6 +3028,7 @@
                         <outlet property="labelDescription" destination="8W3-BF-l7S" id="jhP-LD-Mnk"/>
                         <outlet property="labelSubTitle" destination="xUC-YL-W1C" id="7Ie-6K-Pf9"/>
                         <outlet property="labelTitle" destination="fhP-e8-OTH" id="sku-eO-BJi"/>
+                        <outlet property="stackViewDescriptionBackGround" destination="QmY-DU-q9k" id="dqe-Ho-u6T"/>
                         <outlet property="viewBackGround" destination="Zte-po-6bu" id="SmS-My-8J6"/>
                         <outlet property="viewButtonCancelBackGround" destination="AFV-JA-1xW" id="XEN-uT-qc1"/>
                         <outlet property="viewButtonDeleteMyAccountBackGround" destination="HtX-dd-YWM" id="l74-bG-abT"/>
