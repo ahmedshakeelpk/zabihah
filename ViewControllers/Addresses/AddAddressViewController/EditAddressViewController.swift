@@ -593,8 +593,7 @@ struct ReversedGeoLocation {
 //    }
     var formattedAddress: String {
         return """
-        \(name),
-        \(city), \(state) \(zipCode) \(country)
+        \(name), \(streetNumber) \(streetName), \(city), \(state) \(zipCode) \(country)
         """
     }
 
