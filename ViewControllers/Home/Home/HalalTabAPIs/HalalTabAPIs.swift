@@ -27,7 +27,7 @@ extension HomeViewController {
             rating: filterParametersHome?.rating,
             page: pageSize,
             keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
-            pageSize: 20,
+            pageSize: 10,
             cuisine: selectedCuisine == "" ? nil : [selectedCuisine],
             meatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
             alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
