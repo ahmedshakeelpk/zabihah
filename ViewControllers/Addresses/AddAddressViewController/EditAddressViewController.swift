@@ -591,10 +591,25 @@ struct ReversedGeoLocation {
 //        \(city), \(state) \(zipCode) \(country)
 //        """
 //    }
+//    var formattedAddress: String {
+//        return """
+//        \(name), \(streetNumber) \(streetName), \(city), \(state) \(zipCode) \(country)
+//        """
+//    }
     var formattedAddress: String {
         return """
-        \(name), \(streetNumber) \(streetName), \(city), \(state) \(zipCode) \(country)
+        \(tempSolutionForStreetName)\(streetNumber) \(streetName), \(city), \(state) \(zipCode) \(country)
         """
+    }
+    
+    var tempSolutionForStreetName : String {
+        let tempName = (name.lowercased()).replacingOccurrences(of: "\(streetNumber) \(streetName)".lowercased(), with: "")
+        if tempName == "" {
+            return ""
+        }
+        else {
+            return tempName+", "
+        }
     }
 
     // Handle optionals as needed

@@ -192,6 +192,7 @@ class RegisterationViewController: UIViewController {
     
     func navigateToOtpLoginViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
+        vc.isFromEmail = !(isFromEmail)
         vc.isFromRegistrationViewController = true
         vc.stringPhoneEmail = isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : textFieldEmail.text!
         vc.isOtpSuccessFullHandler = { first, second in
