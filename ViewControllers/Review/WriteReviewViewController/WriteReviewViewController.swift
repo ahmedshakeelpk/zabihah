@@ -86,6 +86,7 @@ class WriteReviewViewController: UIViewController {
         getStarRating()
         textViewReview.text = placeholderText
         textViewReview.textColor = .lightGray
+        viewStarCasmo.rating = Double(1)
         if isFromEditReview {
             setData()
         }
@@ -118,8 +119,8 @@ class WriteReviewViewController: UIViewController {
         }
         if arrayLocalGallery?.count ?? 0 > 0{
             if let token = self.modelGetBlobToken?.uri {
-                for image in arrayLocalGallery ?? [] {
-                    self.uploadImageToBlobStorage(token: token, image: image)
+                for (index, image) in (arrayLocalGallery ?? []).enumerated() {
+                    self.uploadImageToBlobStorage(index: index, token: token, image: image)
                 }
             }
             else {
@@ -139,7 +140,7 @@ class WriteReviewViewController: UIViewController {
     
     func setData() {
         textViewReview.textColor = .black
-        viewStarCasmo.rating = Double(reviewDatum.rating ?? 0)
+        viewStarCasmo.rating = Double(reviewDatum.rating ?? 1)
         textViewReview.text = reviewDatum.comment
         if reviewDatum.willReturn ?? false {
             imageViewYes.image = UIImage(named: "radioCheck")
@@ -176,6 +177,10 @@ class WriteReviewViewController: UIViewController {
             if statusCode == 200 {
                 self.modelPostReview = model  
             }
+            else {
+                let errorMessage = model?.title
+                self.showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
+            }
         }
     }
     
@@ -203,7 +208,11 @@ class WriteReviewViewController: UIViewController {
         APIs.postAPI(apiName: .postReview, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelPostReview? = APIs.decodeDataToObject(data: responseData)
             if statusCode == 200 {
-                self.modelPostReview = ModelPostReview(rating: nil, id: "test id", createdOn: nil, updatedOn: nil, willReturn: nil, type: nil, comment: nil, isDeleted: nil, photoWebUrls: nil, createdBy: nil, updatedBy: nil, place: nil)
+                self.modelPostReview = ModelPostReview(title: "", rating: nil, id: "test id", createdOn: nil, updatedOn: nil, willReturn: nil, type: nil, comment: nil, isDeleted: nil, photoWebUrls: nil, createdBy: nil, updatedBy: nil, place: nil)
+            }
+            else {
+                let errorMessage = model?.title
+                self.showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -226,7 +235,9 @@ class WriteReviewViewController: UIViewController {
     }
     
     func reviewButtonHandler() {
-        let completeText = "\((textViewReview.text ?? ""))"
+        
+        var completeText = "\((textViewReview.text ?? ""))"
+        completeText = completeText.replacingOccurrences(of: "Write...", with: "")
         self.labelTextViewCount.text = "\(completeText.count)/500"
         self.textViewCount = textViewReview.text.count
     }
@@ -410,6 +421,7 @@ extension WriteReviewViewController: UICollectionViewDataSource, UICollectionVie
 extension WriteReviewViewController {
     // MARK: - ModelPostReview
     struct ModelPostReview: Codable {
+        let title: String?
         let rating: Int?
         let id: String?
         let createdOn, updatedOn: String?
@@ -431,7 +443,7 @@ extension WriteReviewViewController {
 
 ///Blob Upload Storage
 extension WriteReviewViewController {
-    func uploadImageToBlobStorage(token: String, image: UIImage) {
+    func uploadImageToBlobStorage(index: Int, token: String, image: UIImage) {
         //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
         let currentDate1 = Date()
         let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".png"
@@ -453,7 +465,12 @@ extension WriteReviewViewController {
                 if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
                     print("Image URL: \(imageURL)")
                     DispatchQueue.main.async {
-                        self.arrayAllUpLoadedPhotos.append("\(imageURL)")
+                        if index >= 0 && index <= self.arrayAllUpLoadedPhotos.count {
+                            self.arrayAllUpLoadedPhotos.insert("\(imageURL)", at: index)
+                        }
+                        else {
+                            self.arrayAllUpLoadedPhotos.append("\(imageURL)")
+                        }
                         self.allPhotosUploaded()
                     }
                 } else {

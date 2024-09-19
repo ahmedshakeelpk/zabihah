@@ -58,7 +58,8 @@ class AddAddressViewController: UIViewController {
                 self.addressEditHandler?(self.location!)
             }
             else {
-                showAlertCustomPopup(title: "Error", message: "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelEditUserAddressResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -99,7 +100,8 @@ class AddAddressViewController: UIViewController {
                 self.newAddressAddedHandler?(textFieldAddress.text!, location)
             }
             else {
-                showAlertCustomPopup(title: "Error", message: "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelAddUserAddressResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -111,7 +113,7 @@ class AddAddressViewController: UIViewController {
     }
     @objc func textFieldDeliveryInstructionEditingChanged() {
         if let count = textFieldDeliveryInstruction.text?.count {
-            if count > 300 {
+            if count > 250 {
                 textFieldDeliveryInstruction.text?.removeLast()
                 return()
             }
@@ -202,7 +204,7 @@ class AddAddressViewController: UIViewController {
         ]
         APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let model = AddressesListViewController.ModelUserAddressesResponseData(id: "tempid", utmCoordinates: nil, createdOn: nil, updatedOn: nil, updatedBy: nil, label: nil, physicalAddress: nil, locationInstructions: nil, deliveryInstructions: nil, isDefault: nil, isDeleted: nil)
+                let model = AddressesListViewController.ModelUserAddressesResponseData(title: "", id: "tempid", utmCoordinates: nil, createdOn: nil, updatedOn: nil, updatedBy: nil, label: nil, physicalAddress: nil, locationInstructions: nil, deliveryInstructions: nil, isDefault: nil, isDeleted: nil)
                 self.modelAddUserAddressResponse = model
             }
             else {
@@ -227,7 +229,7 @@ class AddAddressViewController: UIViewController {
         ]
         APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
             if statusCode == 200 && responseData == nil {
-                let model = AddressesListViewController.ModelUserAddressesResponseData(id: "tempid", utmCoordinates: nil, createdOn: nil, updatedOn: nil, updatedBy: nil, label: nil, physicalAddress: nil, locationInstructions: nil, deliveryInstructions: nil, isDefault: nil, isDeleted: nil)
+                let model = AddressesListViewController.ModelUserAddressesResponseData(title: "", id: "tempid", utmCoordinates: nil, createdOn: nil, updatedOn: nil, updatedBy: nil, label: nil, physicalAddress: nil, locationInstructions: nil, deliveryInstructions: nil, isDefault: nil, isDeleted: nil)
                 self.modelEditUserAddressResponse = model
             }
             else {

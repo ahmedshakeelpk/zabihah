@@ -616,7 +616,7 @@
                                     <constraint firstAttribute="trailing" secondItem="lnt-xu-sB4" secondAttribute="trailing" id="yQW-eu-qCs"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dbu-6v-USn">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dbu-6v-USn">
                                 <rect key="frame" x="136.5" y="802" width="141" height="40"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mapViewHome" translatesAutoresizingMaskIntoConstraints="NO" id="yKW-YO-1dk">

@@ -56,7 +56,8 @@ class MyFavouritesViewController: UIViewController {
                 viewNoDataFoundBackGround.isHidden = true
             }
         }
-        DispatchQueue.main.async {
+        self.tableView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.tableView.reloadData()
         }
     }

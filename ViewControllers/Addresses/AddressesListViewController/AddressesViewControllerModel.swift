@@ -30,6 +30,7 @@ extension AddressesListViewController {
     
     // MARK: - UserAddressesResponseData
     struct ModelUserAddressesResponseData: Codable {
+        let title: String?
         let id: String?
         let utmCoordinates: Double?
         let createdOn: String?

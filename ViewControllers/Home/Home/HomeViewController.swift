@@ -371,6 +371,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         tableView.dataSource = self
         
         stackViewTitleBackGround.backgroundColor = .colorApp
+        
+        stackViewSearchNearLocationBackGround.backgroundColor = .colorMehroon
         sideMenuSetup()
         viewZoomInBackGround.circle()
         viewZoomOutBackGround.circle()

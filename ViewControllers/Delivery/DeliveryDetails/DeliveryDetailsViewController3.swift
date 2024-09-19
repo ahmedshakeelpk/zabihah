@@ -155,9 +155,9 @@ class DeliveryDetailsViewController3: UIViewController {
     
     @IBAction func buttonShare(_ sender: Any) {
         let shareLink = getShareLink()
-        if shareLink.isEmpty {
-            return
-        }
+//        if shareLink.isEmpty {
+//            return
+//        }
         let text = getShareDate()
         let textShare = [text]
         let activityViewController = UIActivityViewController(activityItems: textShare as [Any], applicationActivities: nil)
@@ -202,7 +202,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBAction func buttonHalalSummary(_ sender: Any) {
         buttonHalalSummary.tag = buttonHalalSummary.tag == 0 ? 1 : 0
         viewHalalSummaryDetailsBackGround.isHidden = buttonHalalSummary.tag == 0
-        let imageName = buttonHalalSummary.tag == 0 ? "downArrowGray" : "forwardArrowGray"
+        let imageName = buttonHalalSummary.tag == 0 ? "downArrowGray" : "upArrowGray"
         self.imageViewHalalSummaryDropDown.image = nil
         DispatchQueue.main.async {
             self.imageViewHalalSummaryDropDown.image = UIImage(named: imageName)
@@ -265,7 +265,7 @@ class DeliveryDetailsViewController3: UIViewController {
                 let openOrCloseTimeWith12HourFormat = is12HourFormat ? (openOrCloseTime).time12String : (openOrCloseTime).time24String
                 labelCloseOpen.text = "\(openOrCloseString) \(openOrCloseTimeWith12HourFormat)"
             }
-            viewShareBackGround.isHidden = getShareLink() == ""
+//            viewShareBackGround.isHidden = getShareLink() == ""
             
             imageViewFavourite.image = UIImage(named: restuarantResponseData?.isMyFavorite ?? false ? "heartFavourite" : "heartMehroon")
             
@@ -393,26 +393,45 @@ class DeliveryDetailsViewController3: UIViewController {
     }
     
     func setLabelTextInThreeLine(text: String, label: UILabel) {
-        labelRestaurantDetails.numberOfLines = 3
+        label.numberOfLines = 3
         let fullText = text
-        let moreText = "… more"
-        
-        let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, 150)))
-        
+        let ellipsisText = "… "
+        let moreText = "more"
+
+        // Truncate the text to a maximum length, considering ellipsis and "more"
+        let maxLength = 150
+        let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, maxLength)))
+
+        // Create attributed string with truncated text
         let attributedString = NSMutableAttributedString(string: truncatedText)
-        let moreAttributedString = NSMutableAttributedString(string: moreText, attributes: [.foregroundColor: UIColor.colorApp, .font: UIFont.systemFont(ofSize: 12, weight: .bold)])
-        
+
+        // Create attributed string for the "…" part (no underline)
+        let ellipsisAttributedString = NSAttributedString(string: ellipsisText)
+
+        // Create attributed string for the "more" text with underline
+        let moreAttributedString = NSMutableAttributedString(
+            string: moreText,
+            attributes: [
+                .foregroundColor: UIColor.colorApp, // Custom color
+                .font: UIFont.systemFont(ofSize: 12, weight: .bold),
+                .underlineStyle: NSUnderlineStyle.single.rawValue
+            ]
+        )
+
+        // Append the "…" and "more" attributed strings to the truncated text
+        attributedString.append(ellipsisAttributedString)
         attributedString.append(moreAttributedString)
-        
+
+        // Set the final attributed text to the label
         label.attributedText = attributedString
-        
+
         // Enable user interaction for tap gesture
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(moreTapped(_:)))
-        labelRestaurantDetails.isUserInteractionEnabled = true
-        labelRestaurantDetails.addGestureRecognizer(tapGesture)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewMoreTapped(_:)))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tapGesture)
     }
     
-    @objc func moreTapped(_ sender: UITapGestureRecognizer) {
+    @objc func viewMoreTapped(_ sender: UITapGestureRecognizer) {
         // Retrieve the associated text
         if let restuarantResponseData = modelFeaturedResponse?.items?.first {
             print("More tapped with text: \(restuarantResponseData?.description ?? "")")

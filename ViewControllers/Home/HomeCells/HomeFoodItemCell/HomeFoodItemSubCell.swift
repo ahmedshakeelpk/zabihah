@@ -268,7 +268,7 @@ func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
             let distanceInFeet = distanceInMeters * 3.28084
             if distanceInFeet < 528 {
                 // If distance is less than 1 mile, show in feet
-                let distanceInFeetFormatted = String(format: "%.0f", distanceInFeet)
+                let distanceInFeetFormatted = String(format: "%.1f", distanceInFeet)
                 return "\(distanceInFeetFormatted) ft"
             } else {
                 // If distance is 1 mile or more, show in miles
@@ -280,7 +280,7 @@ func oneDecimalDistance(distance: HomeViewController.Distance?) -> String {
         case "kilometers":
             // If unit is kilometers, handle meters and kilometers
             if distanceInMeters < 1000 {
-                let distanceInMetersFormatted = String(format: "%.0f", distanceInMeters)
+                let distanceInMetersFormatted = String(format: "%.1f", distanceInMeters)
                 return "\(distanceInMetersFormatted) m"
             } else {
                 let distanceInKilometers = distanceInMeters / 1000
@@ -522,7 +522,7 @@ func getErrorMessage(errorMessage: String) -> String {
     case "AddressNotFoundException".lowercased():
         return "Address could not be found"
     case "EmailAlreadyExistsException".lowercased():
-        return "Email is already registered"
+        return "Email is already associated with an account"
     case "FavoritiesNotFoundException".lowercased():
         return "No favorites found"
     case "OtpExpiredException".lowercased():

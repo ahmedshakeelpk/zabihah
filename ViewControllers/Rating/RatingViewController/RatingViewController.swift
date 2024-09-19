@@ -41,9 +41,12 @@ class RatingViewController: UIViewController {
     
     var reviewPostedHandler: (() -> ())!
     var modelGetRestaurantDetailResponse: HomeViewController.ModelRestuarantResponseData?
+    
+    var averageGoogleRating: HomeViewController.Rating!
     var modelFeaturedResponse: HomeViewController.ModelFeaturedResponse? {
         didSet {
             if modelFeaturedResponse?.items?.count ?? 0 > 0 {
+                averageGoogleRating = modelFeaturedResponse?.items?[0]?.averageGoogleRating
                 if let reviews = modelFeaturedResponse?.items?[0]?.reviews {
                     modelReview = reviews
                 }
@@ -69,14 +72,10 @@ class RatingViewController: UIViewController {
     var modelGetReview: ModelGetReview? {
         didSet {
             modelReview = modelGetReview?.items
-        }
-    }
-    var modelReview: [HomeViewController.Review?]? {
-        didSet {
-            DispatchQueue.main.async {
-                if let reviewDataObj = self.modelReview {
+            let rating = self.calculateRatings(for: modelReview)
+            if self.buttonFromGoogle.tag == 1 {
+                if getRatingEnum(averageRating: modelFeaturedResponse?.items?[0]?.averageGoogleRating) == "0" {
                     
-                    let rating = self.calculateRatings(for: reviewDataObj)
                     if rating.1 == "0.0" {
                         self.labelRating.text = "--"
                     }
@@ -84,7 +83,32 @@ class RatingViewController: UIViewController {
                         self.labelRating.text = rating.1 ?? "0"
                     }
                     self.viewRatingCosmo.rating = Double(rating.1 ?? "0") ?? 0.0
-                   
+                }
+                else {
+                    self.labelRating.text = getRatingEnum(averageRating: modelFeaturedResponse?.items?[0]?.averageGoogleRating)
+                }
+            }
+        }
+    }
+    
+    func setGoogleAverageReview() {
+        
+    }
+    var modelReview: [HomeViewController.Review?]? {
+        didSet {
+            DispatchQueue.main.async {
+                if let reviewDataObj = self.modelReview {
+                    let rating = self.calculateRatings(for: reviewDataObj)
+                    if self.buttonFromGoogle.tag != 1 {
+                        if rating.1 == "0.0" {
+                            self.labelRating.text = "--"
+                        }
+                        else {
+                            self.labelRating.text = rating.1 ?? "0"
+                        }
+                    }
+                    self.viewRatingCosmo.rating = Double(rating.1 ?? "0") ?? 0.0
+                    
                     let review = reviewDataObj.count
                     let reviews = (review == 1) ? "\(review) review"
                     :

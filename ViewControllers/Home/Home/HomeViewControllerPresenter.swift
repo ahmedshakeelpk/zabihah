@@ -9,9 +9,27 @@ import Foundation
 import Alamofire
 import CoreLocation
 
+func showLocationDisabledAlert(viewController: UIViewController) {
+    let alert = UIAlertController(title: "Location Services Disabled",
+                                  message: "Please enable location services in Settings to use this feature.",
+                                  preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { _ in
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }))
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    viewController.present(alert, animated: true, completion: nil)
+}
 extension HomeViewController {
+   
     
     func navigateToAddAddressViewController() {
+        self.labelSearchLocation.text = ""
+        self.textFieldSearchLocation.text = ""
+        showLocationDisabledAlert(viewController: self)
+        return()
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         vc.isFromHomeScreen = true
         vc.newAddressAddedHandler = { (address, location) in

@@ -165,6 +165,24 @@ class EditAddressViewController: UIViewController {
                 self.setZoom(latitude: location?.latitude, longitude: location?.longitude)
             }
         }
+        checkLocationServices()
+    }
+    
+    func checkLocationServices() {
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse, .authorizedAlways:
+            // Location access is granted
+            break
+        case .denied:
+            showLocationDisabledAlert(viewController: self)
+        case .notDetermined:
+            // Request permission
+            showLocationDisabledAlert(viewController: self)
+        case .restricted:
+            showLocationDisabledAlert(viewController: self)
+        @unknown default:
+            break
+        }
     }
     
     @IBAction func buttonGps(_ sender: Any) {

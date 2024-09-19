@@ -303,6 +303,7 @@ extension HomeViewController {
         let coverImageWebUrl: String?
         var place: Place?
 
+        var averageGoogleRating: Rating?
         
         var photosGallery: [String?]? {
             return photos?.map({ model in

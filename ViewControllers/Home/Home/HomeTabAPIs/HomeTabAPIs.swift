@@ -17,16 +17,24 @@ extension HomeViewController {
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
+        if filterParametersHome?.radius != nil {
+            useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
+        }
         var parameters = [String: Any]()
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
-            rating: filterParametersHome?.rating,
-            page: 1, 
+            rating: filterParametersHome?.rating == 0 ? nil : filterParametersHome?.rating,
+            page: 1,
             keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             pageSize: 20,
             cuisine: nil,
             meatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
+            alcoholPolicy:
+                filterParametersHome?.isHalal ?? false ? [.notAllowed]
+            :
+                filterParametersHome?.isalcoholic == nil ? nil
+            :
+                filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
                 
                 
 //                filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
@@ -48,6 +56,8 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
+        print("getFeaturedRestaurantsForHomeTab")
+        print(parameters)
         APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetHomeRestaurantsResponseForHome = nil
@@ -63,19 +73,25 @@ extension HomeViewController {
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
+        if filterParametersHome?.radius != nil {
+            useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
+        }
         var parameters = [String: Any]()
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
-            rating: filterParametersHome?.rating,
+            rating: filterParametersHome?.rating == 0 ? nil : filterParametersHome?.rating,
             page: 1,
             keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             pageSize: 20,
             cuisine: nil,
             meatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
-
-//            alcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
-                
+            alcoholPolicy: 
+                filterParametersHome?.isHalal ?? false ? [.notAllowed] 
+            :
+                filterParametersHome?.isalcoholic == nil ? nil
+            :
+                filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
+            
             parts: [.cuisines, .timings],
             //            parts: [.amenities, .cuisines, .reviews, .timings, .webLinks],
             orderBy: .location,
@@ -110,10 +126,13 @@ extension HomeViewController {
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
+        if filterParametersHome?.radius != nil {
+            useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
+        }
         var parameters = [String: Any]()
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
-            rating: filterParametersHome?.rating,
+            rating: filterParametersHome?.rating == 0 ? nil : filterParametersHome?.rating,
             page: 1,
             keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             pageSize: 20,

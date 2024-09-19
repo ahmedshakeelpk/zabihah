@@ -159,6 +159,12 @@ class SideMenuView: UIView {
     }
     
     @objc func setData() {
+        if kModelGetUserProfileResponse?.email == nil {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.setData()
+            }
+            return
+        }
         labelFullName.text = "\(kModelGetUserProfileResponse?.firstName ?? "") \(kModelGetUserProfileResponse?.lastName ?? "")"
         labelAddress.text = kModelGetUserProfileResponse?.email ?? ""
         imageViewProfile.setImage(urlString: kModelGetUserProfileResponse?.profilePictureWebUrl ?? "", placeHolderIcon: "placeHolderUser")

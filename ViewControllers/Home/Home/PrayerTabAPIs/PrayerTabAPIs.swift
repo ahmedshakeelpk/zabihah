@@ -18,6 +18,9 @@ extension HomeViewController {
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
+        if filterParametersHome?.radius != nil {
+            useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
+        }
         var parameters = [String: Any]()
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
@@ -67,6 +70,9 @@ extension HomeViewController {
             useRadius = Int(radius)
         }
         else {
+            useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
+        }
+        if filterParametersHome?.radius != nil {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
         var parameters = [String: Any]()

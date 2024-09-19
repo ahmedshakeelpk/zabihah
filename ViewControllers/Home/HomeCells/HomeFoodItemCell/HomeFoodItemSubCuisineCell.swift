@@ -27,10 +27,12 @@ class HomeFoodItemSubCuisineCell: UICollectionViewCell {
                 if self.isDetailsScreen {
                     self.viewBackGroundName.radius(color: .colorRed2, borderWidth: 0.6)
                     self.viewBackGroundName.backgroundColor = .clrLightRed2
+                    self.labelName.textColor = .colorApp
                 }
                 else {
                     self.viewBackGroundName.radius(color: .clrGreen2nd, borderWidth: 2)
                     self.viewBackGroundName.backgroundColor = .clrLightGreen
+                    self.labelName.textColor = .colorGreen
                 }
 
             }

@@ -18,6 +18,9 @@ extension HomeViewController {
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
+        if filterParametersHome?.radius != nil {
+            useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
+        }
         var parameters = [String: Any]()
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
@@ -70,6 +73,9 @@ extension HomeViewController {
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
+        if filterParametersHome?.radius != nil {
+            useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
+        }
         var parameters = [String: Any]()
         let modelCuisineRequest: ModelCuisineRequest = ModelCuisineRequest(
             ids: nil,
@@ -81,8 +87,20 @@ extension HomeViewController {
                 radius: useRadius
             ),
             placeRating: filterParametersHome?.rating,
-            placeMeatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            placeAlcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
+            placeMeatHalalStatus: 
+                filterParametersHome?.isHalal == nil ? nil
+            :
+                filterParametersHome?.isHalal ?? false ? [.full]
+            :
+                nil,
+            placeAlcoholPolicy:
+                filterParametersHome?.isHalal ?? false ? [.notAllowed]
+            :
+                filterParametersHome?.isalcoholic == nil ? nil
+            :
+                filterParametersHome?.isalcoholic ?? false ? [.notAllowed] 
+            :
+                nil,
             orderBy: .location,
             sortOrder: .ascending)
         do {

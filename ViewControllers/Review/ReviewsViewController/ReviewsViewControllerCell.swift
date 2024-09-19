@@ -116,40 +116,42 @@ class ReviewsViewControllerCell: UITableViewCell {
     func setLabelTextInThreeLine(text: String, label: UILabel) {
         label.numberOfLines = 3
         let fullText = text
-        let ellipsisText = "… " // Ellipsis part that should not be underlined
-        let moreText = "more" // The "more" part to be underlined
-        
-        // Truncate the text to a maximum length
-        let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, 150)))
-        
+        let ellipsisText = "… "
+        let moreText = "more"
+
+        // Truncate the text to a maximum length, considering ellipsis and "more"
+        let maxLength = 150
+        let truncatedText = (fullText as NSString).substring(with: NSRange(location: 0, length: min(fullText.count, maxLength)))
+
         // Create attributed string with truncated text
         let attributedString = NSMutableAttributedString(string: truncatedText)
-        
+
         // Create attributed string for the "…" part (no underline)
         let ellipsisAttributedString = NSAttributedString(string: ellipsisText)
-        
+
         // Create attributed string for the "more" text with underline
         let moreAttributedString = NSMutableAttributedString(
             string: moreText,
             attributes: [
                 .foregroundColor: UIColor.colorApp, // Custom color
-                .font: UIFont.systemFont(ofSize: 12, weight: .bold), // Custom font
-                .underlineStyle: NSUnderlineStyle.single.rawValue // Underline only the "more" text
+                .font: UIFont.systemFont(ofSize: 12, weight: .bold),
+                .underlineStyle: NSUnderlineStyle.single.rawValue
             ]
         )
-        
+
         // Append the "…" and "more" attributed strings to the truncated text
         attributedString.append(ellipsisAttributedString)
         attributedString.append(moreAttributedString)
-        
+
         // Set the final attributed text to the label
         label.attributedText = attributedString
-        
+
         // Enable user interaction for tap gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewMoreTapped(_:)))
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tapGesture)
     }
+
     
     var isSelectedCell = false
     @objc func viewMoreTapped(_ sender: UITapGestureRecognizer) {

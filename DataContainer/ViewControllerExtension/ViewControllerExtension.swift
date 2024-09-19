@@ -303,6 +303,7 @@ extension UIViewController {
         vc.isRestaurantIcon = !(isPrayerPlaces ?? false)
         vc.isMosqueIcon = isPrayerPlaces ?? false
         vc.isMapIcon = isMapDirection!
+        vc.isCallIcon = !(number == "" || number == " ")
         vc.tappedOnCallHandler = {
             self.callNow(number: number)
         }
