@@ -584,9 +584,16 @@ struct ReversedGeoLocation {
     let country: String         // eg. United States
     let isoCountryCode: String  // eg. US
 
+//    var formattedAddress: String {
+//        return """
+//        \(name), 
+//        \(streetNumber) \(streetName),
+//        \(city), \(state) \(zipCode) \(country)
+//        """
+//    }
     var formattedAddress: String {
         return """
-        \(name), \(streetNumber) \(streetName),
+        \(name),
         \(city), \(state) \(zipCode) \(country)
         """
     }
