@@ -113,9 +113,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     var userLocation: CLLocation! {
         didSet {
             DispatchQueue.main.async {  
-                kUserCurrentLocation = self.userLocation
+//                kUserCurrentLocation = self.userLocation
 
-                getCountryFromCoordinates(latitude: kUserCurrentLocation.coordinate.latitude, longitude: kUserCurrentLocation.coordinate.longitude, completion: {
+                getCountryFromCoordinates(latitude: self.userLocation.coordinate.latitude, longitude: self.userLocation.coordinate.longitude, completion: {
                     countryName in
                     if countryName?.lowercased() == "United States".lowercased() {
                         kCountryName = "us"
