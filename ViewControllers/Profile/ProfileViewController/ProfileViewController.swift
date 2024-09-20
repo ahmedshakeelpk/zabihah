@@ -193,7 +193,11 @@ class ProfileViewController: UIViewController {
         
         labelPhone.text = kModelGetUserProfileResponse?.phone
         textFieldPhone.text = kModelGetUserProfileResponse?.phone
-        imageViewProfile.setImage(urlString: kModelGetUserProfileResponse?.profilePictureWebUrl ?? "", placeHolderIcon: "placeHolderUser")
+        
+        getProfilePicture() {
+            profilePicture in
+            self.imageViewProfile.setImageProfile(urlString: profilePicture!, placeHolderIcon: "placeHolderUser")
+        }
         switchOffers.isOn = kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? false
         switchHalalEvents.isOn = kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? false
     }
@@ -210,8 +214,7 @@ class ProfileViewController: UIViewController {
     func navigateToProfileDeleteViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
         
-        vc.stringTitle = ""
-//        vc.stringTitle = "Delete my account"
+        vc.stringTitle = "Delete my account"
         vc.stringSubTitle = "Are you sure you want to delete your account? "
         vc.stringDescription = "This will permanently remove your personal data, preferences, and reviews."
         vc.stringButtonDelete = "YES, DELETE MY ACCOUNT"
@@ -309,7 +312,7 @@ class ProfileViewController: UIViewController {
 //    }
     
     func getBlobToken() {
-        APIs.getAPI(apiName: .getBlobTokenForMosque, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+        APIs.getAPI(apiName: .getBlobTokenForUser, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
             self.modelGetBlobToken = model
         }

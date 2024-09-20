@@ -19,6 +19,7 @@ struct APIsName {
         case verifyOtp = "User/otp/verify"
         case mySelf = "User/my"
         case updateUser = "User"
+        case profilePicture = "User/profile-picture/download-url"
         case edituseraddress = "User/address"
         case searchRestaurant = "Restaurant/search"
         case searchMosque = "Mosque/search"

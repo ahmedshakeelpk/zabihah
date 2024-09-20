@@ -52,7 +52,8 @@ class ProfileDeleteViewController: UIViewController {
         
         stackViewDescriptionBackGround.isHidden = stringDescription == ""
         labelTitle.isHidden = stringTitle == ""
-
+        labelDescription.textAlignment = stringTitle != "" ? .left : .center
+        labelSubTitle.textAlignment = stringTitle != "" ? .left : .center
     }
     @IBAction func buttonDeleteMyAccount(_ sender: Any) {
         self.dismiss(animated: true) {

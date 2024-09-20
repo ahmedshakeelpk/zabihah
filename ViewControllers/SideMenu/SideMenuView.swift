@@ -8,6 +8,7 @@
 import UIKit
 import Foundation
 import Kingfisher
+import Alamofire
 
 class SideMenuView: UIView {
     
@@ -167,8 +168,14 @@ class SideMenuView: UIView {
         }
         labelFullName.text = "\(kModelGetUserProfileResponse?.firstName ?? "") \(kModelGetUserProfileResponse?.lastName ?? "")"
         labelAddress.text = kModelGetUserProfileResponse?.email ?? ""
-        imageViewProfile.setImage(urlString: kModelGetUserProfileResponse?.profilePictureWebUrl ?? "", placeHolderIcon: "placeHolderUser")
+        getProfilePicture() {
+            profilePicture in
+            self.imageViewProfile.setImageProfile(urlString: profilePicture!, placeHolderIcon: "placeHolderUser")
+        }
     }
+    
+    
+    
     
     @IBOutlet weak var viewProfileImageBackGround: UIView!
     func sideMenuIntiliziation() {
@@ -309,4 +316,22 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-
+//var modelUserProfilePictureResponse: ModelUserProfilePictureResponse {
+//    didSet {
+//        
+//    }
+//}
+func getProfilePicture(completion: @escaping(String?) -> Void?) {
+    APIs.postAPI(apiName: .profilePicture, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+        print(responseData ?? "")
+        print(success)
+        if statusCode == 200 {
+            let model: ModelUserProfilePictureResponse? = APIs.decodeDataToObject(data: responseData)
+//            self.modelUserProfilePictureResponse = model!
+            completion(model?.uri)
+        }
+    }
+}
+struct ModelUserProfilePictureResponse: Codable {
+    let uri: String
+}
