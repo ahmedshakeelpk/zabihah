@@ -470,8 +470,8 @@ extension EditAddressViewController: GMSMapViewDelegate {
     }
     
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
-        let latitude = mapView.camera.target.latitude
-        let longitude = mapView.camera.target.longitude
+//        let latitude = mapView.camera.target.latitude
+//        let longitude = mapView.camera.target.longitude
     }
 }
 

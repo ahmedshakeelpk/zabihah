@@ -564,9 +564,9 @@ extension HomeViewController {
                 }
                 
                 sectionName =
-                address == "" ? "restaurants near you"
+                address == "" ? "halal places near you"
                 :
-                "\(selectedCuisine == "" ? "restaurants" : selectedCuisine) near \(address)"
+                "\(selectedCuisine == "" ? "halal places" : selectedCuisine) near \(address)"
 //                selectedPlaceHolderIcon = "placeHolderSubCuisine"
                 selectedPlaceHolderIcon = "placeholderHalalFood"
             }

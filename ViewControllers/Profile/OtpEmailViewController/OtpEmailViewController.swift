@@ -98,7 +98,7 @@ class OtpEmailViewController: UIViewController{
     }
     
     @IBAction func buttonResend(_ sender: Any) {
-        startOtpTimer()
+        sendnotification()
     }
     
     func setupOtpViewConfiguration() {
@@ -148,6 +148,26 @@ class OtpEmailViewController: UIViewController{
             else {
                 let model: OtpLoginViewController.ModelOtpResponse? = APIs.decodeDataToObject(data: responseData)
                 self.modelOtpResponse = model
+            }
+        }
+    }
+    
+    func sendnotification() {
+        let parameters: Parameters = [
+            "phone": isFromEmail ? "" : stringPhoneEmail,
+            "email": isFromEmail ? stringPhoneEmail : "",
+            "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
+        ]
+        
+        APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                self.startOtpTimer()
+            }
+            else {
+                let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                let errorMessage = getErrorMessage(errorMessage: model?.title ?? "")
+
+                self.showAlertCustomPopup(title: "Error!", message: errorMessage, iconName: .iconError)
             }
         }
     }
