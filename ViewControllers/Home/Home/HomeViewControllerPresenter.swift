@@ -406,11 +406,11 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]), \(array[2])"
-                        }
-                        else if array.count > 2 {
                             address = "\(array[0]), \(array[1])"
                         }
+//                        else if array.count > 2 {
+//                            address = "\(array[0]), \(array[1])"
+//                        }
                         else {
                             address = "\(array[0])"
                         }
@@ -466,11 +466,11 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]), \(array[2])"
-                        }
-                        else if array.count > 2 {
                             address = "\(array[0]), \(array[1])"
                         }
+//                        else if array.count > 2 {
+//                            address = "\(array[0]), \(array[1])"
+//                        }
                         else {
                             address = "\(array[0])"
                         }
@@ -545,11 +545,11 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]), \(array[2])"
-                        }
-                        else if array.count > 2 {
                             address = "\(array[0]), \(array[1])"
                         }
+//                        else if array.count > 2 {
+//                            address = "\(array[0]), \(array[1])"
+//                        }
                         else {
                             address = "\(array[0])"
                         }
@@ -579,11 +579,11 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]), \(array[2])"
-                        }
-                        else if array.count > 2 {
                             address = "\(array[0]), \(array[1])"
                         }
+//                        else if array.count > 2 {
+//                            address = "\(array[0]), \(array[1])"
+//                        }
                         else {
                             address = "\(array[0])"
                         }
@@ -617,11 +617,11 @@ extension HomeViewController {
                     if array.count > 1 {
                         // Concatenate the first and second elements with a space in between
                         if array.count > 3 {
-                            address = "\(array[0]), \(array[2])"
-                        }
-                        else if array.count > 2 {
                             address = "\(array[0]), \(array[1])"
                         }
+//                        else if array.count > 2 {
+//                            address = "\(array[0]), \(array[1])"
+//                        }
                         else {
                             address = "\(array[0])"
                         }
