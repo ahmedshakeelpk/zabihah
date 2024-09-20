@@ -174,9 +174,6 @@ class SideMenuView: UIView {
         }
     }
     
-    
-    
-    
     @IBOutlet weak var viewProfileImageBackGround: UIView!
     func sideMenuIntiliziation() {
         if tableView == nil {
@@ -215,11 +212,22 @@ class SideMenuView: UIView {
         navigateToFAQsViewController()
     }
     func buttonPrivacyPolicyHandler() {
-        navigateToFAQsViewController()
+        navigateToTermsAndConditions()
     }
     func buttonFrequentlyAskQuestionHandler() {
         navigateToFAQsViewController()
     }
+    
+    func navigateToTermsAndConditions() {
+        let urlString = "https://www.zabihah.com/com/tos"
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+        else {
+//            showToast(message: "invalid social link please update in your profile")
+        }
+    }
+
     
 }
 
@@ -290,6 +298,7 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
         else {
             if let myFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SideMenuViewFooterViewCell") as? SideMenuViewFooterViewCell {
                 myFooter.buttonFrequentlyAskQuestionHandler = buttonFrequentlyAskQuestionHandler
+                myFooter.buttonPrivacyPolicyHandler = buttonPrivacyPolicyHandler
                 return myFooter
             }
         }
