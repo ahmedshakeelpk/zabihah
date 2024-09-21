@@ -73,14 +73,10 @@ class EditAddressViewController: UIViewController {
         }
     }
     
-    
-    var userOldLocation: CLLocationCoordinate2D?
     var isEditAddress: Bool! = false
     var location: CLLocationCoordinate2D? {
         didSet {
-            if userOldLocation == nil {
-                userOldLocation = location
-            }
+            
             if modelUserAddressesResponseData != nil {
                 modelUserAddressesResponseData?.latitude = location?.latitude
                 modelUserAddressesResponseData?.longitude = location?.longitude
@@ -141,7 +137,7 @@ class EditAddressViewController: UIViewController {
         viewButtonSaveAsNewBackGround.radius(color: .clrLightGray, borderWidth: 1)
         //        setZoom()
         //        setAddress()
-        
+
         if modelUserAddressesResponseData != nil {
             self.setAddress(addressTitle: modelUserAddressesResponseData?.name, formattedAddress: modelUserAddressesResponseData?.physicalAddress)
             self.setZoom(latitude: modelUserAddressesResponseData?.latitude, longitude: modelUserAddressesResponseData?.longitude)
@@ -388,14 +384,9 @@ class EditAddressViewController: UIViewController {
     func calculateNewAndOldLatititudeLongitude() {
         
         var myLocation: CLLocation?
-        myLocation = CLLocation(latitude: kUserCurrentLocation.coordinate.latitude, longitude: kUserCurrentLocation.coordinate.longitude)
-        if userOldLocation == nil {
-            myLocation = CLLocation(latitude: kUserCurrentLocation.coordinate.latitude, longitude: kUserCurrentLocation.coordinate.longitude)
-        }
-        else {
-//            myLocation = CLLocation(latitude: userOldLocation!.latitude, longitude: userOldLocation!.longitude)
-        }
-        
+        //Default Latitude Longitude are for US
+        myLocation = CLLocation(latitude: kUserCurrentLocation?.coordinate.latitude ?? 44.500000, longitude: kUserCurrentLocation?.coordinate.longitude ?? -89.500000)
+       
         //My Next Destination
         var myNextDestination = CLLocation(latitude: self.location?.latitude ?? 0, longitude: self.location?.longitude ?? 0)
         //Finding my distance to my next destination (in km)

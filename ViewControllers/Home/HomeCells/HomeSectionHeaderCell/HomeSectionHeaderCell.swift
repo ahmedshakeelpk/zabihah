@@ -34,7 +34,7 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                     //Hide
                     viewButtonViewAllBackGround.isHidden = true
                     if sectionName != "" {
-                        labelTitle.text = "\(sectionName ?? "")"
+                        labelTitle.text = "\(sectionName ?? "")     "
                         labelTitle.isHidden = false
                     }
                 }
@@ -42,9 +42,9 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                     //Show
                     if sectionName != "" {
                         viewButtonViewAllBackGround.isHidden = false
-                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")     "
                         labelTitle.isHidden = false
-                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")     "
                         (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                     }
                 }
@@ -56,9 +56,9 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
                     //Show
                     if sectionName != "" {
                         viewButtonViewAllBackGround.isHidden = false
-                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")     "
                         labelTitle.isHidden = false
-                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")     "
                         (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                     }
                 }
@@ -69,9 +69,9 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
             else if selectedMenuCell == 1 {
                 if section == 0 {
                     if sectionName != "" {
-                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")     "
                         labelTitle.isHidden = false
-                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")     "
                         (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                     }
                 }
@@ -82,9 +82,9 @@ class HomeSectionHeaderCell: UITableViewHeaderFooterView {
             else if selectedMenuCell == 3 {
                 if section == 0 {
                     if sectionName != "" {
-                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        labelTitle.text = "\(cuisineCount ?? "") \(sectionName ?? "")     "
                         labelTitle.isHidden = false
-                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")"
+                        (viewController as? HomeViewController)?.labelItemCountOnMapView.text = "\(cuisineCount ?? "") \(sectionName ?? "")     "
                         (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                         (viewController as? HomeViewController)?.viewItemCountOnMapViewBackGround.isHidden = false
                     }

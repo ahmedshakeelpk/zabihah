@@ -415,7 +415,8 @@ extension HomeViewController {
                             address = "\(array[0])"
                         }
                         print(address)  // This will print the concatenated address
-                    } 
+                        address = "\(array[0])"
+                    }
                     else if array.count > 0 {
                         address = "\(array[0])"
                     }
@@ -475,6 +476,7 @@ extension HomeViewController {
                             address = "\(array[0])"
                         }
                         print(address)  // This will print the concatenated address
+                        address = "\(array[0])"
                     }
                     else if array.count > 0 {
                         address = "\(array[0])"
@@ -554,6 +556,7 @@ extension HomeViewController {
                             address = "\(array[0])"
                         }
                         print(address)  // This will print the concatenated address
+                        address = "\(array[0])"
                     }
                     else if array.count > 0 {
                         address = "\(array[0])"
@@ -588,6 +591,7 @@ extension HomeViewController {
                             address = "\(array[0])"
                         }
                         print(address)  // This will print the concatenated address
+                        address = "\(array[0])"
                     }
                     else if array.count > 0 {
                         address = "\(array[0])"
@@ -626,6 +630,7 @@ extension HomeViewController {
                             address = "\(array[0])"
                         }
                         print(address)  // This will print the concatenated address
+                        address = "\(array[0])"
                     }
                     else if array.count > 0 {
                         address = "\(array[0])"
