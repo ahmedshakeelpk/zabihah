@@ -24,7 +24,7 @@ extension HomeViewController {
         var parameters = [String: Any]()
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
-            rating: filterParametersHome?.rating,
+            rating: filterParametersHome?.rating == 0 ? nil : filterParametersHome?.rating,
             page: pageSize,
             keyword: textFieldFilterResult.text! == "" ? nil : textFieldFilterResult.text!,
             pageSize: 10,
@@ -40,7 +40,8 @@ extension HomeViewController {
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
-            )
+            ),
+            excludeRestaurantType: nil
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)
@@ -86,8 +87,8 @@ extension HomeViewController {
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
             ),
-            placeRating: filterParametersHome?.rating,
-            placeMeatHalalStatus: 
+            placeRating: filterParametersHome?.rating == 0 ? nil : filterParametersHome?.rating,
+            placeMeatHalalStatus:
                 filterParametersHome?.isHalal == nil ? nil
             :
                 filterParametersHome?.isHalal ?? false ? [.full]

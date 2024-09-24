@@ -322,6 +322,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             DispatchQueue.main.async {
                 self.sideMenuSetup()
                 kModelGetUserProfileResponse = self.modelGetUserResponseLocal
+                NotificationCenter.default.post(name: Notification.Name("kUserProfileUpdate"), object: nil)
             }
         }
     }
@@ -332,10 +333,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     var pullControl = UIRefreshControl()
     
     override func viewDidAppear(_ animated: Bool) {
-        pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
-        tableView.addSubview(pullControl) // not
-        tableView.refreshControl?.tintColor = .clear
+        
         setStatusBarTopColor(color: .tempColor)
         
         mapView.isMyLocationEnabled = true
@@ -364,16 +362,19 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setConfiguration()
     }
-    
+
     func setConfiguration() {
         mapView.delegate = self
         
-        
+        tableView.addSubview(pullControl) // not
+        tableView.refreshControl?.tintColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
+        
+        pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
         
         stackViewTitleBackGround.backgroundColor = .colorApp
         
@@ -497,63 +498,47 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     func tableViewReload() {
         tableView.reloadData()
-        return()
-        if tableView.visibleCells.count == 0 {
-            viewNoDataFound.isHidden = false
-            tableView.isHidden = true
+        if selectedMenuCell == 0 {
+            let featureRestaurant = modelGetHomeRestaurantsResponseForHome?.totalRecords
+            let halalRestaurant = modelGetHalalRestaurantResponseForHomeTab?.totalRecords
+            let prayerPlaces = modelGetPrayerPlacesResponseForHomeTab?.totalRecords
             imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
             labelNoRecordFound.text = "No Restaurant Found"
-        }
-        else {
-            viewNoDataFound.isHidden = true
-            tableView.isHidden = true
-        }
-        return()
-        if selectedMenuCell == 0 {
-            if modelGetHalalRestaurantResponse?.totalPages == nil {
+            if featureRestaurant == 0 && halalRestaurant == 0 && prayerPlaces == 0 {
                 viewNoDataFound.isHidden = false
                 tableView.isHidden = true
-                imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
-                labelNoRecordFound.text = "No Restaurant Found"
             }
             else {
-                //                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
-                //                    viewNoDataFound.isHidden = false
-                //                    tableView.isHidden = true
-                //                    imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
-                //                    labelNoRecordFound.text = "No Restaurant Found"
-                //                }
-                //                else {
-                //                    viewNoDataFound.isHidden = true
-                //                    tableView.isHidden = false
-                //                }
+                viewNoDataFound.isHidden = true
+                tableView.isHidden = false
             }
         }
         else if selectedMenuCell == 1 {
-            if modelGetHalalRestaurantResponse?.totalPages == nil {
+            imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
+            labelNoRecordFound.text = "No Restaurant Found"
+            if modelGetHalalRestaurantResponse?.totalRecords == 0 {
                 viewNoDataFound.isHidden = false
                 tableView.isHidden = true
-                imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
-                labelNoRecordFound.text = "No Restaurant Found"
             }
             else {
-                //                if modelGetHalalRestaurantResponse?.totalPages == 0 && modelGetHalalRestaurantResponse?.cuisine?.count == 0 {
-                //                    viewNoDataFound.isHidden = false
-                //                    tableView.isHidden = true
-                //                    imageViewNoRecordFound.image = UIImage(named: "placeholderHalalFood")
-                //                    labelNoRecordFound.text = "No Restaurant Found"
-                //                }
-                //                else {
-                //                    viewNoDataFound.isHidden = true
-                //                    tableView.isHidden = false
-                //                }
+                viewNoDataFound.isHidden = true
+                tableView.isHidden = false
             }
         }
         else if selectedMenuCell == 2 {
             
         }
         else if selectedMenuCell == 3 {
-            
+            imageViewNoRecordFound.image = UIImage(named: "placeholderMosque")
+            labelNoRecordFound.text = "No Prayer Places Found"
+            if modelGetPrayerPlacesResponse?.totalRecords == 0 {
+                viewNoDataFound.isHidden = false
+                tableView.isHidden = true
+            }
+            else {
+                viewNoDataFound.isHidden = true
+                tableView.isHidden = false
+            }
         }
     }
     

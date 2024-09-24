@@ -103,8 +103,9 @@
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AYE-Nd-IWp">
                                                                         <rect key="frame" x="111.66666666666666" y="25" width="130" height="130"/>
                                                                         <subviews>
-                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyProfileImageProfile" translatesAutoresizingMaskIntoConstraints="NO" id="nib-06-2OG">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="130" height="130"/>
+                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="nib-06-2OG">
+                                                                                <rect key="frame" x="0.0" y="1" width="130" height="128.66666666666666"/>
+                                                                                <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="130" id="9mV-YH-J4D"/>
                                                                                     <constraint firstAttribute="width" constant="130" id="Pt0-IY-kvE"/>
@@ -3043,12 +3044,12 @@
         <image name="addGrayMisc" width="24" height="24"/>
         <image name="appleLogin" width="24" height="24"/>
         <image name="backGrayMisc" width="20" height="20"/>
-        <image name="dummyProfileImageProfile" width="192" height="192"/>
         <image name="editGrayMisc" width="24" height="24"/>
         <image name="editMehroonAddresses" width="20" height="20"/>
         <image name="emailLogin" width="20" height="20"/>
         <image name="emailVerificationLogin" width="80" height="80"/>
         <image name="facebookLogin" width="24" height="24"/>
+        <image name="person.circle" catalog="system" width="128" height="123"/>
         <image name="searchMehroonMisc" width="20" height="20"/>
         <image name="shopProfile" width="24" height="24"/>
         <image name="smsTrackingProfile" width="24" height="24"/>

@@ -146,9 +146,9 @@ class HomeFilterViewController: UIViewController {
 //                "isalcoholic": self.switchHideAlcoholPlaces.isOn,
 //                "isHalal": self.switchHideHalalPlaces.isOn
 //            ] as! [String: Any]
-            var parameter = HomeViewController.ModelFilterRequest(
+            let parameter = HomeViewController.ModelFilterRequest(
                 radius: self.labelRangeEnd.text!.getIntegerValue(),
-                rating: Int(self.labelStarRating.text!),
+                rating: Int(Double(self.labelStarRating.text!) ?? 0),
                 isalcoholic: self.switchHideAlcoholPlaces.isOn,
                 isHalal: self.switchHideHalalPlaces.isOn)
             

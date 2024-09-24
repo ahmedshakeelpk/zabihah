@@ -87,10 +87,10 @@ class HomeFoodItemSubCell: UICollectionViewCell {
         HomeFoodItemSubCuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
-        
-        imageViewRestaurant.circle()
-        
         setData()
+        DispatchQueue.main.async {
+            self.imageViewRestaurant.circle()
+        }
     }
     
     @IBAction func buttonOpenDirectionMap(_ sender: Any) {

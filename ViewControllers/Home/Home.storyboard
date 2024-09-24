@@ -459,9 +459,9 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lnt-xu-sB4">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="612"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="UJd-18-aMy">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="UJd-18-aMy">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="612"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <outlet property="dataSource" destination="Rgs-nB-hx9" id="r5H-oI-DCm"/>
                                                     <outlet property="delegate" destination="Rgs-nB-hx9" id="Qbr-ew-Ko4"/>
@@ -584,14 +584,14 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholderHalalFood" translatesAutoresizingMaskIntoConstraints="NO" id="nWh-fw-JnJ">
-                                                        <rect key="frame" x="172" y="-85" width="70" height="70"/>
+                                                        <rect key="frame" x="157" y="-200" width="100" height="100"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="70" id="7pg-Ul-hkz"/>
-                                                            <constraint firstAttribute="width" constant="70" id="9eK-dJ-IP2"/>
+                                                            <constraint firstAttribute="height" constant="100" id="7pg-Ul-hkz"/>
+                                                            <constraint firstAttribute="width" constant="100" id="9eK-dJ-IP2"/>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Record Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Edf-kV-7Kp">
-                                                        <rect key="frame" x="0.0" y="5" width="414" height="26.5"/>
+                                                        <rect key="frame" x="0.0" y="-80" width="414" height="26.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                         <color key="textColor" red="0.59999999999999998" green="0.0" blue="0.0039215686269999999" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -601,7 +601,7 @@
                                                     <constraint firstItem="Edf-kV-7Kp" firstAttribute="top" secondItem="nWh-fw-JnJ" secondAttribute="bottom" constant="20" id="6P4-Ri-D6j"/>
                                                     <constraint firstAttribute="trailing" secondItem="Edf-kV-7Kp" secondAttribute="trailing" id="9X0-vB-op1"/>
                                                     <constraint firstItem="nWh-fw-JnJ" firstAttribute="centerX" secondItem="WUT-p7-nWY" secondAttribute="centerX" id="Hyl-v8-raE"/>
-                                                    <constraint firstItem="nWh-fw-JnJ" firstAttribute="centerY" secondItem="WUT-p7-nWY" secondAttribute="centerY" constant="-50" id="NbT-Vw-ahE"/>
+                                                    <constraint firstItem="nWh-fw-JnJ" firstAttribute="centerY" secondItem="WUT-p7-nWY" secondAttribute="centerY" constant="-150" id="NbT-Vw-ahE"/>
                                                     <constraint firstItem="Edf-kV-7Kp" firstAttribute="leading" secondItem="WUT-p7-nWY" secondAttribute="leading" id="SSQ-bZ-bX5"/>
                                                 </constraints>
                                             </view>
@@ -1711,7 +1711,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

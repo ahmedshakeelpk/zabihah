@@ -398,7 +398,7 @@ print(str)
 
 //        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
-        if kAccessToken != "" {
+        if kAccessToken != ""  {
             let authToken = "bearer \(kAccessToken)"
             request.addValue(authToken, forHTTPHeaderField: "Authorization")
         }

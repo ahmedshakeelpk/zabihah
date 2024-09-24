@@ -209,15 +209,34 @@ class SideMenuView: UIView {
     }
     
     func buttonAboutHandler() {
-        navigateToFAQsViewController()
+        navigateToAboutUs()
     }
     func buttonPrivacyPolicyHandler() {
-        navigateToTermsAndConditions()
+        navigateToPrivacyPolicy()
     }
     func buttonFrequentlyAskQuestionHandler() {
         navigateToFAQsViewController()
     }
+
     
+    func navigateToAboutUs() {
+        let urlString = "https://www.zabihah.com/app/about"
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+        else {
+//            showToast(message: "invalid social link please update in your profile")
+        }
+    }
+    func navigateToPrivacyPolicy() {
+        let urlString = "https://www.zabihah.com/app/privacy"
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+        else {
+//            showToast(message: "invalid social link please update in your profile")
+        }
+    }
     func navigateToTermsAndConditions() {
         let urlString = "https://www.zabihah.com/com/tos"
         if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
@@ -269,9 +288,6 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
             return()
         }
         
-        
-        
-        
         closeMenuHandler?(indexPath)
         navigateToViewController(indexPath: indexPath)
     }
@@ -299,6 +315,7 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
             if let myFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SideMenuViewFooterViewCell") as? SideMenuViewFooterViewCell {
                 myFooter.buttonFrequentlyAskQuestionHandler = buttonFrequentlyAskQuestionHandler
                 myFooter.buttonPrivacyPolicyHandler = buttonPrivacyPolicyHandler
+                myFooter.buttonAboutHandler = buttonAboutHandler
                 return myFooter
             }
         }

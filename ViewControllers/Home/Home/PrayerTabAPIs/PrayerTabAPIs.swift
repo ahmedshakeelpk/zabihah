@@ -18,13 +18,14 @@ extension HomeViewController {
         else {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
+        
         if filterParametersHome?.radius != nil {
             useRadius = Int(filterParametersHome?.radius ?? "32") ?? 32
         }
         var parameters = [String: Any]()
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
-            rating: filterParametersHome?.rating,
+            rating: filterParametersHome?.rating == 0 ? nil : filterParametersHome?.rating,
             page: 1,
             keyword: textFieldFilterResult.text!,
             pageSize: 10,
@@ -40,7 +41,8 @@ extension HomeViewController {
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
-            )
+            ),
+            excludeRestaurantType: nil
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)
@@ -85,9 +87,11 @@ extension HomeViewController {
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
             ),
-            placeRating: filterParametersHome?.rating,
-            placeMeatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            placeAlcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
+            placeRating: filterParametersHome?.rating == 0 ? nil : filterParametersHome?.rating,
+            placeMeatHalalStatus: nil,
+            placeAlcoholPolicy: nil,
+//            placeMeatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
+//            placeAlcoholPolicy: filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? nil : [.notAllowed],
             orderBy: .location,
             sortOrder: .ascending)
         do {
@@ -98,6 +102,7 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
+        print("getPrayerCuisines\(parameters)")
         APIs.postAPI(apiName: .searchCuisineMosque, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: [ModelCuisine]? = APIs.decodeDataToObject(data: responseData) ?? []
             self.modelCuisinesPrayerPlaces = model

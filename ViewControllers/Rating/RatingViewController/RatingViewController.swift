@@ -296,7 +296,8 @@ class RatingViewController: UIViewController {
             parts: parts,
             orderBy: nil,
             sortOrder: nil,
-            location: nil
+            location: nil,
+            excludeRestaurantType: nil
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)

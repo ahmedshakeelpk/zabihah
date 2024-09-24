@@ -136,9 +136,18 @@
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XmR-SP-oWd">
                                                         <rect key="frame" x="0.0" y="250" width="393" height="50"/>
+                                                        <subviews>
+                                                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholderRestaurantSubIcon" translatesAutoresizingMaskIntoConstraints="NO" id="3rl-do-Izg">
+                                                                <rect key="frame" x="30" y="0.0" width="333" height="50"/>
+                                                            </imageView>
+                                                        </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="3rl-do-Izg" secondAttribute="bottom" id="Cqf-DZ-Q8X"/>
                                                             <constraint firstAttribute="height" constant="50" id="IWT-uh-Qcx"/>
+                                                            <constraint firstItem="3rl-do-Izg" firstAttribute="leading" secondItem="XmR-SP-oWd" secondAttribute="leading" constant="30" id="MIK-Gw-jow"/>
+                                                            <constraint firstItem="3rl-do-Izg" firstAttribute="top" secondItem="XmR-SP-oWd" secondAttribute="top" id="P5Y-HN-Kwt"/>
+                                                            <constraint firstAttribute="trailing" secondItem="3rl-do-Izg" secondAttribute="trailing" constant="30" id="x3E-Jq-8tw"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dsh-0f-7IU">
@@ -580,6 +589,7 @@
                         <outlet property="buttonEmailLogin" destination="N6f-rx-Pgb" id="MC7-m5-gKG"/>
                         <outlet property="buttonFaceBookLogin" destination="3xV-cx-0co" id="Bsm-OS-TLC"/>
                         <outlet property="buttonPhoneLogin" destination="u9H-4d-5Qq" id="QCt-UK-0fg"/>
+                        <outlet property="imageViewTest" destination="3rl-do-Izg" id="TJl-cN-tRX"/>
                         <outlet property="viewBackGroundApple" destination="F0c-tU-UEQ" id="dNw-sZ-vmr"/>
                         <outlet property="viewBackGroundEmail" destination="tll-wE-T87" id="Hsx-6k-6nj"/>
                         <outlet property="viewBackGroundFaceBook" destination="Z0s-dV-BiM" id="hKe-31-Wp7"/>
@@ -2002,6 +2012,7 @@
         <image name="facebookLogin" width="24" height="24"/>
         <image name="logoLogin" width="212" height="45"/>
         <image name="phoneLogo" width="24" height="24"/>
+        <image name="placeholderRestaurantSubIcon" width="40" height="45"/>
         <image name="profileLogin" width="156" height="156"/>
         <image name="smsLogin" width="24" height="24"/>
         <image name="unCheckLogin" width="48" height="48"/>

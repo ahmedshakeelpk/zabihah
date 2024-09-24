@@ -12,6 +12,7 @@ import Alamofire
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var imageViewTest: UIImageView!
     @IBOutlet weak var viewBackGroundEmail: UIView!
     @IBOutlet weak var viewBackGroundPhone: UIView!
     @IBOutlet weak var viewBackGroundFaceBook: UIView!
@@ -35,6 +36,17 @@ class LoginViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        imageViewTest.backgroundColor = .colorAppWithOccupacy10
+        let image = imageViewTest.image?.withRenderingMode(.alwaysTemplate)
+        imageViewTest.image = image
+
+        imageViewTest.tintColor = .colorAppWithOccupacy30
+    }
+    @objc func colorTap(_ g: UITapGestureRecognizer) {
+            guard let v = g.view else { return }
+        imageViewTest.backgroundColor = v.backgroundColor
+        }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -52,6 +64,8 @@ class LoginViewController: UIViewController {
         if kAccessToken != "" {
             getUser()
         }
+        
+        
     }
     
     @IBAction func buttonEmailLogin(_ sender: Any) {
@@ -196,6 +210,17 @@ class LoginViewController: UIViewController {
                 self.modelGetUserResponseLocal = model
 
             }
+        }
+    }
+}
+
+extension UIImage {
+    func tinted(with color: UIColor, isOpaque: Bool = false) -> UIImage? {
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: size, format: format).image { _ in
+            color.set()
+            withRenderingMode(.alwaysTemplate).draw(at: .zero)
         }
     }
 }

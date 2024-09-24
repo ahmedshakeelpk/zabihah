@@ -570,7 +570,6 @@ extension HomeViewController {
                 address == "" ? "halal places near you"
                 :
                 "\(selectedCuisine == "" ? "halal places" : selectedCuisine) near \(address)"
-//                selectedPlaceHolderIcon = "placeHolderSubCuisine"
                 selectedPlaceHolderIcon = "placeholderHalalFood"
             }
             else if selectedMenuCell == 1 {

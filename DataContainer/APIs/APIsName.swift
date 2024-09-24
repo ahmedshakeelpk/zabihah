@@ -8,8 +8,13 @@
 import Foundation
 
 struct APIPath {
-    //original ur
-    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com:81/v1/"
+    //UAT
+//    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com:81/v1/"
+    
+    //Production
+    public static let  baseUrl = "https://api.zabihah.com/v1/"
+//    Api Url:
+//    Swagger Url: https://api.zabihah.com/swagger/index.html
     
 }
 struct APIsName {

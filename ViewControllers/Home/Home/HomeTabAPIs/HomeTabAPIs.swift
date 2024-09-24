@@ -46,7 +46,8 @@ extension HomeViewController {
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
-            )
+            ),
+            excludeRestaurantType: [.grocery]
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)
@@ -101,7 +102,8 @@ extension HomeViewController {
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
-            )
+            ),
+            excludeRestaurantType: [.grocery]
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)
@@ -148,7 +150,8 @@ extension HomeViewController {
                 latitude: userLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
-            )
+            ),
+            excludeRestaurantType: nil
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)

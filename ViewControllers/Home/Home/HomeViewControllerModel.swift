@@ -22,6 +22,7 @@ extension HomeViewController {
         let orderBy: PlaceOrderBy?
         let sortOrder: SortOrder?
         let location: Location?
+        let excludeRestaurantType: [ExcludeRestaurantType]?
     }
     
     
@@ -89,6 +90,17 @@ extension HomeViewController {
         case meters = "Meters"
         case kilometers = "Kilometers"
         case miles = "Miles"
+    }
+    
+    enum ExcludeRestaurantType: String, Codable {
+        case none = "None"
+        case restaurant = "Restaurant"
+        case restGrocery = "RestGrocery"
+        case grocery = "Grocery"
+        case store = "Store"
+        case caterer = "Caterer"
+        case airline = "Airline"
+        case truck = "Truck"
     }
 }
 
@@ -288,6 +300,7 @@ extension HomeViewController {
         let willReturnPercentage: Rating?
         let approvalState: String?
         let address: String?
+        let secondaryAddress: String?
         let description: String?
         let alcoholPolicy: String?
         let meatHalalStatus: String?

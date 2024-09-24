@@ -225,7 +225,7 @@ class DeliveryDetailsViewController3: UIViewController {
         if let restuarantResponseData = modelFeaturedResponse?.items?.first {
             labelRestaurantName.text = restuarantResponseData?.name ?? ""
             labelConnectWith.text = "Connect With \(restuarantResponseData?.name ?? "")"
-            labelAddress.text = "\(restuarantResponseData?.address ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "") \(restuarantResponseData?.zip ?? "")"
+            labelAddress.text = "\(restuarantResponseData?.address ?? ""), \(restuarantResponseData?.secondaryAddress ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "") \(restuarantResponseData?.zip ?? "")"
             
             labelDistanceAway.text = "\(oneDecimalDistance(distance:restuarantResponseData?.distance)) away"
             
@@ -631,7 +631,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             }
         }
         else {
-            showToast(message: "there is no social link please update your profile")
+//            showToast(message: "there is no social link please update your profile")
         }
     }
     
@@ -792,7 +792,8 @@ extension DeliveryDetailsViewController3 {
                 latitude: userLocation?.coordinate.latitude ?? kUserCurrentLocation?.coordinate.latitude ?? 0.0,
                 longitude: userLocation?.coordinate.longitude ?? kUserCurrentLocation?.coordinate.longitude ?? 0.0,
                 radius: 32
-            )
+            ),
+            excludeRestaurantType: nil
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)
