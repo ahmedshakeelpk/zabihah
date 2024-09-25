@@ -607,12 +607,33 @@
                                             </view>
                                         </subviews>
                                     </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JJ9-Y1-sfi">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="40.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNt-Ue-yjP">
+                                                <rect key="frame" x="20" y="10" width="374" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="wNt-Ue-yjP" secondAttribute="trailing" constant="20" id="KWG-y5-HWU"/>
+                                            <constraint firstItem="wNt-Ue-yjP" firstAttribute="leading" secondItem="JJ9-Y1-sfi" secondAttribute="leading" constant="20" id="RkV-Dx-9uR"/>
+                                            <constraint firstAttribute="bottom" secondItem="wNt-Ue-yjP" secondAttribute="bottom" constant="10" id="bNx-6S-gSn"/>
+                                            <constraint firstItem="wNt-Ue-yjP" firstAttribute="top" secondItem="JJ9-Y1-sfi" secondAttribute="top" constant="10" id="z51-J5-6Mf"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.94901960784313721" green="0.95686274509803915" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="JJ9-Y1-sfi" firstAttribute="top" secondItem="Vhu-Cv-cf2" secondAttribute="top" id="8Pv-xY-ya5"/>
                                     <constraint firstItem="lnt-xu-sB4" firstAttribute="leading" secondItem="Vhu-Cv-cf2" secondAttribute="leading" id="Db3-Si-gE7"/>
+                                    <constraint firstItem="JJ9-Y1-sfi" firstAttribute="leading" secondItem="Vhu-Cv-cf2" secondAttribute="leading" id="Oxj-7W-8Dq"/>
                                     <constraint firstAttribute="bottom" secondItem="lnt-xu-sB4" secondAttribute="bottom" id="ddv-79-X6W"/>
                                     <constraint firstItem="lnt-xu-sB4" firstAttribute="top" secondItem="Vhu-Cv-cf2" secondAttribute="top" id="leg-pW-6mq"/>
+                                    <constraint firstAttribute="trailing" secondItem="JJ9-Y1-sfi" secondAttribute="trailing" id="wnU-e3-fQj"/>
                                     <constraint firstAttribute="trailing" secondItem="lnt-xu-sB4" secondAttribute="trailing" id="yQW-eu-qCs"/>
                                 </constraints>
                             </view>
@@ -690,6 +711,7 @@
                         <outlet property="labelMapViewListView" destination="EHO-y9-T0C" id="bYZ-Se-YhK"/>
                         <outlet property="labelNoRecordFound" destination="Edf-kV-7Kp" id="DAv-MR-FQS"/>
                         <outlet property="labelSearchLocation" destination="XhY-9k-lLk" id="CV5-UU-Wa3"/>
+                        <outlet property="labelSectionName" destination="wNt-Ue-yjP" id="YJz-Jx-GvQ"/>
                         <outlet property="mapView" destination="hvg-PS-JmA" id="usZ-7i-pp1"/>
                         <outlet property="stackViewFilterResultBackGround" destination="O0M-b4-XDd" id="rU6-30-Lya"/>
                         <outlet property="stackViewSearchNTextFieldNearLocationBackGround" destination="YJr-Ce-f0d" id="J5y-5l-Xaw"/>
@@ -702,6 +724,7 @@
                         <outlet property="viewMapViewBackGround" destination="YhI-ci-vld" id="i0M-0O-crX"/>
                         <outlet property="viewMapViewBackground" destination="dbu-6v-USn" id="mkg-5F-KiL"/>
                         <outlet property="viewNoDataFound" destination="WUT-p7-nWY" id="i00-E2-Ujg"/>
+                        <outlet property="viewSectionNameBackGround" destination="JJ9-Y1-sfi" id="ede-6Z-dLS"/>
                         <outlet property="viewSettingBackGround" destination="BJw-IC-zeA" id="8em-gz-0s2"/>
                         <outlet property="viewZoomInBackGround" destination="tBi-Fp-gaa" id="Q9M-Rk-hc2"/>
                         <outlet property="viewZoomOutBackGround" destination="ld6-5t-Aul" id="UqE-e7-mSc"/>

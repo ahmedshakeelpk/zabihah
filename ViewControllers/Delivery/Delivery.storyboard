@@ -1696,16 +1696,16 @@
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWK-RH-aWE">
                                                                         <rect key="frame" x="0.0" y="0.0" width="414" height="100.5"/>
                                                                         <subviews>
-                                                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Viy-2e-OMu">
+                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Viy-2e-OMu">
                                                                                 <rect key="frame" x="12" y="0.0" width="394" height="100.5"/>
                                                                                 <subviews>
-                                                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="wld-Z3-UBN">
+                                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="wld-Z3-UBN">
                                                                                         <rect key="frame" x="0.0" y="0.0" width="394" height="100.5"/>
                                                                                         <subviews>
-                                                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pYj-6i-VIr">
+                                                                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pYj-6i-VIr">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="394" height="100.5"/>
                                                                                                 <subviews>
-                                                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UpU-mM-lPa">
+                                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UpU-mM-lPa">
                                                                                                         <rect key="frame" x="0.0" y="0.0" width="50" height="100.5"/>
                                                                                                         <subviews>
                                                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderRestaurant" translatesAutoresizingMaskIntoConstraints="NO" id="85C-4b-ffb">
@@ -1723,7 +1723,7 @@
                                                                                                             <constraint firstItem="85C-4b-ffb" firstAttribute="top" secondItem="UpU-mM-lPa" secondAttribute="top" constant="5" id="yLv-6Q-zvv"/>
                                                                                                         </constraints>
                                                                                                     </view>
-                                                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AR7-M1-p6y">
+                                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AR7-M1-p6y">
                                                                                                         <rect key="frame" x="50" y="0.0" width="344" height="100.5"/>
                                                                                                         <subviews>
                                                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NvF-kx-3KQ">
@@ -1910,7 +1910,7 @@
                                                                                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9j8-aB-rOk">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="415" height="50"/>
                                                                                                 <subviews>
-                                                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rZu-cY-6Lw">
+                                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rZu-cY-6Lw">
                                                                                                         <rect key="frame" x="0.0" y="0.0" width="365" height="50"/>
                                                                                                         <subviews>
                                                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3JS-9V-PvG">
@@ -1992,10 +1992,10 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="10"/>
                                                                                 <subviews>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="LbE-F4-fm6">
-                                                                                        <rect key="frame" x="12" y="5" width="56" height="0.0"/>
+                                                                                        <rect key="frame" x="12" y="5" width="390" height="0.0"/>
                                                                                         <subviews>
                                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amenities" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUN-SA-pvw">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="56" height="0.0"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="390" height="0.0"/>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                                                 <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                 <nil key="highlightedColor"/>
@@ -4584,7 +4584,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have no reviews" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h77-GF-qHz">
                                         <rect key="frame" x="0.0" y="128" width="240" height="26.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" red="0.50588235290000005" green="0.031372549020000001" blue="0.035294117649999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -5339,7 +5339,7 @@
         <image name="moon" width="22" height="22"/>
         <image name="mosqueDetails" width="30" height="30"/>
         <image name="noDataFoundReview" width="84" height="84"/>
-        <image name="placeHolderRestaurant" width="28" height="28"/>
+        <image name="placeHolderRestaurant" width="218" height="216"/>
         <image name="radioCheck" width="20" height="22"/>
         <image name="radioUnCheck" width="20" height="22"/>
         <image name="repeatBlack" width="20" height="20"/>

@@ -199,29 +199,49 @@
                                     <constraint firstItem="BrX-TV-DZZ" firstAttribute="top" secondItem="DRh-cW-brK" secondAttribute="top" constant="8" id="v9P-ZK-Uwy"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noAddressList" translatesAutoresizingMaskIntoConstraints="NO" id="ArZ-lk-MNc">
-                                <rect key="frame" x="87" y="355.5" width="240" height="128"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iv9-aa-nwa">
+                                <rect key="frame" x="74" y="325" width="266.5" height="160"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noDataFavouritePlace" translatesAutoresizingMaskIntoConstraints="NO" id="7Ej-dT-Nbg">
+                                        <rect key="frame" x="0.0" y="0.0" width="266.5" height="128"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="128" id="sww-8n-2XQ"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No delivery address available" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bwt-Yj-jlh">
+                                        <rect key="frame" x="0.0" y="136" width="266.5" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                        <color key="textColor" red="0.50588235290000005" green="0.031372549020000001" blue="0.035294117649999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="4zI-oY-ULp"/>
-                                    <constraint firstAttribute="width" constant="240" id="HJl-o9-ef3"/>
+                                    <constraint firstItem="7Ej-dT-Nbg" firstAttribute="leading" secondItem="iv9-aa-nwa" secondAttribute="leading" id="4bC-dQ-DgE"/>
+                                    <constraint firstItem="7Ej-dT-Nbg" firstAttribute="top" secondItem="iv9-aa-nwa" secondAttribute="top" id="79O-rj-XFo"/>
+                                    <constraint firstAttribute="trailing" secondItem="7Ej-dT-Nbg" secondAttribute="trailing" id="7KF-hx-Pby"/>
+                                    <constraint firstItem="Bwt-Yj-jlh" firstAttribute="leading" secondItem="iv9-aa-nwa" secondAttribute="leading" id="8LQ-Zh-tBt"/>
+                                    <constraint firstAttribute="trailing" secondItem="Bwt-Yj-jlh" secondAttribute="trailing" id="DlY-8J-Rn7"/>
+                                    <constraint firstItem="Bwt-Yj-jlh" firstAttribute="top" secondItem="7Ej-dT-Nbg" secondAttribute="bottom" constant="8" id="J7i-7L-Noe"/>
+                                    <constraint firstAttribute="bottom" secondItem="Bwt-Yj-jlh" secondAttribute="bottom" id="MP2-dT-V0H"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="DRh-cW-brK" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="3ME-14-FC0"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="rFu-8C-xTL" secondAttribute="trailing" id="6V3-2G-1Fu"/>
+                            <constraint firstItem="iv9-aa-nwa" firstAttribute="centerY" secondItem="vDu-zF-Fre" secondAttribute="centerY" constant="-50" id="9vz-ew-cen"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Gma-LV-EEM" secondAttribute="trailing" id="DAs-ws-mgh"/>
                             <constraint firstItem="LJS-Ql-3CA" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="8" id="LDf-Gr-4dw"/>
                             <constraint firstItem="rFu-8C-xTL" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="topMargin" constant="105" id="LNp-ln-5t7"/>
                             <constraint firstItem="DRh-cW-brK" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="Nbq-UB-Ay8"/>
+                            <constraint firstItem="iv9-aa-nwa" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="dXg-0M-eKY"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="DRh-cW-brK" secondAttribute="bottom" id="gIf-B5-Shf"/>
-                            <constraint firstItem="ArZ-lk-MNc" firstAttribute="centerY" secondItem="rFu-8C-xTL" secondAttribute="centerY" constant="-50" id="k38-xy-hfK"/>
                             <constraint firstItem="rFu-8C-xTL" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="lbI-dx-WBv"/>
                             <constraint firstItem="Gma-LV-EEM" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="rQc-tv-PMU"/>
                             <constraint firstItem="DRh-cW-brK" firstAttribute="top" secondItem="rFu-8C-xTL" secondAttribute="bottom" id="scj-hg-nsk"/>
-                            <constraint firstItem="ArZ-lk-MNc" firstAttribute="centerX" secondItem="rFu-8C-xTL" secondAttribute="centerX" id="uzY-1U-tve"/>
                             <constraint firstItem="Gma-LV-EEM" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="wBA-xf-fHM"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="LJS-Ql-3CA" secondAttribute="trailing" constant="8" id="x4J-X5-WM3"/>
                             <constraint firstItem="LJS-Ql-3CA" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="xFX-pB-qrT"/>
@@ -230,8 +250,10 @@
                     <connections>
                         <outlet property="buttonAddNewAddress" destination="DQm-Ca-Awc" id="ay4-Cd-eLv"/>
                         <outlet property="buttonBack" destination="nBt-I4-8fa" id="6dN-Ld-tln"/>
-                        <outlet property="imageViewNoAddressFound" destination="ArZ-lk-MNc" id="5Nt-XN-yCf"/>
+                        <outlet property="imageViewNoAddressFound" destination="7Ej-dT-Nbg" id="QdA-Sj-nyv"/>
+                        <outlet property="labelNoDeliveryAddress" destination="Bwt-Yj-jlh" id="dn0-af-hVN"/>
                         <outlet property="tableView" destination="rFu-8C-xTL" id="Kbb-ze-8eO"/>
+                        <outlet property="viewNoDeliveryAddress" destination="iv9-aa-nwa" id="qu6-DK-qhd"/>
                         <outlet property="viewTitle" destination="LJS-Ql-3CA" id="AKu-eg-cFp"/>
                     </connections>
                 </viewController>
@@ -1371,7 +1393,7 @@
         <image name="locationMarker" width="24" height="24"/>
         <image name="locationMehroonMisc" width="52" height="64"/>
         <image name="locationSearchMarker" width="40" height="40"/>
-        <image name="noAddressList" width="245" height="140"/>
+        <image name="noDataFavouritePlace" width="84" height="84"/>
         <image name="searchMehroonMisc" width="20" height="20"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

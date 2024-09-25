@@ -10,7 +10,9 @@ import Alamofire
 import GooglePlaces
 
 class AddressesListViewController: UIViewController {
-
+    @IBOutlet weak var viewNoDeliveryAddress: UIView!
+    @IBOutlet weak var labelNoDeliveryAddress: UILabel!
+    
     @IBOutlet weak var imageViewNoAddressFound: UIImageView!
     @IBOutlet weak var buttonAddNewAddress: UIButton!
     @IBOutlet weak var viewTitle: UIView!
@@ -33,18 +35,11 @@ class AddressesListViewController: UIViewController {
                 else {
                     print("No default address found.")
                 }
-                imageViewNoAddressFound.isHidden = true
+                viewNoDeliveryAddress.isHidden = true
             }
             else {
-                imageViewNoAddressFound.isHidden = false
+                viewNoDeliveryAddress.isHidden = false
             }
-            
-//            if tableView.visibleCells.count == 0 {
-//                imageViewNoAddressFound.isHidden = false
-//            }
-//            else {
-//                imageViewNoAddressFound.isHidden = true
-//            }
             tableView.reloadData()
         }
     }
@@ -66,7 +61,7 @@ class AddressesListViewController: UIViewController {
         AddressesCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
         getUserAddress()
-        imageViewNoAddressFound.isHidden = false
+        viewNoDeliveryAddress.isHidden = false
     }
     
     @IBAction func buttonBack(_ sender: Any) {

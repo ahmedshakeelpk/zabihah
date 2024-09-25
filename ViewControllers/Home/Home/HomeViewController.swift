@@ -13,6 +13,8 @@ import CoreLocation
 
 class HomeViewController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var labelSectionName: UILabel!
+    @IBOutlet weak var viewSectionNameBackGround: UIView!
     @IBOutlet weak var stackViewTitleBackGround: UIStackView!
     @IBOutlet weak var viewItemCountOnMapViewBackGround: UIView!
     @IBOutlet weak var labelItemCountOnMapView: UILabel!
@@ -112,9 +114,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     
     var userLocation: CLLocation! {
         didSet {
-            DispatchQueue.main.async {  
-//                kUserCurrentLocation = self.userLocation
-
+            DispatchQueue.main.async {
+                //                kUserCurrentLocation = self.userLocation
+                
                 getCountryFromCoordinates(latitude: self.userLocation.coordinate.latitude, longitude: self.userLocation.coordinate.longitude, completion: {
                     countryName in
                     if countryName?.lowercased() == "United States".lowercased() {
@@ -366,6 +368,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
 
     func setConfiguration() {
+        viewSectionNameBackGround.isHidden = true
         mapView.delegate = self
         
         tableView.addSubview(pullControl) // not
@@ -514,15 +517,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             }
         }
         else if selectedMenuCell == 1 {
-            imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
+            imageViewNoRecordFound.image = UIImage(named: "chefPlaceHolder")
             labelNoRecordFound.text = "No Restaurant Found"
             if modelGetHalalRestaurantResponse?.totalRecords == 0 {
                 viewNoDataFound.isHidden = false
                 tableView.isHidden = true
+                viewMapViewBackground.isHidden = true
             }
             else {
                 viewNoDataFound.isHidden = true
                 tableView.isHidden = false
+                viewMapViewBackground.isHidden = false
             }
         }
         else if selectedMenuCell == 2 {
@@ -534,10 +539,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             if modelGetPrayerPlacesResponse?.totalRecords == 0 {
                 viewNoDataFound.isHidden = false
                 tableView.isHidden = true
+                viewMapViewBackground.isHidden = true
             }
             else {
                 viewNoDataFound.isHidden = true
                 tableView.isHidden = false
+                viewMapViewBackground.isHidden = false
             }
         }
     }
@@ -634,6 +641,32 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             break
         }
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        detectVisibleSections()
+    }
+    
+    func detectVisibleSections() {
+        // Get the visible rows' index paths
+        if let visibleIndexPaths = tableView.indexPathsForVisibleRows {
+            
+            // Get the first visible index path (which gives us the section of the first visible row)
+            if let firstVisibleIndexPath = visibleIndexPaths.first {
+                let visibleSection = firstVisibleIndexPath.section
+                
+                // Detect when a certain section becomes visible
+                print("Currently viewing Section: \(visibleSection)")
+                
+                // Example: if you want to detect when Section 2 becomes visible
+                if visibleSection == 2 {
+                    print("Section 2 has come into view!")
+                }
+                print("Section \(visibleSection)")
+                let titleForHeader = (listItems[visibleSection]).sectionName
+                labelSectionName.text = "\(titleForHeader ?? "")"
+            }
+        }
+    }
 }
 
 extension HomeViewController: HomeCuisinesCellDelegate {
@@ -704,5 +737,7 @@ extension HomeViewController : CLLocationManagerDelegate {
         }
     }
 }
+
+
 
 

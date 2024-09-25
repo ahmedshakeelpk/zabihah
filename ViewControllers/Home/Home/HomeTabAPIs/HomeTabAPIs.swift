@@ -36,7 +36,6 @@ extension HomeViewController {
             :
                 filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
                 
-                
 //                filterParametersHome?.isalcoholic == nil ? nil : filterParametersHome?.isalcoholic ?? false ? [.notAllowed] : nil,
             parts: [.cuisines, .timings],
             orderBy: .ratingAndLocation,
@@ -47,7 +46,7 @@ extension HomeViewController {
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
             ),
-            excludeRestaurantType: [.grocery]
+            excludeRestaurantType: [.grocery, .restGrocery]
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)
@@ -103,7 +102,7 @@ extension HomeViewController {
                 longitude: userLocation?.coordinate.longitude ?? 0.0,
                 radius: useRadius
             ),
-            excludeRestaurantType: [.grocery]
+            excludeRestaurantType: [.grocery, .restGrocery]
         )
         do {
             let jsonData = try JSONEncoder().encode(featureRequestModel)

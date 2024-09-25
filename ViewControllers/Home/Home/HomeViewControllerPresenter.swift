@@ -187,7 +187,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 pageNumberForApi += 1
             }
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
