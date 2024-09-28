@@ -377,7 +377,7 @@ class DeliveryDetailsViewController3: UIViewController {
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
         
         mailComposerVC.setToRecipients([email])
-        mailComposerVC.setSubject("")
+        mailComposerVC.setSubject("Inquiry from the Zabihah app")
         mailComposerVC.setMessageBody("", isHTML: false)
         
         return mailComposerVC
@@ -610,7 +610,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             let connectSocial = connectSocial?[indexPath.item]
             if let socialType = connectSocial?.type {
                 if socialType.lowercased() == "email" {
-                    let mailComposeViewController = configuredMailComposeViewController(email: socialType)
+                    let mailComposeViewController = configuredMailComposeViewController(email: connectSocial?.value ?? "")
                     if MFMailComposeViewController.canSendMail() {
                         self.present(mailComposeViewController, animated: true, completion: nil)
                     } else {
