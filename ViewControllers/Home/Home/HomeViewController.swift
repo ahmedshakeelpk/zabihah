@@ -147,6 +147,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                         let longitude = self.modelGetUserAddressResponse?[defaultAddressIndex].longitude ?? 0
                         
                         self.userLocation = CLLocation(latitude: latitude, longitude: longitude)
+                        
+                        let userDefaultAddress = self.modelGetUserAddressResponse?[defaultAddressIndex].physicalAddress
+                        
+                        self.textFieldSearchLocation.text = userDefaultAddress
+                        self.labelSearchLocation.text! = self.textFieldSearchLocation.text!
+                        
                     }
                     else {
                         print("No default address found.")
@@ -526,8 +532,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             }
             else {
                 viewNoDataFound.isHidden = true
-                tableView.isHidden = false
                 viewMapViewBackground.isHidden = false
+                if buttonMapViewListView.tag != 1 {
+                    self.tableView.isHidden = false
+                }
             }
         }
         else if selectedMenuCell == 2 {
@@ -543,8 +551,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             }
             else {
                 viewNoDataFound.isHidden = true
-                tableView.isHidden = false
                 viewMapViewBackground.isHidden = false
+                if buttonMapViewListView.tag != 1 {
+                    self.tableView.isHidden = false
+                }
             }
         }
     }

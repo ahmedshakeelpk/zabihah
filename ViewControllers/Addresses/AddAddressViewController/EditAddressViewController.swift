@@ -161,10 +161,15 @@ class EditAddressViewController: UIViewController {
                 self.setZoom(latitude: location?.latitude, longitude: location?.longitude)
             }
         }
-        checkLocationServices()
+        isShowLocationPopUp = true
+//        checkLocationServices()
     }
-    
+    var isShowLocationPopUp = false
     func checkLocationServices() {
+        if !isShowLocationPopUp {
+            return
+        }
+        isShowLocationPopUp = false
         switch CLLocationManager.authorizationStatus() {
         case .authorizedWhenInUse, .authorizedAlways:
             // Location access is granted
@@ -182,6 +187,7 @@ class EditAddressViewController: UIViewController {
     }
     
     @IBAction func buttonGps(_ sender: Any) {
+        isShowLocationPopUp = true
         gpsButtonTapped()
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 //            self.gpsButtonTapped()
@@ -537,6 +543,9 @@ extension EditAddressViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         print("Error while updating location " + error.localizedDescription)
+        if isShowLocationPopUp {
+            checkLocationServices()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

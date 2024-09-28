@@ -10,32 +10,34 @@ import Alamofire
 import CoreLocation
 
 func showLocationDisabledAlert(viewController: UIViewController) {
-    let alert = UIAlertController(title: "Location Services Disabled",
-                                  message: "Please enable location services in Settings to use this feature.",
+    var alert = UIAlertController(title: "Location Services Disabled",
+                                  message: "Zabihah uses your location to help find halal places and prayer spaces near you.",
                                   preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { _ in
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
+        alert.dismiss(animated: true)
     }))
     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     viewController.present(alert, animated: true, completion: nil)
 }
+
 extension HomeViewController {
-   
-    
     func navigateToAddAddressViewController() {
         self.labelSearchLocation.text = ""
         self.textFieldSearchLocation.text = ""
-        showLocationDisabledAlert(viewController: self)
+//        showLocationDisabledAlert(viewController: self)
+        userLocation = CLLocation(latitude: 40.7127753, longitude: -74.0059728)
+        textFieldSearchLocation.text = "New York, NY, USA"
+        labelSearchLocation.text = textFieldSearchLocation.text!
         return()
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         vc.isFromHomeScreen = true
         vc.newAddressAddedHandler = { (address, location) in
             self.textFieldSearchLocation.text = address
             self.labelSearchLocation.text! = self.textFieldSearchLocation.text!
-
             self.userLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
 //            self.getUserAddress()
         }

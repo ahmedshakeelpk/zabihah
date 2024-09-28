@@ -224,7 +224,7 @@ class DeliveryDetailsViewController3: UIViewController {
     func setData() {
         if let restuarantResponseData = modelFeaturedResponse?.items?.first {
             labelRestaurantName.text = restuarantResponseData?.name ?? ""
-            labelConnectWith.text = "Connect With \(restuarantResponseData?.name ?? "")"
+            labelConnectWith.text = "Connect with \(restuarantResponseData?.name ?? "")"
             labelAddress.text = "\(restuarantResponseData?.address ?? ""), \(restuarantResponseData?.secondaryAddress ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "") \(restuarantResponseData?.zip ?? "")"
             
             labelDistanceAway.text = "\(oneDecimalDistance(distance:restuarantResponseData?.distance)) away"
@@ -683,6 +683,7 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
     
     var picker = UIImagePickerController();
     var alert = UIAlertController(title: "Choose an avatar", message: nil, preferredStyle: .actionSheet)
+    
     var viewController: UIViewController?
     var pickImageCallback : ((UIImage) -> ())?;
     var isProfileImage: Bool? = false
@@ -693,7 +694,15 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
     }
     
     func setCameraConfiguration() {
-        alert = UIAlertController(title: isProfileImage! ? "Choose an avatar" : "Upload photo", message: nil, preferredStyle: .actionSheet)
+        
+        if let popoverController = alert.popoverPresentationController {
+            // iPad-specific code
+            alert = UIAlertController(title: isProfileImage! ? "Choose an avatar" : "Upload photo", message: nil, preferredStyle: .alert)
+        }
+        else {
+            alert = UIAlertController(title: isProfileImage! ? "Choose an avatar" : "Upload photo", message: nil, preferredStyle: .actionSheet)
+           
+        }
         
         let cameraAction = UIAlertAction(title: "Use camera", style: .default){
             UIAlertAction in
@@ -718,6 +727,8 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
         pickImageCallback = callback;
         self.viewController = viewController;
         self.isProfileImage = isProfileImage
+        // Check if device is iPad
+        
         alert.popoverPresentationController?.sourceView = self.viewController!.view
         setCameraConfiguration()
         viewController.present(alert, animated: true, completion: nil)
