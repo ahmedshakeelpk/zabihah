@@ -15,8 +15,8 @@ target 'zabihah' do
   
   #https://github.com/chronotruck/FlagPhoneNumber
   
-  pod 'GoogleMaps'
-  pod 'GooglePlaces'
+  pod 'GoogleMaps', '~> 7.4'
+  pod 'GooglePlaces', '~> 7.4'
   pod 'FirebaseAnalytics'
   
   #Azure Blob Storage ImageUpload
