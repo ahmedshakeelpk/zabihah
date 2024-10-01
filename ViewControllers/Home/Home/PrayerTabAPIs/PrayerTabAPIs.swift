@@ -26,7 +26,7 @@ extension HomeViewController {
         let featureRequestModel: ModelFeaturedRequest = ModelFeaturedRequest(
             ids: nil,
             rating: filterParametersHome?.rating == 0 ? nil : filterParametersHome?.rating,
-            page: 1,
+            page: pageSize,
             keyword: textFieldFilterResult.text!,
             pageSize: 10,
             cuisine: selectedCuisine == "" ? nil : [selectedCuisine],

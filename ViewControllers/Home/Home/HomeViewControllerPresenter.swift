@@ -81,8 +81,8 @@ extension HomeViewController {
             }
             else if self.selectedMenuCell == 3 {
                 self.selectedCuisine = ""
-                self.selectedMenuCell = self.itself(self.selectedMenuCell)
-                
+                self.pageNumberForApi = 1
+//                self.selectedMenuCell = self.itself(self.selectedMenuCell)
             }
         }
         vc.filterParametersHome = filterParametersHome
