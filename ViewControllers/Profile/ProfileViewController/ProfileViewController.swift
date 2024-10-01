@@ -10,6 +10,9 @@ import Alamofire
 
 class ProfileViewController: UIViewController {
 
+    @IBOutlet weak var imageViewEditEmail: UIImageView!
+    @IBOutlet weak var imageViewEditPhoneNumber: UIImageView!
+    
     @IBOutlet weak var buttonEditProfilePhoto: UIButton!
     @IBOutlet weak var imageViewProfile: UIImageView!
     @IBOutlet weak var labelName: UILabel!
@@ -187,6 +190,11 @@ class ProfileViewController: UIViewController {
     func setData() {
         labelName.text = "\(kModelGetUserProfileResponse?.firstName ?? "") \(kModelGetUserProfileResponse?.lastName ?? "")"
         textFieldName.text = "\(kModelGetUserProfileResponse?.firstName ?? "") \(kModelGetUserProfileResponse?.lastName ?? "")"
+        
+        DispatchQueue.main.async {
+            self.imageViewEditEmail.image = UIImage(named: kModelGetUserProfileResponse?.email == nil ? "addGrayMisc" : "editGrayMisc")
+            self.imageViewEditPhoneNumber.image = UIImage(named: kModelGetUserProfileResponse?.phone == nil ? "addGrayMisc" : "editGrayMisc")
+        }
         
         labelEmail.text = kModelGetUserProfileResponse?.email
         textFieldEmail.text = kModelGetUserProfileResponse?.email

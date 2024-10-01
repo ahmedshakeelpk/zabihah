@@ -232,31 +232,31 @@ class OtpLoginViewController: UIViewController{
                 updateProfile()
                 return
             }
-            if modelGetUserProfileResponse?.isEmailVerified ?? false,
-               modelGetUserProfileResponse?.isPhoneVerified ?? false {
+            if modelGetUserProfileResponse.isPhoneVerified == nil || modelGetUserProfileResponse.isEmailVerified == nil || modelGetUserProfileResponse.firstName == nil {
+                self.navigateToRegisterationViewController()
+            }
+            else if modelGetUserProfileResponse?.isEmailVerified ?? false || modelGetUserProfileResponse?.isPhoneVerified ?? false {
                 kDefaults.set(kAccessToken, forKey: "kAccessToken")
                 kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
                 self.navigateToRootHomeViewController()
             }
-            else if modelGetUserProfileResponse.isPhoneVerified == nil || modelGetUserProfileResponse.isEmailVerified == nil || modelGetUserProfileResponse.firstName == nil {
-                self.navigateToRegisterationViewController()
-            }
-            else if modelGetUserProfileResponse?.isEmailVerified == false {
-                kDefaults.set(kAccessToken, forKey: "kAccessToken")
-                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
-                isUpdateEmailOrPhoneNoCase = true
-                isFromEmail = true
-                self.popViewController(animated: true)
-                isOtpSuccessFullHandler(true, true)
-            }
-            else if modelGetUserProfileResponse?.isPhoneVerified == false {
-                kDefaults.set(kAccessToken, forKey: "kAccessToken")
-                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
-                isUpdateEmailOrPhoneNoCase = true
-                isFromEmail = false
-                self.popViewController(animated: true)
-                isOtpSuccessFullHandler(false, true)
-            }
+            //These two checks are removed for setting option email or phone number verification
+//            else if modelGetUserProfileResponse?.isEmailVerified == false {
+//                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+//                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+//                isUpdateEmailOrPhoneNoCase = true
+//                isFromEmail = true
+//                self.popViewController(animated: true)
+//                isOtpSuccessFullHandler(true, true)
+//            }
+//            else if modelGetUserProfileResponse?.isPhoneVerified == false {
+//                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+//                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+//                isUpdateEmailOrPhoneNoCase = true
+//                isFromEmail = false
+//                self.popViewController(animated: true)
+//                isOtpSuccessFullHandler(false, true)
+//            }
             else {
                 self.navigateToRegisterationViewController()
             }

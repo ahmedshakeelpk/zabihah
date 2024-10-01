@@ -1439,6 +1439,8 @@
                         <outlet property="buttonEditName" destination="CSd-CE-zzc" id="6JX-Lu-Ffd"/>
                         <outlet property="buttonEditPhoneNumber" destination="hdu-JY-Oyp" id="CVM-FE-rPV"/>
                         <outlet property="buttonEditProfilePhoto" destination="t8a-Dg-4ON" id="4Mk-sx-CM5"/>
+                        <outlet property="imageViewEditEmail" destination="ylJ-zw-h8u" id="rDi-Oa-oXW"/>
+                        <outlet property="imageViewEditPhoneNumber" destination="UP7-Ho-gT1" id="Vna-me-ryx"/>
                         <outlet property="imageViewProfile" destination="nib-06-2OG" id="OJS-FQ-PJD"/>
                         <outlet property="labelEmail" destination="oPm-sy-scY" id="yXr-Wn-8aQ"/>
                         <outlet property="labelName" destination="ElN-pd-eRc" id="KUq-lU-sWs"/>

@@ -77,7 +77,14 @@ class RegisterationViewController: UIViewController {
     var modelSignUpResponse: ModelSignUpResponse? {
         didSet {
             if modelSignUpResponse?.success ?? false {
-                sendnotification()
+                if textFieldEmail.text! != "" && textFieldPhoneNumber.text != "" {
+                    sendnotification()
+                }
+                else {
+                    kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                    kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                    self.navigateToRootHomeViewController()
+                }
             }
             else {
                 let errorMessage = getErrorMessage(errorMessage: modelSignUpResponse?.title ?? "")
@@ -177,9 +184,9 @@ class RegisterationViewController: UIViewController {
         else if textFieldLastName.text == "" {
             isValid = false
         }
-        else if isFromEmail ? textFieldPhoneNumber.text == "" : textFieldEmail.text == "" {
-            isValid = false
-        }
+//        else if isFromEmail ? textFieldPhoneNumber.text == "" : textFieldEmail.text == "" {
+//            isValid = false
+//        }
 //        else if !isImageUploaded {
 //            isValid = false
 //        }
