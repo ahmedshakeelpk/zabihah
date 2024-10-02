@@ -12,15 +12,20 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SideMenuView" customModule="zabihah" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <rect key="frame" x="0.0" y="0.0" width="393" height="1084"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="imt-pm-daY">
-                    <rect key="frame" x="0.0" y="0.0" width="313" height="852"/>
+                    <rect key="frame" x="0.0" y="0.0" width="313" height="1584"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="400" id="o2j-C6-RDI">
+                            <variation key="heightClass=regular-widthClass=compact" constant="313"/>
+                        </constraint>
+                    </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yh-FP-tSp">
-                    <rect key="frame" x="0.0" y="51" width="313" height="847"/>
+                    <rect key="frame" x="0.0" y="51" width="313" height="1079"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iva-XN-eY0">
                             <rect key="frame" x="0.0" y="0.0" width="313" height="50"/>
@@ -92,10 +97,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GcY-R9-V3Y">
-                            <rect key="frame" x="0.0" y="50" width="313" height="797"/>
+                            <rect key="frame" x="0.0" y="50" width="313" height="1029"/>
                             <subviews>
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PFj-cc-WMz">
-                                    <rect key="frame" x="0.0" y="0.0" width="313" height="717"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="313" height="1029"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Vuo-S2-ann">
                                             <rect key="frame" x="0.0" y="0.0" width="313" height="454.66666666666669"/>
@@ -211,11 +216,10 @@
                                                     </subviews>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
-                                                        <constraint firstItem="tjG-LK-JTb" firstAttribute="leading" secondItem="2B4-Lc-TMi" secondAttribute="leading" id="1qb-AN-Tnb"/>
-                                                        <constraint firstAttribute="trailing" secondItem="tjG-LK-JTb" secondAttribute="trailing" id="FNf-rY-3TL"/>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="128" id="zBY-Jc-X0r"/>
-                                                        <constraint firstItem="tjG-LK-JTb" firstAttribute="top" secondItem="2B4-Lc-TMi" secondAttribute="top" id="zPY-6c-kpL"/>
-                                                        <constraint firstAttribute="bottom" secondItem="tjG-LK-JTb" secondAttribute="bottom" id="zRl-nw-ESu"/>
+                                                        <constraint firstItem="tjG-LK-JTb" firstAttribute="leading" secondItem="2B4-Lc-TMi" secondAttribute="leading" id="2On-jM-got"/>
+                                                        <constraint firstAttribute="trailing" secondItem="tjG-LK-JTb" secondAttribute="trailing" id="Xf0-Uw-nAH"/>
+                                                        <constraint firstAttribute="bottom" secondItem="tjG-LK-JTb" secondAttribute="bottom" id="eek-UW-mdS"/>
+                                                        <constraint firstItem="tjG-LK-JTb" firstAttribute="top" secondItem="2B4-Lc-TMi" secondAttribute="top" id="qal-SF-vgT"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WCM-ft-Ggp">
@@ -236,7 +240,6 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="Vuo-S2-ann" secondAttribute="bottom" id="3Ws-TZ-pFb"/>
                                         <constraint firstItem="Vuo-S2-ann" firstAttribute="leading" secondItem="PFj-cc-WMz" secondAttribute="leading" id="Ntu-KT-W7t"/>
                                         <constraint firstItem="Vuo-S2-ann" firstAttribute="top" secondItem="PFj-cc-WMz" secondAttribute="top" id="QM4-VG-nvn"/>
                                         <constraint firstAttribute="trailing" secondItem="Vuo-S2-ann" secondAttribute="trailing" id="kVs-5a-3E6"/>
@@ -268,13 +271,12 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="imt-pm-daY" secondAttribute="bottom" id="Bs6-cY-qqU"/>
-                <constraint firstItem="imt-pm-daY" firstAttribute="trailing" secondItem="6yh-FP-tSp" secondAttribute="trailing" id="IXW-tL-7k3"/>
+                <constraint firstItem="imt-pm-daY" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="IKn-KS-Jmk"/>
                 <constraint firstItem="6yh-FP-tSp" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="-8" id="Yj1-5s-Vud"/>
-                <constraint firstItem="imt-pm-daY" firstAttribute="leading" secondItem="6yh-FP-tSp" secondAttribute="leading" id="cYd-ZP-PfF"/>
+                <constraint firstAttribute="bottom" secondItem="imt-pm-daY" secondAttribute="bottom" constant="-500" id="gD6-Pw-Gmr"/>
                 <constraint firstItem="6yh-FP-tSp" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="hau-Aw-OV6"/>
+                <constraint firstItem="imt-pm-daY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="iEf-SD-5Bu"/>
                 <constraint firstItem="6yh-FP-tSp" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" constant="-80" id="mcj-jg-jHv"/>
-                <constraint firstItem="imt-pm-daY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="o4d-oa-InN"/>
                 <constraint firstItem="6yh-FP-tSp" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" constant="80" id="yB9-17-d2Z"/>
             </constraints>
             <connections>
