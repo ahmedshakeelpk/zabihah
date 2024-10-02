@@ -166,18 +166,17 @@ class LoginViewController: UIViewController {
     var modelGetUserResponseLocal: HomeViewController.ModelGetUserProfileResponse? {
         didSet {
             DispatchQueue.main.async {
-                if self.modelGetUserResponseLocal?.isEmailVerified ?? false,
-                   self.modelGetUserResponseLocal?.isPhoneVerified ?? false {
+                if self.modelGetUserResponseLocal?.isEmailVerified ?? false ||
+                    self.modelGetUserResponseLocal?.isPhoneVerified ?? false {
                     self.navigateToRootHomeViewController()
                 }
-                if self.modelGetUserResponseLocal?.phone == nil ||
-                   self.modelGetUserResponseLocal?.email == nil {
-                    
-                }
-                else {
-                    
-                    self.navigateToLoginWithEmailOrPhoneViewController(isFromEmail: !(self.modelGetUserResponseLocal?.isEmailVerified ?? false), isUpdateEmailOrPhoneNoCase: true)
-                }
+//                if self.modelGetUserResponseLocal?.phone == nil ||
+//                   self.modelGetUserResponseLocal?.email == nil {
+//                    
+//                }
+//                else {
+//                    self.navigateToLoginWithEmailOrPhoneViewController(isFromEmail: !(self.modelGetUserResponseLocal?.isEmailVerified ?? false), isUpdateEmailOrPhoneNoCase: true)
+//                }
             }
         }
     }
