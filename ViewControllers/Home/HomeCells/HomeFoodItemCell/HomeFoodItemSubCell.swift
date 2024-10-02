@@ -549,3 +549,14 @@ func getErrorMessage(errorMessage: String) -> String {
         return  errorMessage
     }
 }
+
+func setIPadHeight(height: Int) -> Int {
+    if IPAD {
+        let percentage = 30
+        let iPADHeight = height*percentage/100
+        return height + iPADHeight
+    }
+    else {
+        return height
+    }
+}

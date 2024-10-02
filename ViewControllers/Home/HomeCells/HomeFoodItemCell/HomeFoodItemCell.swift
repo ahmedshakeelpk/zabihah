@@ -49,7 +49,10 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/1.5
+        var width = collectionView.frame.width/1.5
+        if IPAD {
+            width = collectionView.frame.width/2.5
+        }
         return CGSize(width: width, height: 230)
     }
     

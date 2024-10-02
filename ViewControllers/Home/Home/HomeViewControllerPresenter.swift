@@ -505,7 +505,7 @@ extension HomeViewController {
             let recordCount = mosqueResponseData.count
             if recordCount > 0 {
                 let data = mosqueResponseData as Any
-                let rowHeight = 256
+                let rowHeight = setIPadHeight(height: 260)
                 let identifier = HomePrayerPlacesTabCell.nibName()
                 let sectionName = ""
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
@@ -524,7 +524,7 @@ extension HomeViewController {
             let recordCount = modelHalalRestuarantResponseData.count
             if recordCount > 0 {
                 let data = modelHalalRestuarantResponseData as Any
-                let rowHeight = 260
+                let rowHeight = setIPadHeight(height: 260)
                 let identifier = FindHalalFoodCell.nibName()
                 let sectionName = ""
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)

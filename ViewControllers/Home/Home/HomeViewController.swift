@@ -250,6 +250,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setDataForHomeTab() {
+        setHomeTabCell()
         let recordFeatureCell = addFeaturedCell()
         listItems[0] = recordFeatureCell.0
         let recordCuisineCell = addCuisineCell()
@@ -259,6 +260,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         let recordPrayerPlacesCell = addPrayerPlacesHomeTabCell()
         listItems[3] = recordPrayerPlacesCell.0
         tableViewReload()
+            //Shakeel Ahmed
+    }
+    
+    func setHomeTabCell() {
+        listItems = []
+        listItems = [
+            HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 224, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 224, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
+            ]
     }
     
     var modelGetPrayerPlacesResponseForHomeTab: ModelFeaturedResponse? {
