@@ -18,6 +18,7 @@ target 'zabihah' do
   pod 'GoogleMaps', '~> 7.4'
   pod 'GooglePlaces', '~> 7.4'
   pod 'FirebaseAnalytics'
+  pod 'Firebase/Crashlytics'
   
   #Azure Blob Storage ImageUpload
   #https://learn.microsoft.com/en-us/previous-versions/azure/storage/blobs/storage-ios-how-to-use-blob-storage#cocoapod

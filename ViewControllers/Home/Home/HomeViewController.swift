@@ -183,10 +183,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
+    
     var modelGetPrayerPlacesResponse: ModelFeaturedResponse? {
         didSet {
             DispatchQueue.main.async {
                 if self.modelGetPrayerPlacesResponse == nil {
+                    self.tableViewReload()
                     return()
                 }
                 if self.dontTriggerModelGetHomeRestaurantsResponseObservers {
@@ -213,7 +215,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    
     
     var modelGetHomeRestaurantsResponseForHome: ModelFeaturedResponse? {
         didSet {
@@ -530,7 +531,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             let halalRestaurant = modelGetHalalRestaurantResponseForHomeTab?.totalRecords
             let prayerPlaces = modelGetPrayerPlacesResponseForHomeTab?.totalRecords
             imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
-            labelNoRecordFound.text = "No Restaurant Found"
+            labelNoRecordFound.text = "No halal places found"
             if featureRestaurant == 0 && halalRestaurant == 0 && prayerPlaces == 0 {
                 viewNoDataFound.isHidden = false
                 tableView.isHidden = true
@@ -578,6 +579,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     
     func homeTabApisCall() {
+        
+//        self.modelGetHomeRestaurantsResponseForHome = nil
+//        self.modelGetHalalRestaurantResponseForHomeTab = nil
+//        self.modelGetPrayerPlacesResponseForHomeTab = nil
+        
         self.getFeaturedRestaurantsForHomeTab()
         self.getHalalRestaurantsForHomeTab()
         self.getPrayerPlacesForHomeTab()

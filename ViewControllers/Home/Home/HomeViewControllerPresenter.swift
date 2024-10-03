@@ -354,6 +354,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let numbers = [0]
+              let _ = numbers[1]
+        return()
         if arrayNames[indexPath.item].lowercased() == "Pickup & delivery".lowercased() {
             return()
         }
