@@ -41,6 +41,9 @@ class AddressesCell: UITableViewCell {
         didSet {
             if modelUserAddressesResponseData != nil {
                 labelTitle.text = modelUserAddressesResponseData?.name ?? ""
+                
+//                labelAddress.text = "\(modelUserAddressesResponseData?.address ?? ""), \(modelUserAddressesResponseData?.secondaryAddress ?? "")\n\(modelUserAddressesResponseData?.city ?? ""), \(modelUserAddressesResponseData?.state ?? "") \(modelUserAddressesResponseData?.zip ?? "")"
+                
                 labelAddress.text = modelUserAddressesResponseData?.physicalAddress ?? ""
                 if "Home".lowercased() == (modelUserAddressesResponseData?.name ?? "").lowercased() {
                     imageViewAddressType.image = UIImage(named: "houseMehroon")

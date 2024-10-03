@@ -91,7 +91,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                         return
                     }
                     if self.pageNumberForApi > 1 {
-                        if self.pageNumberForApi > self.modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                        if self.pageNumberForApi >= self.modelGetHalalRestaurantResponse?.totalPages ?? 0 {
                             return()
                         }
                     }
@@ -102,7 +102,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                         return
                     }
                     if self.pageNumberForApi > 1 {
-                        if self.pageNumberForApi > self.modelGetPrayerPlacesResponse?.totalPages ?? 0 {
+                        if self.pageNumberForApi >= self.modelGetPrayerPlacesResponse?.totalPages ?? 0 {
                             return()
                         }
                     }
@@ -186,6 +186,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     var modelGetPrayerPlacesResponse: ModelFeaturedResponse? {
         didSet {
             DispatchQueue.main.async {
+                if self.modelGetPrayerPlacesResponse == nil {
+                    return()
+                }
                 if self.dontTriggerModelGetHomeRestaurantsResponseObservers {
                     self.dontTriggerModelGetHomeRestaurantsResponseObservers = false
                     return
@@ -310,6 +313,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     var modelGetHalalRestaurantResponse: ModelFeaturedResponse? {
         didSet {
             DispatchQueue.main.async {
+                if self.modelGetHalalRestaurantResponse == nil {
+                    return()
+                }
                 if self.modelGetHalalRestaurantResponse == nil {
                     self.tableViewReload()
                     return
@@ -536,7 +542,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         }
         else if selectedMenuCell == 1 {
             imageViewNoRecordFound.image = UIImage(named: "chefPlaceHolder")
-            labelNoRecordFound.text = "No Restaurant Found"
+            labelNoRecordFound.text = "No halal places found"
             if modelGetHalalRestaurantResponse?.totalRecords == 0 {
                 viewNoDataFound.isHidden = false
                 tableView.isHidden = true
@@ -555,7 +561,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         }
         else if selectedMenuCell == 3 {
             imageViewNoRecordFound.image = UIImage(named: "placeholderMosque")
-            labelNoRecordFound.text = "No Prayer Places Found"
+            labelNoRecordFound.text = "No prayer spaces found"
             if modelGetPrayerPlacesResponse?.totalRecords == 0 {
                 viewNoDataFound.isHidden = false
                 tableView.isHidden = true

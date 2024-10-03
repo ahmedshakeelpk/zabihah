@@ -360,6 +360,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         textFieldFilterResult.text = nil
         filterParametersHome = nil
         selectedCuisine = ""
+        modelGetPrayerPlacesResponse = nil
+        modelGetHalalRestaurantResponse = nil
+        listItems = []
         mapView.clear()
         selectedMenuCell = indexPath.item
     }

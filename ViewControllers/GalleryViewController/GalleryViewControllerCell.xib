@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="281" height="283"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyPrayer" translatesAutoresizingMaskIntoConstraints="NO" id="pYo-FZ-p4I">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyPrayer" translatesAutoresizingMaskIntoConstraints="NO" id="pYo-FZ-p4I">
                         <rect key="frame" x="0.0" y="0.0" width="281" height="283"/>
                     </imageView>
                 </subviews>

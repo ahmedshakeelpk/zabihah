@@ -37,7 +37,7 @@ class DeliveryBottomSheet: UIViewController {
             labelTitle.text = "Amenities"
         }
         else {
-            labelTitle.text = "Hours Of Operation"
+            labelTitle.text = "Hours Of operation"
         }
         DeliveryAmenitiesCell.register(tableView: tableView)
         DeliveryTimingCell.register(tableView: tableView)
