@@ -17,15 +17,8 @@ class HomePrayerPlacesCell: HomeBaseCell {
         }
     }
     var buttonFavouriteHandler: (() -> ())!
-    var modelMosqueResponseData: [HomeViewController.ModelRestuarantResponseData]! {
-        didSet {
-            DispatchQueue.main.async {
-                if self.modelMosqueResponseData == nil {
-                    self.collectionView.reloadData()
-                }
-            }
-        }
-    }
+    var modelMosqueResponseData: [HomeViewController.ModelRestuarantResponseData]!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

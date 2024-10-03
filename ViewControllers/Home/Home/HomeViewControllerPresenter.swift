@@ -192,11 +192,14 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let titleForHeader = (listItems[section]).sectionName
-        if titleForHeader == "" {
-            return 8
+        if listItems.count > 0 {
+            let titleForHeader = (listItems[section]).sectionName
+            if titleForHeader == "" {
+                return 8
+            }
+            return 60
         }
-        return 60
+        return 8
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -278,7 +281,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 myHeader.cuisineCount = cuisineCount
                 myHeader.selectedMenuCell = selectedMenuCell
                 myHeader.sectionName = "\((listItems[section]).sectionName ?? "")"
-                myHeader.modelGetHomeRestaurantsResponse = modelGetHomeRestaurantsResponseForHome
+                myHeader.modelGetHomeRestaurantsResponse = modelGetHomeRestaurantsResponseForHomeTab
                 myHeader.modelGetHalalRestaurantResponse = modelGetHalalRestaurantResponse
                 myHeader.buttonViewAllHandler = buttonViewAllHandler
             }
@@ -351,12 +354,12 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 //            DispatchQueue.main.async {
 //                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
 //            }
-        
+        print(indexPath.section)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let numbers = [0]
-              let _ = numbers[1]
-        return()
+//        let numbers = [0]
+//              let _ = numbers[1]
+//        return()
         if arrayNames[indexPath.item].lowercased() == "Pickup & delivery".lowercased() {
             return()
         }
@@ -365,7 +368,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         selectedCuisine = ""
         modelGetPrayerPlacesResponse = nil
         modelGetHalalRestaurantResponse = nil
-        listItems = []
         mapView.clear()
         selectedMenuCell = indexPath.item
     }
@@ -384,12 +386,11 @@ extension HomeViewController {
         viewMapViewBackGround.isHidden = true
         buttonMapViewListView.tag = 0
         setMapList()
-        listItems = []
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 224, data: nil),
-            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 224, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"]),
+            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
@@ -399,7 +400,7 @@ extension HomeViewController {
     func addFeaturedCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeFoodItemCell.nibName()) {
             var featuredRestuarantResponseData = [ModelRestuarantResponseData?]()
-            featuredRestuarantResponseData = modelGetHomeRestaurantsResponseForHome?.items ?? []
+            featuredRestuarantResponseData = modelGetHomeRestaurantsResponseForHomeTab?.items ?? []
             
             print(indexOf)
             let recordCount = featuredRestuarantResponseData.count
@@ -704,7 +705,7 @@ extension HomeViewController: HomeFoodItemSubCellDelegate, FindHalalFoodCellDele
         dontTriggerModelGetHomeRestaurantsResponseObservers = true
         if self.selectedMenuCell == 0 {
             if cellType is HomeFoodItemSubCell {
-                self.modelGetHomeRestaurantsResponseForHome?.items?[indexPath.item]?.isMyFavorite = isFavourite
+                self.modelGetHomeRestaurantsResponseForHomeTab?.items?[indexPath.item]?.isMyFavorite = isFavourite
             }
         }
         else if cellType is HomeRestaurantSubCell {

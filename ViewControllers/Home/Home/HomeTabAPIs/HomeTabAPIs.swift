@@ -60,8 +60,8 @@ extension HomeViewController {
         print(parameters)
         APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetHomeRestaurantsResponseForHome = nil
-            self.modelGetHomeRestaurantsResponseForHome = model
+            self.modelGetHomeRestaurantsResponseForHomeTab = nil
+            self.modelGetHomeRestaurantsResponseForHomeTab = model
         }
     }
     

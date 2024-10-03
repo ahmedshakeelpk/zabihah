@@ -198,7 +198,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 if self.selectedMenuCell != 3 {
                     return()
                 }
-                
+                self.setPrayerPlacesTabCell()
                 let recordCuisineCell = self.addCuisineCell()
                 self.listItems[0] = recordCuisineCell.0
                 let recordPrayerPlacesTabCell = self.addHomePrayerPlacesTabCell()
@@ -216,10 +216,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    var modelGetHomeRestaurantsResponseForHome: ModelFeaturedResponse? {
+    var modelGetHomeRestaurantsResponseForHomeTab: ModelFeaturedResponse? {
         didSet {
             DispatchQueue.main.async {
-                if self.modelGetHomeRestaurantsResponseForHome == nil {
+                if self.modelGetHomeRestaurantsResponseForHomeTab == nil {
                     self.tableViewReload()
                     return
                 }
@@ -267,16 +267,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             //Shakeel Ahmed
     }
     
-    func setHomeTabCell() {
-        listItems = []
-        listItems = [
-            HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
-            HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
-            HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 224, data: nil),
-            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "12 prayer spaces near you", rowHeight: 224, data: ["name": "Shahzaib Qureshi", "desc" : "Welcome"])
-            ]
-    }
-    
     var modelGetPrayerPlacesResponseForHomeTab: ModelFeaturedResponse? {
         didSet {
             DispatchQueue.main.async {
@@ -288,7 +278,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                     self.dontTriggerModelGetHomeRestaurantsResponseObservers = false
                     return
                 }
-                if self.selectedMenuCell != 3 {
+                if self.selectedMenuCell != 0 {
                     return()
                 }
                 self.setDataForHomeTab()
@@ -328,6 +318,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 if self.selectedMenuCell != 1 {
                     return()
                 }
+                self.setHalalTabCell()
                 let recordCuisineCell = self.addCuisineCell()
                 self.listItems[0] = recordCuisineCell.0
                 let recordFindHalalFoodCell = self.addFindHalalFoodCell()
@@ -342,7 +333,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    
     
     var modelGetUserResponseLocal: ModelGetUserProfileResponse? {
         didSet {
@@ -368,6 +358,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         mapView.settings.myLocationButton = true
         
         mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 130, right: 8)
+        
+        //Testsing for Crash
+//        let numbers = [0]
+//        let _ = numbers[1]
     }
     
     @objc func pulledRefreshControl() {
@@ -390,6 +384,27 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfiguration()
+    }
+    
+    func setHomeTabCell() {
+        listItems = [
+            HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomeRestaurantCell.nibName(), sectionName: "", rowHeight: 224, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "", rowHeight: 224, data: nil)
+        ]
+    }
+    func setHalalTabCell() {
+        listItems = [
+            HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+            HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
+        ]
+    }
+    func setPrayerPlacesTabCell() {
+        listItems = [
+            HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
+            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
+        ]
     }
 
     func setConfiguration() {
@@ -525,9 +540,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     
     func tableViewReload() {
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
         if selectedMenuCell == 0 {
-            let featureRestaurant = modelGetHomeRestaurantsResponseForHome?.totalRecords
+            let featureRestaurant = modelGetHomeRestaurantsResponseForHomeTab?.totalRecords
             let halalRestaurant = modelGetHalalRestaurantResponseForHomeTab?.totalRecords
             let prayerPlaces = modelGetPrayerPlacesResponseForHomeTab?.totalRecords
             imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
@@ -696,8 +713,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                     print("Section 2 has come into view!")
                 }
                 print("Section \(visibleSection)")
-                let titleForHeader = (listItems[visibleSection]).sectionName
-                labelSectionName.text = "\(titleForHeader ?? "")"
+                if listItems.count > 0 {
+                    let titleForHeader = (listItems[visibleSection]).sectionName
+                    labelSectionName.text = "\(titleForHeader ?? "")"
+                }
             }
         }
     }
