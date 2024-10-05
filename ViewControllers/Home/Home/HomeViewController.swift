@@ -426,7 +426,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     func setHalalTabCell() {
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
-            HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
+//            HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
+            HomeBaseCell.HomeListItem(identifier: HomeHalalTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
     }
     func setPrayerPlacesTabCell() {
@@ -469,6 +470,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         HomeRestaurantCell.register(tableView: tableView)
         HomeSectionHeaderCell.register(tableView: tableView)
         HomePrayerPlacesCell.register(tableView: tableView)
+        HomeHalalTabCell.register(tableView: tableView)
         FindHalalFoodCell.register(tableView: tableView)
         HomePrayerPlacesTabCell.register(tableView: tableView)
         

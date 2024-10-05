@@ -34,7 +34,6 @@ class HomeBaseCell: UITableViewCell {
         self.indexPath = indexPath
         self.data = data
     }
-
 }
 
 extension HomeBaseCell {

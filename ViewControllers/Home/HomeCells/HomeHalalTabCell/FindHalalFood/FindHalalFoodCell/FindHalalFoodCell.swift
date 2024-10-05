@@ -14,18 +14,16 @@ protocol FindHalalFoodCellDelegate: AnyObject {
 }
 
 class FindHalalFoodCell: HomeBaseCell {
-    @IBOutlet weak var stackViewComments: UIStackView!
-    @IBOutlet weak var stackViewReturning: UIStackView!
-    @IBOutlet weak var stackViewPhotos: UIStackView!
-    
-    
-    @IBOutlet weak var buttonCall: UIButton!
     struct ModelPostFavouriteRestaurantsResponse: Codable {
         let recordFound, success: Bool?
         let message, innerExceptionMessage: String?
         let token: String?
     }
     
+    @IBOutlet weak var stackViewComments: UIStackView!
+    @IBOutlet weak var stackViewReturning: UIStackView!
+    @IBOutlet weak var stackViewPhotos: UIStackView!
+    @IBOutlet weak var buttonCall: UIButton!
     @IBOutlet weak var viewBackGroundDelivery: UIView!
     @IBOutlet weak var labelRestaurantName: UILabel!
     @IBOutlet weak var viewCallMainBackGround: UIView!
@@ -49,7 +47,7 @@ class FindHalalFoodCell: HomeBaseCell {
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
     @IBOutlet weak var buttonOpenDirectionMap: UIButton!
-
+    
     var arrayNames = [String]()
     let arrayIconNames = ["home", "chefHatHome", "Pickup & delivery", "Prayer spaces"]
     

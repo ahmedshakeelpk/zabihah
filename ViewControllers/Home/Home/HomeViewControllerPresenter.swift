@@ -197,14 +197,39 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             if titleForHeader == "" {
                 return 8
             }
+//            if selectedMenuCell == 1 {
+//                if section == 0 {
+//                    return 60
+//                }
+//                else {
+//                    return 8
+//                }
+//            }
             return 60
         }
         return 8
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let heightForRow = (listItems[indexPath.section]).rowHeight ?? 0
-        return CGFloat(heightForRow)
+        if IPAD {
+            if selectedMenuCell == 1 {
+                if indexPath.section == 0 {
+                    let heightForRow = (listItems[indexPath.section]).rowHeight ?? 0
+                    return CGFloat(heightForRow)
+                }
+                var screenHeight = self.view.frame.height
+                screenHeight = screenHeight - 500
+                return screenHeight
+            }
+            else {
+                let heightForRow = (listItems[indexPath.section]).rowHeight ?? 0
+                return CGFloat(heightForRow)
+            }
+        }
+        else {
+            let heightForRow = (listItems[indexPath.section]).rowHeight ?? 0
+            return CGFloat(heightForRow)
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -231,7 +256,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 return 1
             }
             else {
-                return modelGetHalalRestaurantResponse?.items?.count ?? 0
+                if IPAD {
+                    return 1
+                }
+                else {
+                    return modelGetHalalRestaurantResponse?.items?.count ?? 0
+                }
             }
         }
         else if selectedMenuCell == 3 {
@@ -524,7 +554,7 @@ extension HomeViewController {
     
     
     func addFindHalalFoodCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
-        if let indexOf = findIndexOfIdentifier(identifier: FindHalalFoodCell.nibName()) {
+        if let indexOf = findIndexOfIdentifier(identifier: IPAD ? HomeHalalTabCell.nibName() : FindHalalFoodCell.nibName()) {
             var modelHalalRestuarantResponseData = [ModelRestuarantResponseData?]()
             modelHalalRestuarantResponseData = modelGetHalalRestaurantResponse?.items ?? []
             print(indexOf)
@@ -532,13 +562,18 @@ extension HomeViewController {
             if recordCount > 0 {
                 let data = modelHalalRestuarantResponseData as Any
                 let rowHeight = setIPadHeight(height: 260)
-                let identifier = FindHalalFoodCell.nibName()
+                let identifier = IPAD ? HomeHalalTabCell.nibName() : FindHalalFoodCell.nibName()
                 let sectionName = ""
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }
         }
-        return (HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+        if IPAD {
+            return (HomeBaseCell.HomeListItem(identifier: HomeHalalTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+        }
+        else {
+            return (HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+        }
     }
     func addCuisineCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
