@@ -91,7 +91,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                         return
                     }
                     if self.pageNumberForApi > 1 {
-                        if self.pageNumberForApi >= self.modelGetHalalRestaurantResponse?.totalPages ?? 0 {
+                        if self.pageNumberForApi > self.modelGetHalalRestaurantResponse?.totalPages ?? 0 {
                             return()
                         }
                     }
@@ -102,7 +102,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                         return
                     }
                     if self.pageNumberForApi > 1 {
-                        if self.pageNumberForApi >= self.modelGetPrayerPlacesResponse?.totalPages ?? 0 {
+                        if self.pageNumberForApi > self.modelGetPrayerPlacesResponse?.totalPages ?? 0 {
                             return()
                         }
                     }
@@ -345,7 +345,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     
     private var sideMenu: SideMenu!
-    let arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
+    var arrayNames: [String]!
     var listItems: [HomeBaseCell.HomeListItem]!
     var pullControl = UIRefreshControl()
     
@@ -383,7 +383,36 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        setConfiguration()
+        viewSectionNameBackGround.isHidden = true
+        let isLocationBottomSheet = UserDefaults.standard.value(forKey: "isLocationBottomSheet") ??  false
+        if isLocationBottomSheet as! Bool == true {
+            showLocationBottomSheet()
+        }
+        else {
+            setConfiguration()
+        }
+    }
+    
+    func showLocationBottomSheet() {
+        UserDefaults.standard.setValue(true, forKey: "isLocationBottomSheet")
+        let vc = UIStoryboard.init(name: StoryBoard.name.home.rawValue, bundle: nil).instantiateViewController(withIdentifier: "LocationDescriptionBottomSheet") as! LocationDescriptionBottomSheet
+        vc.buttonPrivacyPolicyHandler = {
+            self.navigateToPrivacyPolicy()
+            self.setConfiguration()
+        }
+        vc.buttonContinueHandler = {
+            self.setConfiguration()
+        }
+        self.present(vc, animated: true)
+    }
+    func navigateToPrivacyPolicy() {
+        let urlString = "https://www.zabihah.com/app/privacy"
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+        else {
+            showToast(message: "invalid social link please update in your profile")
+        }
     }
     
     func setHomeTabCell() {
@@ -408,7 +437,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
 
     func setConfiguration() {
-        viewSectionNameBackGround.isHidden = true
+        arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
+        
         mapView.delegate = self
         
         tableView.addSubview(pullControl) // not
