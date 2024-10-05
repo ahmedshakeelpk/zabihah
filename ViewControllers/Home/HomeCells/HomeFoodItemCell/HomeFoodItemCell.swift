@@ -51,7 +51,8 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var width = collectionView.frame.width/1.5
         if IPAD {
-            width = collectionView.frame.width/2.5
+            let percentage = UIDevice.current.orientation.isLandscape ? 3.5 : 2.5
+            width = collectionView.frame.width/percentage
         }
         return CGSize(width: width, height: 230)
     }

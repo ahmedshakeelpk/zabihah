@@ -307,7 +307,6 @@ class ProfileViewController: UIViewController {
 //            (alert: UIAlertAction!) -> Void in
 //        })
 //        
-//        
 //        if IPAD {
 //            //In iPad Change Rect to position Popover
 //            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)

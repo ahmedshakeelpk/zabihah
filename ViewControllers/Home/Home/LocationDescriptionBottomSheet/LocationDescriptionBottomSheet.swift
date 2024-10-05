@@ -27,7 +27,7 @@ class LocationDescriptionBottomSheet: UIViewController {
         viewButtonPrivacyPolicyBackGround.radius(radius: 8, color: .clrBlack, borderWidth: 1)
         viewButtonContinueBackGround.radius(radius: 8)
         let text = labelDescription.text!
-        labelDescription.setTwoSizeText(textFirst: text, textSecond: "privacy policy")
+        labelDescription.setTwoSizeText(textFirst: text, textSecond: "")
     }
     @IBAction func buttonContinue(_ sender: Any) {
         self.dismiss(animated: true) {
