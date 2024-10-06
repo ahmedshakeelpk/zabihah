@@ -11,8 +11,14 @@
 		6A00FF022C4CAC890006E324 /* FindHalalFoodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */; };
 		6A00FF032C4CAC890006E324 /* FindHalalFoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */; };
 		6A02DC202CB000F700562FD8 /* LocationDescriptionBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02DC1F2CB000F700562FD8 /* LocationDescriptionBottomSheet.swift */; };
-		6A02DC242CB1B4AA00562FD8 /* HomeHalalTabCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A02DC232CB1B4AA00562FD8 /* HomeHalalTabCell.xib */; };
-		6A02DC252CB1B4AA00562FD8 /* HomeHalalTabCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02DC222CB1B4AA00562FD8 /* HomeHalalTabCell.swift */; };
+		6A02DC242CB1B4AA00562FD8 /* HomeHalalTabIPadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A02DC232CB1B4AA00562FD8 /* HomeHalalTabIPadCell.xib */; };
+		6A02DC252CB1B4AA00562FD8 /* HomeHalalTabIPadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02DC222CB1B4AA00562FD8 /* HomeHalalTabIPadCell.swift */; };
+		6A02DC3F2CB2722300562FD8 /* HomeHalalTabIPadSubCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A02DC3D2CB2722300562FD8 /* HomeHalalTabIPadSubCell.xib */; };
+		6A02DC402CB2722300562FD8 /* HomeHalalTabIPadSubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02DC3E2CB2722300562FD8 /* HomeHalalTabIPadSubCell.swift */; };
+		6A02DC452CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02DC432CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.swift */; };
+		6A02DC462CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A02DC442CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.xib */; };
+		6A02DC492CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A02DC472CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.xib */; };
+		6A02DC4A2CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A02DC482CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.swift */; };
 		6A06C7952C6FE839006B5563 /* UpLoadPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A06C7942C6FE839006B5563 /* UpLoadPhotoCell.xib */; };
 		6A06C7962C6FE839006B5563 /* UpLoadPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A06C7932C6FE839006B5563 /* UpLoadPhotoCell.swift */; };
 		6A16A1A32C7EEEFE0096AE8C /* FAQs.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A16A1A22C7EEEFE0096AE8C /* FAQs.storyboard */; };
@@ -167,8 +173,14 @@
 		6A00FF002C4CAC890006E324 /* FindHalalFoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindHalalFoodCell.swift; sourceTree = "<group>"; };
 		6A00FF012C4CAC890006E324 /* FindHalalFoodCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FindHalalFoodCell.xib; sourceTree = "<group>"; };
 		6A02DC1F2CB000F700562FD8 /* LocationDescriptionBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionBottomSheet.swift; sourceTree = "<group>"; };
-		6A02DC222CB1B4AA00562FD8 /* HomeHalalTabCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHalalTabCell.swift; sourceTree = "<group>"; };
-		6A02DC232CB1B4AA00562FD8 /* HomeHalalTabCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeHalalTabCell.xib; sourceTree = "<group>"; };
+		6A02DC222CB1B4AA00562FD8 /* HomeHalalTabIPadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHalalTabIPadCell.swift; sourceTree = "<group>"; };
+		6A02DC232CB1B4AA00562FD8 /* HomeHalalTabIPadCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeHalalTabIPadCell.xib; sourceTree = "<group>"; };
+		6A02DC3D2CB2722300562FD8 /* HomeHalalTabIPadSubCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeHalalTabIPadSubCell.xib; sourceTree = "<group>"; };
+		6A02DC3E2CB2722300562FD8 /* HomeHalalTabIPadSubCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeHalalTabIPadSubCell.swift; sourceTree = "<group>"; };
+		6A02DC432CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePrayerPlacesTabIPadCell.swift; sourceTree = "<group>"; };
+		6A02DC442CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomePrayerPlacesTabIPadCell.xib; sourceTree = "<group>"; };
+		6A02DC472CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomePrayerPlacesTabIPadSubCell.xib; sourceTree = "<group>"; };
+		6A02DC482CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePrayerPlacesTabIPadSubCell.swift; sourceTree = "<group>"; };
 		6A06C7932C6FE839006B5563 /* UpLoadPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpLoadPhotoCell.swift; sourceTree = "<group>"; };
 		6A06C7942C6FE839006B5563 /* UpLoadPhotoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UpLoadPhotoCell.xib; sourceTree = "<group>"; };
 		6A16A1A22C7EEEFE0096AE8C /* FAQs.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FAQs.storyboard; sourceTree = "<group>"; };
@@ -407,11 +419,49 @@
 		6A02DC212CB1B43100562FD8 /* HomeHalalTabCell */ = {
 			isa = PBXGroup;
 			children = (
-				6A02DC222CB1B4AA00562FD8 /* HomeHalalTabCell.swift */,
-				6A02DC232CB1B4AA00562FD8 /* HomeHalalTabCell.xib */,
-				6A00FEF62C4CAB590006E324 /* FindHalalFood */,
+				6A02DC382CB2690700562FD8 /* IPadCell */,
+				6A02DC302CB2690600562FD8 /* IPhoneCell */,
 			);
 			path = HomeHalalTabCell;
+			sourceTree = "<group>";
+		};
+		6A02DC302CB2690600562FD8 /* IPhoneCell */ = {
+			isa = PBXGroup;
+			children = (
+				6A00FEF62C4CAB590006E324 /* FindHalalFood */,
+			);
+			path = IPhoneCell;
+			sourceTree = "<group>";
+		};
+		6A02DC382CB2690700562FD8 /* IPadCell */ = {
+			isa = PBXGroup;
+			children = (
+				6A02DC222CB1B4AA00562FD8 /* HomeHalalTabIPadCell.swift */,
+				6A02DC232CB1B4AA00562FD8 /* HomeHalalTabIPadCell.xib */,
+				6A02DC3E2CB2722300562FD8 /* HomeHalalTabIPadSubCell.swift */,
+				6A02DC3D2CB2722300562FD8 /* HomeHalalTabIPadSubCell.xib */,
+			);
+			path = IPadCell;
+			sourceTree = "<group>";
+		};
+		6A02DC412CB2739600562FD8 /* IPadCell */ = {
+			isa = PBXGroup;
+			children = (
+				6A02DC432CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.swift */,
+				6A02DC442CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.xib */,
+				6A02DC482CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.swift */,
+				6A02DC472CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.xib */,
+			);
+			path = IPadCell;
+			sourceTree = "<group>";
+		};
+		6A02DC422CB2739E00562FD8 /* IPhoneCell */ = {
+			isa = PBXGroup;
+			children = (
+				6A706E7B2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift */,
+				6A706E7C2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib */,
+			);
+			path = IPhoneCell;
 			sourceTree = "<group>";
 		};
 		6A16A1AC2C7EF8070096AE8C /* FAQsListViewController */ = {
@@ -821,8 +871,8 @@
 		6A706E7A2C64ECD80014FF85 /* HomePrayerPlacesTabCell */ = {
 			isa = PBXGroup;
 			children = (
-				6A706E7B2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift */,
-				6A706E7C2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib */,
+				6A02DC422CB2739E00562FD8 /* IPhoneCell */,
+				6A02DC412CB2739600562FD8 /* IPadCell */,
 			);
 			path = HomePrayerPlacesTabCell;
 			sourceTree = "<group>";
@@ -1219,7 +1269,7 @@
 				6AC092AE2C708C27003AB07D /* DeliveryTimingCell.xib in Resources */,
 				6AB93BE92C622EDD0045C195 /* MyFavouriteCell.xib in Resources */,
 				6A3AB5862C39703B0030F016 /* SideMenuViewCell.xib in Resources */,
-				6A02DC242CB1B4AA00562FD8 /* HomeHalalTabCell.xib in Resources */,
+				6A02DC242CB1B4AA00562FD8 /* HomeHalalTabIPadCell.xib in Resources */,
 				6AD0C0102C3BC55C0051D99A /* AddAddressFieldsCell.xib in Resources */,
 				6ACA066D2C57B9AB00EE8F43 /* SocialConnectCell.xib in Resources */,
 				6A3AB5752C3956E70030F016 /* Home.storyboard in Resources */,
@@ -1235,6 +1285,7 @@
 				6ACA065A2C5665AC00EE8F43 /* Delivery.storyboard in Resources */,
 				6AD39E5A2C3D7EA200BDAC05 /* HomeFoodItemCell.xib in Resources */,
 				6A706E7E2C64ED140014FF85 /* HomePrayerPlacesTabCell.xib in Resources */,
+				6A02DC462CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.xib in Resources */,
 				6AD563512C6A27B5004C7552 /* GalleryViewControllerCell.xib in Resources */,
 				6AD4776C2C5F4FD9004AAABE /* MarkerInfoView.xib in Resources */,
 				6A3AB59D2C3A80470030F016 /* AddressesCell.xib in Resources */,
@@ -1253,8 +1304,10 @@
 				6A3AB5912C39EE7F0030F016 /* SideMenuViewHeaderViewCell.xib in Resources */,
 				6A47482C2C74F47B005483B2 /* RatingViewControllerCell.xib in Resources */,
 				6A62693C2C3D3F1E00DA844F /* HomePrayerSpacesSubCell.xib in Resources */,
+				6A02DC3F2CB2722300562FD8 /* HomeHalalTabIPadSubCell.xib in Resources */,
 				6AD39E832C3E469000BDAC05 /* HomeCuisinesCell.xib in Resources */,
 				6AD0C01E2C3BF3F00051D99A /* AlertPopup.storyboard in Resources */,
+				6A02DC492CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.xib in Resources */,
 				6A3AB5932C3A61990030F016 /* SideMenuViewFooterViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1346,6 +1399,7 @@
 				6AD477762C61D459004AAABE /* HomeViewControllerPresenter.swift in Sources */,
 				6A6269252C3D163000DA844F /* LabelExtension.swift in Sources */,
 				6AD39E592C3D7EA200BDAC05 /* HomeFoodItemCell.swift in Sources */,
+				6A02DC402CB2722300562FD8 /* HomeHalalTabIPadSubCell.swift in Sources */,
 				6ABA2A462C805DFA00A74409 /* OpenMapDirections.swift in Sources */,
 				6A9BD3DC2C453AD0008BBDF5 /* AddAddressViewControllerModel.swift in Sources */,
 				6A3AB5732C3956DB0030F016 /* HomeViewController.swift in Sources */,
@@ -1360,6 +1414,7 @@
 				6A3AB5872C39703B0030F016 /* SideMenuViewCell.swift in Sources */,
 				6ACA066C2C57B9AB00EE8F43 /* SocialConnectCell.swift in Sources */,
 				6A3AB5982C3A7A2D0030F016 /* AddressesListViewController.swift in Sources */,
+				6A02DC452CB2743500562FD8 /* HomePrayerPlacesTabIPadCell.swift in Sources */,
 				6AD39E8B2C3E745200BDAC05 /* HomeFoodItemSubCuisineCell.swift in Sources */,
 				6A16E0002C36703B00E1383B /* ViewExtension.swift in Sources */,
 				6A28D8572C37DEEC00F5A95F /* EditNameViewController.swift in Sources */,
@@ -1376,7 +1431,8 @@
 				6A3AB56F2C3956A40030F016 /* SideTownModel.swift in Sources */,
 				6A4748292C74EFDB005483B2 /* RatingViewController.swift in Sources */,
 				6A706E7D2C64ED140014FF85 /* HomePrayerPlacesTabCell.swift in Sources */,
-				6A02DC252CB1B4AA00562FD8 /* HomeHalalTabCell.swift in Sources */,
+				6A02DC252CB1B4AA00562FD8 /* HomeHalalTabIPadCell.swift in Sources */,
+				6A02DC4A2CB2762100562FD8 /* HomePrayerPlacesTabIPadSubCell.swift in Sources */,
 				6A9BD3CE2C43C2E1008BBDF5 /* EditAddressViewControllerModel.swift in Sources */,
 				6A6FC3FC2C3572000050B6B2 /* AppDelegate.swift in Sources */,
 				6ACE9B652C4E2ECA005E39A4 /* HomeFilterViewController.swift in Sources */,

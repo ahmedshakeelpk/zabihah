@@ -212,13 +212,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if IPAD {
-            if selectedMenuCell == 1 {
+            if selectedMenuCell == 1 || selectedMenuCell == 3 {
                 if indexPath.section == 0 {
                     let heightForRow = (listItems[indexPath.section]).rowHeight ?? 0
                     return CGFloat(heightForRow)
                 }
                 var screenHeight = self.view.frame.height
-                screenHeight = screenHeight - 500
+                let tableViewHeight = self.tableView.frame.height
+                let requiredHeight = screenHeight - (tableViewHeight + 60 + 80)
+                screenHeight = screenHeight - requiredHeight
                 return screenHeight
             }
             else {
@@ -269,7 +271,12 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 return 1
             }
             else {
-                return modelGetPrayerPlacesResponse?.items?.count ?? 0
+                if IPAD {
+                    return 1
+                }
+                else {
+                    return modelGetPrayerPlacesResponse?.items?.count ?? 0
+                }
             }
         }
         else {
@@ -535,7 +542,7 @@ extension HomeViewController {
     }
     
     func addHomePrayerPlacesTabCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
-        if let indexOf = findIndexOfIdentifier(identifier: HomePrayerPlacesTabCell.nibName()) {
+        if let indexOf = findIndexOfIdentifier(identifier: IPAD ? HomePrayerPlacesTabIPadCell.nibName() : HomePrayerPlacesTabCell.nibName()) {
             var mosqueResponseData = [ModelRestuarantResponseData?]()
             mosqueResponseData = modelGetPrayerPlacesResponse?.items ?? []
             print(indexOf)
@@ -543,18 +550,18 @@ extension HomeViewController {
             if recordCount > 0 {
                 let data = mosqueResponseData as Any
                 let rowHeight = setIPadHeight(height: 260)
-                let identifier = HomePrayerPlacesTabCell.nibName()
+                let identifier = IPAD ? HomePrayerPlacesTabIPadCell.nibName() : HomePrayerPlacesTabCell.nibName()
                 let sectionName = ""
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }
         }
-        return (HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+        return (HomeBaseCell.HomeListItem(identifier: IPAD ? HomePrayerPlacesTabIPadCell.nibName() : HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
     }
     
     
     func addFindHalalFoodCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
-        if let indexOf = findIndexOfIdentifier(identifier: IPAD ? HomeHalalTabCell.nibName() : FindHalalFoodCell.nibName()) {
+        if let indexOf = findIndexOfIdentifier(identifier: IPAD ? HomeHalalTabIPadCell.nibName() : FindHalalFoodCell.nibName()) {
             var modelHalalRestuarantResponseData = [ModelRestuarantResponseData?]()
             modelHalalRestuarantResponseData = modelGetHalalRestaurantResponse?.items ?? []
             print(indexOf)
@@ -562,14 +569,14 @@ extension HomeViewController {
             if recordCount > 0 {
                 let data = modelHalalRestuarantResponseData as Any
                 let rowHeight = setIPadHeight(height: 260)
-                let identifier = IPAD ? HomeHalalTabCell.nibName() : FindHalalFoodCell.nibName()
+                let identifier = IPAD ? HomeHalalTabIPadCell.nibName() : FindHalalFoodCell.nibName()
                 let sectionName = ""
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }
         }
         if IPAD {
-            return (HomeBaseCell.HomeListItem(identifier: HomeHalalTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+            return (HomeBaseCell.HomeListItem(identifier: HomeHalalTabIPadCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
         }
         else {
             return (HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)

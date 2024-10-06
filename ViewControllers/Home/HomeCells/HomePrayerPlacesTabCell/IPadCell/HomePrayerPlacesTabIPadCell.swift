@@ -1,5 +1,5 @@
 //
-//  HomeHalalTabCell.swift
+//  HomePrayerTabIPadCell.swift
 //  zabihah
 //
 //  Created by Shakeel Ahmed on 05/10/2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeHalalTabCell: HomeBaseCell {
+class HomePrayerPlacesTabIPadCell: HomeBaseCell {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -24,7 +24,7 @@ class HomeHalalTabCell: HomeBaseCell {
         // Initialization code
         collectionView.delegate = self
         collectionView.dataSource = self
-        HomeRestaurantSubCell.register(collectionView: collectionView)
+        HomePrayerPlacesTabIPadSubCell.register(collectionView: collectionView)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
         collectionView.reloadData()
     }
@@ -42,7 +42,7 @@ class HomeHalalTabCell: HomeBaseCell {
     }
     
 }
-extension HomeHalalTabCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension HomePrayerPlacesTabIPadCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -62,7 +62,7 @@ extension HomeHalalTabCell: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeRestaurantSubCell.nibName(), for: indexPath) as! HomeRestaurantSubCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomePrayerPlacesTabIPadSubCell.nibName(), for: indexPath) as! HomePrayerPlacesTabIPadSubCell
         if self.indexPath != nil {
             cell.indexPath = indexPath
             cell.buttonFavouriteHandler = buttonFavouriteHandler
@@ -75,7 +75,7 @@ extension HomeHalalTabCell: UICollectionViewDataSource, UICollectionViewDelegate
 //            DispatchQueue.main.async {
 //                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
 //            }
-//        (cell as! HomeRestaurantSubCell).setData()
+//        (cell as! HomePrayerPlacesTabIPadSubCell).setData()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

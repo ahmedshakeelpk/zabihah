@@ -426,14 +426,13 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     func setHalalTabCell() {
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
-//            HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
-            HomeBaseCell.HomeListItem(identifier: HomeHalalTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
+            HomeBaseCell.HomeListItem(identifier: IPAD ? HomeHalalTabIPadCell.nibName() : FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
     }
     func setPrayerPlacesTabCell() {
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
-            HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
+            HomeBaseCell.HomeListItem(identifier: IPAD ? HomePrayerPlacesTabIPadCell.nibName() : HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
     }
 
@@ -469,11 +468,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         HomeCuisinesCell.register(tableView: tableView)
         HomeRestaurantCell.register(tableView: tableView)
         HomeSectionHeaderCell.register(tableView: tableView)
+        HomePrayerPlacesTabIPadCell.register(tableView: tableView)
         HomePrayerPlacesCell.register(tableView: tableView)
-        HomeHalalTabCell.register(tableView: tableView)
+        HomeHalalTabIPadCell.register(tableView: tableView)
         FindHalalFoodCell.register(tableView: tableView)
         HomePrayerPlacesTabCell.register(tableView: tableView)
-        
+
         //MARK: - Add Extra spacing in tableView
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
