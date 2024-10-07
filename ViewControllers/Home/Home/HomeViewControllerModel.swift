@@ -223,14 +223,11 @@ extension HomeViewController {
         let forceUpdate: Bool?
         
         var forceUpdateReadable: Bool? {
-            return false
+            return forceUpdate ?? false
         }
         var appVersionReadable: String? {
-            let tempVersion = "6.1.0"
-            
-//            let version = appVersion?.replacingOccurrences(of: "", with: ".") ?? "0"
-            let version = tempVersion.replacingOccurrences(of: "", with: ".") ?? "0"
-            return version
+//            let version = appVersion?.replacingOccurrences(of: "", with: ".") ?? "6.1.0"
+            return appVersion ?? "6.1.0"
         }
     }
 
