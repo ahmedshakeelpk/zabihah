@@ -105,7 +105,9 @@ class AddAddressViewController: UIViewController {
             }
         }
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        viewAddNewAddressBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -152,7 +154,6 @@ class AddAddressViewController: UIViewController {
         
         viewButtonBackBackGround.radius(radius: 8)
         viewSwitchDefaultAddressBackGround.radius(radius: 8)
-        viewAddNewAddressBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
         AddAddressFieldsCell.register(collectionView: collectionView)
         self.setLocation()
         textFieldDeliveryInstruction.addTarget(self, action: #selector(textFieldDeliveryInstructionEditingChanged), for: .editingChanged)

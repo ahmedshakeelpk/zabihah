@@ -384,13 +384,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewSectionNameBackGround.isHidden = true
-        let isLocationBottomSheet = UserDefaults.standard.value(forKey: "isLocationBottomSheet") ??  false
-        if isLocationBottomSheet as! Bool == true {
-            showLocationBottomSheet()
-        }
-        else {
-            setConfiguration()
-        }
+//        let isLocationBottomSheet = UserDefaults.standard.value(forKey: "isLocationBottomSheet") ??  false
+//        if isLocationBottomSheet as! Bool == true {
+//            showLocationBottomSheet()
+//        }
+//        else {
+//            setConfiguration()
+//        }
+        setConfiguration()
+        
+        let forceUpdate = ForceUpdateVersion()
+        forceUpdate.showForceUpdateAlert(viewController: self)
     }
     
     func showLocationBottomSheet() {
