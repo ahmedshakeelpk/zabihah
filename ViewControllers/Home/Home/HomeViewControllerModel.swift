@@ -219,6 +219,19 @@ extension HomeViewController {
     
     struct ModelUserConfigurationResponse: Codable {
         let distance: ModelUserConfigurationResponseData?
+        let appVersion: String?
+        let forceUpdate: Bool?
+        
+        var forceUpdateReadable: Bool? {
+            return false
+        }
+        var appVersionReadable: String? {
+            let tempVersion = "6.1.0"
+            
+//            let version = appVersion?.replacingOccurrences(of: "", with: ".") ?? "0"
+            let version = tempVersion.replacingOccurrences(of: "", with: ".") ?? "0"
+            return version
+        }
     }
 
     // MARK: - Distance

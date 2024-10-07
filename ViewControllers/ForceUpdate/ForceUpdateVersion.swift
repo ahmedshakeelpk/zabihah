@@ -12,6 +12,19 @@ class ForceUpdateVersion {
     
     var APP_ID = "id325383348"
     var viewController: UIViewController?
+    
+    func checkAppVersionAndUpdate(requiredVersion: String, viewController: UIViewController, isForceUpdate: Bool) {
+        // Get the current app version
+        if let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            
+            // Compare current version with required version
+            if currentVersion.compare(requiredVersion, options: .numeric) == .orderedAscending {
+                // Show force update alert if the current version is less than the required version
+                showForceUpdateAlert(viewController: viewController, isForceUpdate: isForceUpdate)
+            }
+        }
+    }
+    
     func showForceUpdateAlert(viewController: UIViewController, isForceUpdate: Bool) {
         self.viewController = viewController
         // Create the alert controller

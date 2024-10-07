@@ -64,6 +64,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 kModelUserConfigurationResponse = self.modelUserConfigurationResponse
                 self.locationManager.delegate = self
                 self.checkLocationServices()
+                
+                let forceUpdate = ForceUpdateVersion()
+                forceUpdate.checkAppVersionAndUpdate(requiredVersion: self.modelUserConfigurationResponse?.appVersionReadable ?? "0", viewController: self, isForceUpdate: self.modelUserConfigurationResponse?.forceUpdateReadable ?? false)
             }
             //Location Services
         }
@@ -392,9 +395,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
 //            setConfiguration()
 //        }
         setConfiguration()
-        
-        let forceUpdate = ForceUpdateVersion()
-        forceUpdate.showForceUpdateAlert(viewController: self)
     }
     
     func showLocationBottomSheet() {

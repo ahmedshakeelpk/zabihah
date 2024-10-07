@@ -8,6 +8,13 @@
 import UIKit
 
 class GalleryViewController: UIViewController {
+    @IBOutlet weak var buttonDelete: UIButton!
+    @IBOutlet weak var labelUserName: UILabel!
+    @IBOutlet weak var labelDate: UILabel!
+    @IBOutlet weak var labelAddress: UILabel!
+    @IBOutlet weak var labelRestaurant: UILabel!
+    @IBOutlet weak var imageViewRestaurant: UIImageView!
+    @IBOutlet weak var viewRestarurantDetailBackGround: UIView!
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var viewLeftArrowBackGround: UIView!
     @IBOutlet weak var viewRightArrowBackGround: UIView!
@@ -42,6 +49,9 @@ class GalleryViewController: UIViewController {
     
     @IBAction func buttonLeft(_ sender: Any) {
         leftArrowTapped()
+    }
+    @IBAction func buttonDelete(_ sender: Any) {
+        
     }
     
     func leftArrowTapped() {
