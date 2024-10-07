@@ -1610,7 +1610,6 @@
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Zabihah uses your location to help find halal places and prayer spaces near you";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Zabihah uses your location to help find halal places and prayer spaces near you";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to the photo library/camera. To enable users to upload photos when leaving reviews. They can either select from their gallery or capture images directly using the camera. To let users upload photos of restaurants, with the option to choose from their gallery or take pictures in real-time using the camera.";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We track your coarse (not precise) location to show you halal places nearby, ensuring a personalized experience tailored to your needs";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Login;
@@ -1655,7 +1654,6 @@
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Zabihah uses your location to help find halal places and prayer spaces near you";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Zabihah uses your location to help find halal places and prayer spaces near you";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to the photo library/camera. To enable users to upload photos when leaving reviews. They can either select from their gallery or capture images directly using the camera. To let users upload photos of restaurants, with the option to choose from their gallery or take pictures in real-time using the camera.";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We track your coarse (not precise) location to show you halal places nearby, ensuring a personalized experience tailored to your needs";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Login;
