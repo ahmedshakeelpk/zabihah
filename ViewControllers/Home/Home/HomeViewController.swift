@@ -10,6 +10,7 @@ import Alamofire
 import GoogleMaps
 import GooglePlaces
 import CoreLocation
+import AppTrackingTransparency
 
 class HomeViewController: UIViewController, UITextFieldDelegate {
     
@@ -395,6 +396,37 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
 //            setConfiguration()
 //        }
         setConfiguration()
+        
+        requestAppTrackingPermission()
+    }
+    
+    func requestAppTrackingPermission() {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                case .authorized:
+                    // User granted permission
+                    print("Tracking authorized")
+                    // You can now access the IDFA
+                    print("IDFA: \("idfa")")
+                case .denied:
+                    // User denied permission
+                    print("Tracking denied")
+                case .notDetermined:
+                    // User has not yet been asked
+                    print("Tracking not determined")
+                case .restricted:
+                    // Tracking restricted (e.g., due to parental controls)
+                    print("Tracking restricted")
+                @unknown default:
+                    // Handle other potential future cases
+                    print("Unknown status")
+                }
+            }
+        } else {
+            // Fallback for older versions
+            print("App Tracking Transparency is available on iOS 14 and above")
+        }
     }
     
     func showLocationBottomSheet() {
