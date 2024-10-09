@@ -23,7 +23,7 @@ class DeliveryDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         HomeMenuCell.register(collectionView: collectionViewType)
-        HomeFoodItemSubSuisineCell.register(collectionView: collectionViewCountry)
+        HomeFoodItemSubCuisineCell.register(collectionView: collectionViewCountry)
         FoodItemCollectionViewCell.register(collectionView: collectionViewFoodItem)
 
 
@@ -75,7 +75,7 @@ extension DeliveryDetailsViewController: UICollectionViewDataSource, UICollectio
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if (collectionViewCountry == collectionView) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubSuisineCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
             cell.labelName.text = arrayNames[indexPath.item]
             return cell
         }

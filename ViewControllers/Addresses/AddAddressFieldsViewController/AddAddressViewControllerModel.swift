@@ -10,6 +10,7 @@ import Foundation
 extension AddAddressViewController {
     // MARK: - ModelEditUserAddress
     struct ModelEditUserAddressResponse: Codable {
+        let title: String?
         let success: Bool?
         let message: String?
         let recordFound: Bool?

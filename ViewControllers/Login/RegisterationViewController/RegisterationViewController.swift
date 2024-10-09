@@ -34,9 +34,9 @@ class RegisterationViewController: UIViewController {
             fieldVilidation()
         }
     }
-    var modelGetBlobContainer: ModelGetBlobContainer? {
-        didSet {
-            print(modelGetBlobContainer?.token as Any)
+    var modelGetBlobToken: ModelGetBlobToken? {
+        didSet{
+            
         }
     }
     
@@ -46,7 +46,8 @@ class RegisterationViewController: UIViewController {
                 navigateToOtpLoginViewController()
             }
             else {
-                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError, buttonNames: [
+                let errorMessage = getErrorMessage(errorMessage: modelSendnotificationResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error!", message: errorMessage, iconName: .iconError, buttonNames: [
                     [
                         "buttonName": "Cancel",
                         "buttonBackGroundColor": UIColor.white,
@@ -76,14 +77,18 @@ class RegisterationViewController: UIViewController {
     var modelSignUpResponse: ModelSignUpResponse? {
         didSet {
             if modelSignUpResponse?.success ?? false {
-                if let token = modelSignUpResponse?.token {
-                    kAccessToken = token
-                    kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                if textFieldEmail.text! != "" && textFieldPhoneNumber.text != "" {
+                    sendnotification()
                 }
-                navigateToRootHomeViewController()
+                else {
+                    kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                    kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                    self.navigateToRootHomeViewController()
+                }
             }
             else {
-                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelSignUpResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error!", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -91,19 +96,38 @@ class RegisterationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfiguration()
+        getBlobToken()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
-        popViewController(animated: true)
+//        popViewController(animated: true)
+        let _ = popToViewController(viewController: LoginWithEmailOrPhoneViewController.self)
     }
     
     @IBAction func buttonEdit(_ sender: Any) {
-        funcMyActionSheet()
+        ImagePickerManager().pickImage(isProfileImage: true, self){ image in
+                //here is the image
+            self.imageViewUser.image = image
+            self.isImageUploaded = true
+        }
     }
     
     @IBAction func buttonContinue(_ sender: Any) {
+        if let token = self.modelGetBlobToken?.uri {
+            if isImageUploaded {
+                self.uploadOnBlob(token: token)
+            }
+            else {
+                self.userSignup()
+            }
+        }
+        else {
+            getBlobToken()
+        }
+        
+        return()
         if isOtpVerified {
-            if let token = self.modelGetBlobContainer?.token {
+            if let token = self.modelGetBlobToken?.uri {
                 if isImageUploaded {
                     self.uploadOnBlob(token: token)
                 }
@@ -112,7 +136,7 @@ class RegisterationViewController: UIViewController {
                 }
             }
             else {
-                getblobcontainer()
+                getBlobToken()
             }
         }
         else {
@@ -126,7 +150,6 @@ class RegisterationViewController: UIViewController {
         textFieldFirstName.addTarget(self, action: #selector(fieldVilidation), for: .editingChanged)
         fieldVilidation()
         
-        buttonAgree.tag = 1
         imageViewUser.circle()
         labelTermsAndConditions.setTwoColorWithUnderLine(textFirst: "I agree to ", textSecond: "terms and conditions.", colorFirst: .clrDarkBlue, colorSecond: .colorApp)
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapFunctionOnLabel))
@@ -145,7 +168,7 @@ class RegisterationViewController: UIViewController {
             textFieldPhoneNumber.text = stringPhoneEmail
             stackViewPhoneNumber.isHidden = true
         }
-        getblobcontainer()
+        getBlobToken()
     }
     @objc
     func tapFunctionOnLabel(sender:UITapGestureRecognizer) {
@@ -161,9 +184,9 @@ class RegisterationViewController: UIViewController {
         else if textFieldLastName.text == "" {
             isValid = false
         }
-        else if isFromEmail ? textFieldPhoneNumber.text == "" : textFieldEmail.text == "" {
-            isValid = false
-        }
+//        else if isFromEmail ? textFieldPhoneNumber.text == "" : textFieldEmail.text == "" {
+//            isValid = false
+//        }
 //        else if !isImageUploaded {
 //            isValid = false
 //        }
@@ -176,16 +199,13 @@ class RegisterationViewController: UIViewController {
     
     func navigateToOtpLoginViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
+        vc.isFromEmail = !(isFromEmail)
         vc.isFromRegistrationViewController = true
         vc.stringPhoneEmail = isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : textFieldEmail.text!
-        vc.isOtpSuccessFullHandler = {
-            self.isOtpVerified = true
-            if let token = self.modelGetBlobContainer?.token {
-                self.uploadOnBlob(token: token)
-            }
-            else {
-                self.userSignup()
-            }
+        vc.isOtpSuccessFullHandler = { first, second in
+            kDefaults.set(kAccessToken, forKey: "kAccessToken")
+            kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+            self.navigateToRootHomeViewController()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -221,42 +241,42 @@ class RegisterationViewController: UIViewController {
             "lastName": textFieldLastName.text!,
             "email": isFromEmail ? stringPhoneEmail : textFieldEmail.text!,
             "phone": isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : stringPhoneEmail,
-            "photo": imageUrl,
-            //            "photo": "https://zabihahblob.blob.core.windows.net/profileimage/742473352.835877.jpg",
-            "isNewsLetter": true
+            "profilePictureWebUrl": imageUrl!,
+            "isSubscribedToHalalOffersNotification": true,
+            "isSubscribedToHalalEventsNewsletter": true,
         ]
         
-        APIs.postAPI(apiName: .usersignup, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: ModelSignUpResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelSignUpResponse = model
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            
+            if statusCode ==  200 && responseData == nil {
+                let responseModel = ModelSignUpResponse(success: true, title: "", message: "", userResponseData: nil, recordFound: true, innerExceptionMessage: "",  token: "")
+                self.modelSignUpResponse = responseModel
+            }
+            else {
+                let model: ModelSignUpResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSignUpResponse = model
+            }
         }
     }
     
     func sendnotification() {
         let parameters: Parameters = [
-            "recipient": !isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
-            "device": isFromEmail ? "phone" : "email",
-            "validate": true //it will check if user exist in DB
+            "phone": isFromEmail ? textFieldPhoneNumber.getCompletePhoneNumber() : "",
+            "email": isFromEmail ? "" : textFieldEmail.text!,
+            "type": isFromEmail ? OtpRequestType.phone.rawValue : OtpRequestType.email.rawValue
         ]
         
-        APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             
-            let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelSendnotificationResponse = model
-        }
-    }
-    
-    func getblobcontainer() {
-        let parameters: Parameters = [
-            "containerName": "profileimage"
-        ]
-        
-        APIs.postAPI(apiName: .getblobcontainer, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+            if statusCode ==  200 && responseData == nil {
+                let responseModel = LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(title: "", recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                self.modelSendnotificationResponse = responseModel
+            }
+            else {
+                let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSendnotificationResponse = model
+            }
             
-            print(responseData)
-            print(success)
-            let model: ModelGetBlobContainer? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetBlobContainer = model
         }
     }
     
@@ -280,44 +300,12 @@ class RegisterationViewController: UIViewController {
         //        documentPicker.modalPresentationStyle = .formSheet
         //        self.present(documentPicker, animated: true, completion: nil)
     }
-    
-    func openGallary() {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.allowsEditing = false //If you want edit option set "true"
-        imagePickerController.sourceType = .photoLibrary
-        imagePickerController.delegate = self
-        self.present(imagePickerController, animated: true, completion: nil)
-    }
-    
-    
-    
-    //Mark:- Choose Image Method
-    func funcMyActionSheet() {
-        var myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        myActionSheet.view.tintColor = UIColor.black
-        let galleryAction = UIAlertAction(title: "Gallery", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            self.openGallary()
-        })
-        let documentAction = UIAlertAction(title: "Documents", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            self.openDocumentPicker()
-        })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        
-        if IPAD {
-            //In iPad Change Rect to position Popover
-            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
+
+    func getBlobToken() {
+        APIs.getAPI(apiName: .getBlobTokenForUser, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBlobToken = model
         }
-        myActionSheet.addAction(galleryAction)
-//        myActionSheet.addAction(documentAction)
-        myActionSheet.addAction(cancelAction)
-        print("Action Sheet call")
-        
-        self.present(myActionSheet, animated: true, completion: nil)
     }
 }
 
@@ -370,7 +358,7 @@ extension RegisterationViewController {
     func uploadImageToBlobStorage(token: String, image: UIImage) {
         //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
         let currentDate1 = Date()
-        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".png"
         
         let tempToken = token.components(separatedBy: "?")
         
@@ -382,7 +370,7 @@ extension RegisterationViewController {
         azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
             if success {
                 print("Image uploaded successfully!")
-                if let imageURL = azureBlobStorage.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
+                if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
                     print("Image URL: \(imageURL)")
                     DispatchQueue.main.async {
                         self.userSignup(imageUrl: "\(imageURL)")
@@ -398,58 +386,58 @@ extension RegisterationViewController {
     }
 }
 
-extension RegisterationViewController: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    //Document
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        if let filename = urls.first?.lastPathComponent {
-            do {
-                for url in urls {
-                    let fileData = try Data(contentsOf: url)
-                }
-            } catch {
-                print("no data")
-            }
-        }
-        
-        // display picked file in a view
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageViewUser.image = image
-            isImageUploaded = true
+//extension RegisterationViewController: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+//    //Document
+//    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+//        if let filename = urls.first?.lastPathComponent {
+//            do {
+//                for url in urls {
+//                    let fileData = try Data(contentsOf: url)
+//                }
+//            } catch {
+//                print("no data")
+//            }
+//        }
+//        
+//        // display picked file in a view
+//        controller.dismiss(animated: true, completion: nil)
+//    }
+//    
+//    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+//        controller.dismiss(animated: true, completion: nil)
+//    }
+//    
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+//            imageViewUser.image = image
+//            isImageUploaded = true
+////            if let imageData = image.jpegData(compressionQuality: 0.75) {
+////                //                let fileData = imageData
+////            }
+////            
+////            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+////                //                let fileName = imageUrl.lastPathComponent
+////            }
+//        }
+//        self.dismiss(animated: true, completion: nil)
+//    }
+//    //Image Picker
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+//        if let image = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage {
+//            imageViewUser.image = image
 //            if let imageData = image.jpegData(compressionQuality: 0.75) {
 //                //                let fileData = imageData
 //            }
 //            
-//            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+//            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL.rawValue] as? URL {
 //                //                let fileName = imageUrl.lastPathComponent
 //            }
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-    //Image Picker
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage {
-            imageViewUser.image = image
-            if let imageData = image.jpegData(compressionQuality: 0.75) {
-                //                let fileData = imageData
-            }
-            
-            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL.rawValue] as? URL {
-                //                let fileName = imageUrl.lastPathComponent
-            }
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-}
+//        }
+//        self.dismiss(animated: true, completion: nil)
+//    }
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        dismiss(animated: true, completion: nil)
+//    }
+//}
 
 

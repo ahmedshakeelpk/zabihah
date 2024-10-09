@@ -33,12 +33,54 @@
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummyFood" translatesAutoresizingMaskIntoConstraints="NO" id="1tD-Og-qgE">
                                                         <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                                     </imageView>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFT-MX-6Zo">
+                                                        <rect key="frame" x="60" y="0.0" width="35" height="35"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eTN-iY-yPe">
+                                                                <rect key="frame" x="5" y="5" width="25" height="25"/>
+                                                                <subviews>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trashAddresses" translatesAutoresizingMaskIntoConstraints="NO" id="raA-JO-Ohj">
+                                                                        <rect key="frame" x="5" y="5" width="15" height="15"/>
+                                                                    </imageView>
+                                                                </subviews>
+                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="raA-JO-Ohj" firstAttribute="leading" secondItem="eTN-iY-yPe" secondAttribute="leading" constant="5" id="0pl-zC-UkT"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="raA-JO-Ohj" secondAttribute="bottom" constant="5" id="NLf-YO-AVI"/>
+                                                                    <constraint firstAttribute="height" constant="25" id="QQ6-lf-b4K"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="raA-JO-Ohj" secondAttribute="trailing" constant="5" id="j90-QV-8hS"/>
+                                                                    <constraint firstItem="raA-JO-Ohj" firstAttribute="top" secondItem="eTN-iY-yPe" secondAttribute="top" constant="5" id="lXn-YQ-9L9"/>
+                                                                    <constraint firstAttribute="width" constant="25" id="vdK-4d-ID5"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ROC-FO-wVE">
+                                                                <rect key="frame" x="0.0" y="0.0" width="35" height="35"/>
+                                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                <connections>
+                                                                    <action selector="buttonCancel:" destination="bRW-Rr-4Ej" eventType="touchUpInside" id="JLV-6G-3wr"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="35" id="4sb-83-0PJ"/>
+                                                            <constraint firstItem="ROC-FO-wVE" firstAttribute="top" secondItem="ZFT-MX-6Zo" secondAttribute="top" id="C42-hY-1WJ"/>
+                                                            <constraint firstItem="eTN-iY-yPe" firstAttribute="centerY" secondItem="ZFT-MX-6Zo" secondAttribute="centerY" id="GbQ-gB-pMI"/>
+                                                            <constraint firstAttribute="bottom" secondItem="ROC-FO-wVE" secondAttribute="bottom" id="OCV-4H-PPZ"/>
+                                                            <constraint firstItem="eTN-iY-yPe" firstAttribute="centerX" secondItem="ZFT-MX-6Zo" secondAttribute="centerX" id="UXQ-mC-aql"/>
+                                                            <constraint firstAttribute="trailing" secondItem="ROC-FO-wVE" secondAttribute="trailing" id="kJj-p5-SG9"/>
+                                                            <constraint firstAttribute="width" constant="35" id="l4D-GO-b6e"/>
+                                                            <constraint firstItem="ROC-FO-wVE" firstAttribute="leading" secondItem="ZFT-MX-6Zo" secondAttribute="leading" id="r9f-cQ-Gp1"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="1tD-Og-qgE" firstAttribute="top" secondItem="ifD-8y-CXe" secondAttribute="top" id="6Z8-Il-pwl"/>
                                                     <constraint firstItem="1tD-Og-qgE" firstAttribute="leading" secondItem="ifD-8y-CXe" secondAttribute="leading" id="95f-Yv-soj"/>
                                                     <constraint firstAttribute="bottom" secondItem="1tD-Og-qgE" secondAttribute="bottom" id="DhF-oQ-Pbi"/>
+                                                    <constraint firstItem="ZFT-MX-6Zo" firstAttribute="top" secondItem="ifD-8y-CXe" secondAttribute="top" id="GgV-rX-43n"/>
+                                                    <constraint firstAttribute="trailing" secondItem="ZFT-MX-6Zo" secondAttribute="trailing" id="HyE-0p-r5c"/>
                                                     <constraint firstAttribute="trailing" secondItem="1tD-Og-qgE" secondAttribute="trailing" id="uQx-bX-HCY"/>
                                                 </constraints>
                                             </view>
@@ -75,14 +117,18 @@
             </constraints>
             <size key="customSize" width="134" height="107"/>
             <connections>
+                <outlet property="buttonCancel" destination="ROC-FO-wVE" id="YYW-aw-PY6"/>
                 <outlet property="imageViewPhoto" destination="1tD-Og-qgE" id="PbQ-8L-Gxc"/>
                 <outlet property="stackViewBackGround" destination="k41-cH-6XR" id="BJL-nt-dlI"/>
+                <outlet property="viewCancelButtonBackGround" destination="eTN-iY-yPe" id="LYg-lx-zzZ"/>
+                <outlet property="viewCancelButtonMainBackGround" destination="ZFT-MX-6Zo" id="H08-Me-BBr"/>
             </connections>
             <point key="canvasLocation" x="202.29007633587784" y="18.30985915492958"/>
         </collectionViewCell>
     </objects>
     <resources>
         <image name="dummyFood" width="226" height="124"/>
+        <image name="trashAddresses" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

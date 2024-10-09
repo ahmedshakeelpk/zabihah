@@ -17,6 +17,7 @@ extension RegisterationViewController {
     
     struct ModelSignUpResponse: Codable {
         let success: Bool?
+        let title: String?
         let message: String?
         let userResponseData: UserResponseData?
         let recordFound: Bool?
@@ -34,7 +35,6 @@ extension RegisterationViewController {
     }
     
     struct ModelGetBlobContainer: Codable {
-        let token: String
-        let containerName, storageAccountURL: String
+        let uri: String
     }
 }

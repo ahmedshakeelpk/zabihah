@@ -32,7 +32,9 @@ class EditEmailPhoneViewController: UIViewController {
                 navigateToOtpEmailViewController()
             }
             else {
-                showAlertCustomPopup(title: "Error!", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelSendnotificationResponse?.title ?? "")
+
+                showAlertCustomPopup(title: "Error!", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -62,7 +64,7 @@ class EditEmailPhoneViewController: UIViewController {
                 return()
             }
         }
-        sendnotification()
+        editprofile()
     }
     
     func setConfiguration() {
@@ -107,51 +109,75 @@ class EditEmailPhoneViewController: UIViewController {
         vc.isFromEmail = isFromEmail
         vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
         vc.isOtpSuccessFullHandler = {
-            self.editprofile()
+            self.popViewController(animated: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.editProfileResponseHandler?()
+            }
+//            self.editprofile()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func sendnotification() {
-        let parameters: [String: Any] = [
-            "recipient": isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
-            "device": isFromEmail ? "email" : "phone",
-            "validate": true //it will check if user exist in DB
+        let parameters: Parameters = [
+            "phone": isFromEmail ? "" : textFieldPhoneNumber.getCompletePhoneNumber(),
+            "email": isFromEmail ? textFieldEmail.text! : "",
+            "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
         ]
         
-        APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelSendnotificationResponse = model
+        APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let model = LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(title: "", recordFound: nil, success: true, message: "", innerExceptionMessage: nil)
+                self.modelSendnotificationResponse = model
+            }
+            else {
+                let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSendnotificationResponse = model
+            }
         }
     }
     
     var modelEditProfileResponse: EditNameViewController.ModelEditProfileResponse? {
         didSet {
             if modelEditProfileResponse?.success ?? false {
-                if self.isFromEmail {
-                    modelGetUserProfileResponse?.userResponseData?.email = self.textFieldEmail.text!
-                }
-                else {
-                    modelGetUserProfileResponse?.userResponseData?.phone = self.textFieldPhoneNumber.getCompletePhoneNumber()
-                }
-                self.popViewController(animated: true)
+                sendnotification()
+//                if self.isFromEmail {
+//                    kModelGetUserProfileResponse?.email = self.textFieldEmail.text!
+//                }
+//                else {
+//                    kModelGetUserProfileResponse?.phone = self.textFieldPhoneNumber.getCompletePhoneNumber()
+//                }
+//                self.popViewController(animated: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.editProfileResponseHandler?()
                 }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelEditProfileResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelEditProfileResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
     
     func editprofile() {
         let parameters: Parameters = [
-            isFromEmail ? "email" : "phone" : isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
+            "firstname": kModelGetUserProfileResponse?.firstName ?? "",
+            "lastName": kModelGetUserProfileResponse?.lastName! ?? "",
+            "email": isFromEmail ? textFieldEmail.text! : kModelGetUserProfileResponse?.email ?? "",
+            "phone": isFromEmail ? kModelGetUserProfileResponse?.phone ?? "": textFieldPhoneNumber.getCompletePhoneNumber(),
+            "profilePictureWebUrl": kModelGetUserProfileResponse?.profilePictureWebUrl ?? "",
+            "isSubscribedToHalalOffersNotification": kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "",
+            "isSubscribedToHalalEventsNewsletter": kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? ""
         ]
-        APIs.postAPI(apiName: .editprofile, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
-            let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelEditProfileResponse = model
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let model = EditNameViewController.ModelEditProfileResponse(success: true, title: "", message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
+                self.modelEditProfileResponse = model
+            }
+            else {
+                let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelEditProfileResponse = model
+            }
         }
     }
 }

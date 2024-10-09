@@ -171,8 +171,4 @@ class AlertPopupMessage: UIViewController {
             self.complitionButtonAction?(buttonName)
         }
     }
-    
-    
-
-
 }

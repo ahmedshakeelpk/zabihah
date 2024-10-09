@@ -9,6 +9,7 @@ import UIKit
 
 class DeliveryBottomSheet: UIViewController {
 
+    @IBOutlet weak var viewDummyButton: UIView!
     @IBOutlet weak var buttonContinue: UIButton!
     @IBOutlet weak var viewBackGround: UIView!
     @IBOutlet weak var tableView: TableViewContentSized!
@@ -17,13 +18,13 @@ class DeliveryBottomSheet: UIViewController {
     @IBOutlet weak var buttonDismiss: UIButton!
     
     var isAmenities: Bool! = false
-    var amenitiesData: [DeliveryDetailsViewController3.Amenities]? {
+    var amenitiesData: [HomeViewController.Amenity?]? {
         didSet {
             
         }
     }
     
-    var timingOpenClose: [DeliveryDetailsViewController3.Timing]?
+    var timingOpenClose: [HomeViewController.Timing?]?
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -31,11 +32,12 @@ class DeliveryBottomSheet: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewDummyButton.circle()
         if isAmenities {
             labelTitle.text = "Amenities"
         }
         else {
-            labelTitle.text = "Hours Of Operation"
+            labelTitle.text = "Hours of operation"
         }
         DeliveryAmenitiesCell.register(tableView: tableView)
         DeliveryTimingCell.register(tableView: tableView)
@@ -63,18 +65,39 @@ extension DeliveryBottomSheet: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func getAmenityType(name: String) -> String {
+        if "prayerspace".lowercased() == name.lowercased() {
+            return "Prayer space available"
+        }
+        else if "restroom".lowercased() == name.lowercased() {
+            return "Restroom available"
+        }
+        else if "parkingspace".lowercased() == name.lowercased() {
+            return "Parking space available"
+        }
+        else if "togo".lowercased() == name.lowercased() {
+            return "Takeout available"
+        }
+        else {
+            return name
+        }
+     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isAmenities {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DeliveryAmenitiesCell") as! DeliveryAmenitiesCell
-            cell.labelTitle.text = amenitiesData?[indexPath.row].title
+            cell.labelTitle.text = getAmenityType(name: amenitiesData?[indexPath.row]?.type ?? "")
+            
+            
+            cell.imageViewIcon.setImage(urlString: amenitiesData?[indexPath.row]?.iconImageWebUrl ?? "", placeHolderIcon: "amenitiesPlaceHolder")
+            
             return cell
         }
         else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DeliveryTimingCell") as! DeliveryTimingCell
-            cell.labelDay.text = timingOpenClose?[indexPath.row].day
-            cell.labelTiming.text = is12HourFormat ? "\("\((timingOpenClose?[indexPath.row].openTime ?? "").time12String)") \("\("\((timingOpenClose?[indexPath.row].closeTime ?? "").time12String)")")"
+            cell.labelDay.text = timingOpenClose?[indexPath.row]?.dayOfWeek
+            cell.labelTiming.text = is12HourFormat ? "\("\((timingOpenClose?[indexPath.row]?.openingTime ?? "").time12String)") to \("\("\((timingOpenClose?[indexPath.row]?.closingTime ?? "").time12String)")")"
             :
-            "\("\((timingOpenClose?[indexPath.row].openTime ?? "").time24String)") \("\("\((timingOpenClose?[indexPath.row].closeTime ?? "").time24String)")")"
+            "\("\((timingOpenClose?[indexPath.row]?.openingTime ?? "").time24String)") to \("\("\((timingOpenClose?[indexPath.row]?.closingTime ?? "").time24String)")")"
 
             return cell
         }
@@ -112,7 +135,10 @@ extension String {
             return "Invalid Time String"
         }
         dateFormatter.dateFormat = "hh:mm a"
-        return dateFormatter.string(from: date)
+        let formattedDate = dateFormatter.string(from: date)
+        let lowercaseFormattedDate = formattedDate.lowercased()
+
+        return lowercaseFormattedDate
     }
     
     // Converts 12-hour format to 24-hour format
@@ -126,6 +152,9 @@ extension String {
             return "Invalid Time String"
         }
         dateFormatter.dateFormat = "hh:mm a"
-        return dateFormatter.string(from: date)
+        let formattedDate = dateFormatter.string(from: date)
+        let lowercaseFormattedDate = formattedDate.lowercased()
+
+        return lowercaseFormattedDate
     }
 }

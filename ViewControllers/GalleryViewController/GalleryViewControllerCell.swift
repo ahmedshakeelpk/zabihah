@@ -13,6 +13,9 @@ class GalleryViewControllerCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        imageViewGalleryImage.radius(radius: 8, color: .lightGray, borderWidth: 1)
+        
     }
 
 }

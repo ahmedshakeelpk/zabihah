@@ -8,16 +8,64 @@
 import Foundation
 
 struct APIPath {
-    //original ur
-    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com/"
+    //UAT
+//    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com:81/v1/"
+    
+    //Production
+    public static let  baseUrl = "https://api.zabihah.com/v1/"
+//    Api Url:
+//    Swagger Url: https://api.zabihah.com/swagger/index.html
     
 }
 struct APIsName {
     enum name: String {
         //MARK:- API
-        case sendnotification = "api/Notification/sendnotification"
-        case verifyOtp = "api/Otp/verifyOtp"
-        case getblobcontainer = "api/Blob/getblobcontainer"
+        case request = "User/otp/request"
+        case verifyOtp = "User/otp/verify"
+        case mySelf = "User/my"
+        case updateUser = "User"
+        case profilePicture = "User/profile-picture/download-url"
+        case edituseraddress = "User/address"
+        case searchRestaurant = "Restaurant/search"
+        case searchMosque = "Mosque/search"
+        
+        case searchCuisineRestaurant = "Restaurant/cuisine/search"
+        case searchCuisineMosque = "Mosque/cuisine/search"
+        
+        //MARK:- Config
+        case userConfiguration = "Configuration"
+        //MARK:- Favorite
+//        case favourite = "Favorite/{placeId}"
+        case favourite = "Favorite/{placeId}"
+        case favouriteDelete = "Favorite/by/place/{placeId}"
+        case getFavourite = "Favorite/my"
+        //MARK:- Faq
+        case faq = "Faq"
+
+        //MARK:- Blob
+        case uploadPhotoForRestaurant = "Restaurant/photo"
+        case getBlobTokenForRestaurant = "Restaurant/photo/generate/sas/upload"
+        
+        case uploadPhotoForMosque = "Mosque/photo"
+
+    
+        case getBlobTokenForUser = "User/profile-picture/generate/sas/upload"
+        case getBlobTokenForReview = "Review/photo/generate/sas/upload"
+        case getBlobTokenForMosque = "Mosque/photo/generate/sas/upload"
+
+        //MARK:- Review
+        case postReview = "Review"
+        case getMyReview = "Review/my"
+        case getGoogleReview = "Review/google"
+        case getYelpReview = "Review/yelp"
+        case deleteReview = "Review/{id}"
+
+        
+        
+        
+        
+        
+        
         
         //MARK:- Restaurant
         case gethomerestaurants = "api/Restaurant/gethomerestaurants"
@@ -30,30 +78,24 @@ struct APIsName {
         
         
         
-        //MARK:- Favorite
-        case postfavouriterestaurants = "api/Favorite/postfavouriterestaurants"
-        case getfavouritebyuser = "api/Favorite/getfavouritebyuser"
         
-        //MARK:- Config
-        case userConfiguration = "api/Config/userConfiguration"
+        
 
         
         
         //MARK:- V1
-        case usersignup = "v1/User/usersignup"
         case getuser = "v1/User/getuser"
-        case deleteuser = "v1/User/deleteuser"
-        case editprofile = "v1/User/editprofile"
-        case getuseraddress = "v1/User/getuseraddress"
-        case adduseraddress = "v1/User/adduseraddress"
-        case edituseraddress = "v1/User/edituseraddress"
-        case deleteuseraddress = "v1/User/deleteuseraddress"
         
-        //MARK:- Faq
-        case getfaq = "api/Faq/getfaq"
         
         //MARK:- Blob
         case AddImageUrlsToPhoto = "api/Blob/AddImageUrlsToPhoto"
+        
+        //MARK:- Review
+        case editreview = "api/Review/editreview"
+        case getbytype = "api/Review/getbytype"
+        case getbyuser = "api/Review/getbyuser"
+        case deletereview = "api/Review/deletereview"
+        
 
         
         

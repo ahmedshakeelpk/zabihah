@@ -9,6 +9,7 @@
 extension DeliveryDetailsViewController3 {
     // MARK: - ModelGetRestaurantDetailResponse
     struct ModelGetRestaurantDetailResponse: Codable {
+        let title: String?
         var restuarantResponseData: RestuarantResponseData?
         let social: [Social]?
         let timing: [Timing]?
@@ -36,6 +37,8 @@ extension DeliveryDetailsViewController3 {
         let returning: Int?
         var isFavorites: Bool?
         let name: String?
+        let type: String?
+        let tags: String?
     }
 
     // MARK: - Social

@@ -14,6 +14,7 @@ extension UIViewController {
      view.addSubview(colouredTopBlack)
      colouredTopBlack.translatesAutoresizingMaskIntoConstraints = false
      colouredTopBlack.backgroundColor = color
+        colouredTopBlack.tintColor = color
 
      NSLayoutConstraint.activate([
         colouredTopBlack.topAnchor.constraint(equalTo: view.topAnchor),
@@ -22,6 +23,24 @@ extension UIViewController {
     ])
   }
 }
+//extension UIViewController {
+//    func setStatusBarTopColor(color: UIColor) {
+//        // Add a view for the status bar background color
+//        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
+//        statusBarView.backgroundColor = color
+//        view.addSubview(statusBarView)
+//
+//        // Change the navigation bar color
+//        if let navController = navigationController {
+//            let appearance = UINavigationBarAppearance()
+//            appearance.configureWithOpaqueBackground()
+//            appearance.backgroundColor = color
+//            appearance.shadowColor = .clear // Remove the shadow for a uniform look
+//            navController.navigationBar.standardAppearance = appearance
+//            navController.navigationBar.scrollEdgeAppearance = appearance
+//        }
+//    }
+//}
 
 extension UIViewController {
 //    func pushViewController(toStoryboard: StoryBoard.name, toViewController: T) {
@@ -192,18 +211,26 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func dialNumber(number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
+    func itself<T>(_ value: T) -> T {
+        return value
+    }
+    
+    func dialNumber(isMapDirection: Bool? = false, isPrayerPlaces: Bool, name: String, number : String, isActionSheet: Bool? = nil, completion: ((String?) -> Void)? = nil) {
         if isActionSheet ?? false {
-            if number == "" {
-                completion?("viewdetails")
+            
+            actionSheetForCall(isMapDirection: isMapDirection, isPrayerPlaces: isPrayerPlaces, name: name, number: number) { clickOn in
+                completion?(clickOn)
             }
-            else {
-                actionSheetForCall(number: number) {clickOn in
-                    if clickOn == "viewdetails" {
-                        completion?(clickOn)
-                    }
-                }
-            }
+//            if number == "" {
+//                completion?("viewdetails")
+//            }
+//            else {
+//                actionSheetForCall(number: number) {clickOn in
+//                    if clickOn == "viewdetails" {
+//                        completion?(clickOn)
+//                    }
+//                }
+//            }
         }
         else {
             self.callNow(number: number) {actionType in
@@ -227,16 +254,26 @@ extension UIViewController {
         }
     }
     //Mark:- Choose Action Sheet
-    func actionSheetForCall(number : String, completion: ((String?) -> Void)? = nil) {
-        var myActionSheet = UIAlertController(title: "Details!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
+    func actionSheetForCall(isMapDirection: Bool? = false, isPrayerPlaces: Bool, name: String, number : String, completion: ((String?) -> Void)? = nil) {
+        navigateToDeliveryDetailsPopUpViewController(isMapDirection: isMapDirection, isPrayerPlaces: isPrayerPlaces, name: name, number: number) { clickOn in
+            completion?(clickOn)
+        }
+        
+        return
+        var myActionSheet = UIAlertController(title: "Options!", message: "", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
-        let callAction = UIAlertAction(title: "Call", style: .destructive, handler: {
+        let callAction = UIAlertAction(title: "“Call this place", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             self.callNow(number: number)
         })
-        let viewDetailsAction = UIAlertAction(title: "View Details", style: .destructive, handler: {
+        let viewDetailsAction = UIAlertAction(title: "View details", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             completion?("viewdetails")
+        })
+        
+        let viewMapDirectionAction = UIAlertAction(title: "Get directions", style: .destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            completion?("mapdirection")
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
@@ -247,9 +284,43 @@ extension UIViewController {
             //In iPad Change Rect to position Popover
             myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
         }
+        
         myActionSheet.addAction(callAction)
         myActionSheet.addAction(viewDetailsAction)
+        myActionSheet.addAction(viewMapDirectionAction)
         myActionSheet.addAction(cancelAction)
         self.present(myActionSheet, animated: true, completion: nil)
+        
+    }
+    
+    func navigateToDeliveryDetailsPopUpViewController(isMapDirection: Bool? = false, isPrayerPlaces: Bool? = false, name: String, number: String, completion: ((String?) -> Void)? = nil) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsPopUpViewController") as! DeliveryDetailsPopUpViewController
+        
+        vc.titleName = name
+        if isPrayerPlaces ?? false {
+            
+        }
+        vc.isRestaurantIcon = !(isPrayerPlaces ?? false)
+        vc.isMosqueIcon = isPrayerPlaces ?? false
+        vc.isMapIcon = isMapDirection!
+        vc.isCallIcon = !(number == "" || number == " ")
+        vc.tappedOnCallHandler = {
+            self.callNow(number: number)
+        }
+        vc.tappedOnDetailViewHandler = {
+            completion?("viewdetails")
+        }
+        vc.tappedOnMapHandler = {
+            completion?("mapdirection")
+        }
+        self.present(vc, animated: true)
+    }
+    
+}
+
+extension UIViewController {
+    func enableSwipeToPop() {
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
 }

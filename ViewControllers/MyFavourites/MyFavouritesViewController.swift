@@ -10,6 +10,8 @@ import Alamofire
 import GooglePlaces
 
 class MyFavouritesViewController: UIViewController {
+    
+    @IBOutlet weak var viewButtonTabBackGround: UIView!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
     @IBOutlet weak var imageViewMosque: UIImageView!
     @IBOutlet weak var stackViewButtonTabBackGround: UIStackView!
@@ -31,33 +33,32 @@ class MyFavouritesViewController: UIViewController {
 
         }
     }
-    var modelGetFavouriteByUserResponse: ModelGetFavouriteByUserResponse? {
+    var modelGetFavouriteResponse: ModelGetFavouriteResponse? {
         didSet {
-            if modelGetFavouriteByUserResponse?.halalRestuarantResponseData?.count ?? 0 > 0 {
+            DispatchQueue.main.async {
+                self.tableViewReload()
             }
-            tableViewReload()
         }
     }
     
     func tableViewReload() {
-        tableView.reloadData()
-        if tableView.visibleCells.count == 0 {
-            viewNoDataFoundBackGround.isHidden = false
-            tableView.isHidden = true
-            if buttonRestaurant.tag == 1 {
-                imageViewNoRecordFound.image = UIImage(named: "placeholderRestaurantSubIcon")
-                imageViewNoRecordFound.tintColor = .clrUnselectedImage
-                labelNoRecordFound.text = "No Restaurant Found"
-            }
-            else {
-                imageViewNoRecordFound.image = UIImage(named: "placeholderMosque")
-                imageViewNoRecordFound.tintColor = .clrUnselectedImage
-                labelNoRecordFound.text = "No Prayer Space Found"
+        viewNoDataFoundBackGround.isHidden = false
+        tableView.isHidden = true
+        if buttonRestaurant.tag == 1 {
+            if modelGetFavouriteResponse?.items?.count ?? 0 > 0 {
+                tableView.isHidden = false
+                viewNoDataFoundBackGround.isHidden = true
             }
         }
         else {
-            viewNoDataFoundBackGround.isHidden = true
-            tableView.isHidden = false
+            if modelGetFavouriteResponse?.items?.count ?? 0 > 0 {
+                tableView.isHidden = false
+                viewNoDataFoundBackGround.isHidden = true
+            }
+        }
+        self.tableView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.tableView.reloadData()
         }
     }
     
@@ -65,21 +66,30 @@ class MyFavouritesViewController: UIViewController {
         didSet {
             print(modelPostFavouriteDeleteResponse as Any)
             if modelPostFavouriteDeleteResponse?.success ?? false {
-                self.getFavouriteByUser()
+                self.getFavourite()
             }
             else {
                 self.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteDeleteResponse?.message ?? "", iconName: .iconError)
             }
         }
     }
-
+    var pullControl = UIRefreshControl()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        stackViewButtonTabBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 6)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewTitle.backgroundColor = .colorApp
         viewNoDataFoundBackGround.isHidden = true
         MyFavouriteCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
-        stackViewButtonTabBackGround.setShadow(radius: 6)
-        imageViewNoRecordFound.isHidden = false
+//        stackViewButtonTabBackGround.setShadow(radius: 6)
+        viewButtonTabBackGround.backgroundColor = .clear
+        viewButtonTabBackGround.setShadow(radius: 6)
+        
+        viewNoDataFoundBackGround.isHidden = false
         viewBottomLinePrayerPlaces.isHidden = true
         buttonRestaurant.tag = 1
         tableView.contentInset = UIEdgeInsets(top: 30, left: 0, bottom: 20, right: 0)
@@ -89,7 +99,19 @@ class MyFavouritesViewController: UIViewController {
         imageViewRestaurant.tintColor = .colorApp
         imageViewMosque.tintColor = .clrUnselectedImage
         buttonRestaurant.tag = 1
-        getFavouriteByUser()
+        getFavourite()
+        
+        pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        pullControl.addTarget(self, action: #selector(pulledRefreshControl), for: UIControl.Event.valueChanged)
+        tableView.addSubview(pullControl) // not
+        tableView.refreshControl?.tintColor = .clear
+    }
+    
+    @objc func pulledRefreshControl() {
+        getFavourite()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.pullControl.endRefreshing()
+        }
     }
 
     @IBOutlet weak var viewBottomLineRestaurants: UIView!
@@ -98,89 +120,117 @@ class MyFavouritesViewController: UIViewController {
         viewBottomLinePrayerPlaces.isHidden = true
         viewBottomLineRestaurants.isHidden = false
         buttonRestaurant.tag = 1
+        buttonPrayerPlaces.tag = 0
         imageViewRestaurant.tintColor = .colorApp
         imageViewMosque.tintColor = .clrUnselectedImage
 //        tableViewReload()
-        getFavouriteByUser()
+        getFavourite()
     }
     
     @IBAction func buttonPrayerPlaces(_ sender: Any) {
         viewBottomLinePrayerPlaces.isHidden = false
         viewBottomLineRestaurants.isHidden = true
         buttonRestaurant.tag = 0
+        buttonPrayerPlaces.tag = 1
         imageViewRestaurant.tintColor = .clrUnselectedImage
         imageViewMosque.tintColor = .colorApp
 //        tableViewReload()
-        getFavouriteByUser()
+        getFavourite()
     }
     
     @IBAction func buttonBack(_ sender: Any) {
         popViewController(animated: true)
     }
-    
+
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        vc.newAddressAddedHandler = {
-            self.getFavouriteByUser()
+        vc.newAddressAddedHandler = { (address, location) in
+            self.getFavourite()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func getFavouriteByUser() {
-        let parameters: Parameters = [
-            "page": favouritePageNumber,
-            "type": buttonRestaurant.tag == 1 ? "rest" : "prayer"
+    
+    func getFavourite() {
+        let type = buttonRestaurant.tag == 1 ? "Restaurant" : "Mosque"
+        let parameters = [
+            "page": "\(favouritePageNumber)",
+            "pageSize": "20",
+            "type": "\(type)"
         ]
-        APIs.postAPI(apiName: .getfavouritebyuser, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
-            let model: ModelGetFavouriteByUserResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetFavouriteByUserResponse = model
+        
+        APIs.getAPI(apiName: .getFavourite, parameters: parameters, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelGetFavouriteResponse? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                self.modelGetFavouriteResponse = model
+            }
         }
     }
     
-    func deleteUserAddress(index: Int) {
-        var deleteID = ""
-        var type = ""
-        if buttonRestaurant.tag == 1 {
-            deleteID = modelGetFavouriteByUserResponse?.halalRestuarantResponseData?[index].id ?? "0"
-            type = "rest"
-        }
-        else {
-            deleteID = modelGetFavouriteByUserResponse?.prayerSpacesResponseData?[index].id ?? "0"
-            type = "prayer"
-        }
-        
+    func deleteFavouritePlaces(index: Int) {
         let parameters = [
-            "Id": deleteID,
-            "isMark": false,
-            "type" : type
-        ] as [String : Any]
-       
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: FindHalalFoodCell.ModelPostFavouriteDeleteResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteDeleteResponse = model
+            "placeId": modelGetFavouriteResponse?.items?[index]?.place?.id ?? "0"
+        ]
+        APIs.getAPI(apiName: .favouriteDelete, parameters: parameters, isPathParameters: true, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
+        }
+    }
+    
+    var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
+        didSet {
+            DispatchQueue.main.async {
+                self.getFavourite()
+            }
         }
     }
     
     func navigateToAddAddressViewControllerFromEditButton(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         vc.addressEditHandler = { location in
-            self.getFavouriteByUser()
+            self.getFavourite()
         }
         vc.isEditAddress = true
 //        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[index]
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func buttonDeleteAddress(index: Int) {
-        actionSheetLogout(index: index)
+    func buttonDeleteFavourite(index: Int) {
+        navigateToProfileDeleteViewController(index: index)
+    }
+    
+    func navigateToProfileDeleteViewController(index: Int) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
+        vc.stringTitle = ""
+//        vc.stringTitle = "Delete Favourite!"
+        let recordModel: HomeViewController.ModelRestuarantResponseData!
+
+        if buttonRestaurant.tag == 1 {
+            recordModel = modelGetFavouriteResponse?.items?[index]
+        }
+        else {
+            recordModel = modelGetFavouriteResponse?.items?[index]
+        }
+        
+        vc.stringSubTitle = "Are you sure you want to delete \(recordModel?.place?.name ?? "") from favorite places?         "
+        vc.stringDescription = ""
+        vc.stringButtonDelete = "Yes, delete"
+        vc.stringButtonCancel = "Cancel"
+        vc.buttonDeleteHandler = {
+            print("delete button press")
+            self.deleteFavouritePlaces(index: index)
+        }
+        self.present(vc, animated: true)
     }
     
     //Mark:- Choose Action Sheet
-    func actionSheetLogout(index: Int) {
-        var myActionSheet = UIAlertController(title: "Delete Favourite!", message: "Are you sure you want to delete favourite item?", preferredStyle: UIAlertController.Style.actionSheet)
+    func actionSheetFavouriteDelete(index: Int) {
+        var myActionSheet = UIAlertController(title: "Delete Favourite?", message: "Are you sure you want to delete favorite item?", preferredStyle: UIAlertController.Style.actionSheet)
         myActionSheet.view.tintColor = UIColor.black
         let galleryAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
-            self.deleteUserAddress(index: index)
+            self.deleteFavouritePlaces(index: index)
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
@@ -202,7 +252,7 @@ class MyFavouritesViewController: UIViewController {
     var modelEditUserAddressResponse: AddAddressViewController.ModelEditUserAddressResponse? {
         didSet {
             if modelEditUserAddressResponse?.success ?? false {
-                getFavouriteByUser()
+                getFavourite()
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelEditUserAddressResponse?.message ?? "", iconName: .iconError)
@@ -215,29 +265,20 @@ class MyFavouritesViewController: UIViewController {
 extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if buttonRestaurant.tag == 1 {
-            return modelGetFavouriteByUserResponse?.halalRestuarantResponseData?.count ?? 0
-        }
-        else {
-            return modelGetFavouriteByUserResponse?.prayerSpacesResponseData?.count ?? 0
-        }
+        return modelGetFavouriteResponse?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyFavouriteCell") as! MyFavouriteCell
         
-        let recordModel: ModelGetFavouriteByUserResponseData!
-        if buttonRestaurant.tag == 1 {
-            recordModel = modelGetFavouriteByUserResponse?.halalRestuarantResponseData?[indexPath.row]
-        }
-        else {
-            recordModel = modelGetFavouriteByUserResponse?.prayerSpacesResponseData?[indexPath.row]
-        }
+        var recordModel: HomeViewController.ModelRestuarantResponseData!
+        recordModel = modelGetFavouriteResponse?.items?[indexPath.row]
         
-        cell.halalRestuarantResponseData = recordModel
+        cell.selectedIndex = buttonRestaurant.tag == 1 ? 0 : 1
+        cell.modelGetFavouriteResponseData = recordModel
         cell.index = indexPath.row
         cell.selectedAddressIndex = selectedIndex
-        cell.buttonDeleteHandler = buttonDeleteAddress
+        cell.buttonDeleteHandler = buttonDeleteFavourite
         cell.buttonCheckHandler = buttonCheckHandler
         
         return cell
@@ -245,26 +286,28 @@ extension MyFavouritesViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
-//        if buttonRestaurant.tag == 0 {
-//            let recordModel = modelGetFavouriteByUserResponse?.halalRestuarantResponseData?[indexPath.row]
-//        }
-//        else {
-//            let recordModel = modelGetFavouriteByUserResponse?.prayerSpacesResponseData?[indexPath.row]
-//        }
-        
-        
         selectedIndex = indexPath.row
-//        for controller in self.navigationController!.viewControllers as Array {
-//            if controller.isKind(of: HomeViewController.self) {
-//                if let targetViewController = controller as? HomeViewController {
-//                    targetViewController.getuser()
-////                    if let model = modelGetUserAddressResponse?.userAddressesResponseData?[indexPath.row] {
-//////                        targetViewController.selectedAddress(modelUserAddressesResponseData: model)
-////                    }
-//                    self.navigationController!.popToViewController(controller, animated: true)
-//                }
-//                break
-//            }
-//        }
+        navigateToDeliveryDetailsViewController(indexPath: indexPath)
+    }
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
+        vc.delegate = self
+        
+        vc.isPrayerPlace = buttonPrayerPlaces.tag == 1
+        vc.selectedMenuCell = 0
+        vc.userLocation = kUserCurrentLocation
+        var recordModel = modelGetFavouriteResponse?.items?[indexPath.row]
+        modelGetFavouriteResponse?.items?[indexPath.row]?.id = recordModel?.place?.id ?? ""
+        vc.modelRestuarantResponseData = modelGetFavouriteResponse?.items?[indexPath.row]
+        if buttonPrayerPlaces.tag == 1 {
+            vc.isPrayerPlace = true
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension MyFavouritesViewController: DeliveryDetailsViewController3Delegate {
+    func changeFavouriteStatusFromDetails(isFavourite: Bool, indexPath: IndexPath) {
+        
     }
 }

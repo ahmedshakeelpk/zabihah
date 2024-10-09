@@ -10,6 +10,7 @@ import GooglePlaces
 import Cosmos
 
 class HomeFilterViewController: UIViewController {
+    @IBOutlet weak var viewTitleGrayImage: UIView!
     
     @IBOutlet weak var sliderRange: UISlider!
     @IBOutlet weak var starRatingView: CosmosView!
@@ -24,8 +25,8 @@ class HomeFilterViewController: UIViewController {
 //            labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))ml"
 //            
 //            if kModelUserConfigurationResponse != nil {
-//                rangeSlider.maximumValue = Double(kModelUserConfigurationResponse.distanceValue ?? 0)
-//                labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+//                rangeSlider.maximumValue = Double(kModelUserConfigurationResponse?.distanceValue ?? 0)
+//                labelRangeEnd.text = "\(Int(rangeSlider.maximumValue))\(kModelUserConfigurationResponse?.distanceUnit ?? "ml")"
 //            }
 //        }
 //    }
@@ -46,8 +47,8 @@ class HomeFilterViewController: UIViewController {
     @IBOutlet weak var buttonCross: UIButton!
     @IBOutlet weak var stackViewHalalAlCohal: UIStackView!
 
-    var filterParametersHome: [String: Any]!
-    var buttonFilterHandler: (([String: Any]) -> ())!
+    var filterParametersHome: HomeViewController.ModelFilterRequest!
+    var buttonFilterHandler: ((HomeViewController.ModelFilterRequest) -> ())!
     var location: CLLocationCoordinate2D? {
         didSet {
             
@@ -60,29 +61,50 @@ class HomeFilterViewController: UIViewController {
 
         }
     }
-    
+
+    override func viewDidAppear(_ animated: Bool) {
+        viewBackGround.roundCorners(corners: [.topRight, .topLeft], radius: 20)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewTitleGrayImage.circle()
         
-        viewBackGround.roundCorners(corners: [.topRight, .topLeft], radius: 20)
         getStarRating()
         setSliderRange()
+        let km = (kModelUserConfigurationResponse?.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
         if filterParametersHome != nil {
-            if let radius = filterParametersHome["radius"] as? String {
-                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+            
+            if let radius = filterParametersHome.radius {
+                labelRangeEnd.text = "\(radius) \(km)"
                 
                 sliderRange.value = Float(radius) ?? 0
             }
-            if let rating = filterParametersHome["rating"] as? String {
-                labelStarRating.text = rating
-                starRatingView.rating = Double(rating) ?? 0
+            if let rating = filterParametersHome.rating {
+                labelStarRating.text = "\(rating)"
+                starRatingView.rating = Double(rating)
             }
-            if let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool {
+            if let isAlCoholic = filterParametersHome.isalcoholic {
                 switchHideAlcoholPlaces.isOn = isAlCoholic
             }
-            if let isHalal = filterParametersHome["isHalal"] as? Bool {
+            if let isHalal = filterParametersHome.isHalal{
                 switchHideHalalPlaces.isOn = isHalal
             }
+                
+//            if let radius = filterParametersHome["radius"] as? String {
+//                labelRangeEnd.text = "\(radius)\(kModelUserConfigurationResponse?.distanceUnit ?? "mi")"
+//
+//                sliderRange.value = Float(radius) ?? 0
+//            }
+//            if let rating = filterParametersHome["rating"] as? String {
+//                labelStarRating.text = rating
+//                starRatingView.rating = Double(rating) ?? 0
+//            }
+//            if let isAlCoholic = filterParametersHome["isalcoholic"] as? Bool {
+//                switchHideAlcoholPlaces.isOn = isAlCoholic
+//            }
+//            if let isHalal = filterParametersHome["isHalal"] as? Bool {
+//                switchHideHalalPlaces.isOn = isHalal
+//            }
         }
         if selectedMenuCell == 3 {
             stackViewHalalAlCohal.isHidden = true
@@ -98,9 +120,10 @@ class HomeFilterViewController: UIViewController {
         labelRangeEnd.text = "\(Int(sliderRange?.value ?? 0))" //Default
         
         if kModelUserConfigurationResponse != nil {
-            sliderRange.maximumValue = Float(Double(kModelUserConfigurationResponse.distanceValue ?? 0))
+            sliderRange.maximumValue = Float(Double(kModelUserConfigurationResponse?.distance?.readableDistance ?? 0))
             sliderRange.value = sliderRange.maximumValue
-            labelRangeEnd.text = "\(Int(sliderRange.value))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+            let km = (kModelUserConfigurationResponse?.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
+            labelRangeEnd.text = "\(Int(sliderRange.value)) \(km)"
         }
     }
     
@@ -110,20 +133,26 @@ class HomeFilterViewController: UIViewController {
         }
     }
     @IBAction func sliderRange(_ sender: UISlider) {
-        labelRangeEnd.text = "\(Int(sender.value))\(kModelUserConfigurationResponse.distanceUnit ?? "ml")"
+        let km = (kModelUserConfigurationResponse?.distance?.readableUnit ?? "").lowercased() == HomeViewController.DistanceUnit.kilometers.rawValue.lowercased() ? "km" : "mi"
+        labelRangeEnd.text = "\(Int(sender.value)) \(km)"
     }
     @IBAction func buttonFilter(_ sender: Any) {
         self.dismiss(animated: true) {
-            let parameters = [
-                "lat": self.location?.latitude ?? 0,
-                "long": self.location?.longitude ?? 0,
-                "radius": self.labelRangeEnd.text!.getIntegerValue(),
-                "rating": self.labelStarRating.text!,
-                "isalcoholic": self.switchHideAlcoholPlaces.isOn,
-                "isHalal": self.switchHideHalalPlaces.isOn
-            ] as! [String: Any]
+//            let parameters = [
+//                "lat": self.location?.latitude ?? 0,
+//                "long": self.location?.longitude ?? 0,
+//                "radius": self.labelRangeEnd.text!.getIntegerValue(),
+//                "rating": self.labelStarRating.text!,
+//                "isalcoholic": self.switchHideAlcoholPlaces.isOn,
+//                "isHalal": self.switchHideHalalPlaces.isOn
+//            ] as! [String: Any]
+            let parameter = HomeViewController.ModelFilterRequest(
+                radius: self.labelRangeEnd.text!.getIntegerValue(),
+                rating: Int(Double(self.labelStarRating.text!) ?? 0),
+                isalcoholic: self.switchHideAlcoholPlaces.isOn,
+                isHalal: self.switchHideHalalPlaces.isOn)
             
-            self.buttonFilterHandler?(parameters)
+            self.buttonFilterHandler?(parameter)
         }
     }
     
@@ -137,3 +166,52 @@ class HomeFilterViewController: UIViewController {
 }
 
 
+
+class CustomSlider: UISlider {
+    
+    @IBInspectable var trackHeight: CGFloat = 8
+    
+    @IBInspectable var thumbRadius: CGFloat = 25
+    
+    // Custom thumb view which will be converted to UIImage
+    // and set as thumb. You can customize it's colors, border, etc.
+    private lazy var thumbView: UIView = {
+        let thumb = UIView()
+        thumb.backgroundColor = .white//thumbTintColor
+        thumb.layer.borderWidth = 1
+        thumb.layer.borderColor = UIColor.colorApp.cgColor
+        return thumb
+    }()
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let thumb = thumbImage(radius: thumbRadius)
+        setThumbImage(thumb, for: .normal)
+        setThumbImage(thumb, for: .highlighted)
+    }
+    
+    private func thumbImage(radius: CGFloat) -> UIImage {
+        // Set proper frame
+        // y: radius / 2 will correctly offset the thumb
+        
+        thumbView.frame = CGRect(x: 0, y: radius / 2, width: radius, height: radius)
+        thumbView.layer.cornerRadius = radius / 2
+        
+        // Convert thumbView to UIImage
+        // See this: https://stackoverflow.com/a/41288197/7235585
+        
+        let renderer = UIGraphicsImageRenderer(bounds: thumbView.bounds)
+        return renderer.image { rendererContext in
+            thumbView.layer.render(in: rendererContext.cgContext)
+        }
+    }
+    
+    override func trackRect(forBounds bounds: CGRect) -> CGRect {
+        // Set custom track height
+        // As seen here: https://stackoverflow.com/a/49428606/7235585
+        var newRect = super.trackRect(forBounds: bounds)
+        newRect.size.height = trackHeight
+        return newRect
+    }
+    
+}

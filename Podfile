@@ -1,10 +1,10 @@
 # Uncomment the next line to define a global platform for your project
- platform :ios, '13.0'
+# platform :ios, '13.0'
 
 target 'zabihah' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  
+
   # Pods for zabihah
   
   pod 'Alamofire'
@@ -15,19 +15,14 @@ target 'zabihah' do
   
   #https://github.com/chronotruck/FlagPhoneNumber
   
-  pod 'GoogleMaps'
-  pod 'GooglePlaces'
+  pod 'GoogleMaps', '~> 7.4'
+  pod 'GooglePlaces', '~> 7.4'
   pod 'FirebaseAnalytics'
+  pod 'Firebase/Crashlytics'
   
   #Azure Blob Storage ImageUpload
   #https://learn.microsoft.com/en-us/previous-versions/azure/storage/blobs/storage-ios-how-to-use-blob-storage#cocoapod
   pod 'AZSClient'
-  
-  
-  
-  
-  
-  
   
   post_install do |installer|
     installer.pods_project.targets.each do |target|
@@ -42,3 +37,4 @@ target 'zabihah' do
     end
   end
 end
+

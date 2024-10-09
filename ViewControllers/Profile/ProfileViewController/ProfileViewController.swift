@@ -10,6 +10,9 @@ import Alamofire
 
 class ProfileViewController: UIViewController {
 
+    @IBOutlet weak var imageViewEditEmail: UIImageView!
+    @IBOutlet weak var imageViewEditPhoneNumber: UIImageView!
+    
     @IBOutlet weak var buttonEditProfilePhoto: UIButton!
     @IBOutlet weak var imageViewProfile: UIImageView!
     @IBOutlet weak var labelName: UILabel!
@@ -21,6 +24,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var labelPhone: UILabel!
     @IBOutlet weak var textFieldPhone: UITextField!
     @IBOutlet weak var viewButtonEditBackGround: UIView!
+    @IBOutlet weak var viewProfileImageBackGround: UIView!
 
     
     @IBOutlet weak var viewBackGroundNameTitle: UIView!
@@ -53,30 +57,20 @@ class ProfileViewController: UIViewController {
             switchOffers.onTintColor = .colorApp
         }
     }
-    @IBOutlet weak var switchEvents: UISwitch!{
+    @IBOutlet weak var switchHalalEvents: UISwitch!{
         didSet{
-            switchEvents.onTintColor = .colorApp
+            switchHalalEvents.onTintColor = .colorApp
         }
     }
     @IBOutlet weak var viewTextFieldNameMainBackGround: UIView!
     @IBOutlet weak var viewTextFieldEmailMainBackGround: UIView!
     @IBOutlet weak var viewTextFieldPhoneNumberMainBackGround: UIView!
     
-    var modelGetBlobContainer: RegisterationViewController.ModelGetBlobContainer? {
-        didSet {
-            print(modelGetBlobContainer?.token as Any)
-        }
-    }
+    
     var isUserImageUpdateCall: Bool? = false
     var modelEditProfileResponse: EditNameViewController.ModelEditProfileResponse? {
         didSet {
-            modelGetUserResponseLocal?.userResponseData?.isNewsLetterSubcription = switchEvents.isOn
-            modelGetUserResponseLocal?.userResponseData?.isUpdateSubcription = switchOffers.isOn
-            
-            if isUserImageUpdateCall ?? false {
-                isUserImageUpdateCall = false
-                getuser()
-            }
+            getuser()
         }
     }
     
@@ -90,26 +84,34 @@ class ProfileViewController: UIViewController {
 //                }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelGetDeleteUserResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelGetDeleteUserResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
 
     var modelGetUserResponseLocal: HomeViewController.ModelGetUserProfileResponse? {
         didSet {
-            modelGetUserProfileResponse = modelGetUserResponseLocal
-//            setData()
+            kModelGetUserProfileResponse = modelGetUserResponseLocal
+            setData()
+        }
+    }
+    
+    var modelGetBlobToken: ModelGetBlobToken? {
+        didSet{
+            
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageViewProfile.radius(color: .white, borderWidth: 4)
+        viewProfileImageBackGround.setShadow(radius: viewProfileImageBackGround.frame.height / 2)
 
         stackViewSocialLogin.isHidden = true
         viewTextFieldNameMainBackGround.isHidden = true
         viewTextFieldEmailMainBackGround.isHidden = true
         viewTextFieldPhoneNumberMainBackGround.isHidden = true
-        setData()
         viewLabelNameBackGround.radius(radius: 6)
         viewTextFieldNameBackGround.radius(radius: 6)
         viewLabelEmailBackGround.radius(radius: 6)
@@ -124,26 +126,30 @@ class ProfileViewController: UIViewController {
         viewButtonEditBackGround.radius(radius: 8, color: .lightGray, borderWidth: 1)
 
         imageViewProfile.circle()
-        getblobcontainer()
+        setData()
+        getBlobToken()
     }
     @IBAction func buttonEditProfilePhoto(_ sender: Any) {
-        if modelGetBlobContainer == nil {
-            getblobcontainer()
+        if modelGetBlobToken == nil {
+            getBlobToken()
         }
-        funcMyActionSheet()
+        
+        ImagePickerManager().pickImage(isProfileImage: true, self){ image in
+                //here is the image
+            self.imageViewProfile.image = image
+            if let imageData = image.jpegData(compressionQuality: 0.75) {
+                //                let fileData = imageData
+                let token = self.modelGetBlobToken?.uri ?? ""
+                self.uploadImageToBlobStorage(token: token, image: image)
+            }
+        }
     }
     
     @IBAction func switchOffers(_ sender: Any) {
-        let parameters: Parameters = [
-            "isUpdateSubcription": switchOffers.isOn,
-        ]
-        editprofile(parameters: parameters)
+        updateProfile(isSubscribedToHalalOffersNotification: switchOffers.isOn)
     }
-    @IBAction func switchEvents(_ sender: Any) {
-        let parameters: Parameters = [
-            "isNewsLetterSubcription": switchEvents.isOn
-        ]
-        editprofile(parameters: parameters)
+    @IBAction func switchHalalEvents(_ sender: Any) {
+        updateProfile(isSubscribedToHalalEventsNewsletter: switchHalalEvents.isOn)
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -157,7 +163,8 @@ class ProfileViewController: UIViewController {
     @IBAction func buttonEditName(_ sender: Any) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditNameViewController") as! EditNameViewController
         vc.editProfileResponseHandler = {
-            self.setData()
+//            self.setData()
+            self.getuser()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -165,7 +172,8 @@ class ProfileViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditEmailPhoneViewController") as! EditEmailPhoneViewController
         vc.isFromEmail = true
         vc.editProfileResponseHandler = {
-            self.setData()
+//            self.setData()
+            self.getuser()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -173,23 +181,33 @@ class ProfileViewController: UIViewController {
     @IBAction func buttonEditPhoneNumber(_ sender: Any) {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditEmailPhoneViewController") as! EditEmailPhoneViewController
         vc.editProfileResponseHandler = {
-            self.setData()
+//            self.setData()
+            self.getuser()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func setData() {
-        labelName.text = "\(modelGetUserProfileResponse?.userResponseData?.firstname ?? "") \(modelGetUserProfileResponse?.userResponseData?.lastName ?? "")"
-        textFieldName.text = "\(modelGetUserProfileResponse?.userResponseData?.firstname ?? "") \(modelGetUserProfileResponse?.userResponseData?.lastName ?? "")"
+        labelName.text = "\(kModelGetUserProfileResponse?.firstName ?? "") \(kModelGetUserProfileResponse?.lastName ?? "")"
+        textFieldName.text = "\(kModelGetUserProfileResponse?.firstName ?? "") \(kModelGetUserProfileResponse?.lastName ?? "")"
         
-        labelEmail.text = modelGetUserProfileResponse?.userResponseData?.email
-        textFieldEmail.text = modelGetUserProfileResponse?.userResponseData?.email
+        DispatchQueue.main.async {
+            self.imageViewEditEmail.image = UIImage(named: kModelGetUserProfileResponse?.email == nil ? "addGrayMisc" : "editGrayMisc")
+            self.imageViewEditPhoneNumber.image = UIImage(named: kModelGetUserProfileResponse?.phone == nil ? "addGrayMisc" : "editGrayMisc")
+        }
         
-        labelPhone.text = modelGetUserProfileResponse?.userResponseData?.phone
-        textFieldPhone.text = modelGetUserProfileResponse?.userResponseData?.phone
-        imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "", placeHolderIcon: "placeHolderUser")
-        switchOffers.isOn = modelGetUserProfileResponse?.userResponseData?.isUpdateSubcription ?? false
-        switchEvents.isOn = modelGetUserProfileResponse?.userResponseData?.isNewsLetterSubcription ?? false
+        labelEmail.text = kModelGetUserProfileResponse?.email
+        textFieldEmail.text = kModelGetUserProfileResponse?.email
+        
+        labelPhone.text = kModelGetUserProfileResponse?.phone
+        textFieldPhone.text = kModelGetUserProfileResponse?.phone
+        
+        getProfilePicture() {
+            profilePicture in
+            self.imageViewProfile.setImageProfile(urlString: profilePicture!, placeHolderIcon: "placeHolderUser")
+        }
+        switchOffers.isOn = kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? false
+        switchHalalEvents.isOn = kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? false
     }
     
     func removeCacheData() {
@@ -203,17 +221,28 @@ class ProfileViewController: UIViewController {
     
     func navigateToProfileDeleteViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
+        
+        vc.stringTitle = "Delete my account"
+        vc.stringSubTitle = "Are you sure you want to delete your account? "
+        vc.stringDescription = "This will permanently remove your personal data, preferences, and reviews."
+        vc.stringButtonDelete = "YES, DELETE MY ACCOUNT"
+        vc.stringButtonCancel = "CANCEL"
         vc.buttonDeleteHandler = {
             print("delete button press")
             self.deleteuser()
         }
         self.present(vc, animated: true)
     }
-  
+    
     func deleteuser() {
-        APIs.postAPI(apiName: .deleteuser, methodType: .delete, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .mySelf, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelGetDeleteUserResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetDeleteUserResponse = model
+            if statusCode == 200 && responseData == nil {
+                self.modelGetDeleteUserResponse =             ModelGetDeleteUserResponse(title: "", success: true, message: nil, recordFound: nil, innerExceptionMessage: nil)
+            }
+            else {
+                self.modelGetDeleteUserResponse = model
+            }
         }
     }
 
@@ -225,27 +254,14 @@ class ProfileViewController: UIViewController {
     }
     
     func getuser() {
-        APIs.postAPI(apiName: .getuser, methodType: .get, encoding: URLEncoding.default) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
             print(responseData ?? "")
             print(success)
             let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserResponseLocal = model
         }
     }
-    func getblobcontainer() {
-        let parameters: Parameters = [
-            "containerName": "profileimage"
-        ]
         
-        APIs.postAPI(apiName: .getblobcontainer, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            
-            print(responseData)
-            print(success)
-            let model: RegisterationViewController.ModelGetBlobContainer? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetBlobContainer = model
-        }
-    }
-    
     func openDocumentPicker() {
         //        let types: [String] = [
         //            kUTTypeJPEG as String,
@@ -267,53 +283,52 @@ class ProfileViewController: UIViewController {
         //        self.present(documentPicker, animated: true, completion: nil)
     }
     
-    func openGallary() {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.allowsEditing = false //If you want edit option set "true"
-        imagePickerController.sourceType = .photoLibrary
-        imagePickerController.delegate = self
-        self.present(imagePickerController, animated: true, completion: nil)
-    }
+//    func openGallary() {
+//        let imagePickerController = UIImagePickerController()
+//        imagePickerController.allowsEditing = false //If you want edit option set "true"
+//        imagePickerController.sourceType = .photoLibrary
+//        imagePickerController.delegate = self
+//        self.present(imagePickerController, animated: true, completion: nil)
+//    }
     
-    //Mark:- Choose Image Method
-    func funcMyActionSheet() {
-        var myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
-        myActionSheet.view.tintColor = UIColor.black
-        let galleryAction = UIAlertAction(title: "Gallery", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            self.openGallary()
-        })
-        let documentAction = UIAlertAction(title: "Documents", style: .default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            self.openDocumentPicker()
-        })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        
-        if IPAD {
-            //In iPad Change Rect to position Popover
-            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
-        }
-        myActionSheet.addAction(galleryAction)
-//        myActionSheet.addAction(documentAction)
-        myActionSheet.addAction(cancelAction)
-        print("Action Sheet call")
-        self.present(myActionSheet, animated: true, completion: nil)
-    }
-         
-    func editprofile(parameters: Parameters, isUserImageUpdateCall: Bool? = false) {
-        self.isUserImageUpdateCall = isUserImageUpdateCall
-        APIs.postAPI(apiName: .editprofile, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
-            let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelEditProfileResponse = model
+//    //Mark:- Choose Image Method
+//    func funcMyActionSheet() {
+//        var myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+//        myActionSheet.view.tintColor = UIColor.black
+//        let galleryAction = UIAlertAction(title: "Gallery", style: .default, handler: {
+//            (alert: UIAlertAction!) -> Void in
+//            self.openGallary()
+//        })
+//        let documentAction = UIAlertAction(title: "Documents", style: .default, handler: {
+//            (alert: UIAlertAction!) -> Void in
+//            self.openDocumentPicker()
+//        })
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+//            (alert: UIAlertAction!) -> Void in
+//        })
+//        
+//        if IPAD {
+//            //In iPad Change Rect to position Popover
+//            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
+//        }
+//        myActionSheet.addAction(galleryAction)
+////        myActionSheet.addAction(documentAction)
+//        myActionSheet.addAction(cancelAction)
+//        print("Action Sheet call")
+//        self.present(myActionSheet, animated: true, completion: nil)
+//    }
+    
+    func getBlobToken() {
+        APIs.getAPI(apiName: .getBlobTokenForUser, parameters: nil, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: ModelGetBlobToken? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetBlobToken = model
         }
     }
 }
 
 extension ProfileViewController {
     struct ModelGetDeleteUserResponse: Codable {
+        let title: String?
         let success: Bool?
         let message: String?
         let recordFound: Bool?
@@ -327,7 +342,7 @@ extension ProfileViewController {
     func uploadImageToBlobStorage(token: String, image: UIImage) {
         //        let containerURL = "https://zabihahblob.blob.core.windows.net/profileimage"//containerName
         let currentDate1 = Date()
-        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".jpg"
+        let blobName = String(currentDate1.timeIntervalSinceReferenceDate)+".png"
         
         let tempToken = token.components(separatedBy: "?")
         
@@ -339,13 +354,10 @@ extension ProfileViewController {
         azureBlobStorage.uploadImage(image: image, blobName: blobName) { success, error in
             if success {
                 print("Image uploaded successfully!")
-                if let imageURL = azureBlobStorage.getImageURL(storageAccountName: "zabihahblob", containerName: containerName, blobName: blobName, sasToken: "") {
+                if let imageURL = azureBlobStorage.getImageURL(containerURL: containerURL, blobName: blobName) {
                     print("Image URL: \(imageURL)")
                     DispatchQueue.main.async {
-                        let parameters: Parameters = [
-                            "photo": "\(imageURL)"
-                        ]
-                        self.editprofile(parameters: parameters, isUserImageUpdateCall: true)
+                        self.updateProfile(imageUrl: "\(imageURL)")
                     }
                 } else {
                     print("Failed to construct image URL")
@@ -356,48 +368,102 @@ extension ProfileViewController {
         }
         return()
     }
+    
+    func updateProfile2(
+        imageUrl: URL? = nil,
+        isSubscribedToHalalOffersNotification: Bool? = nil,
+        isSubscribedToHalalEventsNewsletter: Bool? = nil
+    ) {
+        let parameters: Parameters = [
+            "firstname": kModelGetUserProfileResponse?.firstName ?? "",
+            "lastName": kModelGetUserProfileResponse?.lastName ?? "",
+            "email": kModelGetUserProfileResponse?.email ?? "",
+            "phone": kModelGetUserProfileResponse?.phone ?? "",
+            "profilePictureWebUrl": imageUrl == nil ? kModelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
+            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == nil ? kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" : isSubscribedToHalalOffersNotification!,
+            "isSubscribedToHalalEventsNewsletter":
+                isSubscribedToHalalEventsNewsletter == nil ?
+            kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" :
+                isSubscribedToHalalEventsNewsletter!
+        ]
+        
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
+//            self.modelEditProfileResponse = model
+            self.getuser()
+        }
+    }
+    
+    func updateProfile(
+        imageUrl: String? = nil,
+        isSubscribedToHalalOffersNotification: Bool? = nil,
+        isSubscribedToHalalEventsNewsletter: Bool? = nil
+    ) {
+        let parameters: Parameters = [
+            "firstname": kModelGetUserProfileResponse?.firstName ?? "",
+            "lastName": kModelGetUserProfileResponse?.lastName ?? "",
+            "email": kModelGetUserProfileResponse?.email ?? "",
+            "phone": kModelGetUserProfileResponse?.phone ?? "",
+            "profilePictureWebUrl": imageUrl == nil ? kModelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
+            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == nil ? kModelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" : isSubscribedToHalalOffersNotification!,
+            "isSubscribedToHalalEventsNewsletter":
+                isSubscribedToHalalEventsNewsletter == nil ?
+            kModelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" :
+                isSubscribedToHalalEventsNewsletter!
+        ]
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let model = EditNameViewController.ModelEditProfileResponse(success: true, title: "", message: "", recordFound: false, innerExceptionMessage: "", userResponseData: nil)
+                self.modelEditProfileResponse = model
+            }
+            else {
+                let model: EditNameViewController.ModelEditProfileResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelEditProfileResponse = model
+            }
+        }
+    }
 }
 
-extension ProfileViewController: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    //Document
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        if let filename = urls.first?.lastPathComponent {
-            do {
-                for url in urls {
-                    let fileData = try Data(contentsOf: url)
-                }
-            } catch {
-                print("no data")
-            }
-        }
-        
-        // display picked file in a view
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-    //Image Picker
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageViewProfile.image = image
-            if let imageData = image.jpegData(compressionQuality: 0.75) {
-                //                let fileData = imageData
-                let token = modelGetBlobContainer?.token ?? ""
-                uploadImageToBlobStorage(token: token, image: image)
-            }
-            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-                //                let fileName = imageUrl.lastPathComponent
-            }
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-}
+//extension ProfileViewController: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+//    //Document
+//    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+//        if let filename = urls.first?.lastPathComponent {
+//            do {
+//                for url in urls {
+//                    let fileData = try Data(contentsOf: url)
+//                }
+//            } catch {
+//                print("no data")
+//            }
+//        }
+//        
+//        // display picked file in a view
+//        controller.dismiss(animated: true, completion: nil)
+//    }
+//    
+//    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+//        controller.dismiss(animated: true, completion: nil)
+//    }
+//    //Image Picker
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+//            imageViewProfile.image = image
+//            if let imageData = image.jpegData(compressionQuality: 0.75) {
+//                //                let fileData = imageData
+//                let token = modelGetBlobContainer?.token ?? ""
+//                uploadImageToBlobStorage(token: token, image: image)
+//            }
+//            if let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+//                //                let fileName = imageUrl.lastPathComponent
+//            }
+//        }
+//        self.dismiss(animated: true, completion: nil)
+//    }
+//    
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        dismiss(animated: true, completion: nil)
+//    }
+//}
 
 struct AzureBlobStorage {
     let containerURL: String
@@ -461,6 +527,12 @@ struct AzureBlobStorage {
             }
         }
         
+        return URL(string: urlString)
+    }
+    // Function to construct the URL of the image in Azure Blob Storage
+    func getImageURL(containerURL: String, blobName: String) -> URL? {
+        // Construct the base URL
+        let urlString = "\(containerURL)/\(blobName)"
         return URL(string: urlString)
     }
 }

@@ -49,7 +49,11 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/1.3
+        var width = collectionView.frame.width/1.5
+        if IPAD {
+            let percentage = UIDevice.current.orientation.isLandscape ? 3.5 : 2.5
+            width = collectionView.frame.width/percentage
+        }
         return CGSize(width: width, height: 230)
     }
     
@@ -63,7 +67,7 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
             cell.indexPath = indexPath
             cell.buttonFavouriteHandler = buttonFavouriteHandler
             cell.viewController = viewController
-            cell.modelFeaturedRestuarantResponseData = self.modelFeaturedRestuarantResponseData?[indexPath.item]
+            cell.restuarentResponseModel = self.modelFeaturedRestuarantResponseData?[indexPath.item]
         }
         return cell
     }
@@ -72,7 +76,9 @@ extension HomeFoodItemCell: UICollectionViewDataSource, UICollectionViewDelegate
 //                (cell as! MobilePackagesDataNameCell).viewBackGround.circle()
 //            }
 //        (cell as! HomeFoodItemSubCell).setData()
+        
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        selectedCell = indexPath.item

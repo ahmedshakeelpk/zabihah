@@ -49,7 +49,11 @@ extension HomeRestaurantCell: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/1.3
+        var width = collectionView.frame.width/1.5
+        if IPAD {
+            let percentage = UIDevice.current.orientation.isLandscape ? 3.5 : 2.5
+            width = collectionView.frame.width/percentage
+        }
         return CGSize(width: width, height: 230)
     }
     
@@ -63,7 +67,7 @@ extension HomeRestaurantCell: UICollectionViewDataSource, UICollectionViewDelega
             cell.indexPath = indexPath
             cell.buttonFavouriteHandler = buttonFavouriteHandler
             cell.viewController = viewController
-            cell.modelFeaturedRestuarantResponseData = self.restuarantResponseData?[indexPath.item]
+            cell.restuarentResponseModel = self.restuarantResponseData?[indexPath.item]
         }
         return cell
     }

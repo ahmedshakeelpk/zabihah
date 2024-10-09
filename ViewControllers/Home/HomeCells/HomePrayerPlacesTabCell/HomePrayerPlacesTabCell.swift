@@ -23,6 +23,14 @@ protocol HomePrayerPlacesTabCellDelegate: AnyObject {
 
 class HomePrayerPlacesTabCell: HomeBaseCell {
     
+    @IBOutlet weak var stackViewComments: UIStackView!
+    @IBOutlet weak var stackViewReturning: UIStackView!
+    @IBOutlet weak var stackViewPhotos: UIStackView!
+    
+    
+    @IBOutlet weak var buttonOpenDirectionMap: UIButton!
+
+    @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
     @IBOutlet weak var buttonFavourite: UIButton!
@@ -43,6 +51,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
     @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var stackViewBackGround: UIStackView!
     @IBOutlet weak var buttonCall: UIButton!
+    @IBOutlet weak var viewBackGroundDelivery: UIView!
 
     var delegate: HomePrayerPlacesTabCellDelegate!
     var dataRecord: HomeBaseCell.HomeListItem!
@@ -51,24 +60,24 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
    
     var arrayNames = [String]()
 
-    var modelMosqueResponseData: HomeViewController.ModelRestuarantResponseData! {
+    var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData! {
         didSet {
-            setData()
+            DispatchQueue.main.async {
+                self.setData()
+            }
         }
     }
     
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
             print(modelPostFavouriteRestaurantsResponse as Any)
-            if modelPostFavouriteRestaurantsResponse?.success ?? false {
-                if let isFavourite = self.modelMosqueResponseData?.isFavorites {
-                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomePrayerPlacesTabCell())
-                    modelMosqueResponseData.isFavorites = !(isFavourite)
+            if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
+                DispatchQueue.main.async {
+                    self.delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: self.indexPath, cellType: HomePrayerPlacesTabCell())
                 }
+                restuarentResponseModel.isMyFavorite = !(isFavourite)
             }
-            else {
-                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
-            }
+            
         }
     }
     
@@ -76,11 +85,11 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         super.awakeFromNib()
         // Initialization code
         stackViewBackGround.radius(radius: 12)
-        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
+        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 0)
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
         
-        HomeFoodItemSubSuisineCell.register(collectionView: collectionView)
+        HomeFoodItemSubCuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -96,52 +105,89 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         // Configure the view for the selected state
         dataRecord = data as? HomeBaseCell.HomeListItem
         if let modelData = dataRecord.data as? [HomeViewController.ModelRestuarantResponseData] {
-            modelMosqueResponseData = modelData[indexPath.row]
+            restuarentResponseModel = modelData[indexPath.row]
         }
         collectionView.reloadData()
         drawMarkerOnMap()
     }
     
+    @IBAction func buttonOpenDirectionMap(_ sender: Any) {
+        let completeAddress = "\(restuarentResponseModel?.name ?? "") \(restuarentResponseModel?.address ?? "") \(restuarentResponseModel?.city ?? "") \(restuarentResponseModel?.state ?? "") \(restuarentResponseModel?.country ?? "")"
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationAddress: completeAddress)
+    }
+    
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: modelMosqueResponseData?.phone ?? "")
+        self.viewController.dialNumber(isPrayerPlaces: true, name: "", number: restuarentResponseModel?.phone ?? "")
     }
     
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomePrayerPlacesTabCellDelegate
-        postFavouriteRestaurants()
+        favouriteRestaurants()
     }
     
-    func setData() {
-        labelRestaurantName.text = modelMosqueResponseData?.name ?? ""
-        labelRestaurantAddress.text = modelMosqueResponseData?.address ?? ""
-        labelRating.text = "\(modelMosqueResponseData?.rating ?? 0)"
-        labelComments.text = "\(modelMosqueResponseData?.reviews ?? 0)"
-        labelPictures.text = "\(modelMosqueResponseData?.gallaryCount ?? 0)"
-        labelDistance.text = "\(modelMosqueResponseData?.distance ?? 0)\(modelMosqueResponseData?.distanceUnit ?? "")"
+    func setData() {       
+        labelDistance.textColor = .colorApp
         
-        imageViewRestaurant.setImage(urlString: modelMosqueResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-        imageViewItem.setImage(urlString: modelMosqueResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
-        imageViewFavourite.image = UIImage(named: modelMosqueResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-        viewCallMainBackGround.isHidden = modelMosqueResponseData?.phone ?? "" == ""
-        viewItemTypeBackGround.isHidden = modelMosqueResponseData?.status == ""
-        labelItemType.text = modelMosqueResponseData?.status
-        if modelMosqueResponseData?.status?.lowercased() == "closed" {
-            viewItemTypeBackGround.backgroundColor = .colorRed
-        }
-        else if modelMosqueResponseData?.status?.lowercased() == "new" {
-            viewItemTypeBackGround.backgroundColor = .colorGreen
-        }
-        else if modelMosqueResponseData?.status?.lowercased() != "" {
-            viewItemTypeBackGround.backgroundColor = .colorOrange
-        }
-        if var tags = modelMosqueResponseData?.tags?.split(separator: ",").map({ String($0)}) {
-            if tags.last == "" || tags.last == " "{
-                tags.removeLast()
-            }
-            arrayNames = tags
+        labelRestaurantName.text = restuarentResponseModel?.name
+        let completeAddress = "\(restuarentResponseModel?.address ?? ""), \(restuarentResponseModel?.city ?? ""), \(restuarentResponseModel?.state ?? "")"
+
+        labelRestaurantAddress.text = completeAddress
+        labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
+        
+        labelReuse.text = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) + "%"
+        stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
+        
+        labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        stackViewComments.isHidden = (restuarentResponseModel?.totalReviews ?? 0) == 0
+        
+        labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
+        stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
+        
+        labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
+        //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.readableUnit ?? "")"
+        imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeholderMosque2")
+        imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
+        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
+        viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
+//        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
+        
+        if let cuisines = restuarentResponseModel?.cuisines {
+            let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
+            arrayNames = filteredCuisines
             collectionView.reloadData()
         }
+        viewBackGroundDelivery.isHidden = !(restuarentResponseModel?.offersDelivery ?? false)
+        
+        let isNewRestaurent = ifNewRestaurent(createdOn: restuarentResponseModel?.createdOn ?? "")
+        viewItemTypeBackGround.isHidden = isNewRestaurent == ""
+        labelItemType.text = isNewRestaurent
+        viewItemTypeBackGround.backgroundColor = .colorGreen
+        
+        
+        let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? []).0
+        if isClose {
+            //                viewItemTypeBackGround.isHidden = !isClose
+            //                labelItemType.text = "Close"
+            //                viewItemTypeBackGround.backgroundColor = .colorRed
+        }
+        //            viewItemTypeBackGround.backgroundColor = .colorOrange
+        viewBackGroundDelivery.isHidden = true
     }
+    
+    func favouriteRestaurants() {
+        let parameters = [
+            "placeId": restuarentResponseModel?.id ?? ""
+        ]
+        
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: restuarentResponseModel?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
+            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
+        }
+    }
+    
     func drawMarkerOnMap() {
         /// Marker - Google Place marker
 //        let marker: GMSMarker = GMSMarker() // Allocating Marker
@@ -151,7 +197,7 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
 //        marker.appearAnimation = .pop // Appearing animation. default
 //        marker.userData = modelMosqueResponseData
         
-        let location = CLLocationCoordinate2D(latitude: modelMosqueResponseData?.lat ?? 0, longitude: modelMosqueResponseData?.long ?? 0)
+        let location = CLLocationCoordinate2D(latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0)
 //        marker.position = location
 //        marker.map = (viewController as? HomeViewController)?.mapView // Setting marker on Mapview
         setZoom(location: location)
@@ -164,18 +210,6 @@ class HomePrayerPlacesTabCell: HomeBaseCell {
         let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 14)
         (viewController as? HomeViewController)?.mapView.camera = camera
         (viewController as? HomeViewController)?.mapView.delegate = self
-    }
-    func postFavouriteRestaurants() {
-        let parameters = [
-            "Id": modelMosqueResponseData?.id ?? "",
-            "isMark": !(modelMosqueResponseData?.isFavorites ?? false),
-            "type" : "\((viewController as? HomeViewController)?.selectedCuisine.lowercased() == "restaurants" ? "rest" : "prayer")"
-        ] as [String : Any]
-       
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in
-            let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteRestaurantsResponse = model
-        }
     }
 }
 
@@ -196,7 +230,7 @@ extension HomePrayerPlacesTabCell: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubSuisineCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
         cell.labelName.text = arrayNames[indexPath.item]
 
         return cell
@@ -221,7 +255,10 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
         let infoView = Bundle.loadView(fromNib: "MarkerInfoView", withType: MarkerInfoView.self)
         view.addSubview(infoView)
         if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            infoView.modelGetPrayerPlacesResponseData = modelData
+//            restuarentResponseModel = modelData
+            infoView.marker = marker
+            infoView.isPrayerPlace = true
+            infoView.modelRestuarantResponseData = modelData
         }
         marker.icon = UIImage(named: "markerPrayerPlacesSelected")
         return view
@@ -230,27 +267,37 @@ extension HomePrayerPlacesTabCell: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         print("when click on info View")
         if let userData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
-            self.viewController.dialNumber(number: userData.phone ?? "", isActionSheet: true) { actionType in
-                if actionType == "viewdetails" {
-                    print("View Details")
-                    self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath)
+            self.viewController.dialNumber(isMapDirection: true, isPrayerPlaces: true, name: userData.name ?? "", number: userData.phone ?? "", isActionSheet: true) { actionType in
+                if let modelData = marker.userData as? HomeViewController.ModelRestuarantResponseData {
+                    self.navigateToDeliveryDetailsViewController(indexPath: self.indexPath, actionType: actionType ?? "viewdetails", dataModel: modelData)
                 }
+                print(actionType)
             }
         }
     }
-    func navigateToDeliveryDetailsViewController(indexPath: IndexPath) {
+    func navigateToDeliveryDetailsViewController(indexPath: IndexPath, actionType: String, dataModel: HomeViewController.ModelRestuarantResponseData) {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         vc.delegate = viewController as? any DeliveryDetailsViewController3Delegate
         vc.indexPath = indexPath
         vc.selectedMenuCell = (viewController as? HomeViewController)?.selectedMenuCell
         vc.userLocation = (viewController as? HomeViewController)?.userLocation
-        
-        if let modelMosqueResponseData =   modelMosqueResponseData {
+        vc.isPrayerPlace = true
+        let modelData =  dataModel
+        if let modelMosqueResponseData = restuarentResponseModel {
+            
             vc.modelRestuarantResponseData = modelMosqueResponseData
+//            modelData = modelMosqueResponseData
         }
-        viewController.navigationController?.pushViewController(vc, animated: true)
+        if actionType == "viewdetails" {
+            vc.modelRestuarantResponseData = dataModel
+            viewController.navigationController?.pushViewController(vc, animated: true)
+        }
+        else if actionType == "mapdirection" {
+            let completeAddress = "\(modelData.name ?? "") \(modelData.address ?? "") \(modelData.city ?? "") \(modelData.state ?? "") \(modelData.country ?? "")"
+            OpenMapDirections.present(in: viewController, sourceView: buttonCall, latitude: modelData.latitude ?? 0, longitude: modelData.longitude ?? 0, locationAddress: completeAddress)
+        }
     }
-    
+
     @objc func tapOnMapInfoView() {
         print("tapOnMapInfoView")
         print("when click on info View")

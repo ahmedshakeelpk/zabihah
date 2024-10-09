@@ -178,18 +178,18 @@ print(str)
     
 
 //    static func getAPI(apiName: APIsName.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil , headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
-//        
+//
 //        let baseClass = BaseClassVC()
-//        
+//
 //        let completeUrl = APIPath.baseUrl + apiName.rawValue
-//        
+//
 //        let url = URL(string: completeUrl)!
 //
 //        var request = URLRequest(url: url)
 //        request.httpMethod = HTTPMethod.get.rawValue
 //        request.setValue("application/json", forHTTPHeaderField: "Accept")
 //        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        
+//
 //        var tempHeader = ""
 //        var token  = ""
 //                if apiName == .updateAccountStatus {
@@ -204,17 +204,17 @@ print(str)
 //                }
 //                request.addValue(token, forHTTPHeaderField: "Authorization")
 //
-//        
+//
 //        print("Url: \(completeUrl)")
 //        print("Parameters: \(parameters)")
 //        print("Headers: \(token)")
-//        
+//
 //        request.httpBody = jsonData
 //        print("\(APIs.json(from: parameters)))")
 //        if let vc = viewController {
 //            vc.showActivityIndicator2()
 //        }
-//        
+//
 //        AF.request(request).responseJSON { response in
 //            print("Response: \(response)")
 //            if let vc = viewController {
@@ -224,9 +224,9 @@ print(str)
 //            case .success(let json):
 //                let modelGetActiveLoan = try? JSONDecoder().decode(NanoLoanApplyViewController.ModelGetLoanCharges.self, from: response.data!)
 //                print(modelGetActiveLoan)
-//                
+//
 //                let serverResponse = JSON(response.value!)
-//                
+//
 //                print("Request Headers: \(String(describing: request.allHTTPHeaderFields))")
 //                print("Request Url: \(String(describing: request.url))")
 //                print("Request Parameters: \(parameters)")
@@ -267,13 +267,125 @@ print(str)
 
         return components?.url?.absoluteString
     }
-    static func postAPI(apiName: APIsName.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    static func getAPI(apiName: APIsName.name, parameters: [String: String]? = nil, isPathParameters: Bool? = false, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void?) {
+        
+        let completeUrl = APIPath.baseUrl + apiName.rawValue
+        let baseURL = completeUrl
+        
+        var queryParams = [String: String]()
+        if let parameter = parameters {
+            queryParams = parameter
+        }
+
+        // Create URL components
+        var urlComponents = URLComponents(string: baseURL)!
+
+        var path = baseURL
+        if isPathParameters ?? false {
+            for (key, value) in queryParams {
+                path = path.replacingOccurrences(of: "{\(key)}", with: value)
+            }
+            // Append the modified path to the base URL
+//            urlComponents.path = path
+            urlComponents = URLComponents(string: path)!
+        }
+        else {
+            // Add the query items to the URL components
+            urlComponents.queryItems = queryParams.map { URLQueryItem(name: $0.key, value: $0.value) }
+        }
+        
+
+        // Get the final URL with the query string
+        guard let url = urlComponents.url else {
+            fatalError("Invalid URL")
+        }
+
+        // Create a URL request
+        var request = URLRequest(url: url)
+        if methodType == .delete {
+            request.httpMethod = "DELETE"
+        }
+        else if methodType == .post {
+            request.httpMethod = "POST"
+        }
+        else if methodType == .get {
+            request.httpMethod = "GET"
+        }
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        if kAccessToken != "" {
+            let authToken = "bearer \(kAccessToken)"
+            request.addValue(authToken, forHTTPHeaderField: "Authorization")
+        }
+        
+        if let vc = viewController {
+            vc.showActivityIndicator2()
+        }
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            // Hide activity indicator (if applicable)
+            if let vc = viewController {
+                DispatchQueue.main.async {
+                    vc.hideActivityIndicator2()
+                }
+            }
+            
+            // Print the response
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Response: \(httpResponse)")
+                
+                // Handle HTTP status code
+                switch httpResponse.statusCode {
+                case 200:
+                    // Successful response
+                    do {
+                        
+                        if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                            print("Response JSON: \(jsonResponse)")
+                            // Call the completion handler with the response data
+                            completion(data, true, "", httpResponse.statusCode)
+                        }
+                    } catch let jsonError {
+                        print("Failed to decode JSON: \(jsonError.localizedDescription)")
+                        // Call the completion handler with failure
+                        completion(nil, true, jsonError.localizedDescription, httpResponse.statusCode)
+                    }
+                    
+                default:
+                    // Handle other HTTP status codes
+                    var errorMessage = "Unexpected error"
+                    if let error = error?.localizedDescription {
+                        let errorArray = error.components(separatedBy: ":")
+                        errorMessage = errorArray.count > 1 ? errorArray[1] : error
+                    }
+                    print("Error: \(errorMessage)")
+                    completion(nil, false, errorMessage, httpResponse.statusCode)
+                }
+            } else {
+                // No HTTP response
+                print("No valid HTTP response")
+                completion(nil, false, "No valid HTTP response", nil)
+            }
+            
+            // Handle network error
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                completion(nil, false, error.localizedDescription, nil)
+                return
+            }
+        }
+
+        // Start the data task
+        task.resume()
+    }
+    
+    static func postAPI(apiName: APIsName.name, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void?) {
         
 //        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
 
         let completeUrl = APIPath.baseUrl + apiName.rawValue
-        
         let url = URL(string: completeUrl)!
 
         var request = URLRequest(url: url)
@@ -281,11 +393,12 @@ print(str)
 //        request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("*/*", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.timeoutInterval = 30 // 50 secs
 
 //        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
-        if kAccessToken != "" {
+        if kAccessToken != ""  {
             let authToken = "bearer \(kAccessToken)"
             request.addValue(authToken, forHTTPHeaderField: "Authorization")
         }
@@ -330,7 +443,33 @@ print(str)
                 print("API Response jsonObject PrettyPrintedJSONString: \(jsonString)")
                 print("jsonResponse: \(jsonString)")
             }
-            
+                        
+            switch response.response?.statusCode {
+            case 200 :
+                switch response.result {
+                case .success(let json):
+                    completion(response.data, true, "", response.response?.statusCode)
+                case .failure( _):
+                    completion(response.data, true, "response code is 200", response.response?.statusCode)
+                    break
+                }
+                break
+            default :
+                var errorMessage = ""
+                if let error = response.error?.localizedDescription {
+                    let errorArray = error.components(separatedBy: ":")
+                    errorMessage = errorArray.count > 1 ? errorArray[1] : error
+                    completion(response.data, false, errorMessage, response.response?.statusCode)
+                }
+                else {
+                    errorMessage = response.error.debugDescription
+                    completion(response.data, false, response.error.debugDescription, response.response?.statusCode)
+                }
+                break
+            }
+            return()
+                        
+                        
             switch response.result {
             case .success(let json):
                 print("Request Headers: \(String(describing: request.allHTTPHeaderFields))")
@@ -340,10 +479,10 @@ print(str)
                 print("JSON: \(json)")
                 switch response.response?.statusCode {
                 case 200 :
-                    completion(response.data, true, "")
+                    completion(response.data, true, "", response.response?.statusCode)
                     break
                 default :
-                    completion(response.data, false, responseMessage)
+                    completion(response.data, false, responseMessage, response.response?.statusCode)
                     break
                 }
             case .failure( _):
@@ -351,18 +490,93 @@ print(str)
                 if let error = response.error?.localizedDescription {
                     let errorArray = error.components(separatedBy: ":")
                     errorMessage = errorArray.count > 1 ? errorArray[1] : error
-                    completion(nil, false, errorMessage)
+                    completion(nil, false, errorMessage, response.response?.statusCode)
                 }
                 else {
                     errorMessage = response.error.debugDescription
-                    completion(nil, false, response.error.debugDescription)
+                    completion(nil, false, response.error.debugDescription, response.response?.statusCode)
                 }
                 break
             }
         }
     }
     
-    static func deleteAPI(apiName: String, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    
+    static func postAPIWithPathParameters(apiName: APIsName.name, parameters: [String: String], headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void?) {
+        
+        var completeUrl = APIPath.baseUrl + apiName.rawValue
+        
+            for (key, value) in parameters {
+                completeUrl = completeUrl.replacingOccurrences(of: "{\(key)}", with: value)
+            }
+            // Append the modified path to the base URL
+//            urlComponents.path = path
+        
+        let url = URL(string: completeUrl)!
+        
+        var request = URLRequest(url: url,timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        request.httpMethod = "POST"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            // Hide activity indicator (if applicable)
+            if let vc = viewController {
+                DispatchQueue.main.async {
+                    vc.hideActivityIndicator2()
+                }
+            }
+            
+            // Print the response
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Response: \(httpResponse)")
+                
+                // Handle HTTP status code
+                switch httpResponse.statusCode {
+                case 200:
+                    // Successful response
+                    do {
+                        if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                            print("Response JSON: \(jsonResponse)")
+                            // Call the completion handler with the response data
+                            completion(data, true, "", httpResponse.statusCode)
+                        }
+                    } catch let jsonError {
+                        print("Failed to decode JSON: \(jsonError.localizedDescription)")
+                        // Call the completion handler with failure
+                        completion(nil, true, jsonError.localizedDescription, httpResponse.statusCode)
+                    }
+                    
+                default:
+                    // Handle other HTTP status codes
+                    var errorMessage = "Unexpected error"
+                    if let error = error?.localizedDescription {
+                        let errorArray = error.components(separatedBy: ":")
+                        errorMessage = errorArray.count > 1 ? errorArray[1] : error
+                    }
+                    print("Error: \(errorMessage)")
+                    completion(nil, false, errorMessage, httpResponse.statusCode)
+                }
+            } else {
+                // No HTTP response
+                print("No valid HTTP response")
+                completion(nil, false, "No valid HTTP response", nil)
+            }
+            
+            // Handle network error
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                completion(nil, false, error.localizedDescription, nil)
+                return
+            }
+        }
+        
+        task.resume()
+        
+    }
+    
+    static func deleteAPI(apiName: String, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void) {
         
 //        let stringParamters = APIs.json(from: params)
         //let postData = stringParamters!.data(using: .utf8)
@@ -408,7 +622,9 @@ print(str)
 //
             print("Response: \(response)")
             if let vc = viewController {
-                vc.hideActivityIndicator2()
+                DispatchQueue.main.async {
+                    vc.hideActivityIndicator2()
+                }
             }
    
             var responseMessage = ""
@@ -431,10 +647,10 @@ print(str)
                 print("JSON: \(json)")
                 switch response.response?.statusCode {
                 case 200 :
-                    completion(response.data, true, "")
+                    completion(response.data, true, "", response.response?.statusCode)
                     break
                 default :
-                    completion(response.data, false, responseMessage)
+                    completion(response.data, false, responseMessage, response.response?.statusCode)
                     break
                 }
             case .failure( _):
@@ -442,11 +658,11 @@ print(str)
                 if let error = response.error?.localizedDescription {
                     let errorArray = error.components(separatedBy: ":")
                     errorMessage = errorArray.count > 1 ? errorArray[1] : error
-                    completion(nil, false, errorMessage)
+                    completion(nil, false, errorMessage, response.response?.statusCode)
                 }
                 else {
                     errorMessage = response.error.debugDescription
-                    completion(nil, false, response.error.debugDescription)
+                    completion(nil, false, response.error.debugDescription, response.response?.statusCode)
                 }
                 break
             }
@@ -552,11 +768,12 @@ print(str)
         formatter.dateFormat = "yyyy_MM_dd_hh_mm_ss"
         return (formatter.string(from: Date()) as NSString) as String
     }
-    static func uploadImage(apiName: APIsName.name, image: UIImage, parameter: [String: Any], viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String) -> Void) {
+    
+    static func uploadImage(apiName: APIsName.name, imagesArray: [UIImage], imageParameter: String, parameter: [String: Any], requestType: String? = "POST", viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void) {
         let completeUrl = APIPath.baseUrl + apiName.rawValue
         guard let url = URL(string: completeUrl) else { return }
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = requestType
         
         let authToken = "bearer \(kAccessToken)"
         request.addValue(authToken, forHTTPHeaderField: "Authorization")
@@ -565,26 +782,40 @@ print(str)
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         // Convert the image to Data
-        guard let imageData = image.jpegData(compressionQuality: 1) else { return }
+//        guard let imageData = image.jpegData(compressionQuality: 1) else { return }
         
         // Create the multipart body
         var body = Data()
         
-        // Add image data to the body
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"UploadImage\"; filename=\"image\(APIs.generateCurrentTimeStamp()).jpg\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(imageData)
-        body.append("\r\n".data(using: .utf8)!)
-        
         // Add any additional fields (optional)
         let parameters = parameter
+        // Append parameters
         for (key, value) in parameters {
             body.append("--\(boundary)\r\n".data(using: .utf8)!)
             body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
             body.append("\(value)\r\n".data(using: .utf8)!)
         }
         
+        for value in (parameters["DeleteImages"] as? [String] ?? []) {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\("DeleteImages")\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
+        
+        // Append images
+        for (index, image) in imagesArray.enumerated() {
+            let imageData = image.jpegData(compressionQuality: 0.7)!
+            let filename = "\(APIs.generateCurrentTimeStamp())\(index)." + "jpg"
+            let mimeType = "image/jpeg"
+            
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(imageParameter)\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+        
+        // Close boundary
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
         
         request.httpBody = body
@@ -595,21 +826,24 @@ print(str)
         // Send the request
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let vc = viewController {
-                vc.hideActivityIndicator2()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    vc.hideActivityIndicator2()
+                }
             }
             if let error = error {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
                 print("Error: \(error.localizedDescription)")
-                completion(nil, false, error.localizedDescription)
+                completion(nil, false, error.localizedDescription, statusCode)
                 return
             }
-            
+
             if let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 print("Upload successful")
                 if let jsonResponse = String(data: data!, encoding: String.Encoding.utf8) {
                     print("JSON String: \(jsonResponse)")
                 }
                 
-                completion(data, false, "")
+                completion(data, false, "", 200)
                 
             } else {
                 print("Upload failed")
@@ -622,46 +856,46 @@ print(str)
 //        //        params to send additional data, for eg. AccessToken or userUserId
 //        let completeUrl = APIPath.baseUrl + apiName.rawValue
 //        let parameterJsonString = parameters.toJSONString()
-//        
-//       
+//
+//
 //        let stringParamters = APIs.json(from: paramstemp)
-//        
+//
 //        let params = ["data": stringParamters]
 //        print(params)
-//        
+//
 //        let postData = stringParamters!.data(using: .utf8)
 //        let url = URL(string: completeUrl)!
 //        let jsonData = stringParamters!.data(using: .utf8, allowLossyConversion: false)!
-//        
+//
 //        var request = URLRequest(url: url)
 //        request.httpMethod = HTTPMethod.post.rawValue
 //        request.setValue("application/json", forHTTPHeaderField: "Accept")
 //        request.setValue("multipart/form-data", forHTTPHeaderField: "Content-Type")
-//        
+//
 //        var token = DataManager.instance.accessToken ?? ""
 //        request.addValue(token, forHTTPHeaderField: "Authorization")
-//        
+//
 //        let headers: HTTPHeaders = [
 //            "Authorization": "\(token)", // in case you need authorization header
 //            "Content-type": "multipart/form-data"
 //        ]
-//        
+//
 //        print("Url: \(completeUrl)")
 //        print("Parameters: \(parameters)")
 //        print("Headers: \(token)")
-//        
+//
 //        request.httpBody = jsonData
 //        print("\(APIs.json(from: parameters)))")
 //        if let vc = viewController {
 //            vc.showActivityIndicator2()
 //        }
-//        
+//
 //        AF.upload(multipartFormData: { multiPart in
 //            multiPart.append(fileData,
 //                             withName: "file",
 //                             fileName: "\(fileName)",
 //                             mimeType: "image/jpeg/jpg/png")
-//            
+//
 //            for (key,keyValue) in params{
 //                if let keyData = keyValue!.data(using: .utf8){
 //                    multiPart.append(keyData, withName: key)
@@ -672,7 +906,7 @@ print(str)
 //                    if let vc = viewController {
 //                        vc.hideActivityIndicator2()
 //                    }
-//                    
+//
 //                    switch apiResponse.result{
 //                    case .success(_):
 //                        let apiDictionary = apiResponse.value as? [String:Any]
@@ -702,7 +936,6 @@ print(str)
         if let dt = data{
             do{
                 return try JSONDecoder().decode(T.self, from: dt)
-                
             }  catch let DecodingError.dataCorrupted(context) {
                 print(context)
             } catch let DecodingError.keyNotFound(key, context) {
@@ -720,6 +953,8 @@ print(str)
         }
         return nil
     }
+    
+   
     
     
     /*

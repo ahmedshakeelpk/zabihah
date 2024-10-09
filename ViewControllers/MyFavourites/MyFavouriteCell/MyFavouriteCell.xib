@@ -51,11 +51,11 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zy0-3Q-kDd">
                                                         <rect key="frame" x="59" y="0.0" width="184" height="94"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Fee-NG-Iux">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Fee-NG-Iux">
                                                                 <rect key="frame" x="0.0" y="29" width="178" height="40"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mHV-Mh-QWn">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="178" height="25.666666666666668"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="178" height="20.666666666666668"/>
                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                                         <color key="textColor" red="0.32156862745098036" green="0.32156862745098036" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -67,6 +67,12 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                 </subviews>
+                                                                <constraints>
+                                                                    <constraint firstItem="Ts8-7G-6it" firstAttribute="leading" secondItem="Fee-NG-Iux" secondAttribute="leading" id="Dcv-gW-t6a"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="mHV-Mh-QWn" secondAttribute="trailing" id="fcQ-Ir-xNZ"/>
+                                                                    <constraint firstItem="mHV-Mh-QWn" firstAttribute="leading" secondItem="Fee-NG-Iux" secondAttribute="leading" id="hTQ-fd-Yqw"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="Ts8-7G-6it" secondAttribute="trailing" id="vM6-De-u3x"/>
+                                                                </constraints>
                                                             </stackView>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -104,6 +110,24 @@
                                                             <constraint firstAttribute="trailing" secondItem="0xx-gW-4u0" secondAttribute="trailing" id="lgY-LE-BHw"/>
                                                             <constraint firstItem="9lY-Xx-6CU" firstAttribute="centerY" secondItem="gz6-jg-8Y7" secondAttribute="centerY" id="qth-bw-LJj"/>
                                                             <constraint firstItem="0xx-gW-4u0" firstAttribute="top" secondItem="gz6-jg-8Y7" secondAttribute="top" id="ref-05-0Ty"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FeZ-7j-eIa">
+                                                        <rect key="frame" x="288" y="0.0" width="35" height="94"/>
+                                                        <subviews>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrowForwardMehroon" translatesAutoresizingMaskIntoConstraints="NO" id="vyX-0l-f4y">
+                                                                <rect key="frame" x="4" y="33.666666666666664" width="27" height="27"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="27" id="4oX-qC-Y0o"/>
+                                                                    <constraint firstAttribute="width" constant="27" id="mTf-TB-GB1"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                        </subviews>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <constraints>
+                                                            <constraint firstItem="vyX-0l-f4y" firstAttribute="centerY" secondItem="FeZ-7j-eIa" secondAttribute="centerY" id="390-wx-jPq"/>
+                                                            <constraint firstItem="vyX-0l-f4y" firstAttribute="leading" secondItem="FeZ-7j-eIa" secondAttribute="leading" constant="4" id="gxa-fA-9xZ"/>
+                                                            <constraint firstAttribute="trailing" secondItem="vyX-0l-f4y" secondAttribute="trailing" constant="4" id="uhU-U6-geZ"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
@@ -152,6 +176,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="arrowForwardMehroon" width="24" height="24"/>
         <image name="placeHolderRestaurant" width="28" height="28"/>
         <image name="trashAddresses" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">

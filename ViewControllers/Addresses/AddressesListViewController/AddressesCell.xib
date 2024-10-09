@@ -62,7 +62,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nv3-6W-RKW">
                                                         <rect key="frame" x="42" y="0.0" width="43" height="94"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="houseAddresses" translatesAutoresizingMaskIntoConstraints="NO" id="01V-XI-81a">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="houseMehroon" translatesAutoresizingMaskIntoConstraints="NO" id="01V-XI-81a">
                                                                 <rect key="frame" x="6" y="34.666666666666664" width="25" height="25"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="25" id="EPi-OI-wmz"/>
@@ -80,8 +80,8 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zy0-3Q-kDd">
                                                         <rect key="frame" x="85" y="0.0" width="115" height="94"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Fee-NG-Iux">
-                                                                <rect key="frame" x="0.0" y="24.999999999999996" width="109" height="33.666666666666657"/>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Fee-NG-Iux">
+                                                                <rect key="frame" x="0.0" y="24.999999999999996" width="109" height="37.666666666666657"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mHV-Mh-QWn">
                                                                         <rect key="frame" x="0.0" y="0.0" width="109" height="19.333333333333332"/>
@@ -90,7 +90,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ts8-7G-6it">
-                                                                        <rect key="frame" x="0.0" y="19.333333333333336" width="109" height="14.333333333333336"/>
+                                                                        <rect key="frame" x="0.0" y="23.333333333333336" width="109" height="14.333333333333336"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                         <color key="textColor" red="0.32156862749999998" green="0.32156862749999998" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -202,6 +202,7 @@
                 <outlet property="buttonCheck" destination="Mue-Ii-mXc" id="6d3-Gv-y2k"/>
                 <outlet property="buttonDelete" destination="0xx-gW-4u0" id="NiS-iH-WVU"/>
                 <outlet property="buttonEdit" destination="d6v-YN-DUv" id="wWG-EB-Iu8"/>
+                <outlet property="imageViewAddressType" destination="01V-XI-81a" id="w4T-cg-4jd"/>
                 <outlet property="imageViewCheck" destination="7aO-LI-Cll" id="tbd-T6-7ZM"/>
                 <outlet property="labelAddress" destination="Ts8-7G-6it" id="l3b-ap-w5h"/>
                 <outlet property="labelTitle" destination="mHV-Mh-QWn" id="F3k-Qa-eHx"/>
@@ -215,7 +216,7 @@
     <resources>
         <image name="checkBoxAddresses" width="20" height="20"/>
         <image name="editMehroonAddresses" width="20" height="20"/>
-        <image name="houseAddresses" width="24" height="24"/>
+        <image name="houseMehroon" width="24" height="24"/>
         <image name="trashAddresses" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

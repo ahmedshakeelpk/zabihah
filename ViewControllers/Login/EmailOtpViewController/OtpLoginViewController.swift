@@ -27,8 +27,9 @@ class OtpLoginViewController: UIViewController{
     var isFromEmail: Bool = false
     var isFromRegistrationViewController: Bool = false
     var stringPhoneEmail = ""
+    var isUpdateEmailOrPhoneNoCase: Bool = false
     
-    var isOtpSuccessFullHandler: (() -> ())!
+    var isOtpSuccessFullHandler: ((Bool, Bool) -> ())!
     
     var otpEntered: Bool! = false {
         didSet {
@@ -47,38 +48,31 @@ class OtpLoginViewController: UIViewController{
             }
             else {
                 labelResendCodeTimer.text = "Resend in \(resendCodeCounter) seconds"
-                print("Resend in \(resendCodeCounter) seconds")
+//                print("Resend in \(resendCodeCounter) seconds")
             }
         }
     }
     var modelOtpResponse: ModelOtpResponse? {
         didSet {
-            if modelOtpResponse?.success ?? false {
+            if !(modelOtpResponse?.token ?? "").isEmpty {
                 if isFromRegistrationViewController {
-                    popViewController(animated: false)
-                    DispatchQueue.main.async {
-                        self.isOtpSuccessFullHandler?()
-                    }
+//                    popViewController(animated: false)
+//                    self.isOtpSuccessFullHandler?(<#Bool#>, <#Bool#>)
+                    self.mySelf()
                 }
                 else {
-                    if modelOtpResponse?.recordFound ?? false {
+                    if !isUpdateEmailOrPhoneNoCase {
                         kAccessToken = modelOtpResponse?.token ?? ""
-                        kDefaults.set(kAccessToken, forKey: "kAccessToken")
-                        popViewController(animated: false)
-                        DispatchQueue.main.async {
-                            self.isOtpSuccessFullHandler?()
-                        }
+                        kRefreshToken = modelOtpResponse?.refreshToken ?? ""
                     }
-                    else {
-                        self.navigateToRegisterationViewController()
-//                        showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
-//                            self.navigateToRegisterationViewController()
-//                        }
-                    }
+//                    popViewController(animated: false)
+//                    self.isOtpSuccessFullHandler?()
+                    self.mySelf()
                 }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelOtpResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelOtpResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -87,12 +81,10 @@ class OtpLoginViewController: UIViewController{
         didSet {
             if modelSendnotificationResponse?.success ?? false {
                 startOtpTimer()
-//                DispatchQueue.main.async {
-//                    self.showAlertCustomPopup(title: "Success", message: self.modelSendnotificationResponse?.message ?? "", iconName: .iconSuccess)
-//                }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelSendnotificationResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -138,6 +130,7 @@ class OtpLoginViewController: UIViewController{
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RegisterationViewController") as! RegisterationViewController
         vc.isFromEmail = isFromEmail
         vc.stringPhoneEmail = stringPhoneEmail
+        resendCodeTimer.invalidate()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -147,7 +140,7 @@ class OtpLoginViewController: UIViewController{
         self.viewTextFieldOtp.fieldPlaceHolder = "0"
         self.viewTextFieldOtp.defaultBorderColor = .colorBorder
         self.viewTextFieldOtp.filledBorderColor = .colorBorder
-        self.viewTextFieldOtp.fieldTextColor = .colorApp
+        self.viewTextFieldOtp.fieldTextColor = .clrBlack
         self.viewTextFieldOtp.cursorColor = .colorApp
         self.viewTextFieldOtp.displayType = .roundedCorner
         self.viewTextFieldOtp.fieldSize = 65
@@ -178,33 +171,137 @@ class OtpLoginViewController: UIViewController{
     
     func verifyOtp() {
         let parameters: Parameters = [
-            "otp": otpString ?? ""
+            "code": otpString ?? "",
+            "createJwt": isUpdateEmailOrPhoneNoCase ? false 
+            :
+                isFromRegistrationViewController ? false
+            :
+                true
         ]
         
-        APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: ModelOtpResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelOtpResponse = model
+        APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let responseModel = ModelOtpResponse(title: "", message: "", token: "testToken", refreshToken: "")
+                self.modelOtpResponse = responseModel
+            }
+            else {
+                let model: ModelOtpResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelOtpResponse = model
+            }
         }
     }
-    func sendnotification() {
-        print()
-        var deviceType = ""
-        if isFromRegistrationViewController {
-            deviceType = isFromEmail ? "phone" : "email"
-        }
-        else {
-            deviceType = isFromEmail ? "email" : "phone"
-        }
+    func sendnotification2() {
         let parameters: Parameters = [
-            "recipient": stringPhoneEmail,
-            "device": deviceType,
-            "validate": false //it will check if user exist in DB
+            "phone": isFromEmail ? "" : stringPhoneEmail,
+            "email": isFromEmail ? stringPhoneEmail : "",
+            "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
         ]
         
-        APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             
             let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelSendnotificationResponse = model
+        }
+    }
+    func sendnotification() {
+        if !isUpdateEmailOrPhoneNoCase {
+            kAccessToken = ""
+        }
+        let parameters: Parameters = [
+            "phone": isFromEmail ? "" : stringPhoneEmail,
+            "email": isFromEmail ? stringPhoneEmail : "",
+            "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
+        ]
+        
+        APIs.postAPI(apiName: .request, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode  in
+
+            if statusCode == 200 && responseData == nil {
+                let responseModel =  LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse(title: "", recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                self.modelSendnotificationResponse = responseModel
+            }
+            else {
+                let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSendnotificationResponse = model
+            }
+        }
+    }
+    
+    var modelGetUserProfileResponse : HomeViewController.ModelGetUserProfileResponse! {
+        didSet {
+            if isUpdateEmailOrPhoneNoCase {
+                updateProfile()
+                return
+            }
+            if modelGetUserProfileResponse.isPhoneVerified == nil || modelGetUserProfileResponse.isEmailVerified == nil || modelGetUserProfileResponse.firstName == nil {
+                self.navigateToRegisterationViewController()
+            }
+            else if modelGetUserProfileResponse?.isEmailVerified ?? false || modelGetUserProfileResponse?.isPhoneVerified ?? false {
+                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+                self.navigateToRootHomeViewController()
+            }
+            //These two checks are removed for setting option email or phone number verification
+//            else if modelGetUserProfileResponse?.isEmailVerified == false {
+//                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+//                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+//                isUpdateEmailOrPhoneNoCase = true
+//                isFromEmail = true
+//                self.popViewController(animated: true)
+//                isOtpSuccessFullHandler(true, true)
+//            }
+//            else if modelGetUserProfileResponse?.isPhoneVerified == false {
+//                kDefaults.set(kAccessToken, forKey: "kAccessToken")
+//                kDefaults.set(kRefreshToken, forKey: "kRefreshToken")
+//                isUpdateEmailOrPhoneNoCase = true
+//                isFromEmail = false
+//                self.popViewController(animated: true)
+//                isOtpSuccessFullHandler(false, true)
+//            }
+            else {
+                self.navigateToRegisterationViewController()
+            }
+        }
+    }
+    func mySelf() {
+        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+            print(responseData ?? "")
+            print(success)
+            let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserProfileResponse = model
+        }
+    }
+    
+    func updateProfile(
+        imageUrl: String? = nil,
+        isSubscribedToHalalOffersNotification: Bool? = false,
+        isSubscribedToHalalEventsNewsletter: Bool? = false
+    ) {
+        let parameters: Parameters = [
+            "firstname": modelGetUserProfileResponse?.firstName ?? "",
+            "lastName": modelGetUserProfileResponse?.lastName ?? "",
+            "email": modelGetUserProfileResponse?.email ?? "",
+            "phone": modelGetUserProfileResponse?.phone ?? "",
+            "profilePictureWebUrl": imageUrl == nil ? modelGetUserProfileResponse?.profilePictureWebUrl ?? "" : imageUrl ?? "",
+            "isSubscribedToHalalOffersNotification": isSubscribedToHalalOffersNotification == true ? modelGetUserProfileResponse?.isSubscribedToHalalOffersNotification ?? "" : isSubscribedToHalalOffersNotification!,
+            "isSubscribedToHalalEventsNewsletter":
+                isSubscribedToHalalEventsNewsletter == nil ?
+            modelGetUserProfileResponse?.isSubscribedToHalalEventsNewsletter ?? "" :
+                isSubscribedToHalalEventsNewsletter!
+        ]
+        APIs.postAPI(apiName: .updateUser, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                self.isUpdateEmailOrPhoneNoCase = false
+                self.mySelf()
+            }
+            else {
+                self.showAlertCustomPopup(title: "Error", message: "", iconName: .iconError)
+            }
+        }
+    }
+    func navigateToRootHomeViewController() {
+        let storyBoard : UIStoryboard = UIStoryboard(name: StoryBoard.name.home.rawValue, bundle:nil)
+        if let navigationController = storyBoard.instantiateViewController(withIdentifier: "NavigationHomeViewController") as? UINavigationController {
+            self.sceneDelegate?.window?.rootViewController = navigationController
         }
     }
 }

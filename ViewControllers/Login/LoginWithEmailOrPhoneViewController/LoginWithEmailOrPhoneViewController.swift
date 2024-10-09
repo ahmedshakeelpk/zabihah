@@ -25,6 +25,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     @IBOutlet weak var stackViewPhoneNumber: UIView!
     
     var isFromEmail: Bool = false
+    var isUpdateEmailOrPhoneNoCase: Bool = false
 
     var modelSendnotificationResponse: ModelSendnotificationResponse? {
         didSet {
@@ -32,7 +33,8 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
                 navigateToOtpLoginViewController()
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelSendnotificationResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelSendnotificationResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -44,6 +46,9 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
 //        textFieldPhoneNumber.text = "+923115284424"
         
         setConfiguration()
+        
+        textFieldPhoneNumber.autocorrectionType = .no
+        textFieldEmail.autocorrectionType = .no
     }
 
     @IBAction func buttonBack(_ sender: Any) {
@@ -62,7 +67,7 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
                 return()
             }
         }
-        sendnotification()
+        request()
     }
     
     func setConfiguration() {
@@ -74,13 +79,15 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         viewBackGroundButtonSendVerificationCode.radius(radius: 8)
         
         if isFromEmail {
-            labelTitle.text = "Sign in with email"
+            textFieldEmail.text = ""
+            labelTitle.text = isUpdateEmailOrPhoneNoCase ? "Verify email address" : "Sign in with email"
             stackViewPhoneNumber.isHidden = true
             stackViewEmail.isHidden = false
             imageViewTitleType.image = UIImage(named: "smsLogin")
         }
         else {
-            labelTitle.text = "Sign in with phone"
+            textFieldPhoneNumber.text = ""
+            labelTitle.text = isUpdateEmailOrPhoneNoCase ? "Verify phone number" : "Sign in with phone"
             stackViewEmail.isHidden = true
             stackViewPhoneNumber.isHidden = false
             imageViewTitleType.image = UIImage(named: "phoneLogo")
@@ -89,7 +96,6 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
             textFieldPhoneNumber.delegate = self
             textFieldPhoneNumber.displayMode = .list // .picker by default
         }
-        
         fieldVilidation()
     }
     @objc func fieldVilidation() {
@@ -111,9 +117,13 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
     func navigateToOtpLoginViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "OtpLoginViewController") as! OtpLoginViewController
         vc.isFromEmail = isFromEmail
+        vc.isUpdateEmailOrPhoneNoCase = isUpdateEmailOrPhoneNoCase
         vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
-        vc.isOtpSuccessFullHandler = {
-            self.navigateToRootHomeViewController()
+        vc.isOtpSuccessFullHandler = { isFromEmail, isUpdateEmailOrPhoneNoCase in
+            self.isFromEmail = isFromEmail
+            self.isUpdateEmailOrPhoneNoCase = isUpdateEmailOrPhoneNoCase
+            self.setConfiguration()
+//            self.mySelf()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -125,24 +135,46 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
         }
     }
     
-    func sendnotification() {
+    func navigateToRegisterationViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RegisterationViewController") as! RegisterationViewController
+        vc.isFromEmail = isFromEmail
+        vc.stringPhoneEmail = isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func request() {
+        if !isUpdateEmailOrPhoneNoCase {
+            kAccessToken = ""
+        }
         let parameters: Parameters = [
-            "recipient": isFromEmail ? textFieldEmail.text! : textFieldPhoneNumber.getCompletePhoneNumber(),
-            "device": isFromEmail ? "email" : "phone",
-            "validate": false //it will check if user exist in DB
+            "phone": textFieldPhoneNumber.getCompletePhoneNumber(),
+            "email": textFieldEmail.text!,
+            "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
         ]
         
-        APIs.postAPI(apiName: .sendnotification, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            
-            let model: ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelSendnotificationResponse = model
+        APIs.postAPI(apiName: .request, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode  in
+
+            if statusCode == 200 && responseData == nil {
+                let responseModel = ModelSendnotificationResponse(title: "", recordFound: true, success: true, message: "", innerExceptionMessage: "")
+                self.modelSendnotificationResponse = responseModel
+            }
+            else {
+                let model: ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelSendnotificationResponse = model
+            }
         }
     }
+
+    
+    
+    
     
     func userAlreadyExistFromRegistration() {
         isFromEmail = !isFromEmail
         setConfiguration()
     }
+    
+    
 }
 
 extension LoginWithEmailOrPhoneViewController: FPNTextFieldDelegate {
@@ -181,4 +213,9 @@ extension LoginWithEmailOrPhoneViewController: FPNTextFieldDelegate {
          // Do something...
       }
    }
+}
+enum OtpRequestType: String {
+    case email = "Email"
+    case phone = "Phone"
+    case none = "None"
 }

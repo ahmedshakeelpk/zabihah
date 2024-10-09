@@ -14,20 +14,21 @@ class HomeCuisinesSubCell: UICollectionViewCell {
     @IBOutlet weak var imageViewTitle: UIImageView!
     @IBOutlet weak var viewImageViewTitleBackGround: UIView!
     @IBOutlet weak var imageViewPlaceHolder: UIImageView!
+    @IBOutlet weak var viewBottomLine: UIView!
     var selectedPlaceHolderIcon: String!
     var modelCuisine: HomeViewController.ModelCuisine? {
         didSet {
             labelName.text = modelCuisine?.name
-            imageViewTitle.setImage(urlString: modelCuisine?.image ?? "", placeHolderIcon: selectedPlaceHolderIcon) {
+            imageViewTitle.setImage(urlString: modelCuisine?.iconImageWebUrl ?? "", placeHolderIcon: selectedPlaceHolderIcon) {
                 image in
-                if image == nil {
-                    self.imageViewTitle.isHidden = true
-                    self.imageViewPlaceHolder.image = UIImage(named: self.selectedPlaceHolderIcon)
-                }
-                else {
-                    self.imageViewTitle.isHidden = false
-                    self.imageViewPlaceHolder.isHidden = true
-                }
+//                if image == nil {
+//                    self.imageViewTitle.isHidden = true
+//                    self.imageViewPlaceHolder.image = UIImage(named: self.selectedPlaceHolderIcon)
+//                }
+//                else {
+//                    self.imageViewTitle.isHidden = false
+//                    self.imageViewPlaceHolder.isHidden = true
+//                }
             }
         }
     }
@@ -35,12 +36,15 @@ class HomeCuisinesSubCell: UICollectionViewCell {
         didSet {
             if selectedCuisine == modelCuisine?.name {
                 labelName.textColor = .colorApp
-                viewImageViewTitleBackGround.radius(radius: 8, color: .colorApp, borderWidth: 2)
+                viewBottomLine.backgroundColor = .colorApp
+//                viewImageViewTitleBackGround.radius(radius: 8, color: .colorApp, borderWidth: 2)
             }
             else {
                 labelName.textColor = .colorLabel
-                viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 2)
+                viewBottomLine.backgroundColor = .clear
+//                viewImageViewTitleBackGround.radius(radius: 8, color: .white, borderWidth: 2)
             }
+            viewImageViewTitleBackGround.radius(radius: 25, color: .white, borderWidth: 3)
         }
     }
     

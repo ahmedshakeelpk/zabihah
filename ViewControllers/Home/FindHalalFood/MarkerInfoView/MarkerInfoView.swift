@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import GoogleMaps
+
 
 class MarkerInfoView: UIView {
 
+    @IBOutlet weak var stackViewPhotosBackGround: UIStackView!
     @IBOutlet weak var viewCallMainBackGround: UIView!
     @IBOutlet weak var buttonTapOnView: UIButton!
     @IBOutlet weak var viewRatingBackGround: UIView!
@@ -22,82 +25,36 @@ class MarkerInfoView: UIView {
     @IBOutlet weak var labelDistance: UILabel!
     @IBOutlet weak var labelImages: UILabel!
     
+    var marker: GMSMarker!
     var buttonTapOnViewHandler: (() -> ())!
+    var isPrayerPlace: Bool? = false
+    
+    var modelRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
+        didSet {
+            setModelRestuarantResponseData()
+        }
+    }
+    
+    func setModelRestuarantResponseData() {
+        labelDistance.textColor = .colorApp
 
-    var modelGetPrayerPlacesResponseData: HomeViewController.ModelRestuarantResponseData? {
-        didSet {
-            setDataPrayerPlacesResponseData()
-        }
-    }
-    var modelFeaturedRestuarantResponseData: HomeViewController.ModelRestuarantResponseData? {
-        didSet {
-            setDataRestuarantResponseData()
-        }
-    }
-    
-    func setDataRestuarantResponseData() {
         viewRestaurantBackGround.isHidden = false
-        labelRestaurantName.text = modelFeaturedRestuarantResponseData?.name
-        labelRestaurantAddress.text = modelFeaturedRestuarantResponseData?.address
-        labelRating.text = "\(modelFeaturedRestuarantResponseData?.rating ?? 0)"
-        labelImages.text = "\(modelFeaturedRestuarantResponseData?.gallaryCount ?? 0)"
-        labelDistance.text = "\(modelFeaturedRestuarantResponseData?.distance ?? 0)\(modelFeaturedRestuarantResponseData?.distanceUnit ?? "")"
-        viewCallMainBackGround.isHidden = modelFeaturedRestuarantResponseData?.phone ?? "" == ""
-        
-        if let iconImage = modelFeaturedRestuarantResponseData?.iconImage {
-            if iconImage == "" {
-                imageViewItem.image = UIImage(named: "placeHolderRestaurant")
-            }
-            else {
-                imageViewRestaurant.setImage(urlString: modelFeaturedRestuarantResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant") {
-                    image in
-                    self.imageViewItem.image = UIImage(named: "placeHolderRestaurant")
-                }
-            }
+        labelRestaurantName.text = modelRestuarantResponseData?.name
+        labelRestaurantAddress.text = modelRestuarantResponseData?.address
+        labelRating.text = getRating(averageRating: modelRestuarantResponseData?.averageRating)
+        labelImages.text = "\(modelRestuarantResponseData?.totalPhotos ?? 0)"
+        stackViewPhotosBackGround.isHidden = !(modelRestuarantResponseData?.totalPhotos ?? 0 > 0)
+        labelDistance.text = "\(oneDecimalDistance(distance:modelRestuarantResponseData?.distance))"
+        viewCallMainBackGround.isHidden = modelRestuarantResponseData?.phone ?? "" == ""
+        self.marker?.userData = modelRestuarantResponseData
+        imageViewItem.setImage(urlString: modelRestuarantResponseData?.coverImageWebUrl ?? "", placeHolderIcon: isPrayerPlace ?? false ? "placeHolderPrayerPlaces" : "placeHolderFoodItem") {_ in
+            
+            self.marker?.tracksInfoWindowChanges = true
         }
-        if let coverImage = modelFeaturedRestuarantResponseData?.coverImage {
-            if coverImage == "" {
-                imageViewItem.image = UIImage(named: "placeHolderFoodItem")
-            }
-            else {
-                imageViewItem.setImage(urlString: modelFeaturedRestuarantResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem") {
-                    image in
-                    self.imageViewItem.image = UIImage(named: "placeHolderFoodItem")
-                }
-            }
+        imageViewRestaurant.setImage(urlString: modelRestuarantResponseData?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant") {_ in
+            self.marker?.tracksInfoWindowChanges = true
         }
-    }
-    
-    func setDataPrayerPlacesResponseData() {
-        viewRestaurantBackGround.isHidden = true
-        labelRestaurantName.text = modelGetPrayerPlacesResponseData?.name
-        labelRestaurantAddress.text = modelGetPrayerPlacesResponseData?.address
-        labelRating.text = "\(modelGetPrayerPlacesResponseData?.rating ?? 0)"
-        labelImages.text = "\(modelGetPrayerPlacesResponseData?.gallaryCount ?? 0)"
-        labelDistance.text = "\(modelGetPrayerPlacesResponseData?.distance ?? 0)\(modelGetPrayerPlacesResponseData?.distanceUnit ?? "")"
-        viewCallMainBackGround.isHidden = modelGetPrayerPlacesResponseData?.phone ?? "" == ""
-        if let iconImage = modelGetPrayerPlacesResponseData?.iconImage {
-            if iconImage == "" {
-                imageViewItem.image = UIImage(named: "placeHolderRestaurant")
-            }
-            else {
-                imageViewRestaurant.setImage(urlString: modelGetPrayerPlacesResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant") {
-                    image in
-                    self.imageViewItem.image = UIImage(named: "placeHolderRestaurant")
-                }
-            }
-        }
-        if let coverImage = modelGetPrayerPlacesResponseData?.coverImage {
-            if coverImage == "" {
-                imageViewItem.image = UIImage(named: "placeHolderFoodItem")
-            }
-            else {
-                imageViewItem.setImage(urlString: modelGetPrayerPlacesResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderFoodItem") {
-                    image in
-                    self.imageViewItem.image = UIImage(named: "placeHolderFoodItem")
-                }
-            }
-        }
+        viewRestaurantBackGround.isHidden = isPrayerPlace ?? false
     }
     
     override func awakeFromNib() {
@@ -110,5 +67,4 @@ class MarkerInfoView: UIView {
     @IBAction func buttonTapOnView(_ sender: Any) {
         buttonTapOnViewHandler?()
     }
-    
 }

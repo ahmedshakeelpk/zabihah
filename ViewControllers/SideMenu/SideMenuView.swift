@@ -8,6 +8,7 @@
 import UIKit
 import Foundation
 import Kingfisher
+import Alamofire
 
 class SideMenuView: UIView {
     
@@ -23,7 +24,7 @@ class SideMenuView: UIView {
 
     var arrayTitle = ["Your profile", "Your addresses","Your payment methods"]
     var arrayTitleIcon = ["placeHolderUser", "locationSideMenu","paymentSideMenu"]
-    var arrayOther = ["Your reviews", "Your favorite places","Buy it again", "Logout"]
+    var arrayOther = ["Your reviews", "Your favorite places","Buy it again", "Log out"]
     var arrayOtherIcon = ["reviewSideMenu", "favouriteSideMenu","buySideMenu", "logoutSideMenu"]
     var buttonBackHandler: (() -> ())!
     
@@ -80,6 +81,7 @@ class SideMenuView: UIView {
             switch indexPath.row {
             case 0:
                 print("case 1")
+                navigateToReviewsViewController()
             case 1:
                 print("case 2")
                 navigateToMyFavouritesViewController()
@@ -94,6 +96,7 @@ class SideMenuView: UIView {
     
     func removeCacheData() {
         kAccessToken = ""
+        kDefaults.setValue(nil, forKey: "kAccessToken")
         let dictionary = kDefaults.dictionaryRepresentation()
         dictionary.keys.forEach { key in
             kDefaults.removeObject(forKey: key)
@@ -107,7 +110,9 @@ class SideMenuView: UIView {
         let galleryAction = UIAlertAction(title: "Logout", style: .destructive, handler: {
             (alert: UIAlertAction!) -> Void in
             self.removeCacheData()
-            self.navigateToRootLoginViewController()
+            DispatchQueue.main.async {
+                self.navigateToRootLoginViewController()
+            }
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
@@ -141,8 +146,12 @@ class SideMenuView: UIView {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddressesListViewController") as! AddressesListViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
+    func navigateToReviewsViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ReviewsViewController") as! ReviewsViewController
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    }
     func navigateToFAQsViewController() {
-        let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "FAQsViewController") as! FAQsViewController
+        let vc = UIStoryboard.init(name: StoryBoard.name.faqs.rawValue, bundle: nil).instantiateViewController(withIdentifier: "FAQsListViewController") as! FAQsListViewController
         viewController.navigationController?.pushViewController(vc, animated: true)
     }
     func navigateToMyFavouritesViewController() {
@@ -151,11 +160,21 @@ class SideMenuView: UIView {
     }
     
     @objc func setData() {
-        labelFullName.text = "\(modelGetUserProfileResponse?.userResponseData?.firstname ?? "") \(modelGetUserProfileResponse?.userResponseData?.lastName ?? "")"
-        labelAddress.text = modelGetUserProfileResponse?.userResponseData?.email ?? ""
-        imageViewProfile.setImage(urlString: modelGetUserProfileResponse?.userResponseData?.photo ?? "", placeHolderIcon: "placeHolderUser")
+        if kModelGetUserProfileResponse?.email == nil {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.setData()
+            }
+            return
+        }
+        labelFullName.text = "\(kModelGetUserProfileResponse?.firstName ?? "") \(kModelGetUserProfileResponse?.lastName ?? "")"
+        labelAddress.text = kModelGetUserProfileResponse?.email ?? ""
+        getProfilePicture() {
+            profilePicture in
+            self.imageViewProfile.setImageProfile(urlString: profilePicture!, placeHolderIcon: "placeHolderUser")
+        }
     }
     
+    @IBOutlet weak var viewProfileImageBackGround: UIView!
     func sideMenuIntiliziation() {
         if tableView == nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -168,7 +187,9 @@ class SideMenuView: UIView {
         SideMenuViewHeaderViewCell.register(tableView: tableView)
         SideMenuViewFooterViewCell.register(tableView: tableView)
         viewButtonEditBackGround.radius(radius: 8, color: .lightGray, borderWidth: 1)
-        imageViewProfile.circle()
+        
+        imageViewProfile.radius(radius: imageViewProfile.frame.height / 2, color: .white, borderWidth: 4)
+        viewProfileImageBackGround.setShadow(radius: viewProfileImageBackGround.frame.height / 2)
 
         if #available(iOS 15.0, *) {
             self.tableView.sectionHeaderTopPadding = 0
@@ -188,14 +209,44 @@ class SideMenuView: UIView {
     }
     
     func buttonAboutHandler() {
-        navigateToFAQsViewController()
+        navigateToAboutUs()
     }
     func buttonPrivacyPolicyHandler() {
-        navigateToFAQsViewController()
+        navigateToPrivacyPolicy()
     }
     func buttonFrequentlyAskQuestionHandler() {
         navigateToFAQsViewController()
     }
+
+    
+    func navigateToAboutUs() {
+        let urlString = "https://www.zabihah.com/app/about"
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+        else {
+//            showToast(message: "invalid social link please update in your profile")
+        }
+    }
+    func navigateToPrivacyPolicy() {
+        let urlString = "https://www.zabihah.com/app/privacy"
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+        else {
+//            showToast(message: "invalid social link please update in your profile")
+        }
+    }
+    func navigateToTermsAndConditions() {
+        let urlString = "https://www.zabihah.com/com/tos"
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+        else {
+//            showToast(message: "invalid social link please update in your profile")
+        }
+    }
+
     
 }
 
@@ -226,6 +277,16 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog ("You selected row: %@ \(indexPath)")
+        var titleName = ""
+        if indexPath.section == 0 {
+            titleName = arrayTitle[indexPath.row]
+        }
+        else {
+            titleName = arrayOther[indexPath.row]
+        }
+        if titleName.lowercased() == "Buy it again".lowercased() || titleName.lowercased() == "Your payment methods".lowercased() {
+            return()
+        }
         
         closeMenuHandler?(indexPath)
         navigateToViewController(indexPath: indexPath)
@@ -253,6 +314,8 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
         else {
             if let myFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SideMenuViewFooterViewCell") as? SideMenuViewFooterViewCell {
                 myFooter.buttonFrequentlyAskQuestionHandler = buttonFrequentlyAskQuestionHandler
+                myFooter.buttonPrivacyPolicyHandler = buttonPrivacyPolicyHandler
+                myFooter.buttonAboutHandler = buttonAboutHandler
                 return myFooter
             }
         }
@@ -264,7 +327,7 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
             return 0;
         }
         else {
-            return 50
+            return 0
         }
     }
     
@@ -279,4 +342,22 @@ extension SideMenuView: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-
+//var modelUserProfilePictureResponse: ModelUserProfilePictureResponse {
+//    didSet {
+//        
+//    }
+//}
+func getProfilePicture(completion: @escaping(String?) -> Void?) {
+    APIs.postAPI(apiName: .profilePicture, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+        print(responseData ?? "")
+        print(success)
+        if statusCode == 200 {
+            let model: ModelUserProfilePictureResponse? = APIs.decodeDataToObject(data: responseData)
+//            self.modelUserProfilePictureResponse = model!
+            completion(model?.uri)
+        }
+    }
+}
+struct ModelUserProfilePictureResponse: Codable {
+    let uri: String
+}

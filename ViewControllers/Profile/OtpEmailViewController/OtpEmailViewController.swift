@@ -45,7 +45,7 @@ class OtpEmailViewController: UIViewController{
             }
             else {
                 labelResendCodeTimer.text = "Resend in \(resendCodeCounter) seconds"
-                print("Resend in \(resendCodeCounter) seconds")
+//                print("Resend in \(resendCodeCounter) seconds")
             }
         }
     }
@@ -53,16 +53,16 @@ class OtpEmailViewController: UIViewController{
     var otpString: String!
     var modelOtpResponse: OtpLoginViewController.ModelOtpResponse? {
         didSet {
-            if modelOtpResponse?.success ?? false {
+            if !(modelOtpResponse?.token ?? "").isEmpty {
                 self.popViewController(animated: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.isOtpSuccessFullHandler?()
                 }
-//                showAlertCustomPopup(title: "Success", message: "Otp verified"/*modelOtpResponse?.message ?? ""*/, iconName: .iconSuccess) { _ in
-//                }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelOtpResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelOtpResponse?.title ?? "")
+
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -98,7 +98,7 @@ class OtpEmailViewController: UIViewController{
     }
     
     @IBAction func buttonResend(_ sender: Any) {
-        startOtpTimer()
+        sendnotification()
     }
     
     func setupOtpViewConfiguration() {
@@ -107,7 +107,7 @@ class OtpEmailViewController: UIViewController{
         self.viewTextFieldOtp.fieldPlaceHolder = "0"
         self.viewTextFieldOtp.defaultBorderColor = .colorBorder
         self.viewTextFieldOtp.filledBorderColor = .colorBorder
-        self.viewTextFieldOtp.fieldTextColor = .colorApp
+        self.viewTextFieldOtp.fieldTextColor = .clrBlack
         self.viewTextFieldOtp.cursorColor = .colorApp
         self.viewTextFieldOtp.displayType = .roundedCorner
         self.viewTextFieldOtp.fieldSize = 65
@@ -136,12 +136,39 @@ class OtpEmailViewController: UIViewController{
 
     func verifyOtp() {
         let parameters: Parameters = [
-            "otp": otpString ?? ""
+            "code": otpString ?? "",
+            "createJwt": true
         ]
         
-        APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: OtpLoginViewController.ModelOtpResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelOtpResponse = model
+        APIs.postAPI(apiName: .verifyOtp, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let responseModel = OtpLoginViewController.ModelOtpResponse(title: "", message: "", token: "test token", refreshToken: "")
+                self.modelOtpResponse = responseModel
+            }
+            else {
+                let model: OtpLoginViewController.ModelOtpResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelOtpResponse = model
+            }
+        }
+    }
+    
+    func sendnotification() {
+        let parameters: Parameters = [
+            "phone": isFromEmail ? "" : stringPhoneEmail,
+            "email": isFromEmail ? stringPhoneEmail : "",
+            "type": isFromEmail ? OtpRequestType.email.rawValue : OtpRequestType.phone.rawValue
+        ]
+        
+        APIs.postAPI(apiName: .request, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                self.startOtpTimer()
+            }
+            else {
+                let model: LoginWithEmailOrPhoneViewController.ModelSendnotificationResponse? = APIs.decodeDataToObject(data: responseData)
+                let errorMessage = getErrorMessage(errorMessage: model?.title ?? "")
+
+                self.showAlertCustomPopup(title: "Error!", message: errorMessage, iconName: .iconError)
+            }
         }
     }
 }

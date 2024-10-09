@@ -11,6 +11,8 @@ import GooglePlaces
 import Alamofire
 
 class EditAddressViewController: UIViewController {
+    @IBOutlet weak var buttonGps: UIButton!
+    @IBOutlet weak var viewButtonGpsBackGround: UIView!
     
     @IBOutlet weak var labelButtonSaveAsNew: UILabel!
     @IBOutlet weak var viewAddressMainBackGround: UIView!
@@ -24,7 +26,7 @@ class EditAddressViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView! {
         didSet {
             mapView.isMyLocationEnabled = true
-            mapView.settings.myLocationButton = true
+//            mapView.settings.myLocationButton = true
             mapView.delegate = self
         }
     }
@@ -74,6 +76,7 @@ class EditAddressViewController: UIViewController {
     var isEditAddress: Bool! = false
     var location: CLLocationCoordinate2D? {
         didSet {
+            
             if modelUserAddressesResponseData != nil {
                 modelUserAddressesResponseData?.latitude = location?.latitude
                 modelUserAddressesResponseData?.longitude = location?.longitude
@@ -94,7 +97,7 @@ class EditAddressViewController: UIViewController {
                     if let modelRecord = modelGetUserAddressResponse?.userAddressesResponseData?[defaultAddressIndex] {
                         modelUserAddressesResponseData = modelRecord
                         
-                        setAddress(addressTitle: modelRecord.title ?? "", formattedAddress: modelRecord.address ?? "")
+                        setAddress(addressTitle: modelRecord.name ?? "", formattedAddress: modelRecord.physicalAddress ?? "")
                         setZoom(latitude: modelRecord.latitude, longitude: modelRecord.longitude)
                         location = CLLocationCoordinate2D(latitude: modelRecord.latitude!, longitude: modelRecord.longitude!)
                     }
@@ -117,11 +120,16 @@ class EditAddressViewController: UIViewController {
         viewButtonEditBackGround.isHidden = true
     }
     override func viewDidAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
+            self.locationConfiguration()
+        }
         drawCircleForRadiusForGoogleMap()
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        mapView.delegate = self
+        viewButtonGpsBackGround.circle()
         viewButtonBackBackGround.radius(radius: 8)
         viewAddressSubBackGround.radius(radius: 8)
         stackViewSearchBackGround.radius(radius: 8)
@@ -129,11 +137,11 @@ class EditAddressViewController: UIViewController {
         viewButtonSaveAsNewBackGround.radius(color: .clrLightGray, borderWidth: 1)
         //        setZoom()
         //        setAddress()
-        
+
         if modelUserAddressesResponseData != nil {
-            self.setAddress(addressTitle: modelUserAddressesResponseData?.title, formattedAddress: modelUserAddressesResponseData?.address)
+            self.setAddress(addressTitle: modelUserAddressesResponseData?.name, formattedAddress: modelUserAddressesResponseData?.physicalAddress)
             self.setZoom(latitude: modelUserAddressesResponseData?.latitude, longitude: modelUserAddressesResponseData?.longitude)
-            self.location = CLLocationCoordinate2D(latitude: modelUserAddressesResponseData?.latitude ?? 0, longitude: modelUserAddressesResponseData?.latitude ?? 0)
+            self.location = CLLocationCoordinate2D(latitude: modelUserAddressesResponseData?.latitude ?? 0, longitude: modelUserAddressesResponseData?.longitude ?? 0)
             //            labelButtonSaveAsNew.textColor = .lightGray
             //            buttonSaveAsNew.isUserInteractionEnabled = false
             //            buttonContinue.isUserInteractionEnabled = false
@@ -153,9 +161,56 @@ class EditAddressViewController: UIViewController {
                 self.setZoom(latitude: location?.latitude, longitude: location?.longitude)
             }
         }
-        locationConfiguration()
+        isShowLocationPopUp = true
+//        checkLocationServices()
+    }
+    var isShowLocationPopUp = false
+    func checkLocationServices() {
+        if !isShowLocationPopUp {
+            return
+        }
+        isShowLocationPopUp = false
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse, .authorizedAlways:
+            // Location access is granted
+            break
+        case .denied:
+            showLocationDisabledAlert(viewController: self)
+        case .notDetermined:
+            // Request permission
+            showLocationDisabledAlert(viewController: self)
+        case .restricted:
+            showLocationDisabledAlert(viewController: self)
+        @unknown default:
+            break
+        }
     }
     
+    @IBAction func buttonGps(_ sender: Any) {
+        isShowLocationPopUp = true
+        gpsButtonTapped()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            self.gpsButtonTapped()
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                self.gpsButtonTapped()
+//            }
+//
+//        }
+    }
+    
+    @objc func gpsButtonTapped() {
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        
+//        guard let location2 = mapView.myLocation else { return }
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            guard let location = self.mapView.myLocation else { return }
+//            let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 15.0)
+//            self.mapView.animate(to: camera)
+//        }
+    }
     func locationConfiguration() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -219,10 +274,10 @@ class EditAddressViewController: UIViewController {
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
         vc.modelUserAddressesResponseData = modelUserAddressesResponseData
-        vc.newAddressAddedHandler = {
+        vc.newAddressAddedHandler = { (address, location) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.popViewController(animated: true)
-                self.buttonContinueHandler?(self.labelAddress.text!, self.location!)
+                self.buttonContinueHandler?(address, location)
             }
         }
         vc.newAddress = labelAddress.text!
@@ -237,14 +292,13 @@ class EditAddressViewController: UIViewController {
     
     func navigateToAddAddressViewControllerFromEditButton() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        
+        vc.location = self.location
         if modelUserAddressesResponseData == nil {
             vc.newAddress = labelAddress.text!
             vc.location = self.location
         }
         vc.isEditAddress = true
         vc.modelUserAddressesResponseData = modelUserAddressesResponseData
-        
         vc.addressEditHandler = { location in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.popViewController(animated: false)
@@ -281,9 +335,8 @@ class EditAddressViewController: UIViewController {
     func setAddress(addressTitle: String? = "", formattedAddress: String? = "") {
         //        labelAddressTitle.text = addressTitle
         labelAddress.text = formattedAddress
-        
         modelUserAddressesResponseData?.name = addressTitle
-        modelUserAddressesResponseData?.address = formattedAddress
+        modelUserAddressesResponseData?.physicalAddress = formattedAddress
     }
     
     func getLocationCoordinateFromPlaceId(placeId: String) {
@@ -313,7 +366,7 @@ class EditAddressViewController: UIViewController {
     }
     
     func getUserAddress() {
-        APIs.postAPI(apiName: .getuseraddress, methodType: .get, viewController: self) { responseData, success, errorMsg in
+        APIs.postAPI(apiName: .editreview, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: AddressesListViewController.ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetUserAddressResponse = model
         }
@@ -321,22 +374,25 @@ class EditAddressViewController: UIViewController {
     
     func drawCircleForRadiusForGoogleMap() {
         if kUserCurrentLocation == nil {
-            kUserCurrentLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
-            location
+//            kUserCurrentLocation = CLLocation(latitude: location?.latitude ?? 0, longitude: location?.longitude ?? 0)
+            
             return()
         }
         let circleRadius = 0.250 * 1000 // 20 Km in meters
         let circleCenter : CLLocationCoordinate2D  = CLLocationCoordinate2DMake(kUserCurrentLocation.coordinate.latitude, kUserCurrentLocation.coordinate.longitude);
         let circ = GMSCircle(position: circleCenter, radius: circleRadius)
         circ.fillColor = UIColor(red: 0.0, green: 0.7, blue: 0, alpha: 0.1)
-        circ.strokeColor = .colorApp
-        circ.strokeWidth = 1;
-        circ.map = self.mapView;
+        circ.strokeColor = .colorAppWithOccupacy10
+        circ.strokeWidth = 1
+        circ.map = self.mapView
     }
     
     func calculateNewAndOldLatititudeLongitude() {
-        //My location
-        var myLocation = kUserCurrentLocation
+        
+        var myLocation: CLLocation?
+        //Default Latitude Longitude are for US
+        myLocation = CLLocation(latitude: kUserCurrentLocation?.coordinate.latitude ?? 44.500000, longitude: kUserCurrentLocation?.coordinate.longitude ?? -89.500000)
+       
         //My Next Destination
         var myNextDestination = CLLocation(latitude: self.location?.latitude ?? 0, longitude: self.location?.longitude ?? 0)
         //Finding my distance to my next destination (in km)
@@ -411,8 +467,8 @@ extension EditAddressViewController: GMSMapViewDelegate {
     }
     
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
-        let latitude = mapView.camera.target.latitude
-        let longitude = mapView.camera.target.longitude
+//        let latitude = mapView.camera.target.latitude
+//        let longitude = mapView.camera.target.longitude
     }
 }
 
@@ -443,14 +499,6 @@ extension EditAddressViewController: GMSAutocompleteViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    // Turn the network activity indicator on and off again.
-    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-    }
 }
 
 // Handle the user's selection.
@@ -495,6 +543,9 @@ extension EditAddressViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         print("Error while updating location " + error.localizedDescription)
+        if isShowLocationPopUp {
+            checkLocationServices()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -533,11 +584,32 @@ struct ReversedGeoLocation {
     let country: String         // eg. United States
     let isoCountryCode: String  // eg. US
 
+//    var formattedAddress: String {
+//        return """
+//        \(name), 
+//        \(streetNumber) \(streetName),
+//        \(city), \(state) \(zipCode) \(country)
+//        """
+//    }
+//    var formattedAddress: String {
+//        return """
+//        \(name), \(streetNumber) \(streetName), \(city), \(state) \(zipCode) \(country)
+//        """
+//    }
     var formattedAddress: String {
         return """
-        \(name), \(streetNumber) \(streetName),
-        \(city), \(state) \(zipCode) \(country)
+        \(tempSolutionForStreetName)\(streetNumber) \(streetName), \(city), \(state) \(zipCode) \(country)
         """
+    }
+    
+    var tempSolutionForStreetName : String {
+        let tempName = (name.lowercased()).replacingOccurrences(of: "\(streetNumber) \(streetName)".lowercased(), with: "")
+        if tempName == "" {
+            return ""
+        }
+        else {
+            return tempName+", "
+        }
     }
 
     // Handle optionals as needed

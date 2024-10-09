@@ -19,10 +19,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qLp-Yc-bDR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="74"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="u0B-Xd-Vqa">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="74"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rvR-g9-WcJ">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -41,7 +41,7 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="0Ri-6l-Mdb" secondAttribute="trailing" constant="20" id="GLO-U3-7a6"/>
-                                                    <constraint firstAttribute="height" constant="50" id="OF7-HR-ZYI"/>
+                                                    <constraint firstAttribute="height" constant="40" id="OF7-HR-ZYI"/>
                                                     <constraint firstItem="0Ri-6l-Mdb" firstAttribute="leading" secondItem="GUG-kS-D4f" secondAttribute="leading" constant="25" id="Y91-H9-8xZ"/>
                                                     <constraint firstItem="0Ri-6l-Mdb" firstAttribute="centerY" secondItem="GUG-kS-D4f" secondAttribute="centerY" id="z3y-4U-wxZ"/>
                                                 </constraints>
@@ -67,10 +67,10 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kg2-Yc-4HS">
-                                        <rect key="frame" x="0.0" y="50" width="320" height="12"/>
+                                        <rect key="frame" x="0.0" y="50" width="320" height="4"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bJm-RM-Ie8">
-                                                <rect key="frame" x="30" y="11" width="260" height="1"/>
+                                                <rect key="frame" x="30" y="3" width="260" height="1"/>
                                                 <color key="backgroundColor" red="0.8901960784313725" green="0.90980392156862744" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="Bai-PP-4Hh"/>
@@ -82,11 +82,11 @@
                                             <constraint firstItem="bJm-RM-Ie8" firstAttribute="leading" secondItem="Kg2-Yc-4HS" secondAttribute="leading" constant="30" id="A4H-df-tL4"/>
                                             <constraint firstAttribute="trailing" secondItem="bJm-RM-Ie8" secondAttribute="trailing" constant="30" id="CWb-R0-Idc"/>
                                             <constraint firstAttribute="bottom" secondItem="bJm-RM-Ie8" secondAttribute="bottom" id="q3e-z0-LEu"/>
-                                            <constraint firstAttribute="height" constant="12" id="sRq-B9-3zJ"/>
+                                            <constraint firstAttribute="height" constant="4" id="sRq-B9-3zJ"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zf9-pC-mKH">
-                                        <rect key="frame" x="0.0" y="62" width="320" height="12"/>
+                                        <rect key="frame" x="0.0" y="54" width="320" height="12"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s3m-Ci-PgN">
                                                 <rect key="frame" x="30" y="11" width="260" height="1"/>

@@ -38,6 +38,7 @@ class AddAddressViewController: UIViewController {
     let arrayNamesIconMehroon = ["houseMehroon", "briefcaseMehroon", "userMehroon", "addCircleMehroon"]
     let arrayNamesIconWhite = ["houseWhite", "briefcaseWhite", "userWhite", "addCircleWhite"]
 
+    var isFromHomeScreen = false
     var isEditAddress = false
     var newAddress = String()
     var location: CLLocationCoordinate2D? {
@@ -50,18 +51,15 @@ class AddAddressViewController: UIViewController {
         }
     }
     
-    var modelEditUserAddressResponse: ModelEditUserAddressResponse? {
+    var modelEditUserAddressResponse: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
-            if modelEditUserAddressResponse?.success ?? false {
+            if (modelEditUserAddressResponse?.id ?? "") != "" {
                 self.popViewController(animated: true)
                 self.addressEditHandler?(self.location!)
-//                showAlertCustomPopup(title: "Success", message: modelEditUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-//                    self.popViewController(animated: true)
-//                    self.addressEditHandler?(self.location!)
-//                }
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelEditUserAddressResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
@@ -73,14 +71,14 @@ class AddAddressViewController: UIViewController {
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
                 self.labelMainTitle.text = "Edit Address"
-                self.newAddress = self.modelUserAddressesResponseData?.address ?? ""
+                self.newAddress = self.modelUserAddressesResponseData?.physicalAddress ?? ""
                 self.location = CLLocationCoordinate2D(latitude: (modelUserAddressesResponseData?.latitude)!, longitude: (modelUserAddressesResponseData?.longitude)!)
                 self.setLocation(latitude: modelUserAddressesResponseData?.latitude, longitude: self.modelUserAddressesResponseData?.longitude)
                 self.textFieldDeliveryInstruction.text = modelUserAddressesResponseData?.deliveryInstructions
-                self.textFieldLocationInstructionOptional.text = modelUserAddressesResponseData?.locationInstruction
+                self.textFieldLocationInstructionOptional.text = modelUserAddressesResponseData?.locationInstructions
                 self.switchDefaultAddress.isOn = modelUserAddressesResponseData?.isDefault ?? false
                 if let indexOf = arrayNames.firstIndex(where: { name in
-                    name == modelUserAddressesResponseData?.title
+                    name == modelUserAddressesResponseData?.name
                 }) {
                     selectedCell = indexOf
                     collectionView.reloadData()
@@ -92,25 +90,24 @@ class AddAddressViewController: UIViewController {
     
     var locationId: String!
     var selectedCell: Int! = 0
-    var newAddressAddedHandler: (() -> ())!
+    var newAddressAddedHandler: ((String, CLLocationCoordinate2D?) -> ())!
     var addressEditHandler: ((CLLocationCoordinate2D) -> ())!
 
-    var modelAddUserAddressResponse: ModelAddUserAddressResponse? {
+    var modelAddUserAddressResponse: AddressesListViewController.ModelUserAddressesResponseData? {
         didSet {
-            if modelAddUserAddressResponse?.success ?? false {
+            if !(modelAddUserAddressResponse?.id ?? "").isEmpty {
                 self.popViewController(animated: true)
-                self.newAddressAddedHandler?()
-//                showAlertCustomPopup(title: "Success", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-//                    self.popViewController(animated: true)
-//                    self.newAddressAddedHandler?()
-//                }
+                self.newAddressAddedHandler?(textFieldAddress.text!, location)
             }
             else {
-                showAlertCustomPopup(title: "Error", message: modelAddUserAddressResponse?.message ?? "", iconName: .iconError)
+                let errorMessage = getErrorMessage(errorMessage: modelAddUserAddressResponse?.title ?? "")
+                showAlertCustomPopup(title: "Error", message: errorMessage, iconName: .iconError)
             }
         }
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        viewAddNewAddressBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -118,12 +115,12 @@ class AddAddressViewController: UIViewController {
     }
     @objc func textFieldDeliveryInstructionEditingChanged() {
         if let count = textFieldDeliveryInstruction.text?.count {
-            if count > 300 {
+            if count > 250 {
                 textFieldDeliveryInstruction.text?.removeLast()
                 return()
             }
         }
-        labelDeliveryInstructionCount.text = "\(textFieldDeliveryInstruction.text?.count ?? 0)/300"
+        labelDeliveryInstructionCount.text = "\(textFieldDeliveryInstruction.text?.count ?? 0)/250"
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -157,11 +154,11 @@ class AddAddressViewController: UIViewController {
         
         viewButtonBackBackGround.radius(radius: 8)
         viewSwitchDefaultAddressBackGround.radius(radius: 8)
-        viewAddNewAddressBackGround.roundCorners(corners: [.topLeft, .topRight], radius: 20)
         AddAddressFieldsCell.register(collectionView: collectionView)
         self.setLocation()
         textFieldDeliveryInstruction.addTarget(self, action: #selector(textFieldDeliveryInstructionEditingChanged), for: .editingChanged)
-        
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 20)
+
         fieldVilidation()
     }
     @objc func fieldVilidation() {
@@ -197,41 +194,51 @@ class AddAddressViewController: UIViewController {
         let parameters: Parameters = [
 //            "id": locationId ?? "",
             "title": arrayNames[selectedCell],
-            "address": textFieldAddress.text!,
+            "physicalAddress": textFieldAddress.text!,
             "name": arrayNames[selectedCell],
+            "label": arrayNames[selectedCell],
             "latitude": location?.latitude ?? 0,
             "longitude": location?.longitude ?? 0,
             "deliveryInstructions": textFieldDeliveryInstruction.text!,
-            "locationInstruction": textFieldLocationInstructionOptional.text!,
+            "locationInstructions": textFieldLocationInstructionOptional.text!,
             "isDefault": switchDefaultAddress.isOn
         ]
-        APIs.postAPI(apiName: .adduseraddress, parameters: parameters, viewController: self) { responseData, success, errorMsg in
-            let model: ModelAddUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelAddUserAddressResponse = model
+        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let model = AddressesListViewController.ModelUserAddressesResponseData(title: "", id: "tempid", utmCoordinates: nil, createdOn: nil, updatedOn: nil, updatedBy: nil, label: nil, physicalAddress: nil, locationInstructions: nil, deliveryInstructions: nil, isDefault: nil, isDeleted: nil)
+                self.modelAddUserAddressResponse = model
+            }
+            else {
+                let model: AddressesListViewController.ModelUserAddressesResponseData? = APIs.decodeDataToObject(data: responseData)
+                self.modelAddUserAddressResponse = model
+            }
         }
     }
-    
+   
     func editUserAddress() {
         let parameters: Parameters = [
             "id": modelUserAddressesResponseData?.id ?? "",
             "title": arrayNames[selectedCell],
-            "address": textFieldAddress.text!,
+            "physicalAddress": textFieldAddress.text!,
             "name": arrayNames[selectedCell],
+            "label": arrayNames[selectedCell],
             "latitude": location?.latitude ?? 0,
             "longitude": location?.longitude ?? 0,
             "deliveryInstructions": textFieldDeliveryInstruction.text!,
-            "locationInstruction": textFieldLocationInstructionOptional.text!,
-            "isDefault": true
+            "locationInstructions": textFieldLocationInstructionOptional.text!,
+            "isDefault": switchDefaultAddress.isOn
         ]
-        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg in
-            let model: ModelEditUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelEditUserAddressResponse = model
+        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let model = AddressesListViewController.ModelUserAddressesResponseData(title: "", id: "tempid", utmCoordinates: nil, createdOn: nil, updatedOn: nil, updatedBy: nil, label: nil, physicalAddress: nil, locationInstructions: nil, deliveryInstructions: nil, isDefault: nil, isDeleted: nil)
+                self.modelEditUserAddressResponse = model
+            }
+            else {
+                let model: AddressesListViewController.ModelUserAddressesResponseData? = APIs.decodeDataToObject(data: responseData)
+                self.modelEditUserAddressResponse = model
+            }
         }
     }
-    
-    
-    
-    
 }
 
 
@@ -307,15 +314,6 @@ extension AddAddressViewController: GMSAutocompleteViewControllerDelegate {
     // User canceled the operation.
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
         dismiss(animated: true, completion: nil)
-    }
-    
-    // Turn the network activity indicator on and off again.
-    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 }
 

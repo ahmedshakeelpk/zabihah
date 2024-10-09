@@ -12,6 +12,7 @@ import Alamofire
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var imageViewTest: UIImageView!
     @IBOutlet weak var viewBackGroundEmail: UIView!
     @IBOutlet weak var viewBackGroundPhone: UIView!
     @IBOutlet weak var viewBackGroundFaceBook: UIView!
@@ -21,12 +22,12 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var buttonAppleLogin: UIButton!
     @IBOutlet weak var buttonFaceBookLogin: UIButton!
     
-
-    override func viewDidAppear(_ animated: Bool) {
-        if kAccessToken != "" {
-            navigateToRootHomeViewController()
+    var modelUserConfigurationResponse: HomeViewController.ModelUserConfigurationResponse? {
+        didSet {
+            kModelUserConfigurationResponse = modelUserConfigurationResponse
         }
     }
+   
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if #available(iOS 13.0, *) {
             return .lightContent
@@ -35,6 +36,17 @@ class LoginViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        imageViewTest.backgroundColor = .colorAppWithOccupacy10
+        let image = imageViewTest.image?.withRenderingMode(.alwaysTemplate)
+        imageViewTest.image = image
+
+        imageViewTest.tintColor = .colorAppWithOccupacy30
+    }
+    @objc func colorTap(_ g: UITapGestureRecognizer) {
+            guard let v = g.view else { return }
+        imageViewTest.backgroundColor = v.backgroundColor
+        }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -49,6 +61,11 @@ class LoginViewController: UIViewController {
         viewBackGroundApple.radius(radius: 8, color: .colorBorder, borderWidth: 1)
         
         userConfiguration()
+        if kAccessToken != "" {
+            getUser()
+        }
+        
+        
     }
     
     @IBAction func buttonEmailLogin(_ sender: Any) {
@@ -57,7 +74,7 @@ class LoginViewController: UIViewController {
     @IBAction func buttonPhoneLogin(_ sender: Any) {
 //        navigateTogalleryStoryBoard()
         //        navigateToHomeViewController()
-        //        navigateToDeliveryDetails3ViewController()
+//        navigateToRatingViewController()
                 navigateToLoginWithEmailOrPhoneViewController(isFromEmail: false)
     }
     @IBAction func buttonFaceBookLogin(_ sender: Any) {
@@ -70,9 +87,14 @@ class LoginViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    func navigateToRatingViewController() {
+        let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "RatingViewController") as! RatingViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
-    func navigateToLoginWithEmailOrPhoneViewController(isFromEmail: Bool) {
+    func navigateToLoginWithEmailOrPhoneViewController(isFromEmail: Bool, isUpdateEmailOrPhoneNoCase: Bool? = false) {
         let vc = UIStoryboard.init(name: StoryBoard.name.login.rawValue, bundle: nil).instantiateViewController(withIdentifier: "LoginWithEmailOrPhoneViewController") as! LoginWithEmailOrPhoneViewController
+        vc.isUpdateEmailOrPhoneNoCase = isUpdateEmailOrPhoneNoCase!
         vc.isFromEmail = isFromEmail
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -125,36 +147,79 @@ class LoginViewController: UIViewController {
         let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "DeliveryDetailsViewController3") as! DeliveryDetailsViewController3
         self.navigationController?.pushViewController(vc, animated: true)
     }
-
+    
     func userConfiguration() {
         print(getCurrentTimeZone())
         let parameters: Parameters = [
             "timeZoneId": getCurrentTimeZone()
         ]
-        APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg in
-            let model: ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
+        APIs.postAPI(apiName: .userConfiguration, parameters: parameters, methodType: .post, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: HomeViewController.ModelUserConfigurationResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelUserConfigurationResponse = model
         }
     }
     
     func getCurrentTimeZone() -> String {
         TimeZone.current.identifier
-    }
-
-    var modelUserConfigurationResponse: ModelUserConfigurationResponse? {
+    }   
+    
+    var modelGetUserResponseLocal: HomeViewController.ModelGetUserProfileResponse? {
         didSet {
-            kModelUserConfigurationResponse = modelUserConfigurationResponse
+            DispatchQueue.main.async {
+                if self.modelGetUserResponseLocal?.isEmailVerified ?? false ||
+                    self.modelGetUserResponseLocal?.isPhoneVerified ?? false {
+                    self.navigateToRootHomeViewController()
+                }
+//                if self.modelGetUserResponseLocal?.phone == nil ||
+//                   self.modelGetUserResponseLocal?.email == nil {
+//                    
+//                }
+//                else {
+//                    self.navigateToLoginWithEmailOrPhoneViewController(isFromEmail: !(self.modelGetUserResponseLocal?.isEmailVerified ?? false), isUpdateEmailOrPhoneNoCase: true)
+//                }
+            }
         }
     }
-    
-    // MARK: - ModelGetConfigurationResponse
-    struct ModelUserConfigurationResponse: Codable {
-        let distanceValue: Int?
-        let success: Bool?
-        let message, innerExceptionMessage: String?
-        let token: String?
-        let distanceUnit: String?
-        let recordFound: Bool?
-    }
+    func getUser() {
+        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+            print(responseData ?? "")
+            print(success)
+            let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
+            if statusCode == 200 && responseData == nil {
+                self.modelGetUserResponseLocal =  HomeViewController.ModelGetUserProfileResponse(
+                    id: nil,
+                    lastName: nil,
+                    firstName: nil,
+                    phone:nil,
+                    isSubscribedToHalalEventsNewsletter: nil,
+                    addresses: nil,
+                    isEmailVerified: nil,
+                    createdOn: nil, 
+                    updatedOn: nil,
+                    isPhoneVerified: nil,
+                    isDeleted: nil,
+                    isSubscribedToHalalOffersNotification: nil,
+                    createdBy: nil, 
+                    profilePictureWebUrl: nil,
+                    updatedBy: nil,
+                    email: nil
+                )
+            }
+            else {
+                self.modelGetUserResponseLocal = model
 
+            }
+        }
+    }
+}
+
+extension UIImage {
+    func tinted(with color: UIColor, isOpaque: Bool = false) -> UIImage? {
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: size, format: format).image { _ in
+            color.set()
+            withRenderingMode(.alwaysTemplate).draw(at: .zero)
+        }
+    }
 }

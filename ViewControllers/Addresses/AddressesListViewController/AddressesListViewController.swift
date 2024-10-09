@@ -10,7 +10,9 @@ import Alamofire
 import GooglePlaces
 
 class AddressesListViewController: UIViewController {
-
+    @IBOutlet weak var viewNoDeliveryAddress: UIView!
+    @IBOutlet weak var labelNoDeliveryAddress: UILabel!
+    
     @IBOutlet weak var imageViewNoAddressFound: UIImageView!
     @IBOutlet weak var buttonAddNewAddress: UIButton!
     @IBOutlet weak var viewTitle: UIView!
@@ -22,10 +24,10 @@ class AddressesListViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    var modelGetUserAddressResponse: ModelGetUserAddressResponse? {
+    var modelGetUserAddressResponse: [ModelUserAddressesResponseData]? {
         didSet {
-            if modelGetUserAddressResponse?.userAddressesResponseData?.count ?? 0 > 0 {
-                if let defaultAddressIndex = modelGetUserAddressResponse?.userAddressesResponseData?.firstIndex(where: { model in
+            if modelGetUserAddressResponse?.count ?? 0 > 0 {
+                if let defaultAddressIndex = modelGetUserAddressResponse?.firstIndex(where: { model in
                     model.isDefault ?? false
                 }) {
                     selectedAddressIndex = defaultAddressIndex
@@ -33,19 +35,10 @@ class AddressesListViewController: UIViewController {
                 else {
                     print("No default address found.")
                 }
-            }
-            
-            if tableView.visibleCells.count == 0 {
-                imageViewNoAddressFound.isHidden = false
-                // tableView is empty. You can set a backgroundView for it.
-                // tableView is empty. You can set a backgroundView for it.
-//                let imageView = UIImageView(image: UIImage(named: "noAddressList"))
-//                tableView.backgroundView = imageView
-//                imageView.contentMode = .scaleAspectFit
-//                imageView.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+                viewNoDeliveryAddress.isHidden = true
             }
             else {
-                imageViewNoAddressFound.isHidden = true
+                viewNoDeliveryAddress.isHidden = false
             }
             tableView.reloadData()
         }
@@ -55,10 +48,6 @@ class AddressesListViewController: UIViewController {
         didSet {
             if modelDeleteUserAddressResponse?.success ?? false {
                 getUserAddress()
-//                showAlertCustomPopup(title: "Success", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconSuccess) { _ in
-//                    self.tableView.reloadData()
-//                    self.getUserAddress()
-//                }
             }
             else {
                 showAlertCustomPopup(title: "Error", message: modelDeleteUserAddressResponse?.message ?? "", iconName: .iconError)
@@ -68,10 +57,11 @@ class AddressesListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewTitle.backgroundColor = .colorApp
         AddressesCell.register(tableView: tableView)
         viewTitle.radius(radius: 12)
         getUserAddress()
-        imageViewNoAddressFound.isHidden = false
+        viewNoDeliveryAddress.isHidden = false
     }
     
     @IBAction func buttonBack(_ sender: Any) {
@@ -95,26 +85,39 @@ class AddressesListViewController: UIViewController {
     
     func navigateToAddAddressViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "AddAddressViewController") as! AddAddressViewController
-        vc.newAddressAddedHandler = {
+        vc.newAddressAddedHandler = { (address, location) in
             self.getUserAddress()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     func getUserAddress() {
-        APIs.postAPI(apiName: .getuseraddress, methodType: .get, viewController: self) { responseData, success, errorMsg in
-            let model: ModelGetUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelGetUserAddressResponse = model
+        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+            print(responseData ?? "")
+            print(success)
+            if statusCode == 200 && responseData == nil {
+                
+            } 
+            else {
+                let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelGetUserAddressResponse = model?.addresses
+            }
         }
     }
     
     func deleteUserAddress(index: Int) {
-        let id = modelGetUserAddressResponse?.userAddressesResponseData?[index].id ?? ""
+        let id = modelGetUserAddressResponse?[index].id ?? ""
         
-        let url = "\(APIsName.name.deleteuseraddress.rawValue)/\(id)"
-        APIs.deleteAPI(apiName: url, parameters: nil, methodType: .delete, viewController: self) { responseData, success, errorMsg in
-            let model: ModelDeleteUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelDeleteUserAddressResponse = model
+        let url = "\(APIsName.name.edituseraddress.rawValue)/\(id)"
+        APIs.deleteAPI(apiName: url, parameters: nil, methodType: .delete, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                let model = ModelDeleteUserAddressResponse(title: "", success: true, message: nil, recordFound: nil, innerExceptionMessage: nil)
+                self.modelDeleteUserAddressResponse = model
+            }
+            else {
+                let model: ModelDeleteUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
+                self.modelDeleteUserAddressResponse = model
+            }
         }
     }
     
@@ -123,13 +126,15 @@ class AddressesListViewController: UIViewController {
     }
     func navigateToEditAddressesViewController(index: Int) {
         let vc = UIStoryboard.init(name: StoryBoard.name.addresses.rawValue, bundle: nil).instantiateViewController(withIdentifier: "EditAddressViewController") as! EditAddressViewController
-        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[index]
+        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?[index]
        
         vc.buttonContinueHandler = { (address, location) in
             print("button continue pressed \(String(describing: location))")
             self.getUserAddress()
         }
-        self.navigationController?.pushViewController(vc, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func navigateToAddAddressViewControllerFromEditButton(index: Int) {
@@ -138,23 +143,27 @@ class AddressesListViewController: UIViewController {
             self.getUserAddress()
         }
         vc.isEditAddress = true
-        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[index]
+        vc.modelUserAddressesResponseData = modelGetUserAddressResponse?[index]
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func buttonDeleteAddress(index: Int) {
-        let refreshAlert = UIAlertController(title: "User Address", message: "Are you sure you want to delete Address?", preferredStyle: UIAlertController.Style.alert)
-
-        refreshAlert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action: UIAlertAction!) in
-          print("Handle Ok logic here")
-            self.deleteUserAddress(index: index)
-          }))
-
-        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-          print("Handle Cancel Logic here")
-          }))
-
-        present(refreshAlert, animated: true, completion: nil)
+        navigateToProfileDeleteViewController(index: index)
     }
+    func navigateToProfileDeleteViewController(index: Int) {
+        let vc = UIStoryboard.init(name: StoryBoard.name.profile.rawValue, bundle: nil).instantiateViewController(withIdentifier: "ProfileDeleteViewController") as! ProfileDeleteViewController
+        vc.stringTitle = ""
+//        vc.stringTitle = "User Address"
+        vc.stringSubTitle = "Are you sure you want to delete \(modelGetUserAddressResponse?[index].name ?? "") from addresses?         "
+        vc.stringDescription = ""
+        vc.stringButtonDelete = "Yes, delete"
+        vc.stringButtonCancel = "Cancel"
+        vc.buttonDeleteHandler = {
+            print("delete button press")
+            self.deleteUserAddress(index: index)
+        }
+        self.present(vc, animated: true)
+    }
+    
     func buttonCheckHandler(index: Int) {
         editUserAddress(index: index)
     }
@@ -170,12 +179,25 @@ class AddressesListViewController: UIViewController {
     }
     func editUserAddress(index: Int) {
         let parameters: Parameters = [
-            "id": modelGetUserAddressResponse?.userAddressesResponseData?[index].id ?? "",
+            "id": modelGetUserAddressResponse?[index].id ?? "",
+            "title": modelGetUserAddressResponse?[index].name ?? "",
+            "physicalAddress": modelGetUserAddressResponse?[index].physicalAddress ?? "",
+            "name": modelGetUserAddressResponse?[index].name ?? "",
+            "label": modelGetUserAddressResponse?[index].label ?? "",
+            "latitude": modelGetUserAddressResponse?[index].latitude ?? "",
+            "longitude": modelGetUserAddressResponse?[index].longitude ?? "",
+            "deliveryInstructions": modelGetUserAddressResponse?[index].deliveryInstructions ?? "",
+            "locationInstructions": modelGetUserAddressResponse?[index].locationInstructions ?? "",
             "isDefault": true
         ]
-        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg in
-            let model: AddAddressViewController.ModelEditUserAddressResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelEditUserAddressResponse = model
+        APIs.postAPI(apiName: .edituseraddress, parameters: parameters, methodType: .put, viewController: self) { responseData, success, errorMsg, statusCode in
+            if statusCode == 200 && responseData == nil {
+                self.getUserAddress()
+            }
+            else {
+//                let model: AddressesListViewController.ModelUserAddressesResponseData? = APIs.decodeDataToObject(data: responseData)
+//                self.modelEditUserAddressResponse = model
+            }
         }
     }
 }
@@ -183,19 +205,19 @@ class AddressesListViewController: UIViewController {
 extension AddressesListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelGetUserAddressResponse?.userAddressesResponseData?.count ?? 0
+        return modelGetUserAddressResponse?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddressesCell") as! AddressesCell
-        cell.modelUserAddressesResponseData = modelGetUserAddressResponse?.userAddressesResponseData?[indexPath.row]
+        cell.modelUserAddressesResponseData = modelGetUserAddressResponse?[indexPath.row]
         cell.index = indexPath.row
         cell.selectedAddressIndex = selectedAddressIndex
         cell.buttonEditHandler = buttonEditAddress
         cell.buttonDeleteHandler = buttonDeleteAddress
         cell.buttonCheckHandler = buttonCheckHandler
         
-        if modelGetUserAddressResponse?.userAddressesResponseData?.count ?? 0 == 1 {
+        if modelGetUserAddressResponse?.count ?? 0 == 1 {
             cell.viewButtonDeleteBackGround.isHidden = true
         }
         else {
@@ -210,8 +232,8 @@ extension AddressesListViewController: UITableViewDelegate, UITableViewDataSourc
         for controller in self.navigationController!.viewControllers as Array {
             if controller.isKind(of: HomeViewController.self) {
                 if let targetViewController = controller as? HomeViewController {
-                    targetViewController.getuser()
-                    if let model = modelGetUserAddressResponse?.userAddressesResponseData?[indexPath.row] {
+//                    targetViewController.getuser()
+                    if let model = modelGetUserAddressResponse?[indexPath.row] {
                         targetViewController.selectedAddress(modelUserAddressesResponseData: model)
                     }
                     self.navigationController!.popToViewController(controller, animated: true)

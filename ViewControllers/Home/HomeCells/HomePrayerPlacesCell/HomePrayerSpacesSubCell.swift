@@ -20,7 +20,14 @@ protocol HomePrayerSpacesSubCellDelegate: AnyObject {
 }
 
 class HomePrayerSpacesSubCell: UICollectionViewCell {
+    @IBOutlet weak var stackViewReturning: UIStackView!
+    @IBOutlet weak var stackViewComments: UIStackView!
+    @IBOutlet weak var stackViewPhotos: UIStackView!
+
+    
     @IBOutlet weak var buttonCall: UIButton!
+    @IBOutlet weak var buttonOpenDirectionMap: UIButton!
+    @IBOutlet weak var stackViewFavouriteBackGround: UIStackView!
 
     @IBOutlet weak var stackViewRatingBackGround: UIStackView!
     @IBOutlet weak var imageViewFavourite: UIImageView!
@@ -33,6 +40,7 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
     @IBOutlet weak var labelReuse: UILabel!
     @IBOutlet weak var labelPictures: UILabel!
     @IBOutlet weak var labelDistance: UILabel!
+    @IBOutlet weak var viewBackGroundDelivery: UIView!
     @IBOutlet weak var viewItemTypeBackGround: UIView!
     @IBOutlet weak var labelItemType: UILabel!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
@@ -52,23 +60,21 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
     var indexPath: IndexPath! = nil
     var arrayNames = [String]()
 
-    var modelMosqueResponseData: HomeViewController.ModelRestuarantResponseData! {
+    var restuarentResponseModel: HomeViewController.ModelRestuarantResponseData! {
         didSet {
-            setData()
+            DispatchQueue.main.async {
+                self.setData()
+            }
         }
     }
     
     var modelPostFavouriteRestaurantsResponse: ModelPostFavouriteRestaurantsResponse? {
         didSet {
-            print(modelPostFavouriteRestaurantsResponse as Any)
-            if modelPostFavouriteRestaurantsResponse?.success ?? false {
-                if let isFavourite = self.modelMosqueResponseData?.isFavorites {
-                    delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: indexPath, cellType: HomePrayerSpacesSubCell())
-                    modelMosqueResponseData.isFavorites = !(isFavourite)
+            if let isFavourite = self.restuarentResponseModel?.isMyFavorite {
+                DispatchQueue.main.async {
+                    self.delegate?.changeFavouriteStatus(isFavourite: !isFavourite, indexPath: self.indexPath, cellType: HomePrayerSpacesSubCell())
                 }
-            }
-            else {
-                viewController.showAlertCustomPopup(title: "Error!", message: modelPostFavouriteRestaurantsResponse?.message ?? "", iconName: .iconError)
+                restuarentResponseModel.isMyFavorite = !(isFavourite)
             }
         }
     }
@@ -78,65 +84,87 @@ class HomePrayerSpacesSubCell: UICollectionViewCell {
         // Initialization code
         stackViewBackGround.radius(radius: 12)
         viewBikeBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
-        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 1)
+        viewCallBackGround.radius(radius: 6, color: .clrLightGray, borderWidth: 0)
         viewRatingBackGround.radius(radius: 4)
         viewItemTypeBackGround.circle()
         
-        HomeFoodItemSubSuisineCell.register(collectionView: collectionView)
+        HomeFoodItemSubCuisineCell.register(collectionView: collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
     }
+    @IBAction func buttonOpenDirectionMap(_ sender: Any) {
+        let completeAddress = "\(restuarentResponseModel?.name ?? "") \(restuarentResponseModel?.address ?? "") \(restuarentResponseModel?.city ?? "") \(restuarentResponseModel?.state ?? "") \(restuarentResponseModel?.country ?? "")"
+        OpenMapDirections.present(in: viewController, sourceView: buttonOpenDirectionMap, latitude: restuarentResponseModel?.latitude ?? 0, longitude: restuarentResponseModel?.longitude ?? 0, locationAddress: completeAddress)
+    }
     @IBAction func buttonCall(_ sender: Any) {
-        self.viewController.dialNumber(number: modelMosqueResponseData?.phone ?? "")
+        self.viewController.dialNumber(isPrayerPlaces: false, name: "", number: restuarentResponseModel?.phone ?? "")
     }
     @IBAction func buttonFavourite(_ sender: Any) {
         delegate = viewController as? any HomeFoodItemSubCellDelegate
-        postFavouriteRestaurants()
+        favouriteRestaurants()
     }
     
-    func setData() {
-        labelRestaurantName.text = modelMosqueResponseData?.name ?? ""
-        labelRestaurantAddress.text = modelMosqueResponseData?.address ?? ""
-        labelRating.text = "\(modelMosqueResponseData?.rating ?? 0)"
-        labelComments.text = "\(modelMosqueResponseData?.reviews ?? 0)"
-        labelPictures.text = "\(modelMosqueResponseData?.gallaryCount ?? 0)"
-        labelDistance.text = "\(modelMosqueResponseData?.distance ?? 0)\(modelMosqueResponseData?.distanceUnit ?? "")"
+    func setData() {        
+        labelDistance.textColor = .colorApp
         
-        imageViewRestaurant.setImage(urlString: modelMosqueResponseData?.iconImage ?? "", placeHolderIcon: "placeHolderRestaurant")
-        imageViewItem.setImage(urlString: modelMosqueResponseData?.coverImage ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
-        imageViewFavourite.image = UIImage(named: modelMosqueResponseData?.isFavorites ?? false ? "heartFavourite" : "heartUnFavourite")
-        viewCallMainBackGround.isHidden = modelMosqueResponseData?.phone ?? "" == ""
-        viewBackGroundNewRestaurant.isHidden = modelMosqueResponseData?.status == ""
-        labelItemType.text = modelMosqueResponseData?.status
-        if modelMosqueResponseData?.status?.lowercased() == "closed" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorRed
-        }
-        else if modelMosqueResponseData?.status?.lowercased() == "new" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorGreen
-        }
-        else if modelMosqueResponseData?.status?.lowercased() != "" {
-            viewBackGroundNewRestaurant.backgroundColor = .colorOrange
-        }
-        if var tags = modelMosqueResponseData?.tags?.split(separator: ",").map({ String($0)}) {
-            if tags.last == "" || tags.last == " "{
-                tags.removeLast()
-            }
-            arrayNames = tags
+        labelRestaurantName.text = restuarentResponseModel?.name
+        let completeAddress = "\(restuarentResponseModel?.address ?? ""), \(restuarentResponseModel?.city ?? ""), \(restuarentResponseModel?.state ?? "")"
+        
+        labelRestaurantAddress.text = completeAddress
+        labelRating.text = getRating(averageRating: restuarentResponseModel?.averageRating)
+        
+        labelReuse.text = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) + "%"
+        stackViewReturning.isHidden = getRatingEnum(averageRating: restuarentResponseModel?.willReturnPercentage) == "0"
+        
+        labelComments.text = "\(restuarentResponseModel?.totalReviews ?? 0)"
+        stackViewComments.isHidden = (restuarentResponseModel?.totalReviews ?? 0) == 0
+        
+        labelPictures.text = "\(restuarentResponseModel?.totalPhotos ?? 0)"
+        stackViewPhotos.isHidden = (restuarentResponseModel?.totalPhotos ?? 0) == 0
+        
+        
+        
+        labelDistance.text = "\(oneDecimalDistance(distance:restuarentResponseModel?.distance))"
+        //        labelDistance.text = "\(oneDecimalDistance(distance:modelFeaturedRestuarantResponseData?.distance))\(modelFeaturedRestuarantResponseData?.distance?.readableUnit ?? "")"
+        imageViewRestaurant.setImage(urlString: restuarentResponseModel?.iconImageWebUrl ?? "", placeHolderIcon: "placeHolderRestaurant")
+        imageViewItem.setImage(urlString: restuarentResponseModel?.coverImageWebUrl ?? "", placeHolderIcon: "placeHolderPrayerPlaces")
+        imageViewFavourite.image = UIImage(named: restuarentResponseModel?.isMyFavorite ?? false ? "heartFavourite" : "heartUnFavourite")
+        viewCallMainBackGround.isHidden = restuarentResponseModel?.phone ?? "" == ""
+//        stackViewFavouriteBackGround.isHidden = !(restuarentResponseModel?.isMyFavorite ?? false)
+        
+        if let cuisines = restuarentResponseModel?.cuisines {
+            let filteredCuisines = cuisines.compactMap { $0?.name }.filter { !$0.isEmpty }
+            arrayNames = filteredCuisines
             collectionView.reloadData()
         }
+        viewBackGroundDelivery.isHidden = !(restuarentResponseModel?.offersDelivery ?? false)
+        
+        let isNewRestaurent = ifNewRestaurent(createdOn: restuarentResponseModel?.createdOn ?? "")
+        viewItemTypeBackGround.isHidden = isNewRestaurent == ""
+        labelItemType.text = isNewRestaurent
+        viewItemTypeBackGround.backgroundColor = .colorGreen
+        
+        
+        let isClose = !isRestaurantOpen(timings: restuarentResponseModel?.timings ?? []).0
+        if isClose {
+            //                viewItemTypeBackGround.isHidden = !isClose
+            //                labelItemType.text = "Close"
+            //                viewItemTypeBackGround.backgroundColor = .colorRed
+        }
+        //            viewItemTypeBackGround.backgroundColor = .colorOrange
+        viewBackGroundDelivery.isHidden = true
     }
     
-    func postFavouriteRestaurants() {
+    func favouriteRestaurants() {
         let parameters = [
-            "Id": modelMosqueResponseData?.id ?? "",
-            "isMark": !(modelMosqueResponseData?.isFavorites ?? false),
-            "type" : "prayer"
-            
-        ] as [String : Any]
-       
-        APIs.postAPI(apiName: .postfavouriterestaurants, parameters: parameters, viewController: viewController) { responseData, success, errorMsg in
+            "placeId": restuarentResponseModel.id ?? ""
+        ]
+        
+        APIs.getAPI(apiName: restuarentResponseModel?.isMyFavorite ?? false == true ? .favouriteDelete : .favourite, parameters: parameters, isPathParameters: true, methodType: restuarentResponseModel?.isMyFavorite ?? false == true ? .delete : .post, viewController: viewController) { responseData, success, errorMsg, statusCode in
             let model: ModelPostFavouriteRestaurantsResponse? = APIs.decodeDataToObject(data: responseData)
-            self.modelPostFavouriteRestaurantsResponse = model
+            if statusCode == 200 {
+                self.modelPostFavouriteRestaurantsResponse = model
+            }
         }
     }
 }
@@ -158,7 +186,7 @@ extension HomePrayerSpacesSubCell: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubSuisineCell", for: indexPath) as! HomeFoodItemSubSuisineCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeFoodItemSubCuisineCell", for: indexPath) as! HomeFoodItemSubCuisineCell
         cell.labelName.text = arrayNames[indexPath.item]
 
         return cell
