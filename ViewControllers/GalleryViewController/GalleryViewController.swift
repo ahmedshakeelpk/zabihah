@@ -15,6 +15,7 @@ class GalleryViewController: UIViewController {
     @IBOutlet weak var labelRestaurant: UILabel!
     @IBOutlet weak var imageViewRestaurant: UIImageView!
     @IBOutlet weak var viewRestarurantDetailBackGround: UIView!
+    @IBOutlet weak var viewUserDetailBackGround: UIView!
     @IBOutlet weak var buttonBack: UIButton!
     @IBOutlet weak var viewLeftArrowBackGround: UIView!
     @IBOutlet weak var viewRightArrowBackGround: UIView!
@@ -25,10 +26,15 @@ class GalleryViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var buttonLeft: UIButton!
     
+    
+    
     var galleryRecentPhotos: [String?]?
     var totalImages = 10
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewRestarurantDetailBackGround.isHidden = true
+        self.viewUserDetailBackGround.isHidden = true
+        
         totalImages = galleryRecentPhotos?.count ?? 0
         // Do any additional setup after loading the view.
         GalleryViewControllerCell.register(collectionView: collectionView)

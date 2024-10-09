@@ -168,7 +168,15 @@ class DeliveryDetailsViewController3: UIViewController {
     func getShareDate() -> String {
         if let restuarantResponseData = modelFeaturedResponse?.items?.first {
             let shareLink = getShareLink()
-            let textData = "I wanted to let you know about this halal restaurant on Zabihah \n\n\n \(restuarantResponseData?.name ?? "")\n\(restuarantResponseData?.address ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "") \(restuarantResponseData?.zip ?? "")\n\(restuarantResponseData?.phone ?? "")\n\(shareLink)\n\n\(restuarantResponseData?.description ?? "")\n\n\(restuarantResponseData?.halalDescription ?? "")"
+            var titleText = ""
+            if isPrayerPlace {
+                titleText = "I wanted to let you know about \(restuarantResponseData?.name ?? "") prayer space on Zabihah."
+
+            } else {
+                titleText = "I wanted to let you know about \(restuarantResponseData?.name ?? "") restaurant on Zabihah."
+            }
+                
+            let textData = "\(titleText) \n\n\n \(restuarantResponseData?.name ?? "")\n\(restuarantResponseData?.address ?? "")\n\(restuarantResponseData?.city ?? ""), \(restuarantResponseData?.state ?? "") \(restuarantResponseData?.zip ?? "")\n\(restuarantResponseData?.phone ?? "")\n\(shareLink)\n\n\(restuarantResponseData?.description ?? "")\n\n\(restuarantResponseData?.halalDescription ?? "")"
             return textData
         }
         
@@ -375,7 +383,7 @@ class DeliveryDetailsViewController3: UIViewController {
     func configuredMailComposeViewController(email: String) -> MFMailComposeViewController {
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property
-        
+         
         mailComposerVC.setToRecipients([email])
         mailComposerVC.setSubject("Inquiry from the Zabihah app")
         mailComposerVC.setMessageBody("", isHTML: false)
@@ -610,7 +618,8 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
             let connectSocial = connectSocial?[indexPath.item]
             if let socialType = connectSocial?.type {
                 if socialType.lowercased() == "email" {
-                    let mailComposeViewController = configuredMailComposeViewController(email: connectSocial?.value ?? "")
+                    let email = (connectSocial?.value ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                    let mailComposeViewController = configuredMailComposeViewController(email: email)
                     if MFMailComposeViewController.canSendMail() {
                         self.present(mailComposeViewController, animated: true, completion: nil)
                     } else {
