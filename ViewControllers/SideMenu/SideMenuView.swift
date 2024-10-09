@@ -121,7 +121,7 @@ class SideMenuView: UIView {
         
         if IPAD {
             //In iPad Change Rect to position Popover
-            myActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
+            myActionSheet = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: UIAlertController.Style.alert)
         }
         myActionSheet.addAction(galleryAction)
         myActionSheet.addAction(cancelAction)
@@ -162,7 +162,7 @@ class SideMenuView: UIView {
     @objc func setData() {
         if kModelGetUserProfileResponse?.email == nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.setData()
+                self.getuser()
             }
             return
         }
@@ -171,6 +171,24 @@ class SideMenuView: UIView {
         getProfilePicture() {
             profilePicture in
             self.imageViewProfile.setImageProfile(urlString: profilePicture!, placeHolderIcon: "placeHolderUser")
+        }
+    }
+    
+    var modelGetUserResponseLocal: HomeViewController.ModelGetUserProfileResponse? {
+        didSet {
+            DispatchQueue.main.async {
+                kModelGetUserProfileResponse = self.modelGetUserResponseLocal
+                NotificationCenter.default.post(name: Notification.Name("kUserProfileUpdate"), object: nil)
+            }
+        }
+    }
+    
+    func getuser() {
+        APIs.postAPI(apiName: .mySelf, methodType: .get, encoding: JSONEncoding.default) { responseData, success, errorMsg, statusCode in
+            print(responseData ?? "")
+            print(success)
+            let model: HomeViewController.ModelGetUserProfileResponse? = APIs.decodeDataToObject(data: responseData)
+            self.modelGetUserResponseLocal = model
         }
     }
     
