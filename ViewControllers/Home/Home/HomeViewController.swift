@@ -874,7 +874,3 @@ extension HomeViewController : CLLocationManagerDelegate {
         }
     }
 }
-
-
-
-
