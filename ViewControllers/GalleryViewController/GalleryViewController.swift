@@ -27,13 +27,16 @@ class GalleryViewController: UIViewController {
     @IBOutlet weak var buttonLeft: UIButton!
     
     
-    
+    var isFromDetailsViewController: Bool = false
+    var modelPhotos: [HomeViewController.Photos?]? = nil
     var galleryRecentPhotos: [String?]?
     var totalImages = 10
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewRestarurantDetailBackGround.isHidden = true
-        self.viewUserDetailBackGround.isHidden = true
+        if !isFromDetailsViewController {
+            self.viewRestarurantDetailBackGround.isHidden = true
+            self.viewUserDetailBackGround.isHidden = true
+        }
         
         totalImages = galleryRecentPhotos?.count ?? 0
         // Do any additional setup after loading the view.

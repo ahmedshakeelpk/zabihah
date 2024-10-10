@@ -266,9 +266,6 @@ extension HomeViewController {
 //    }
 }
 
-
-
-
 extension HomeViewController {
     // MARK: - ModelFeaturedRequest
     struct ModelFeaturedResponse: Codable {
@@ -341,6 +338,9 @@ extension HomeViewController {
     struct Photos: Codable {
         let photoWebUrl: String?
         let photoWebUrls: String?
+        var id: String?
+        var user: User?
+        var createdDate: String?
     }
     enum Rating: Codable {
         case int(Int)

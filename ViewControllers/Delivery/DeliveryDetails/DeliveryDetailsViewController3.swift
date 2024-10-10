@@ -90,6 +90,8 @@ class DeliveryDetailsViewController3: UIViewController {
             }
         }
     }
+    
+    var modelPhotos: [HomeViewController.Photos?]? = nil
     var galleryRecentPhotos: [String?]? {
         didSet {
             DispatchQueue.main.async {
@@ -314,12 +316,19 @@ class DeliveryDetailsViewController3: UIViewController {
             else {
                 viewAmenitiesBackGround.isHidden = true
             }
-            if let photos = restuarantResponseData?.photosGallery, photos.count > 0 {
+            if let photos = restuarantResponseData?.photos, photos.count > 0 {
                 let sortedGalleryPhotos = photos
-                    .compactMap { $0 } // Remove nil values
-                    .sorted(by: >)     // Sort in descending order
-                
-                galleryRecentPhotos = sortedGalleryPhotos
+                    .compactMap { $0 }  // Remove any nil values
+                    .sorted { (photo1, photo2) -> Bool in
+                        // Sorting based on createdDate (if available)
+                        // Ensure to safely unwrap createdDate and sort in descending order
+                        if let date1 = photo1.createdDate, let date2 = photo2.createdDate {
+                            return date1 > date2  // Sort by date in descending order
+                        }
+                        return false  // Return false if dates are nil
+                    }
+                modelPhotos = photos
+                galleryRecentPhotos = sortedGalleryPhotos.compactMap { $0.photoWebUrl }
             }
             
             if let connect = restuarantResponseData?.webLinks, connect.count > 0 {
@@ -611,7 +620,7 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
                 }
             }
             else {
-                navigateToAddAddressViewController()
+                navigateToGalleryViewController()
             }
         }
         else if collectionView == collectionViewConnect {
@@ -644,12 +653,13 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         }
     }
     
-    func navigateToAddAddressViewController() {
+    func navigateToGalleryViewController() {
         let vc = UIStoryboard.init(name: StoryBoard.name.galleryStoryBoard.rawValue, bundle: nil).instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
+        vc.isFromDetailsViewController = true
         vc.galleryRecentPhotos = galleryRecentPhotos
+        vc.modelPhotos = modelPhotos
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
 }
 
 //extension DeliveryDetailsViewController3: UIDocumentPickerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {

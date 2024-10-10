@@ -198,6 +198,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             if titleForHeader == "" {
                 return 8
             }
+            if section == 1 && (selectedMenuCell == 1 || selectedMenuCell == 3) {
+                return 8
+            }
             return 60
         }
         return 8
