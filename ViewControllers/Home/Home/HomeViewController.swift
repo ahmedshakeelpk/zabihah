@@ -28,7 +28,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var imageViewListViewMapView: UIImageView!
     @IBOutlet weak var buttonMapViewListView: UIButton!
     
-    @IBOutlet weak var viewMapViewBackground: UIView!
+    @IBOutlet weak var viewButtonMapViewListViewBackground: UIView!
     @IBOutlet weak var buttonSideMenu: UIButton!
     @IBOutlet weak var buttonCart: UIButton!
     @IBOutlet weak var buttonNotification: UIButton!
@@ -181,7 +181,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 }
                 let recordCuisineCell = self.addCuisineCell()
                 self.listItems[0] = recordCuisineCell.0
-                let recordFindHalalFoodCell = self.addFindHalalFoodCell()
+                let recordFindHalalFoodCell = self.addHomeHalalFoodTabCell()
                 self.listItems[1] = recordFindHalalFoodCell.0
                 self.tableViewReload()
             }
@@ -214,6 +214,13 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                         if let model = model {
                             self.drawMarkerOnMapPrayerPlaces(modelRestuarantResponseData: model, index: index)
                         }
+                    }
+                }
+                if let _ = self.modelGetPrayerPlacesResponse?.totalRecords {
+                    if self.buttonMapViewListView.tag == 1 {
+                        let sectionName = self.getPrayerPlacesSectionName()
+                        self.labelItemCountOnMapView.text = sectionName
+                        self.viewItemCountOnMapViewBackGround.isHidden = false
                     }
                 }
             }
@@ -298,7 +305,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 }
                 let recordCuisineCell = self.addCuisineCell()
                 self.listItems[0] = recordCuisineCell.0
-                let recordFindHalalFoodCell = self.addFindHalalFoodCell()
+                let recordFindHalalFoodCell = self.addHomeHalalFoodTabCell()
                 self.listItems[1] = recordFindHalalFoodCell.0
                 self.tableViewReload()
             }
@@ -325,7 +332,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 self.setHalalTabCell()
                 let recordCuisineCell = self.addCuisineCell()
                 self.listItems[0] = recordCuisineCell.0
-                let recordFindHalalFoodCell = self.addFindHalalFoodCell()
+                let recordFindHalalFoodCell = self.addHomeHalalFoodTabCell()
                 self.listItems[1] = recordFindHalalFoodCell.0
                 self.tableViewReload()
                 self.mapView.clear()
@@ -396,7 +403,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
 //            setConfiguration()
 //        }
         setConfiguration()
-        
         requestAppTrackingPermission()
     }
     
@@ -476,7 +482,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
         
         mapView.delegate = self
-        
         tableView.addSubview(pullControl) // not
         tableView.refreshControl?.tintColor = .clear
         tableView.delegate = self
@@ -492,7 +497,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         viewZoomInBackGround.circle()
         viewZoomOutBackGround.circle()
         viewItemCountOnMapViewBackGround.circle()
-        viewMapViewBackground.circle()
+        viewButtonMapViewListViewBackground.circle()
         stackViewFilterResultBackGround.radius(radius: 8)
         stackViewSearchNearLocationBackGround.radius(radius: 8)
         stackViewSearchNTextFieldNearLocationBackGround.radius(radius: 8)
@@ -618,6 +623,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             if featureRestaurant == 0 && halalRestaurant == 0 && prayerPlaces == 0 {
                 viewNoDataFound.isHidden = false
                 tableView.isHidden = true
+                viewMapViewBackGround.isHidden = true
             }
             else {
                 viewNoDataFound.isHidden = true
@@ -628,15 +634,24 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             imageViewNoRecordFound.image = UIImage(named: "chefPlaceHolder")
             labelNoRecordFound.text = "No halal places found"
             if modelGetHalalRestaurantResponse?.totalRecords == 0 {
-                viewNoDataFound.isHidden = false
                 tableView.isHidden = true
-                viewMapViewBackground.isHidden = true
+                viewMapViewBackGround.isHidden = true
+                viewNoDataFound.isHidden = false
+                viewButtonMapViewListViewBackground.isHidden = true
             }
             else {
                 viewNoDataFound.isHidden = true
-                viewMapViewBackground.isHidden = false
-                if buttonMapViewListView.tag != 1 {
-                    self.tableView.isHidden = false
+                viewMapViewBackGround.isHidden = true
+                tableView.isHidden = false
+                viewButtonMapViewListViewBackground.isHidden = false
+                if buttonMapViewListView.tag == 1 {
+                    tableView.isHidden = true
+                    viewMapViewBackGround.isHidden = false
+                    if let _ = self.modelGetHalalRestaurantResponse?.totalRecords {
+                        let sectionName = self.getHalalFoodSectionName()
+                        self.labelItemCountOnMapView.text = sectionName
+                        self.viewItemCountOnMapViewBackGround.isHidden = false
+                    }
                 }
             }
         }
@@ -647,26 +662,30 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             imageViewNoRecordFound.image = UIImage(named: "placeholderMosque")
             labelNoRecordFound.text = "No prayer spaces found"
             if modelGetPrayerPlacesResponse?.totalRecords == 0 {
-                viewNoDataFound.isHidden = false
                 tableView.isHidden = true
-                viewMapViewBackground.isHidden = true
+                viewMapViewBackGround.isHidden = true
+                viewNoDataFound.isHidden = false
+                viewButtonMapViewListViewBackground.isHidden = true
             }
             else {
                 viewNoDataFound.isHidden = true
-                viewMapViewBackground.isHidden = false
-                if buttonMapViewListView.tag != 1 {
-                    self.tableView.isHidden = false
+                viewMapViewBackGround.isHidden = true
+                tableView.isHidden = false
+                viewButtonMapViewListViewBackground.isHidden = false
+                if buttonMapViewListView.tag == 1 {
+                    tableView.isHidden = true
+                    viewMapViewBackGround.isHidden = false
+                    if let _ = self.modelGetHalalRestaurantResponse?.totalRecords {
+                        let sectionName = self.getPrayerPlacesSectionName()
+                        self.labelItemCountOnMapView.text = sectionName
+                        self.viewItemCountOnMapViewBackGround.isHidden = false
+                    }
                 }
             }
         }
     }
     
     func homeTabApisCall() {
-        
-//        self.modelGetHomeRestaurantsResponseForHome = nil
-//        self.modelGetHalalRestaurantResponseForHomeTab = nil
-//        self.modelGetPrayerPlacesResponseForHomeTab = nil
-        
         self.getFeaturedRestaurantsForHomeTab()
         self.getHalalRestaurantsForHomeTab()
         self.getPrayerPlacesForHomeTab()
@@ -701,7 +720,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     func handleMenuTap() {
         mapView.clear()
         if selectedMenuCell == 0 {
-            viewMapViewBackground.isHidden = true
+            viewButtonMapViewListViewBackground.isHidden = true
             //MARK: - Add Items In tableView
             listItems = [
                 addFeaturedCell().0,
@@ -714,7 +733,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         else if selectedMenuCell == 1 {
             listItems = [
                 addCuisineCell().0,
-                addFindHalalFoodCell().0,
+                addHomeHalalFoodTabCell().0,
             ]
             pageNumberForApi = 1
         }
@@ -766,7 +785,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     func detectVisibleSections() {
         // Get the visible rows' index paths
         if let visibleIndexPaths = tableView.indexPathsForVisibleRows {
-            
             // Get the first visible index path (which gives us the section of the first visible row)
             if let firstVisibleIndexPath = visibleIndexPaths.first {
                 let visibleSection = firstVisibleIndexPath.section

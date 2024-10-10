@@ -99,20 +99,21 @@ extension HomeViewController {
     
     func setMapList() {
         if buttonMapViewListView.tag == 1 {
-            viewMapViewBackGround.isHidden = false
             tableView.isHidden = true
+            buttonMapViewListView.tag = 1
             imageViewListViewMapView.image = UIImage(named: "listViewHome")
             labelMapViewListView.text = "List view"
+            viewMapViewBackGround.isHidden = false
         }
         else {
             viewMapViewBackGround.isHidden = true
-            tableView.isHidden = false
             buttonMapViewListView.tag = 0
             imageViewListViewMapView.image = UIImage(named: "mapViewHome")
             labelMapViewListView.text = "Map view"
+            tableView.isHidden = false
         }
+        tableViewReload()
     }
-    
     
     func buttonViewAllHandler(section: Int) {
         if section == 1 {
@@ -248,6 +249,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section >= listItems.count {
+            return UITableViewCell()
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: (listItems[indexPath.section]).identifier) as! HomeBaseCell
         print((listItems[indexPath.section]).identifier)
         print(indexPath.section)
@@ -256,7 +260,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         if let myHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HomeSectionHeaderCell") as? HomeSectionHeaderCell {
             myHeader.section = section
             if myHeader.labelTitle != nil {
@@ -272,7 +275,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 else if selectedMenuCell == 1 {
                     cuisineCount = "\(modelGetHalalRestaurantResponse?.totalRecords ?? 0)"
-                    
                 }
                 else if selectedMenuCell == 3 {
                     cuisineCount = "\(modelGetPrayerPlacesResponse?.totalRecords ?? 0)"
@@ -382,7 +384,7 @@ extension HomeViewController {
     }
     
     func addCellInList() {
-        viewMapViewBackground.isHidden = false
+        viewButtonMapViewListViewBackground.isHidden = false
         viewMapViewBackGround.isHidden = true
         buttonMapViewListView.tag = 0
         setMapList()
@@ -469,39 +471,129 @@ extension HomeViewController {
                 let data = mosqueResponseData as Any
                 let rowHeight = 224
                 let identifier = HomePrayerPlacesCell.nibName()
-                var address = ""
-                if textFieldLocationText() != "" {
-                    let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
-                    if array.count > 1 {
-                        // Concatenate the first and second elements with a space in between
-                        if array.count > 3 {
-                            address = "\(array[0]), \(array[1])"
-                        }
-//                        else if array.count > 2 {
-//                            address = "\(array[0]), \(array[1])"
-//                        }
-                        else {
-                            address = "\(array[0])"
-                        }
-                        print(address)  // This will print the concatenated address
-                        address = "\(array[0])"
-                    }
-                    else if array.count > 0 {
-                        address = "\(array[0])"
-                    }
-                    else {
-                        print("The array does not contain enough elements.")
-                    }
-                }
-                let space = modelGetPrayerPlacesResponseForHomeTab?.totalRecords ?? 0 > 1 ? "spaces" : "space"
-                let sectionName =  address == "" ? 
-                "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(space) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine  + " prayer") \(space) near \(address)"
-                
+               
+                let sectionName = getPrayerPlacesSectionName()
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }
         }
         return (HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
+    }
+    
+    func getPrayerPlacesSectionName() -> String {
+        var address = ""
+        if textFieldLocationText() != "" {
+            let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
+            if array.count > 1 {
+                // Concatenate the first and second elements with a space in between
+                if array.count > 3 {
+                    address = "\(array[0]), \(array[1])"
+                }
+//                        else if array.count > 2 {
+//                            address = "\(array[0]), \(array[1])"
+//                        }
+                else {
+                    address = "\(array[0])"
+                }
+                print(address)  // This will print the concatenated address
+                address = "\(array[0])"
+            }
+            else if array.count > 0 {
+                address = "\(array[0])"
+            }
+            else {
+                print("The array does not contain enough elements.")
+            }
+        }
+        
+        var totalCount = 0
+        if selectedMenuCell == 0 {
+            totalCount = modelGetPrayerPlacesResponseForHomeTab?.totalRecords ?? 0
+        }
+        else {
+             totalCount = modelGetPrayerPlacesResponse?.totalRecords ?? 0
+        }
+        let space = modelGetPrayerPlacesResponseForHomeTab?.totalRecords ?? 0 > 1 ? "spaces" : "space"
+        let sectionName =  address == "" ?
+        "\(selectedCuisine == "" ? "prayer" : selectedCuisine + " prayer") \(space) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine  + " prayer") \(space) near \(address)"
+
+        let name = "\(totalCount == 0 ? "" : "\(totalCount)") \(sectionName)     "
+
+        return name
+        
+//        for section 3
+        //                var address = ""
+        //                if textFieldLocationText() != "" {
+        //                    let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
+        //                    if array.count > 1 {
+        //                        // Concatenate the first and second elements with a space in between
+        //                        if array.count > 3 {
+        //                            address = "\(array[0]), \(array[1])"
+        //                        }
+        ////                        else if array.count > 2 {
+        ////                            address = "\(array[0]), \(array[1])"
+        ////                        }
+        //                        else {
+        //                            address = "\(array[0])"
+        //                        }
+        //                        print(address)  // This will print the concatenated address
+        //                        address = "\(array[0])"
+        //                    }
+        //                    else if array.count > 0 {
+        //                        address = "\(array[0])"
+        //                    }
+        //                    else {
+        //                        print("The array does not contain enough elements.")
+        //                    }
+        //                }
+        //
+        //                let places = modelGetPrayerPlacesResponse?.totalRecords ?? 0 > 1 ? "spaces" : "space"
+        //
+        //                sectionName =
+        //                address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine + "") \(places) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine + "") \(places) near \(address)"
+    }
+    func getHalalFoodSectionName() -> String {
+        var address = ""
+        var sectionName = ""
+        if textFieldLocationText() != "" {
+            let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
+            if array.count > 1 {
+                // Concatenate the first and second elements with a space in between
+                if array.count > 3 {
+                    address = "\(array[0]), \(array[1])"
+                }
+//                        else if array.count > 2 {
+//                            address = "\(array[0]), \(array[1])"
+//                        }
+                else {
+                    address = "\(array[0])"
+                }
+                print(address)  // This will print the concatenated address
+                address = "\(array[0])"
+            }
+            else if array.count > 0 {
+                address = "\(array[0])"
+            }
+            else {
+                print("The array does not contain enough elements.")
+            }
+        }
+        var totalCount = 0
+        if selectedMenuCell == 0 {
+            totalCount = modelGetHalalRestaurantResponseForHomeTab?.totalRecords ?? 0
+        }
+        else {
+            totalCount = modelGetHalalRestaurantResponse?.totalRecords ?? 0
+        }
+        
+        let places = modelGetHalalRestaurantResponse?.totalRecords ?? 0 > 1 ? "places" : "place"
+        sectionName =
+        address == "" ?
+        "\(selectedCuisine == "" ? "halal" : selectedCuisine) \(places) near you"
+        :
+        "\(selectedCuisine == "" ? "halal \(places)" : "\(selectedCuisine) \(places)") near \(address)"
+        let name = "\(totalCount == 0 ? "" : "\(totalCount)") \(sectionName)     "
+        return name
     }
     
     func addHomePrayerPlacesTabCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
@@ -522,8 +614,7 @@ extension HomeViewController {
         return (HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
     }
     
-    
-    func addFindHalalFoodCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
+    func addHomeHalalFoodTabCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: FindHalalFoodCell.nibName()) {
             var modelHalalRestuarantResponseData = [ModelRestuarantResponseData?]()
             modelHalalRestuarantResponseData = modelGetHalalRestaurantResponse?.items ?? []
@@ -533,13 +624,14 @@ extension HomeViewController {
                 let data = modelHalalRestuarantResponseData as Any
                 let rowHeight = setIPadHeight(height: 260)
                 let identifier = FindHalalFoodCell.nibName()
-                let sectionName = ""
+                let sectionName = getHalalFoodSectionName()
                 let record = HomeBaseCell.HomeListItem(identifier: identifier , sectionName: sectionName, rowHeight: rowHeight, data: data)
                 return (record, indexOf, recordCount)
             }
         }
         return (HomeBaseCell.HomeListItem(identifier: FindHalalFoodCell.nibName(), sectionName: "", rowHeight: 0, data: nil), 0, 0)
     }
+    
     func addCuisineCell() -> (HomeBaseCell.HomeListItem, _indexOf: Int, _record: Int) {
         if let indexOf = findIndexOfIdentifier(identifier: HomeCuisinesCell.nibName()) {
             var sectionName = ""
@@ -579,80 +671,22 @@ extension HomeViewController {
                 :
                 "\(selectedCuisine == "" ? "halal places" : selectedCuisine) near \(address)"
                 selectedPlaceHolderIcon = "placeholderHalalFood"
+                let totalCount =
+                modelGetHalalRestaurantResponseForHomeTab?.totalRecords ?? 0
+
+                sectionName = "\(totalCount == 0 ? "" : "\(totalCount)") \(sectionName)"
             }
             else if selectedMenuCell == 1 {
                 let allUniqueCuisines = modelCuisinesHalal
                 cuisine = allUniqueCuisines ?? []
-                var address = ""
-                if textFieldLocationText() != "" {
-                    let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
-                    if array.count > 1 {
-                        // Concatenate the first and second elements with a space in between
-                        if array.count > 3 {
-                            address = "\(array[0]), \(array[1])"
-                        }
-//                        else if array.count > 2 {
-//                            address = "\(array[0]), \(array[1])"
-//                        }
-                        else {
-                            address = "\(array[0])"
-                        }
-                        print(address)  // This will print the concatenated address
-                        address = "\(array[0])"
-                    }
-                    else if array.count > 0 {
-                        address = "\(array[0])"
-                    }
-                    else {
-                        print("The array does not contain enough elements.")
-                    }
-                }
-                
-                let places = modelGetHalalRestaurantResponse?.totalRecords ?? 0 > 1 ? "places" : "place"
-                sectionName = 
-                address == "" ?
-                "\(selectedCuisine == "" ? "halal" : selectedCuisine) \(places) near you"
-                :
-                "\(selectedCuisine == "" ? "halal \(places)" : "\(selectedCuisine) \(places)") near \(address)"
-                
+                sectionName = getHalalFoodSectionName()
                 selectedPlaceHolderIcon = "placeholderHalalFood"
             }
             else if selectedMenuCell == 3 {
                 let allUniqueCuisines = getAllUniqueCuisines(items: modelGetPrayerPlacesResponse?.items)
                 cuisine = modelCuisinesPrayerPlaces ?? []
-//                sectionName = "\(selectedCuisine == "" ? "" : selectedCuisine + " ")prayer spaces near you"
-                
-                var address = ""
-                if textFieldLocationText() != "" {
-                    let array = textFieldSearchLocation.text?.split(separator: ",") ?? []
-                    if array.count > 1 {
-                        // Concatenate the first and second elements with a space in between
-                        if array.count > 3 {
-                            address = "\(array[0]), \(array[1])"
-                        }
-//                        else if array.count > 2 {
-//                            address = "\(array[0]), \(array[1])"
-//                        }
-                        else {
-                            address = "\(array[0])"
-                        }
-                        print(address)  // This will print the concatenated address
-                        address = "\(array[0])"
-                    }
-                    else if array.count > 0 {
-                        address = "\(array[0])"
-                    }
-                    else {
-                        print("The array does not contain enough elements.")
-                    }
-                }
-                
-                let places = modelGetPrayerPlacesResponse?.totalRecords ?? 0 > 1 ? "spaces" : "space"
-                
-                sectionName =  
-                address == "" ? "\(selectedCuisine == "" ? "prayer" : selectedCuisine + "") \(places) near you" : "\(selectedCuisine == "" ? "prayer" : selectedCuisine + "") \(places) near \(address)"
+                sectionName = getPrayerPlacesSectionName()
                 selectedPlaceHolderIcon = "placeholderMosque3"
-
             }
             print(indexOf)
             let recordCount = cuisine.count

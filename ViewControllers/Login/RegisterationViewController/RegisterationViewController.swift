@@ -184,6 +184,9 @@ class RegisterationViewController: UIViewController {
         else if textFieldLastName.text == "" {
             isValid = false
         }
+        else if textFieldEmail.text != "" && !textFieldEmail.text!.isValidEmail {
+            isValid = false
+        }
 //        else if isFromEmail ? textFieldPhoneNumber.text == "" : textFieldEmail.text == "" {
 //            isValid = false
 //        }

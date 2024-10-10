@@ -14,7 +14,7 @@ class GalleryViewControllerCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        imageViewGalleryImage.radius(radius: 8, color: .lightGray, borderWidth: 1)
+//        imageViewGalleryImage.radius(radius: 8, color: .lightGray, borderWidth: 1)
         
     }
 

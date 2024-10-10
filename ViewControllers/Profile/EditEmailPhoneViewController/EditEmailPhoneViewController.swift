@@ -57,6 +57,10 @@ class EditEmailPhoneViewController: UIViewController {
                 self.showToast(message: "Enter Email!")
                 return()
             }
+            if !textFieldEmail.text!.isValidEmail {
+                self.showToast(message: "Enter Email!")
+                return()
+            }
         }
         else {
             if textFieldPhoneNumber.text == "" {
@@ -92,6 +96,9 @@ class EditEmailPhoneViewController: UIViewController {
         var isValid = true
         if isFromEmail {
             if textFieldEmail.text == "" {
+                isValid = false
+            }
+            if !textFieldEmail.text!.isValidEmail {
                 isValid = false
             }
         }
@@ -180,6 +187,11 @@ class EditEmailPhoneViewController: UIViewController {
             }
         }
     }
+//    func isValidEmail(_ email: String) -> Bool {
+//        guard let emailRegex = try? Regex("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
+//        else { return false }
+//        return email.firstMatch(of: emailRegex) != nil
+//    }
 }
 
 extension EditEmailPhoneViewController: FPNTextFieldDelegate {
@@ -218,4 +230,11 @@ extension EditEmailPhoneViewController: FPNTextFieldDelegate {
          // Do something...
       }
    }
+}
+extension String {
+    var isValidEmail: Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,20}"
+        let emailTest  = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: self)
+    }
 }

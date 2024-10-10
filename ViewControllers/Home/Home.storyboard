@@ -720,9 +720,9 @@
                         <outlet property="tableView" destination="UJd-18-aMy" id="WSC-hZ-XLQ"/>
                         <outlet property="textFieldFilterResult" destination="4Bz-Wf-F6J" id="x0m-4F-Xf4"/>
                         <outlet property="textFieldSearchLocation" destination="GpS-77-3Qo" id="ZEh-gO-Kb1"/>
+                        <outlet property="viewButtonMapViewListViewBackground" destination="dbu-6v-USn" id="QLC-qB-73i"/>
                         <outlet property="viewItemCountOnMapViewBackGround" destination="K3m-5l-SYH" id="GnX-JM-3qE"/>
                         <outlet property="viewMapViewBackGround" destination="YhI-ci-vld" id="i0M-0O-crX"/>
-                        <outlet property="viewMapViewBackground" destination="dbu-6v-USn" id="mkg-5F-KiL"/>
                         <outlet property="viewNoDataFound" destination="WUT-p7-nWY" id="i00-E2-Ujg"/>
                         <outlet property="viewSectionNameBackGround" destination="JJ9-Y1-sfi" id="ede-6Z-dLS"/>
                         <outlet property="viewSettingBackGround" destination="BJw-IC-zeA" id="8em-gz-0s2"/>

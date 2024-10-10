@@ -216,10 +216,9 @@ func getRating(averageRating: HomeViewController.Rating?) -> String {
     if let rating = averageRating {
         switch rating {
         case .int(let intValue):
-            return intValue == 0 ? "--" : "\(intValue)"
+            return intValue == 0 ? "--" : String(format: "%.1f", Double(intValue))
         case .double(let doubleValue):
             return doubleValue == 0 ? "--" : String(format: "%.1f", doubleValue)
-              // or "\(doubleValue)" if you want the full double
         case .string(let stringValue):
             return stringValue
         case .none:

@@ -104,6 +104,9 @@ class LoginWithEmailOrPhoneViewController: UIViewController {
             if textFieldEmail.text == "" {
                 isValid = false
             }
+            if !textFieldEmail.text!.isValidEmail {
+                isValid = false
+            }
         }
         else {
             if textFieldPhoneNumber.text == "" {
