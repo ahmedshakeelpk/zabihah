@@ -368,7 +368,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         mapView.isMyLocationEnabled = true
         mapView.settings.myLocationButton = true
         
-        mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 130, right: 8)
+        mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: -8, right: 8)
         
         //Testsing for Crash
 //        let numbers = [0]

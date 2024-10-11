@@ -459,19 +459,19 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lnt-xu-sB4">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="612"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="UJd-18-aMy">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="612"/>
+                                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="UJd-18-aMy">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
                                                 <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <outlet property="dataSource" destination="Rgs-nB-hx9" id="r5H-oI-DCm"/>
                                                     <outlet property="delegate" destination="Rgs-nB-hx9" id="Qbr-ew-Ko4"/>
                                                 </connections>
                                             </tableView>
-                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YhI-ci-vld">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YhI-ci-vld">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="612"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hvg-PS-JmA" customClass="GMSMapView">
-                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="612"/>
                                                         <color key="backgroundColor" systemColor="systemYellowColor"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K3m-5l-SYH">
@@ -494,7 +494,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wsT-tL-0aD">
-                                                        <rect key="frame" x="344" y="-160" width="50" height="120"/>
+                                                        <rect key="frame" x="344" y="392" width="50" height="120"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="q0a-7q-b4F">
                                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="120"/>
@@ -569,7 +569,7 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="hvg-PS-JmA" firstAttribute="leading" secondItem="YhI-ci-vld" secondAttribute="leading" id="FMn-AM-EbR"/>
-                                                    <constraint firstAttribute="bottom" secondItem="wsT-tL-0aD" secondAttribute="bottom" constant="40" id="FOT-uz-SE1"/>
+                                                    <constraint firstAttribute="bottom" secondItem="wsT-tL-0aD" secondAttribute="bottom" constant="100" id="FOT-uz-SE1"/>
                                                     <constraint firstItem="K3m-5l-SYH" firstAttribute="centerX" secondItem="hvg-PS-JmA" secondAttribute="centerX" id="GMt-eA-iOn"/>
                                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="K3m-5l-SYH" secondAttribute="trailing" constant="20" id="KDF-DY-kYd"/>
                                                     <constraint firstAttribute="trailing" secondItem="wsT-tL-0aD" secondAttribute="trailing" constant="20" id="Px2-eu-31r"/>
