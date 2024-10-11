@@ -9,10 +9,10 @@ import Foundation
 
 struct APIPath {
     //UAT
-//    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com:81/v1/"
+    public static let  baseUrl = "https://zabihahdev1.centralindia.cloudapp.azure.com:81/v1/"
     
     //Production
-    public static let  baseUrl = "https://api.zabihah.com/v1/"
+//    public static let  baseUrl = "https://api.zabihah.com/v1/"
 //    Api Url:
 //    Swagger Url: https://api.zabihah.com/swagger/index.html
     
@@ -32,6 +32,8 @@ struct APIsName {
         case searchCuisineRestaurant = "Restaurant/cuisine/search"
         case searchCuisineMosque = "Mosque/cuisine/search"
         
+        case photoDelete = "Restaurant/photo/{photoId}"
+
         //MARK:- Config
         case userConfiguration = "Configuration"
         //MARK:- Favorite

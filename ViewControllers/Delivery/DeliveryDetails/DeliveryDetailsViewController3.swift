@@ -18,10 +18,7 @@ class DeliveryDetailsViewController3: UIViewController {
     @IBOutlet weak var viewReturningBackGround: ViewRadius6!
     @IBOutlet weak var viewReviewBackGround: ViewRadius6!
     @IBOutlet weak var viewAlcoholBackGround: ViewRadius6!
-    
-    
-    
-    
+        
     @IBOutlet weak var viewCuisinesBackGround: UIView!
     @IBOutlet weak var viewHalalSummaryBackGround: UIView!
     @IBOutlet weak var viewHalalMenuBackGround: UIView!
@@ -83,10 +80,11 @@ class DeliveryDetailsViewController3: UIViewController {
     var isFeaturedCell: Bool! = false
     var isFromFavouriteScreen = false
     
+    var isRefreshModelFeaturedResponse = true
     var modelFeaturedResponse: HomeViewController.ModelFeaturedResponse? {
         didSet {
             DispatchQueue.main.async {
-                self.setData()
+//                self.setData()
             }
         }
     }
@@ -249,7 +247,6 @@ class DeliveryDetailsViewController3: UIViewController {
             viewHalalSummaryBackGround.isHidden = restuarantResponseData?.halalDescription ?? "" == ""
             viewHalalMenuBackGround.isHidden = isPrayerPlace
             
-            
             let halalStatus = (restuarantResponseData?.meatHalalStatus ?? "").lowercased()
             let halal = (halalStatus == "full") ? "Full halal menu"
             :
@@ -327,7 +324,8 @@ class DeliveryDetailsViewController3: UIViewController {
                         }
                         return false  // Return false if dates are nil
                     }
-                modelPhotos = photos
+                modelFeaturedResponse?.items?[0]?.photos = sortedGalleryPhotos
+                modelPhotos = sortedGalleryPhotos
                 galleryRecentPhotos = sortedGalleryPhotos.compactMap { $0.photoWebUrl }
             }
             
@@ -658,6 +656,14 @@ extension DeliveryDetailsViewController3: UICollectionViewDataSource, UICollecti
         vc.isFromDetailsViewController = true
         vc.galleryRecentPhotos = galleryRecentPhotos
         vc.modelPhotos = modelPhotos
+        vc.modelFeaturedResponse = self.modelFeaturedResponse
+        vc.isPrayerPlace = isPrayerPlace
+        vc.deletePhotoHandler = {
+            DispatchQueue.main.async {
+                self.setConfiguration()
+                self.getRestaurantDetail()
+            }
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -837,6 +843,9 @@ extension DeliveryDetailsViewController3 {
             let model: HomeViewController.ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             if statusCode == 200 {
                 self.modelFeaturedResponse = model
+                DispatchQueue.main.async {
+                    self.setData()
+                }
             }
         }
     }

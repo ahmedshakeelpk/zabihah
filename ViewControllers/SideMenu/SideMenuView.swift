@@ -28,9 +28,7 @@ class SideMenuView: UIView {
     var arrayOtherIcon = ["reviewSideMenu", "favouriteSideMenu","buySideMenu", "logoutSideMenu"]
     var buttonBackHandler: (() -> ())!
     
-    
     var contentView: UIView!
-    
     var nibName: String {
         return String(describing: type(of: self))
     }

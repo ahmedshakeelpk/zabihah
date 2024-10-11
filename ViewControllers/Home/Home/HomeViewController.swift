@@ -14,6 +14,7 @@ import AppTrackingTransparency
 
 class HomeViewController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var viewForceUpdateBackGround: UIView!
     @IBOutlet weak var labelSectionName: UILabel!
     @IBOutlet weak var viewSectionNameBackGround: UIView!
     @IBOutlet weak var stackViewTitleBackGround: UIStackView!
@@ -52,6 +53,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var buttonZoomOut: UIButton!
     @IBOutlet weak var labelMapViewListView: UILabel!
     
+    @IBOutlet weak var butotnForceUpdate: UIButton!
+    
     var locationManager = CLLocationManager()
     var selectedCuisine: String = "" {
         didSet {
@@ -65,11 +68,32 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 kModelUserConfigurationResponse = self.modelUserConfigurationResponse
                 self.locationManager.delegate = self
                 self.checkLocationServices()
-                
-//                let forceUpdate = ForceUpdateVersion()
-//                forceUpdate.checkAppVersionAndUpdate(requiredVersion: self.modelUserConfigurationResponse?.appVersionReadable ?? "0", viewController: self, isForceUpdate: self.modelUserConfigurationResponse?.forceUpdateReadable ?? false)
+                self.checkForceUpdate()
             }
             //Location Services
+        }
+    }
+    
+    var isForceUpdatePopUpShow = false
+    func checkForceUpdate() {
+        if modelUserConfigurationResponse == nil {
+            return()
+        }
+        let forceUpdate = ForceUpdateVersion()
+        forceUpdate.forceUpdateOptionHandler = {
+            self.viewForceUpdateBackGround.isHidden = false
+            Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { timer in
+                self.viewForceUpdateBackGround.isHidden = true
+            }
+        }
+        if !isForceUpdatePopUpShow {
+            if self.modelUserConfigurationResponse?.forceUpdateReadable ?? false {
+                isForceUpdatePopUpShow = false
+            }
+            else {
+                isForceUpdatePopUpShow = true
+            }
+            forceUpdate.checkAppVersionAndUpdate(requiredVersion: self.modelUserConfigurationResponse?.appVersionReadable ?? "0", viewController: self, isForceUpdate: self.modelUserConfigurationResponse?.forceUpdateReadable ?? false)
         }
     }
     
@@ -212,6 +236,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 if let modelData = self.modelGetPrayerPlacesResponse?.items {
                     for (index, model) in modelData.enumerated() {
                         if let model = model {
+                            if index == 0 {
+                                self.setZoom(location: CLLocationCoordinate2D(latitude: modelData.first??.latitude ?? 0, longitude: modelData.first??.longitude ?? 0))
+                            }
                             self.drawMarkerOnMapPrayerPlaces(modelRestuarantResponseData: model, index: index)
                         }
                     }
@@ -275,7 +302,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         let recordPrayerPlacesCell = addPrayerPlacesHomeTabCell()
         listItems[3] = recordPrayerPlacesCell.0
         tableViewReload()
-            //Shakeel Ahmed
+        //Shakeel Ahmed
     }
     
     var modelGetPrayerPlacesResponseForHomeTab: ModelFeaturedResponse? {
@@ -338,6 +365,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
                 self.mapView.clear()
                 if let modelData = self.modelGetHalalRestaurantResponse?.items {
                     for (index, model) in modelData.enumerated() {
+                        if index == 0 {
+                            self.setZoom(location: CLLocationCoordinate2D(latitude: modelData.first??.latitude ?? 0, longitude: modelData.first??.longitude ?? 0))
+                        }
                         self.drawMarkerOnMap(modelRestuarantResponseData: model!, index: index)
                     }
                 }
@@ -368,11 +398,20 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         mapView.isMyLocationEnabled = true
         mapView.settings.myLocationButton = true
         
-        mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: -8, right: 8)
+        mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+        
+        if let myLocationButton = mapView.subviews.last as? UIButton {
+            myLocationButton.autoresizingMask = [.flexibleRightMargin, .flexibleTopMargin]
+            // Safely mutate the frame
+            var frame = myLocationButton.frame
+            frame.origin.y = 20  // Update Y position
+            myLocationButton.frame = frame
+        }
+        
         
         //Testsing for Crash
-//        let numbers = [0]
-//        let _ = numbers[1]
+        //        let numbers = [0]
+        //        let _ = numbers[1]
     }
     
     @objc func pulledRefreshControl() {
@@ -391,21 +430,29 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
     }
     override func viewWillAppear(_ animated: Bool) {
         getuser()
+        checkForceUpdate()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         viewSectionNameBackGround.isHidden = true
-//        let isLocationBottomSheet = UserDefaults.standard.value(forKey: "isLocationBottomSheet") ??  false
-//        if isLocationBottomSheet as! Bool == true {
-//            showLocationBottomSheet()
-//        }
-//        else {
-//            setConfiguration()
-//        }
+        //        let isLocationBottomSheet = UserDefaults.standard.value(forKey: "isLocationBottomSheet") ??  false
+        //        if isLocationBottomSheet as! Bool == true {
+        //            showLocationBottomSheet()
+        //        }
+        //        else {
+        //            setConfiguration()
+        //        }
         setConfiguration()
         requestAppTrackingPermission()
     }
     
+    @IBAction func buttonForceUpdate(_ sender: Any) {
+        if let url = URL(string: "itms-apps://itunes.apple.com/app/\(APP_ID)") {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }
+    }
     func requestAppTrackingPermission() {
         if #available(iOS 14, *) {
             ATTrackingManager.requestTrackingAuthorization { status in
@@ -477,9 +524,16 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
             HomeBaseCell.HomeListItem(identifier: HomePrayerPlacesTabCell.nibName(), sectionName: "", rowHeight: 0, data: nil)
         ]
     }
-
+    
     func setConfiguration() {
         arrayNames = ["Home", "Find halal food", "Pickup & delivery", "Prayer spaces"]
+        
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        } else {
+            // Fallback on earlier versions
+        }
+
         
         mapView.delegate = self
         tableView.addSubview(pullControl) // not
@@ -816,14 +870,22 @@ extension HomeViewController: HomeCuisinesCellDelegate {
             if selectedMenuCell == 0 {
                 selectedMenuCell = indexOf
             }
-            else if selectedMenuCell == 1 || selectedMenuCell == 3 {
+            else if selectedMenuCell == 1 {
+                viewButtonMapViewListViewBackground.isHidden = false
+                tableView.isHidden = true
                 pageNumberForApi = 1
+                buttonMapViewListView.tag = 1
+                setMapList()
             }
             else if selectedMenuCell == 2 {
                 
             }
             else {
+                viewButtonMapViewListViewBackground.isHidden = false
+                tableView.isHidden = true
                 pageNumberForApi = 1
+                buttonMapViewListView.tag = 1
+                setMapList()
             }
         }
         print("IndexPath For \(HomeCuisinesCell.nibName()): \(indexPath)")

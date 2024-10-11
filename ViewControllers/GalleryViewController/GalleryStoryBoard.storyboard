@@ -641,6 +641,7 @@
                         <outlet property="labelImageCount" destination="sr0-bU-1qP" id="ZRO-6U-nw7"/>
                         <outlet property="labelRestaurant" destination="H2z-Uy-DU2" id="lsR-1n-UEj"/>
                         <outlet property="labelUserName" destination="6YK-T8-fsN" id="Zow-0E-0nq"/>
+                        <outlet property="viewButtonDeleteBackGround" destination="iYW-vL-Cky" id="Fc0-SW-kj8"/>
                         <outlet property="viewCountBackGround" destination="IC4-D2-UzR" id="jpl-GD-pqS"/>
                         <outlet property="viewLeftArrowBackGround" destination="rFP-EC-pXg" id="adm-2k-NgU"/>
                         <outlet property="viewRestarurantDetailBackGround" destination="yEG-1G-7Kb" id="FzW-1m-sMU"/>

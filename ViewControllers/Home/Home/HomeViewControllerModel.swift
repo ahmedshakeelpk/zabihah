@@ -219,19 +219,29 @@ extension HomeViewController {
     
     struct ModelUserConfigurationResponse: Codable {
         let distance: ModelUserConfigurationResponseData?
-        let appVersion: String?
-        let forceUpdate: Bool?
+        let ios: IOSConfiguration?
+        let featureToggles: FeatureToggles?
         
         var forceUpdateReadable: Bool? {
-            return forceUpdate ?? false
+            return ios?.forceUpdate ?? false
         }
         var appVersionReadable: String? {
 //            let version = appVersion?.replacingOccurrences(of: "", with: ".") ?? "6.1.0"
-            return appVersion ?? "6.1.0"
+            return ios?.version ?? "6.0"
         }
     }
-
+    
+    
     // MARK: - Distance
+    struct FeatureToggles: Codable {
+        let forceUpdate: Bool?
+        let version: String?
+    }
+    // MARK: - Distance
+    struct IOSConfiguration: Codable {
+        let forceUpdate: Bool?
+        let version: String?
+    }
     struct ModelUserConfigurationResponseData: Codable {
         let distance: Int?
         let unit: String?
@@ -316,7 +326,7 @@ extension HomeViewController {
         let createdOn: String?
         var isFavorites: Bool?
         var totalPhotos: Int?
-        let photos: [Photos?]?
+        var photos: [Photos?]?
         let photoWebUrls: [String?]?
         var isMyFavorite: Bool?
         let iconImageWebUrl: String?

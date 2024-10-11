@@ -196,14 +196,14 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         if listItems.count > 0 {
             let titleForHeader = (listItems[section]).sectionName
             if titleForHeader == "" {
-                return 8
+                return 0
             }
             if section == 1 && (selectedMenuCell == 1 || selectedMenuCell == 3) {
-                return 8
+                return 0
             }
-            return 60
+            return 50
         }
-        return 8
+        return 0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -362,10 +362,13 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         print(indexPath.section)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let numbers = [0]
-//              let _ = numbers[1]
-//        return()
+        //        let numbers = [0]
+        //              let _ = numbers[1]
+        //        return()
         if arrayNames[indexPath.item].lowercased() == "Pickup & delivery".lowercased() {
+            return()
+        }
+        if indexPath.item == selectedMenuCell {
             return()
         }
         textFieldFilterResult.text = nil
@@ -374,6 +377,11 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         modelGetPrayerPlacesResponse = nil
         modelGetHalalRestaurantResponse = nil
         mapView.clear()
+        
+        if indexPath.item == 1 || indexPath.item == 3 {
+            buttonMapViewListView.tag = indexPath.item == 1 ? 1 : 0
+            setMapList()
+        }
         selectedMenuCell = indexPath.item
     }
 }
@@ -389,8 +397,6 @@ extension HomeViewController {
     func addCellInList() {
         viewButtonMapViewListViewBackground.isHidden = false
         viewMapViewBackGround.isHidden = true
-        buttonMapViewListView.tag = 0
-        setMapList()
         listItems = [
             HomeBaseCell.HomeListItem(identifier: HomeFoodItemCell.nibName(), sectionName: "", rowHeight: 0, data: nil),
             HomeBaseCell.HomeListItem(identifier: HomeCuisinesCell.nibName(), sectionName: "", rowHeight: 0, data: nil),

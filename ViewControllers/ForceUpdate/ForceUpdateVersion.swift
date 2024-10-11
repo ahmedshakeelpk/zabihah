@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
+var APP_ID = "id325383348"
 class ForceUpdateVersion {
     
-    var APP_ID = "id325383348"
     var viewController: UIViewController?
-    
+    var forceUpdateOptionHandler: (() -> ())!
     func checkAppVersionAndUpdate(requiredVersion: String, viewController: UIViewController, isForceUpdate: Bool) {
         // Get the current app version
         if let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -20,7 +20,12 @@ class ForceUpdateVersion {
             // Compare current version with required version
             if currentVersion.compare(requiredVersion, options: .numeric) == .orderedAscending {
                 // Show force update alert if the current version is less than the required version
-                showForceUpdateAlert(viewController: viewController, isForceUpdate: isForceUpdate)
+                if isForceUpdate {
+                    showForceUpdateAlert(viewController: viewController, isForceUpdate: isForceUpdate)
+                }
+                else {
+                    forceUpdateOptionHandler?()
+                }
             }
         }
     }
@@ -36,7 +41,7 @@ class ForceUpdateVersion {
         
         // Add the "Update" action that redirects the user to the App Store
         let updateAction = UIAlertAction(title: "Update", style: .default) { _ in
-            if let url = URL(string: "itms-apps://itunes.apple.com/app/\(self.APP_ID)") {
+            if let url = URL(string: "itms-apps://itunes.apple.com/app/\(APP_ID)") {
                 if UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 }
