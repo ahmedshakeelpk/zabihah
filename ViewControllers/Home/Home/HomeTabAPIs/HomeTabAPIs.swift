@@ -57,6 +57,7 @@ extension HomeViewController {
             print("Failed to convert model to dictionary: \(error)")
         }
         print("getFeaturedRestaurantsForHomeTab")
+        writeLog("getFeaturedRestaurantsForHomeTab: \(parameters)")
         print(parameters)
         APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
@@ -85,8 +86,8 @@ extension HomeViewController {
             pageSize: 20,
             cuisine: nil,
             meatHalalStatus: filterParametersHome?.isHalal == nil ? nil : filterParametersHome?.isHalal ?? false ? [.full] : nil,
-            alcoholPolicy: 
-                filterParametersHome?.isHalal ?? false ? [.notAllowed] 
+            alcoholPolicy:
+                filterParametersHome?.isHalal ?? false ? [.notAllowed]
             :
                 filterParametersHome?.isalcoholic == nil ? nil
             :
@@ -113,6 +114,7 @@ extension HomeViewController {
             print("Failed to convert model to dictionary: \(error)")
         }
         print("getHalalRestaurantsForHomeTab \(parameters)")
+        writeLog("getHalalRestaurantsForHomeTab: \(parameters)")
         APIs.postAPI(apiName: .searchRestaurant, parameters: parameters, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetHalalRestaurantResponseForHomeTab = nil
@@ -160,6 +162,7 @@ extension HomeViewController {
         } catch {
             print("Failed to convert model to dictionary: \(error)")
         }
+        writeLog("getPrayerPlacesForHomeTab: \(parameters)")
         APIs.postAPI(apiName: .searchMosque, parameters: parameters, encoding: JSONEncoding.default, viewController: self) { responseData, success, errorMsg, statusCode in
             let model: ModelFeaturedResponse? = APIs.decodeDataToObject(data: responseData)
             self.modelGetPrayerPlacesResponseForHomeTab = nil
