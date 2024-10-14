@@ -61,13 +61,7 @@ struct APIsName {
         case getGoogleReview = "Review/google"
         case getYelpReview = "Review/yelp"
         case deleteReview = "Review/{id}"
-
-        
-        
-        
-        
-        
-        
+        case myReview = "Review/place/{placeId}/my"
         
         //MARK:- Restaurant
         case gethomerestaurants = "api/Restaurant/gethomerestaurants"

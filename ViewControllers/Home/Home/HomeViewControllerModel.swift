@@ -427,7 +427,7 @@ extension HomeViewController {
         let rating: Int?
         let comment: String?
         let willReturn: Bool?
-        let place: Place?
+        var place: Place?
         let user: User?
         let photoWebUrls: [String?]?
         let photos: [HomeViewController.Photos?]?

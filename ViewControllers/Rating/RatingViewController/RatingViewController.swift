@@ -127,7 +127,6 @@ class RatingViewController: UIViewController {
                     self.labelProgressFour.text = "\(rating.0[3])"
                     self.labelProgressFive.text = "\(rating.0[4])"
                     
-                    
                     self.progressBarOne.progress = (Float(rating.2[0]))/100
                     self.progressBarTwo.progress = (Float(rating.2[1]))/100
                     self.progressBarThree.progress = (Float(rating.2[2]))/100
@@ -160,7 +159,6 @@ class RatingViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 30, right: 0)
         
         labelTitle.text = "Reviews of \(stringTitle)"
-        
         resetTableView()
     }
     
@@ -168,7 +166,45 @@ class RatingViewController: UIViewController {
         popViewController(animated: true)
     }
     @IBAction func buttonReview(_ sender: Any) {
-        navigateToWriteReviewViewController()
+        myReview()
+    }
+
+    
+    var modelGetMyReview: HomeViewController.Review! {
+        didSet {
+            DispatchQueue.main.async {
+                let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
+                vc.isFromEditReview = true
+                vc.isPrayerPlace = self.isPrayerPlace
+                if let reviewData = self.modelGetMyReview {
+                    vc.reviewDatum = reviewData
+                }
+                vc.reviewPostedHandler = {
+                    self.getMyReviews()
+                }
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
+    }
+    func myReview() {
+        let parameters = [
+            "placeId": self.modelFeaturedResponse?.items?[0]?.id ?? ""
+        ]
+        
+        APIs.getAPI(apiName: .myReview, parameters: parameters, isPathParameters: true, methodType: .get, viewController: self) { responseData, success, errorMsg, statusCode in
+            let model: HomeViewController.Review? = APIs.decodeDataToObject(data: responseData)
+            DispatchQueue.main.async {
+                if statusCode == 200 {
+                    self.modelGetMyReview = model
+                    var record = model
+                    record?.place = HomeViewController.Place(id: model?.id)
+                    self.modelGetMyReview = record
+                }
+                else {
+                    self.navigateToWriteReviewViewController()
+                }
+            }
+        }
     }
     @IBAction func buttonZabiha(_ sender: Any) {
         viewLineZabiha.isHidden = false
@@ -456,6 +492,17 @@ extension RatingViewController {
         
         return (arrayforAllPercentages, String(format: "%.1f", overallAverage), arrayforAllPercentagesIntValues)
 
+    }
+    
+    struct ModelGetMyReview: Codable {
+        let comment, id, type, updatedBy: String?
+        let photoWebUrls: [String]?
+        let willReturn, isDeleted: Int?
+        let moderationState: String?
+        let rating: Int?
+        let updatedOn: String?
+        let createdBy: String?
+        let createdOn: String?
     }
 }
 
