@@ -112,7 +112,8 @@ class GalleryViewController: UIViewController {
     func leftArrowTapped() {
         let visibleItems: NSArray = self.collectionView.indexPathsForVisibleItems as NSArray
         let currentItem: IndexPath = visibleItems.object(at: 0) as! IndexPath
-        let nextItem: IndexPath = IndexPath(item: currentItem.item - 1, section: 0)
+        currentPage = currentItem.item - 1
+        let nextItem: IndexPath = IndexPath(item: currentPage, section: 0)
         if nextItem.row < galleryRecentPhotos?.count ?? 0 && nextItem.row >= 0{
             self.collectionView.scrollToItem(at: nextItem, at: .right, animated: true)
         }
@@ -124,7 +125,8 @@ class GalleryViewController: UIViewController {
     func rightArrowTapped() {
         let visibleItems: NSArray = self.collectionView.indexPathsForVisibleItems as NSArray
         let currentItem: IndexPath = visibleItems.object(at: 0) as! IndexPath
-        let nextItem: IndexPath = IndexPath(item: currentItem.item + 1, section: 0)
+        currentPage = currentItem.item + 1
+        let nextItem: IndexPath = IndexPath(item: currentPage, section: 0)
         if nextItem.row < galleryRecentPhotos?.count ?? 0 {
             self.collectionView.scrollToItem(at: nextItem, at: .left, animated: true)
         }
@@ -178,15 +180,26 @@ class GalleryViewController: UIViewController {
             if statusCode == 200 {
                 self.modelFeaturedResponse?.items?[0]?.photos?.remove(at: self.currentPage)
                 self.galleryRecentPhotos?.remove(at: self.currentPage)
+                self.modelPhotos?.remove(at: self.currentPage)
                 self.modelPostFavouriteRestaurantsResponse = model
+                
                 DispatchQueue.main.async {
                     self.deletePhotoHandler?()
 //                    self.setConfiguration()
-                    
                     self.totalImages = self.galleryRecentPhotos?.count ?? 0
                     // Do any additional setup after loading the view.
                     self.labelImageCount.text = "\(self.currentPage)/\(self.totalImages)"
                     self.collectionView.reloadData()
+                    if self.currentPage == 0 {
+                        self.currentPage = 1
+                        self.labelImageCount.text = "\(self.currentPage)/\(self.totalImages)"
+                    }
+                    else if self.currentPage != 0 {
+                        DispatchQueue.main.async {
+                            self.leftArrowTapped()
+                        }
+                    }
+                    
                 }
             }
         }

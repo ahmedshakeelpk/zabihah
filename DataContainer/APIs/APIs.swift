@@ -573,7 +573,6 @@ print(str)
         }
         
         task.resume()
-        
     }
     
     static func deleteAPI(apiName: String, parameters: [String: Any]? = nil, headerWithToken: String? = nil, methodType: HTTPMethod? = .post, encoding: ParameterEncoding? = JSONEncoding.default, headers: HTTPHeaders? = nil, viewController: UIViewController? = nil, completion: @escaping(_ response: Data?, Bool, _ errorMsg: String, _ statusCode: Int?) -> Void) {
@@ -1026,16 +1025,47 @@ extension Data {
         return prettyJSON
     }
     func jsonToString(json: AnyObject){
-            do {
-                let data1 =  try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions.prettyPrinted) // first of all convert json to the data
-                let convertedString = String(data: data1, encoding: .utf8) // the data will be converted to the string
-                print(convertedString) // <-- here is ur string
-                
-            } catch let myJSONError {
-                print(myJSONError)
-            }
-          
+        do {
+            let data1 =  try JSONSerialization.data(withJSONObject: json, options: JSONSerialization.WritingOptions.prettyPrinted) // first of all convert json to the data
+            let convertedString = String(data: data1, encoding: .utf8) // the data will be converted to the string
+            print(convertedString) // <-- here is ur string
+            
+        } catch let myJSONError {
+            print(myJSONError)
         }
+    }
 }
 
 
+func getDocumentsDirectory() -> URL {
+    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    return paths[0]
+}
+
+func getLogFileURL() -> URL {
+    return getDocumentsDirectory().appendingPathComponent("Zabihah/appForTesting_log.txt")
+}
+
+func writeLog(_ message: String) {
+    let logFileURL = getLogFileURL()
+    
+    let logMessage = "\(Date()): \(message)\n"
+    
+    do {
+        if FileManager.default.fileExists(atPath: logFileURL.path) {
+            // Append to the existing file
+            let fileHandle = try FileHandle(forWritingTo: logFileURL)
+            fileHandle.seekToEndOfFile()
+            if let data = logMessage.data(using: .utf8) {
+                fileHandle.write(data)
+            }
+            fileHandle.closeFile()
+        } else {
+            // Create a new file and write to it
+            try logMessage.write(to: logFileURL, atomically: true, encoding: .utf8)
+        }
+        print("File written successfully to: \(logFileURL.path)")
+    } catch {
+        print("Error writing to file: \(error.localizedDescription)")
+    }
+}
