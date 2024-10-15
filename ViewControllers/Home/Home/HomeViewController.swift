@@ -533,8 +533,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         } else {
             // Fallback on earlier versions
         }
-
-        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         mapView.delegate = self
         tableView.addSubview(pullControl) // not
         tableView.refreshControl?.tintColor = .clear
