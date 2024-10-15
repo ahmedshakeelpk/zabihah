@@ -420,7 +420,7 @@ extension HomeViewController {
 
     // MARK: - Item
     struct Review: Codable {
-        let id, createdBy, createdOn, updatedBy: String?
+        var id, createdBy, createdOn, updatedBy: String?
         let updatedOn: String?
         let isDeleted: Bool?
         let type: String?

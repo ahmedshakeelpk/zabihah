@@ -172,20 +172,12 @@ class RatingViewController: UIViewController {
     
     var modelGetMyReview: HomeViewController.Review! {
         didSet {
-            DispatchQueue.main.async {
-                let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
-                vc.isFromEditReview = true
-                vc.isPrayerPlace = self.isPrayerPlace
-                if let reviewData = self.modelGetMyReview {
-                    vc.reviewDatum = reviewData
-                }
-                vc.reviewPostedHandler = {
-                    self.getMyReviews()
-                }
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
+            
         }
     }
+    
+    
+    
     func myReview() {
         let parameters = [
             "placeId": self.modelFeaturedResponse?.items?[0]?.id ?? ""
@@ -195,10 +187,11 @@ class RatingViewController: UIViewController {
             let model: HomeViewController.Review? = APIs.decodeDataToObject(data: responseData)
             DispatchQueue.main.async {
                 if statusCode == 200 {
-                    self.modelGetMyReview = model
                     var record = model
-                    record?.place = HomeViewController.Place(id: model?.id)
+//                    record?.id = self.modelGetRestaurantDetailResponse?.id ?? ""
+                    record?.place = HomeViewController.Place(id: self.modelFeaturedResponse?.items?[0]?.id ?? "")
                     self.modelGetMyReview = record
+                    self.navigateToEditWriteReviewViewController()
                 }
                 else {
                     self.navigateToWriteReviewViewController()
@@ -270,6 +263,21 @@ class RatingViewController: UIViewController {
             }
         }
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func navigateToEditWriteReviewViewController() {
+        DispatchQueue.main.async {
+            let vc = UIStoryboard.init(name: StoryBoard.name.delivery.rawValue, bundle: nil).instantiateViewController(withIdentifier: "WriteReviewViewController") as! WriteReviewViewController
+            vc.isFromEditReview = true
+            vc.isPrayerPlace = self.isPrayerPlace
+//            vc.modelGetRestaurantDetailResponse = modelFeaturedResponse?.items?[0]
+            if let reviewData = self.modelGetMyReview {
+                vc.reviewDatum = reviewData
+            }
+            vc.reviewPostedHandler = {
+                self.getMyReviews()
+            }
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func getMyReviews() {
